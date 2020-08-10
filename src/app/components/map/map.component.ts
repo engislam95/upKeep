@@ -135,9 +135,7 @@ export class MapComponent implements OnInit {
     this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
       this.cities = cities.data;
       console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
-      });
+      this.citiesLating = cities.data;
       this.citiesFilteredOptions = this.cityForm
         .get('city_id')
         .valueChanges.pipe(
@@ -173,12 +171,7 @@ export class MapComponent implements OnInit {
       this.city_id = value.id;
       this.coreService.getMethod('cities/' + value.id).subscribe(city => {
         console.log(city);
-        this.citiesLating = [
-          {
-            lat: city['data'][0].pivot.lat,
-            long: city['data'][0].pivot.long
-          }
-        ];
+        this.citiesLating = city['data'];
       });
       this.getOrders();
     }
@@ -188,39 +181,39 @@ export class MapComponent implements OnInit {
     }
   }
   // search by city name
-  getLocationOnMap(cityName) {
-    let newLocation = {
-      lat: null,
-      lng: null,
-      address: 'test Address',
-      area: 'test Area 1',
-      mainLocation: true
-    };
-    let address: string = '';
-    setTimeout(() => {
-      this.mapsAPILoader.load().then(() => {
-        this.geoCoder = new google.maps.Geocoder();
-        this.geoCoder.geocode(
-          {
-            address: cityName
-          },
-          function(results, status) {
-            newLocation.lat = results[0].geometry.location.lat();
-            newLocation.lng = results[0].geometry.location.lng();
-            address = results[0].formatted_address;
-          }
-        );
-      });
-    }, 500);
+  // getLocationOnMap(cityName) {
+  //   let newLocation = {
+  //     lat: null,
+  //     lng: null,
+  //     address: 'test Address',
+  //     area: 'test Area 1',
+  //     mainLocation: true
+  //   };
+  //   let address: string = '';
+  //   setTimeout(() => {
+  //     this.mapsAPILoader.load().then(() => {
+  //       this.geoCoder = new google.maps.Geocoder();
+  //       this.geoCoder.geocode(
+  //         {
+  //           address: cityName
+  //         },
+  //         function(results, status) {
+  //           newLocation.lat = results[0].geometry.location.lat();
+  //           newLocation.lng = results[0].geometry.location.lng();
+  //           address = results[0].formatted_address;
+  //         }
+  //       );
+  //     });
+  //   }, 500);
 
-    setTimeout(() => {
-      this.citiesLating.push({
-        lat: newLocation.lat,
-        long: newLocation.lng
-      });
-      console.log(this.citiesLating);
-    }, 1000);
-  }
+  //   setTimeout(() => {
+  //     this.citiesLating.push({
+  //       lat: newLocation.lat,
+  //       long: newLocation.lng
+  //     });
+  //     console.log(this.citiesLating);
+  //   }, 1000);
+  // }
 
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
@@ -235,8 +228,17 @@ export class MapComponent implements OnInit {
     this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
       this.cities = cities.data;
       console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
+      this.citiesFilteredOptions = cities.data;
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.cities = cities.data;
+        console.log(this.cities);
+        this.citiesLating = cities.data;
+        this.citiesFilteredOptions = this.cityForm
+          .get('city_id')
+          .valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterCities(value))
+          );
       });
       this.citiesFilteredOptions = this.cityForm
         .get('city_id')
@@ -251,9 +253,9 @@ export class MapComponent implements OnInit {
     this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
       this.cities = cities.data;
       console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
-      });
+      // this.cities.map(city => {
+      //   this.getLocationOnMap(city.name);
+      // });
       this.citiesFilteredOptions = this.cityForm
         .get('city_id')
         .valueChanges.pipe(
