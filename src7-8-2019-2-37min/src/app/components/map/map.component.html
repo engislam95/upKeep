@@ -1,0 +1,489 @@
+<div class="main_page">
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu
+    *ngIf="
+      (!addOrderMode && !orderDetailsMode && !clientDetailsPageMode) ||
+      clientDetailsMode
+    "
+  ></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div
+    class="page_main_blocks"
+    [ngClass]="{
+      middle_page:
+        (!addOrderMode && !orderDetailsMode && !clientDetailsPageMode) ||
+        clientDetailsMode
+    }"
+  >
+    <!-- ################################### Start Header ################################ -->
+    <div
+      class="page_header"
+      *ngIf="
+        (!addOrderMode && !orderDetailsMode && !clientDetailsPageMode) ||
+        clientDetailsMode
+      "
+    >
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <div
+      class="page_body"
+      [ngStyle]="{
+        padding: orderDetailsMode || clientDetailsPageMode ? '0' : ''
+      }"
+    >
+      <div
+        class="page_body_title"
+        *ngIf="
+          !addOrderMode &&
+          !orderDetailsMode &&
+          !clientDetailsMode &&
+          !clientDetailsPageMode
+        "
+      >
+        <h3><i class="fas fa-plus"></i>خريطة الطلبات</h3>
+        <div class="page_body_main_buttons">
+          <a routerLink="/orders/all-orders">
+            كل الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+          <a routerLink="/orders/add-order">
+            إضافة طلب
+            <i class="fas fa-th-list"></i>
+          </a>
+          <a routerLink="/orders/orders-table">
+            جدول الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+        </div>
+      </div>
+      <div
+        class="page_body_title"
+        *ngIf="
+          !addOrderMode &&
+          !orderDetailsMode &&
+          !clientDetailsPageMode &&
+          clientDetailsMode
+        "
+      >
+        <h3><i class="fas fa-plus"></i>موقع العميل</h3>
+      </div>
+
+      <div class="page_body_main">
+        <!-- ############################ Start Page Block ############################ -->
+        <div class="page_block">
+          <!-- Start Map -->
+          <!-- NOTE  -->
+          <!-- mapTypeId="satellite" -->
+          <div class="noData" *ngIf="orders.length === 0 && ordersLoaded">
+            لا يوجد طلبات اليوم
+          </div>
+          <div id="filterForms">
+            <!-- Start Open Technical Recommendation POPUP -->
+            <div class="buttonPopupMap" *ngIf="addOrderMode">
+              <button type="button" (click)="openRecommendationForm()">
+                ترشيح
+              </button>
+            </div>
+            <!-- End Open Technical Recommendation POPUP -->
+            <!-- Filter Form -->
+            <form
+              style="display: inline-block"
+              *ngIf="
+                mapFilter &&
+                !orderDetailsMode &&
+                !clientDetailsMode &&
+                !clientDetailsPageMode
+              "
+              [@fade]
+            >
+              <ng-container>
+                <!-- Start Form field -->
+                <div class="form_field">
+                  <!-- Start Order Time -->
+                  <div class="timePickerContainer">
+                    <mat-label>التاريخ </mat-label>
+                    <!-- NOTE -->
+                    <!-- Start Filter Date -->
+                    <div class="form_input custome__height">
+                      <!-- Date -->
+                      <mat-form-field appearance="outline" dir="rtl">
+                        <input
+                          class="filterInput mapOrderDateFilter"
+                          (dateInput)="orderDateChanged($event)"
+                          matInput
+                          [min]="todayDate"
+                          [matDatepicker]="fromFilterDate"
+                          placeholder="التاريخ"
+                          autocomplete="off"
+                          id="filterStartDate"
+                        />
+                        <mat-datepicker-toggle
+                          class="dateButton"
+                          [for]="fromFilterDate"
+                        >
+                        </mat-datepicker-toggle>
+                        <mat-datepicker touchUi #fromFilterDate>
+                        </mat-datepicker>
+                      </mat-form-field>
+                      <!-- Date -->
+                    </div>
+                    <!-- End Filter Date -->
+                  </div>
+                  <!-- Start Validation status -->
+                </div>
+                <!-- End Form field -->
+                <!-- Start Form field -->
+                <div class="form_input">
+                  <mat-label>إسم الفني او الخدمة </mat-label>
+                  <app-multiselect-filter
+                    [multiSelectList]="servicesWithTechniciansList"
+                    [multiSelectListPlaceholder]="techniciansFilterPlaceholder"
+                    [multiSelectListType]="nestedType"
+                    [componentId]="filterTechniciansComponentId"
+                    (search)="search($event)"
+                  ></app-multiselect-filter>
+                </div>
+                <!-- End Form field -->
+              </ng-container>
+            </form>
+            <!-- Filter Form -->
+
+            <!-- Filter Time Form -->
+            <!--  -->
+            <div id="fade" *ngIf="showPopup" [@fade]>
+              <form [formGroup]="timeFilterForm" *ngIf="addOrderMode">
+                <!-- Time Filter -->
+                <div id="filterTime">
+                  <h4>نتيجة البحث</h4>
+                  <i
+                    class="fas fa-times"
+                    (click)="closeSuggestTechnicians()"
+                  ></i>
+                  <div class="allTime">
+                    <div id="filterTimeContainer">
+                      <!-- Start Order From To Time -->
+                      <!-- Start Form field -->
+
+                      <div class="form_field">
+                        <!-- Start Order Time -->
+                        <div class="timePickerContainer">
+                          <mat-label>التاريخ </mat-label>
+                          <!-- NOTE -->
+                          <!-- Start Filter Date -->
+                          <div class="form_input custome__height">
+                            <!-- Date -->
+                            <mat-form-field appearance="outline" dir="rtl">
+                              <input
+                                class="filterInput mapOrderDateFilter"
+                                (dateInput)="orderDateChanged($event)"
+                                matInput
+                                [min]="todayDate"
+                                [matDatepicker]="fromFilterDate"
+                                placeholder="التاريخ"
+                                autocomplete="off"
+                                id="aiDate"
+                                formControlName="orderDate"
+                              />
+                              <mat-datepicker-toggle
+                                class="dateButton"
+                                [for]="fromFilterDate"
+                              >
+                              </mat-datepicker-toggle>
+                              <mat-datepicker touchUi #fromFilterDate>
+                              </mat-datepicker>
+                            </mat-form-field>
+                            <!-- Date -->
+                          </div>
+                          <!-- End Filter Date -->
+                        </div>
+                        <!-- Start Validation status -->
+                      </div>
+
+                      <!-- End Validation status -->
+
+                      <!-- End Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="timeField">
+                        <div class="form_field" id="timePicker">
+                          <!-- Start Order Time -->
+                          <div class="timePickerContainer">
+                            <mat-label>الوقت من </mat-label>
+                            <input
+                              formControlName="startObj"
+                              placeholder="الوقت من"
+                              [ngxTimepicker]="startTime"
+                              min="09:00 am"
+                              max="10:00 pm"
+                              readonly
+                            />
+                            <ngx-material-timepicker
+                              (timeSet)="timeChanged($event, 'start')"
+                              #startTime
+                              enableKeyboardInput="true"
+                              [ngxMaterialTimepickerTheme]="darkTheme"
+                            ></ngx-material-timepicker>
+                            <!-- Start Order Time -->
+                          </div>
+                          <!-- Start Validation status -->
+                          <div
+                            [@fade]
+                            class="validationState  errorState"
+                            *ngIf="timeFilterForm.hasError('endAfterStart')"
+                          >
+                            <i class="fas fa-times"></i>
+                            لايمكن أن يكون وقت إنتهاء الطلب قبل وقت بدء الطلب
+                          </div>
+                          <!-- End Validation status -->
+                        </div>
+                        <!-- End Form field -->
+                        <!-- Start Form field -->
+                        <div class="form_field" id="timePicker2">
+                          <!-- End Order Time -->
+                          <div class="timePickerContainer">
+                            <mat-label>الوقت الى </mat-label>
+                            <input
+                              formControlName="endObj"
+                              placeholder="الوقت الي"
+                              [ngxTimepicker]="endTime"
+                              min="09:00 am"
+                              max="10:00 pm"
+                              readonly
+                            />
+
+                            <ngx-material-timepicker
+                              (timeSet)="timeChanged($event, 'end')"
+                              #endTime
+                              enableKeyboardInput="true"
+                              [ngxMaterialTimepickerTheme]="darkTheme"
+                            ></ngx-material-timepicker>
+                            <!-- End Order Time -->
+                          </div>
+                          <!-- Start Validation status -->
+
+                          <!-- End Validation status -->
+                        </div>
+                      </div>
+
+                      <!-- End Form field -->
+
+                      <div class="form_field">
+                        <button
+                          (click)="getFreeTechniciansForNewOrder()"
+                          type="button"
+                          [disabled]="
+                            timeFilterForm.hasError('endAfterStart') ||
+                            timeFilterForm.invalid
+                          "
+                        >
+                          <span class="searchingBestTechnicalState">
+                            <i
+                              class="fas fa-cog "
+                              *ngIf="bestTechnicalFillterprocess"
+                              [@fade]
+                            ></i
+                          ></span>
+                          <span *ngIf="!bestTechnicalFillterprocess" [@fade]>
+                            البحث عن أفضل فنى
+                          </span>
+                        </button>
+                      </div>
+
+                      <!-- End Order From To Time -->
+                    </div>
+
+                    <div class="filterTimeTaken">
+                      <p>إسم الفني <span>الوقت المستغرق</span></p>
+                      <span class="bestTechnical" *ngIf="searchingLoaderCog">
+                        <p>
+                          <input
+                            type="radio"
+                            id="selectTechnicalRadio"
+                            class="selectTechnical"
+                            value="{{ sortedArray[0].technical.id }}"
+                          />
+                          {{ searchingLoaderCog ? bestTechnicalName : '' }}
+                          <span
+                            >{{
+                              searchingLoaderCog ? bestTechnicalArriveTime : ''
+                            }}
+                            د
+                          </span>
+                        </p>
+
+                        <button
+                          (click)="submitSelectedTechnical()"
+                          type="button"
+                          class="selectedTechnicalSubmit"
+                        >
+                          تأكيد
+                        </button>
+                      </span>
+                      <p
+                        class="emptyBestTechnicalList"
+                        *ngIf="!searchingLoaderCog"
+                      >
+                        لا يوجد ترشيجات فى الوقت الحالى
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Time Filter -->
+              </form>
+            </div>
+            <!-- TODO  -->
+
+            <!-- Filter Time Form   dd-->
+          </div>
+          <agm-map
+            #gm
+            [streetViewControl]="false"
+            [latitude]="
+              orderDetailsMode || clientDetailsMode
+                ? orderDetailsOrgins.lat
+                : clientDetailsPageMode || addOrderMapMode
+                ? clientDetailsOrgins.lat
+                : lat
+            "
+            [longitude]="
+              orderDetailsMode || clientDetailsMode
+                ? orderDetailsOrgins.lng
+                : clientDetailsPageMode || addOrderMapMode
+                ? clientDetailsOrgins.lng
+                : lng
+            "
+            #AgmMap
+            [fitBounds]="
+              orderDetailsMode || clientDetailsMode || clientDetailsPageMode
+                ? false
+                : true
+            "
+            [mapTypeControl]="true"
+            backgroundColor="ffffff"
+            id="map"
+            [ngStyle]="{
+              height:
+                orderDetailsMode || clientDetailsPageMode
+                  ? '400px'
+                  : addOrderMapMode
+                  ? '300px'
+                  : ''
+            }"
+            [zoom]="zoom"
+            (mapClick)="mapClicked($event)"
+          >
+            <!-- VID Marker -->
+            <agm-marker
+              *ngIf="
+                ordersLoaded &&
+                !orderDetailsMode &&
+                !clientDetailsMode &&
+                !clientDetailsPageMode &&
+                addNewAddressMode
+              "
+              [agmFitBounds]="true"
+              [latitude]="vidCoordinates.lat"
+              [longitude]="vidCoordinates.long"
+              iconUrl="./../../../../assets/img/marker_vid.png"
+            >
+            </agm-marker>
+            <!-- VID Marker -->
+            <ng-container
+              *ngIf="
+                orders.length > 0 &&
+                ordersLoaded &&
+                !orderDetailsMode &&
+                !clientDetailsMode &&
+                !clientDetailsPageMode
+              "
+            >
+              <agm-marker
+                [agmFitBounds]="true"
+                *ngFor="let order of orders"
+                [latitude]="order.location.lat"
+                [longitude]="order.location.long"
+                iconUrl="./../../../../assets/img/marker_{{
+                  order.technical.id
+                }}.png"
+                (mouseOver)="onMouseOver(infoWindow, gm)"
+                (mouseOut)="onMouseOut(infoWindow, gm)"
+              >
+                <div class="infoStyle" id="test">
+                  <agm-info-window #infoWindow>
+                    <ul>
+                      <li>رقم الطلب : {{ order.id }}</li>
+                      <li>إسم العميل : {{ order.client.user.name }}</li>
+                      <li>إسم الفني : {{ order.technical.name }}</li>
+                      <li>
+                        وقت تنفيذ الطلبية :
+
+                        <ng-container>
+                          <span class="timeTitleSpan">من : </span
+                          >{{
+                            order.fromH > 12
+                              ? order.fromH - 12 + ':' + order.fromM + 'م'
+                              : order.fromH + ':' + order.fromM + 'ص'
+                          }}
+                        </ng-container>
+                        <!-- ********************************* -->
+                        <ng-container>
+                          <span class="timeTitleSpan"> الي : </span
+                          >{{
+                            order.toH > 12
+                              ? order.toH - 12 + ':' + order.toM + 'م'
+                              : order.toH + ':' + order.toM + 'ص'
+                          }}
+                        </ng-container>
+                      </li>
+                      <li *ngIf="order.offer ? true : false">
+                        إسم العرض : {{ order.offer.name }}
+                      </li>
+                      <li>
+                        الملاحظات :
+                        <div [innerHTML]="order.details"></div>
+                      </li>
+                    </ul>
+                  </agm-info-window>
+                </div>
+              </agm-marker>
+            </ng-container>
+            <!-- New Order Marker -->
+            <agm-marker
+              *ngIf="ordersLoaded && addOrderMode"
+              [agmFitBounds]="true"
+              [latitude]="orderClient.lat"
+              [longitude]="orderClient.long"
+              iconUrl="./../../../../assets/img/marker_unknown.png"
+            >
+            </agm-marker>
+            <!-- New Order Marker -->
+
+            <!-- order details marker -->
+            <agm-marker
+              *ngIf="orderDetailsMode || clientDetailsMode"
+              [agmFitBounds]="true"
+              [latitude]="orderDetailsOrgins.lat"
+              [longitude]="orderDetailsOrgins.long"
+            >
+            </agm-marker>
+            <!-- order details marker -->
+            <!-- order details marker -->
+            <agm-marker
+              *ngIf="clientDetailsPageMode"
+              [agmFitBounds]="true"
+              [latitude]="clientDetailsOrgins.lat"
+              [longitude]="clientDetailsOrgins.lng"
+            >
+            </agm-marker>
+            <!-- order details marker -->
+          </agm-map>
+          <!-- End Map -->
+        </div>
+        <!-- ############################ End Page Block ############################ -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

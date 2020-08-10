@@ -1,0 +1,397 @@
+<div class="main_page form-taxs-mng form-graphic-mng ">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div
+      class="page_body"
+      id="content"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < تقارير بيانية
+      </h4>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <h3 style="color: #83AC0E;">
+            <i
+              style="color: #83AC0E; margin-left: 5px;"
+              class="fas fa-chart-bar"
+            ></i>
+            تقارير بيانية
+          </h3>
+
+          <div class="main_block filterMainBlock">
+            <form class="filter_form" [formGroup]="chartForm">
+              <div class="form_input" id="smallFillterInputStyle">
+                <div class="form_field">
+                  <label> تصنيف البحث </label>
+                  <mat-form-field appearance="outline" dir="rtl">
+                    <mat-select
+                      placeholder="تصنيف البحث"
+                      formControlName="collection"
+                      (selectionChange)="getDate($event.value)"
+                    >
+                      <mat-option value="Year">سنة</mat-option>
+                      <mat-option value="MONTH">شهر</mat-option>
+                      <mat-option value="day">يوم</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <div class="form_field">
+                  <label> الخدمة </label>
+                  <mat-form-field appearance="outline" dir="rtl">
+                    <mat-select
+                      placeholder="الخدمة"
+                      formControlName="service_id"
+                    >
+                      <mat-option value="">الكل</mat-option>
+                      <mat-option
+                        [value]="service.id"
+                        *ngFor="let service of services"
+                        >{{ service.name }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- <div class="form_input" id="smallFillterInputStyle">
+                <div class="form_field">
+                  <label> الكل</label>
+                  <mat-form-field appearance="outline" dir="rtl">
+                    <mat-select
+                      placeholder="الكل"
+                      formControlName="subService_id"
+                    >
+                      <mat-option value="">الكل</mat-option>
+                      <mat-option
+                        *ngFor="let sub of subServices"
+                        [value]="sub.id"
+                        >{{ sub.name }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div> -->
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <label> <i class="fal fa-calendar-minus"></i> المدة من </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    [matDatepicker]="fromFilterDate"
+                    placeholder=""
+                    (dateInput)="orderDateChanged($event)"
+                  />
+
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="fromFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <label> <i class="fal fa-calendar-minus"></i> المدة الى </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    [matDatepicker]="toFilterDate"
+                    placeholder=" "
+                    (dateInput)="orderDateChanged2($event)"
+                  />
+
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="toFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="button-save-taxs">
+                <button (click)="applySearch(chartForm.value)">
+                  <i class="fal fa-search"></i>
+                  بحث
+                </button>
+              </div>
+            </form>
+
+            <p
+              style="color: #464646; font-size: 12px;     margin-bottom: 25px;"
+            >
+              يمكنك البحث عن التقارير سنويا / شهريا / أيام
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top: -32px;" class="page_block">
+          <div class="controlers">
+            <div class="controller" *ngIf="allData.totalReceiptsCount">
+              <div class="invoice-coll">
+                <i class="fal fa-file-invoice"></i>
+                <p>عدد الفواتير</p>
+                <span>{{
+                  allData.totalReceiptsCount ? allData.totalReceiptsCount : '0'
+                }}</span>
+              </div>
+            </div>
+            <div class="controller" *ngIf="allData.totalCount">
+              <div class="invoice-coll">
+                <i class="fal fa-file-invoice-dollar"></i>
+                <p>اجمالى الفواتير</p>
+                <span
+                  >{{ allData.totalCount ? allData.totalCount : '0' }}
+                  <span>SAR</span></span
+                >
+              </div>
+            </div>
+
+            <div class="controller" *ngIf="allData.totalWithoutTaxCount">
+              <div class="invoice-coll">
+                <i class="fal fa-sack-dollar"></i>
+                <p>اجمالى الفواتير</p>
+                <span
+                  >{{
+                    allData.totalWithoutTaxCount
+                      ? allData.totalWithoutTaxCount
+                      : '0'
+                  }}
+                  <span>SAR</span></span
+                >
+
+                <p style="  font-size: 11px;">بدون قيمة مضافة</p>
+              </div>
+            </div>
+
+            <div class="controller" *ngIf="allData.totalServiceCount">
+              <div class="invoice-coll">
+                <i class="fal fa-hand-spock"></i>
+                <p>اجمالى خدمات</p>
+                <span
+                  >{{
+                    allData.totalServiceCount ? allData.totalServiceCount : '0'
+                  }}
+                  <span>SAR</span></span
+                >
+              </div>
+            </div>
+
+            <div class="controller" *ngIf="allData.tota_spare_parts">
+              <div class="invoice-coll">
+                <i class="fal fa-server"></i>
+                <p>قطع الغيار</p>
+                <span
+                  >{{
+                    allData.tota_spare_parts ? allData.tota_spare_parts : '0'
+                  }}
+                  <span>SAR</span></span
+                >
+              </div>
+            </div>
+
+            <div class="controller" *ngIf="allData.totalTaxCount">
+              <div class="invoice-coll">
+                <i class="fal fa-badge-percent"></i>
+                <p>القيمة المضافة</p>
+                <span
+                  >{{ allData.totalTaxCount ? allData.totalTaxCount : '0' }}
+                  <span>SAR</span></span
+                >
+              </div>
+            </div>
+
+            <div class="controller" *ngIf="allData.cancelledCount">
+              <div class="invoice-coll">
+                <i class="fal fa-align-slash"></i>
+                <p>فواتير ملغاه</p>
+                <span
+                  >{{ allData.cancelledCount ? allData.cancelledCount : '0' }}
+                  <span>SAR</span></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style=" margin-top: -32px;" class="page_block">
+          <h3 style="font-size: 15px; margin-bottom: 20px; margin-top: 15px;">
+            الجداول
+          </h3>
+          <!-- <div class="countPerPage">
+            <select name="" id="" class="selectPerpage">
+              <option value="option">10</option>
+            </select>
+          </div> -->
+          <div class="sheet-pdf">
+            <a
+              ><i
+                style="color: #058036; "
+                class="fas fa-file-excel"
+                (click)="ExportTOExcel()"
+              ></i
+            ></a>
+            <a
+              ><i
+                style="color: #FF0000; margin-left: 20px;"
+                class="fas fa-file-pdf"
+                (click)="captureScreen()"
+              ></i
+            ></a>
+          </div>
+          <div #TABLE #table>
+            <table
+              mat-table
+              [dataSource]="dataSource"
+              class="mat-elevation-z8"
+              width="100%"
+              dir="rtl"
+              id="display_table"
+            >
+              <!-- id Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              </ng-container>
+
+              <!-- duration_of_research Column -->
+              <ng-container matColumnDef="duration_of_research">
+                <th mat-header-cell *matHeaderCellDef>فترة البحث</th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.duration_of_research
+                      ? element.duration_of_research
+                      : 0
+                  }}
+                </td>
+              </ng-container>
+
+              <!-- number_of_bills Column -->
+              <ng-container matColumnDef="number_of_bills">
+                <th mat-header-cell *matHeaderCellDef>عدد الفواتير</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.number_of_bills ? element.number_of_bills : 0 }}
+                </td>
+              </ng-container>
+
+              <!-- total_bills Column -->
+              <ng-container matColumnDef="total_bills">
+                <th mat-header-cell *matHeaderCellDef>اجمالى الفواتير</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.total_bills ? element.total_bills : 0 }}
+                </td>
+              </ng-container>
+
+              <!-- total_invoices_without_added_value Column -->
+              <ng-container matColumnDef="total_invoices_without_added_value">
+                <th mat-header-cell *matHeaderCellDef>
+                  اجمالى الفواتير بدون قيمة مضافة
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.total_invoices_without_added_value
+                      ? element.total_invoices_without_added_value
+                      : 0
+                  }}
+                </td>
+              </ng-container>
+
+              <!-- total_services Column -->
+              <ng-container matColumnDef="total_services">
+                <th mat-header-cell *matHeaderCellDef>اجمالى الخدمات</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.total_services ? element.total_services : 0 }}
+                </td>
+              </ng-container>
+
+              <!-- tota_spare_parts Column -->
+              <ng-container matColumnDef="tota_spare_parts">
+                <th mat-header-cell *matHeaderCellDef>اجمالى قطع الغيار</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.tota_spare_parts ? element.tota_spare_parts : 0 }}
+                </td>
+              </ng-container>
+
+              <!-- total_added_value Column -->
+              <ng-container matColumnDef="total_added_value">
+                <th mat-header-cell *matHeaderCellDef>اجمالى القيمة المضافة</th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.total_added_value ? element.total_added_value : 0
+                  }}
+                </td>
+              </ng-container>
+
+              <!-- total_invoices_canceled Column -->
+              <ng-container matColumnDef="total_invoices_canceled">
+                <th mat-header-cell *matHeaderCellDef>
+                  اجمالى الفواتير الملغاه
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.total_invoices_canceled
+                      ? element.total_invoices_canceled
+                      : 0
+                  }}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <mat-paginator
+              style="float: left"
+              [pageSizeOptions]="[5, 10, 15, 20, 50]"
+              showFirstLastButtons
+            ></mat-paginator>
+          </div>
+          <br /><br />
+        </div>
+
+        <div style="margin-top: -32px;" class="page_block">
+          <div class="draw-invoice">
+            <h3>الرسم البيانى</h3>
+
+            <div class="graph">
+              <div style="display: flex;">
+                <div></div>
+                <p-chart
+                  type="bar"
+                  style="width: 100%;"
+                  [data]="data"
+                  [options]="chartOptions"
+                ></p-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

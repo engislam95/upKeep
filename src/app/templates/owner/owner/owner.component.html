@@ -1,0 +1,62 @@
+<div class="main_page">
+  <app-side-menu-owner></app-side-menu-owner>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <div class="header">
+        <div class="borderheader">
+          <div class="header-side"></div>
+        </div>
+        <div class="header-title">
+          <p style="color: #F6A811;">
+            مرحبا بك &nbsp; &nbsp; &nbsp;<span style="color: #fff;">{{
+              user.name
+            }}</span>
+          </p>
+          <span><p>الصفحة الرئيسية &nbsp; | &nbsp; إدارة الشركات</p></span>
+        </div>
+      </div>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <div class="block">
+          <div class="number-company">
+            <div class="back-color">
+              <img src="../../../../assets/img/visitor.svg" />
+              <h4>الشركات المسجلة</h4>
+            </div>
+            <div class="count-nm">
+              <p>1</p>
+            </div>
+          </div>
+          <div class="page_block">
+            <h4><img src="../../../../assets/img/shortcut.png" />الإختصارات</h4>
+            <div class="controlers">
+              <div class="controller" routerLink="/companies/all-companies">
+                <a> <img src="../../../../assets/img/visitor.svg" alt=""/></a>
+                <p>إدارة الشركات</p>
+              </div>
+              <div class="controller" routerLink="/services/all-services">
+                <a routerLink="/">
+                  <img src="../../../../assets/img/support.svg" alt=""
+                /></a>
+                <p>إدارة الخدمات</p>
+              </div>
+              <div
+                class="controller"
+                routerLink="/classifications/all-classifications"
+              >
+                <a routerLink="/">
+                  <img
+                    style="padding-top: 26px;"
+                    src="../../../../assets/img/support.svg"
+                    alt=""
+                /></a>
+                <p>إدارة التصنيفات</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

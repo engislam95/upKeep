@@ -1,0 +1,1097 @@
+<div class="main_page form-invoice-mng">
+  <app-alerts></app-alerts>
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < الاعدادات
+      </h4>
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <h3>
+            <i style="color: #540D77;" class="fas fa-tasks"></i> اعدادات القوالب
+          </h3>
+          <div class="style-pr">
+            <p>من فضلك قم بمليء كافة البيانات الخاصة باعدادات الفواتير</p>
+            <p style="color: #915C0D; font-size: 12px;">
+              هذه البيانات سيتم ظهورها على الفواتير
+            </p>
+          </div>
+          <p class="alert-error">
+            يمكنك تغيير الكلمات الخاصة بالفاتورة طبقا للارقام الموجودة بالدليل
+            الخاص لفتح الدليل <a (click)="openPopup()"> اضغط هنا </a>
+          </p>
+
+          <mat-tab-group>
+            <mat-tab label="  معلومات عن الشركة ">
+              <div style="display: flex;">
+                <div style="width: 46%;" id="add_form">
+                  <form [formGroup]="companyForm">
+                    <div class="registerForm">
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="fas fa-building"></i> اسم الشركة
+                          <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            formControlName="name"
+                            placeholder=" اسم الشركة"
+                            autocomplete="off"
+                            id="name"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="companyForm.get('name').status === 'VALID'"
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            *ngIf="
+                              (companyForm.get('name').status === 'INVALID' &&
+                                companyForm.get('name').touched) ||
+                              (submitted &&
+                                companyForm.get('name').status === 'INVALID')
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                        </mat-form-field>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('name').status === 'INVALID' &&
+                              companyForm.get('name').touched) ||
+                            (submitted &&
+                              companyForm.get('name').status === 'INVALID')
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          هذا الحقل مطلوب
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="companyForm.get('name').status === 'VALID'"
+                          style="color: #009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="far fa-barcode-read"></i> الرقم الضريبي
+                          <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            placeholder=" الرقم الضريبي "
+                            formControlName="taxNumber"
+                            autocomplete="off"
+                            appOnlyNumbers="true"
+                            id="name"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="
+                              companyForm.get('taxNumber').status === 'VALID'
+                            "
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            [@fade]
+                            *ngIf="
+                              (companyForm.get('taxNumber').status ===
+                                'INVALID' &&
+                                companyForm.get('taxNumber').touched) ||
+                              (submitted &&
+                                companyForm.get('taxNumber').status ===
+                                  'INVALID')
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                        </mat-form-field>
+                        <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="
+                            companyForm.get('taxNumber').status === 'VALID'
+                          "
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('taxNumber').status ===
+                              'INVALID' &&
+                              companyForm.get('taxNumber').touched) ||
+                            (submitted &&
+                              companyForm.get('taxNumber').status === 'INVALID')
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          هذا الحقل مطلوب
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="far fa-barcode-read"></i> السجل التجارى
+                          <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            formControlName="commerceNumber"
+                            placeholder=" السجل التجارى"
+                            autocomplete="off"
+                            appOnlyNumbers="true"
+                            id="name"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="
+                              companyForm.get('commerceNumber').status ===
+                              'VALID'
+                            "
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            *ngIf="
+                              (companyForm.get('commerceNumber').status ===
+                                'INVALID' &&
+                                companyForm.get('commerceNumber').touched) ||
+                              (submitted &&
+                                companyForm.get('commerceNumber').status ===
+                                  'INVALID')
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                        </mat-form-field>
+                        <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="
+                            companyForm.get('commerceNumber').status === 'VALID'
+                          "
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('commerceNumber').status ===
+                              'INVALID' &&
+                              companyForm.get('commerceNumber').touched) ||
+                            (submitted &&
+                              companyForm.get('commerceNumber').status ===
+                                'INVALID')
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          حطأ في ادخال السجل التجاري
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="fas fa-phone-alt"></i> رقم الاتصال
+                          <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            placeholder=" رقم الاتصال"
+                            autocomplete="off"
+                            appOnlyNumbers="true"
+                            formControlName="mobile"
+                            maxlength="9"
+                            id="name"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="companyForm.get('mobile').status === 'VALID'"
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            *ngIf="
+                              (companyForm.get('mobile').status === 'INVALID' &&
+                                companyForm.get('mobile').touched) ||
+                              (submitted &&
+                                companyForm.get('mobile').status === 'INVALID')
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                          <span
+                            id="phoneKey"
+                            style="left: 23px;
+                           background: none;"
+                            [@fade]
+                            >966+</span
+                          >
+                        </mat-form-field>
+                        <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="companyForm.get('mobile').status === 'VALID'"
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('mobile').status === 'INVALID' &&
+                              companyForm.get('mobile').touched) ||
+                            (submitted &&
+                              companyForm.get('mobile').status === 'INVALID')
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          حطأ في ادخال البيانات
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="fas fa-envelope"></i> البريد الالكترونى
+                          <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            placeholder=" "
+                            autocomplete="off"
+                            id="name"
+                            formControlName="email"
+                            type="email"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="companyForm.get('email').status === 'VALID'"
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span class="span-error"
+                            ><i
+                              style="color: #FF0000;"
+                              *ngIf="
+                                (companyForm.get('email').touched &&
+                                  companyForm.controls.email.errors
+                                    ?.required) ||
+                                companyForm.controls.email.errors?.pattern
+                              "
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                        </mat-form-field>
+                        <div
+                          class="validationState successState"
+                          *ngIf="companyForm.get('email').status === 'VALID'"
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('email').touched &&
+                              companyForm.controls.email.errors?.required) ||
+                            companyForm.controls.email.errors?.pattern
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          هذا الحقل مطلوب
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label
+                          ><i class="fas fa-globe"></i> الموقع الالكترونى
+                        </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            placeholder=" "
+                            autocomplete="off"
+                            id="name"
+                            formControlName="website"
+                          />
+                          <!-- <span
+                            class="span-correct"
+                            *ngIf="
+                              companyForm.get('website').status === 'VALID'
+                            "
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            *ngIf="
+                              (companyForm.get('website').status ===
+                                'INVALID' &&
+                                companyForm.get('website').touched) ||
+                              (submitted &&
+                                companyForm.get('website').status === 'INVALID')
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span> -->
+                        </mat-form-field>
+                        <!-- <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="companyForm.get('website').status === 'VALID'"
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            (companyForm.get('website').status === 'INVALID' &&
+                              companyForm.get('website').touched) ||
+                            (submitted &&
+                              companyForm.get('website').status === 'INVALID')
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          هذا الحقل مطلوب
+                        </div> -->
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <label>
+                          <i class="fas fa-file-invoice-dollar"></i> بداية أرقام
+                          الفاتورة <span style="color: red;">*</span></label
+                        >
+
+                        <span class="span-error_1">*</span>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input
+                            matInput
+                            placeholder=" "
+                            autocomplete="off"
+                            appOnlyNumbers="true"
+                            formControlName="invoiceNumber"
+                            id="name"
+                          />
+                          <span
+                            class="span-correct"
+                            *ngIf="
+                              companyForm.get('invoiceNumber').status ===
+                              'VALID'
+                            "
+                            ><i style="color: #50B11A;" class="fal fa-check"></i
+                          ></span>
+                          <span
+                            class="span-error"
+                            *ngIf="
+                              companyForm.get('invoiceNumber').touched &&
+                              companyForm.controls.invoiceNumber.errors
+                                ?.required
+                            "
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                        </mat-form-field>
+                        <div
+                          [@fade]
+                          class="validationState successState"
+                          *ngIf="
+                            companyForm.get('invoiceNumber').status === 'VALID'
+                          "
+                          style="color:#009B53; font-size: 12px;"
+                        >
+                          إدخال صحيح
+                        </div>
+                        <div
+                          [@fade]
+                          class="validationState  errorState"
+                          *ngIf="
+                            companyForm.get('invoiceNumber').touched &&
+                            companyForm.controls.invoiceNumber.errors?.required
+                          "
+                          style="color:#FF0000; font-size: 12px;"
+                        >
+                          هذا الحقل مطلوب
+                        </div>
+                      </div>
+                      <!-- end Form field -->
+                    </div>
+                  </form>
+                </div>
+                <form [formGroup]="companyForm">
+                  <div>
+                    <div id="add_form">
+                      <div
+                        style="    margin-right: 122px;"
+                        class="registerForm"
+                      >
+                        <div class="form_field">
+                          <label style="    position: absolute;">
+                            <i class="fad fa-image"></i> تحميل صور الفاتورة
+                            <span style="color: red;">*</span></label
+                          >
+                          <br />
+                          <div style="color: #636363; font-size: 12px;">
+                            <span style="margin-right: 10px;">PNG, JPG</span>
+                            <span> max 100 KB</span>
+                          </div>
+                        </div>
+
+                        <br />
+
+                        <div class="form_field">
+                          <label> الشعار الرئيسي</label>
+                          <div class="plus-images">
+                            <i class="fal fa-plus-square"></i>
+                          </div>
+                          <input
+                            style="z-index: 99;
+                          cursor: pointer;
+                          direction: ltr;
+                          position: absolute;
+                          margin-right: 1px;
+                          top: 122px;
+                          height: 154px;
+                          width: 190px;
+                          opacity: 0;
+                  "
+                            alife-file-to-base64
+                            accept="image/x-png,image/jpeg,image/jpg"
+                            (onFileChanged)="onUploadImage1($event)"
+                            type="file"
+                            name="fileupload"
+                            value="fileupload"
+                            id="fileupload"
+                          />
+                          <div style="color: #636363; font-size: 12px;">
+                            <span
+                              style="width: 185px;
+                          display: inline-block;
+                          overflow: hidden;
+                          text-align: left;
+                          font-size: 10px;
+                          margin-bottom: 14px;"
+                              >{{ imagePlaceHolder1 }}</span
+                            >
+                            <br />
+                            <span> 20 KB</span>
+                            <button
+                              style="border: none;
+                      background: none;
+                      position: absolute;
+                      margin-right: 140px;
+                      margin-top: -12px"
+                              (click)="
+                                companyForm.controls.invoiceImage.setValue('')
+                              "
+                              (click)="imagePlaceHolder1 = ''"
+                            >
+                              <i
+                                style="color: #4A4A4A; font-size: 17px;"
+                                class="fas fa-trash-alt"
+                              ></i>
+                            </button>
+                          </div>
+                        </div>
+                        <img
+                          *ngIf="companyForm.controls.invoiceImage.value"
+                          [src]="companyForm.controls.invoiceImage.value"
+                          alt=""
+                          style="position: absolute;
+                        top: 124px;
+
+                        width: 189px;"
+                        />
+                        <br />
+                        <br />
+
+                        <div class="form_field">
+                          <label> الختم الالكترونى </label>
+                          <span
+                            style="left: auto;
+                        position: absolute;
+                        margin-top: -25px;
+                        margin-right: 168px;"
+                            class="span-error"
+                            ><i
+                              style="color: #FF0000;"
+                              class="fal fa-exclamation-triangle"
+                            ></i
+                          ></span>
+                          <div class="plus-images">
+                            <i class="fal fa-plus-square"></i>
+                          </div>
+                          <input
+                            style="cursor: pointer;
+                          direction: ltr;
+                          position: absolute;
+                          margin-right: 1px;
+                          top: 388px;
+                          opacity: 0;
+                          height: 157px;
+                          width: 189px;
+                    "
+                            alife-file-to-base64
+                            accept="image/x-png,image/jpeg,image/jpg"
+                            (onFileChanged)="onUploadImage2($event)"
+                            type="file"
+                            name="fileupload"
+                            value="fileupload"
+                            id="fileupload"
+                          />
+
+                          <div style="color: #636363; font-size: 12px;">
+                            <span
+                              style="width: 185px;
+                          display: inline-block;
+                          overflow: hidden;
+                          text-align: left;
+                          font-size: 10px;
+                          margin-bottom: 14px;"
+                              >{{ imagePlaceHolder2 }}</span
+                            >
+                            <br />
+                            <span> 20 KB</span>
+                            <button
+                              style="border: none;
+                        background: none;
+                        position: absolute;
+                        margin-right: 140px;
+                        margin-top: -12px"
+                              (click)="companyForm.controls.logo.setValue('')"
+                              (click)="imagePlaceHolder2 = ''"
+                            >
+                              <i
+                                style="color: #4A4A4A; font-size: 17px;"
+                                class="fas fa-trash-alt"
+                              ></i>
+                            </button>
+                          </div>
+                        </div>
+                        <img
+                          *ngIf="companyForm.controls.logo.value"
+                          [src]="companyForm.controls.logo.value"
+                          alt=""
+                          style="position: absolute;
+                        top: 394px;
+
+                        width: 189px;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="button-invoice" style="text-align: center;">
+                <button
+                  [disabled]="
+                    !companyForm.controls.name.value ||
+                    !companyForm.controls.taxNumber.value ||
+                    !companyForm.controls.commerceNumber.value ||
+                    !companyForm.controls.mobile.value ||
+                    !companyForm.controls.email.value ||
+                    !companyForm.controls.invoiceImage.value ||
+                    !companyForm.controls.logo.value
+                  "
+                  (click)="sendCompany(companyForm.value)"
+                >
+                  <i class="fal fa-save"></i>
+                  {{ updatedMode ? "تعديل البيانات" : "حفظ البيانات" }}
+                </button>
+              </div>
+            </mat-tab>
+            <mat-tab label=" بيانات الفاتورة ">
+              <form [formGroup]="invoiceForm">
+                <div
+                  style="margin-top: 20px;
+              border-bottom: 1px dotted #ddd;
+          "
+                >
+                  <label>
+                    <i
+                      style="font-size: 17px; margin-left: 5px;"
+                      class="fal fa-palette"
+                    ></i>
+                    اختيار الوان الفاتورة
+                    <span style="color: red;">*</span></label
+                  >
+                  <div style="display: flex;">
+                    <div style="width: 50%;" id="add_form">
+                      <!-- Start Form field -->
+                      <div class="form_field">
+                        <mat-form-field
+                          style="    width: 58%;"
+                          appearance="outline"
+                          dir="rtl"
+                        >
+                          <input
+                            matInput
+                            placeholder=""
+                            [value]="color"
+                            autocomplete="off"
+                            id="name"
+                          />
+                        </mat-form-field>
+                        <p-colorPicker
+                          class="color-system"
+                          [(ngModel)]="color"
+                          formControlName="color"
+                        ></p-colorPicker>
+                      </div>
+                      <!-- end Form field -->
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                  <label>
+                    <i
+                      style="font-size: 17px; margin-left: 5px;"
+                      class="far fa-border-inner"
+                    ></i>
+                    بيانات الفاتورة <span style="color: red;">*</span></label
+                  >
+                  <div style="display: flex;">
+                    <div style="width: 40%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">1</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder=" الرقم الضريبي"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="tax_number"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">2</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  رقم السجل التجارى"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="commerceNumber"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">3</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  فاتورة"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="receipt"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">4</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  نسخة الكترونية"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="copy"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                    <div style="width: 60%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">5</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder=" رقم الفاتورة"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="inovice_number"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">6</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  تاريخ الاصدار"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="date"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">7</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  اسم العميل"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="clientName"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">8</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  رقم العميل"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="clientPhone"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style="    background: #F6F6F6;
+                  padding-top: 10px;"
+                >
+                  <label>
+                    <i
+                      style="font-size: 17px; margin-left: 5px;"
+                      class="far fa-border-inner"
+                    ></i>
+                    تفاصيل الفاتورة
+                  </label>
+                  <div style="display: flex;">
+                    <div style="width: 40%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">9</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  اسم البند"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="name"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">10</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  العدد "
+                              autocomplete="off"
+                              id="name"
+                              formControlName="numbers"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">11</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  سعر الوحدة"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="price"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">12</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="   ملاحظات"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="notes"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                    <div style="width: 60%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">13</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  الاجمالى"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="total"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">14</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="   المجموع بالريال السعودى"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="totalInR"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">15</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="   اجمالى الفاتورة"
+                              autocomplete="off"
+                              id="name"
+                              formControlName="sum"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">16</span>
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              placeholder="  الخصم  بالريال السعودى "
+                              autocomplete="off"
+                              id="name"
+                              formControlName="discount"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                  <label>
+                    <i
+                      style="font-size: 17px; margin-left: 5px;"
+                      class="far fa-border-inner"
+                    ></i>
+                    ملاحظات عامة <span style="color: red;">*</span></label
+                  >
+                  <div style="display: flex;">
+                    <div style="width: 100%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">18</span>
+                          <!-- <mat-form-field
+                            style="    width: 90%;"
+                            appearance="outline"
+                            dir="rtl"
+                          >
+                            <textarea
+                              style="    text-align: right;"
+                              rows="2"
+                              matInput
+                              placeholder=""
+                              formControlName="description"
+                            ></textarea>
+                          </mat-form-field> -->
+                          <ckeditor
+                            formControlName="description"
+                            [config]="config"
+                            [editor]="Editor"
+                            data="<p>تجربة نص</p>"
+                          ></ckeditor>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style="    background: #F6F6F6;
+                               padding-top: 10px;"
+                >
+                  <label>
+                    <i
+                      style="font-size: 17px; margin-left: 5px;"
+                      class="far fa-border-inner"
+                    ></i>
+                    تذييل الفاتورة <span style="color: red;">*</span></label
+                  >
+                  <div style="display: flex;">
+                    <div style="width: 100%;" id="add_form">
+                      <div class="registerForm">
+                        <!-- Start Form field -->
+                        <div class="form_field">
+                          <span class="number-count">17</span>
+                          <mat-form-field
+                            style="    width: 90%;"
+                            appearance="outline"
+                            dir="rtl"
+                          >
+                            <input
+                              matInput
+                              placeholder=" "
+                              formControlName="end"
+                              autocomplete="off"
+                              id="name"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- end Form field -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div
+                class="button-invoice"
+                style="text-align: center; margin-top: 40px;"
+              >
+                <button (click)="sendInvoice(invoiceForm.value)">
+                  <i class="fal fa-save"></i> حفظ البيانات
+                </button>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="popup" *ngIf="showPopup">
+  <div id="backDrop"></div>
+  <div id="popupData">
+    <i class="fas fa-times" (click)="closePopup()"></i>
+    <img
+      style="width: 1123px;"
+      src="../../../../assets/img/Inovice.png"
+      alt=""
+    />
+    <div id="confirmationButtons"></div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="main_page">
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <!-- ################################ start header offer icons ############################ -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-clipboard-list"></i> تفاصيل العرض</h3>
+
+      <div class="page_body_main_buttons">
+        <h4>تم الإنتهاء<span class="finished"></span></h4>
+
+        <a
+          *ngIf="offer_update || user.privilege == 'super-admin'"
+          [routerLink]="['/offers/update-offer']"
+          [queryParams]="{
+            updateMode: true,
+            updatedOfferId: offerId
+          }"
+        >
+          تعديل العروض
+          <i class="fas fa-user-edit"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ################################ End header offer icons ############################ -->
+    <div class="page_body">
+      <div class="page_body_main">
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block detailsContainer">
+          <!-- <h3>تفاصيل العرض</h3> -->
+          <!-- <hr /> -->
+          <br />
+          <div class="profileImageContainer">
+            <img
+              style="max-width: 20%;"
+              *ngIf="pageLoaded"
+              src="https://ixscope.com/upkeep/img/{{ offerDetails.image }}"
+            />
+            <br />
+          </div>
+          <!-- Start Client Details -->
+          <div class="profileDetails">
+            <ul>
+              <li>
+                <h4>إسم العرض</h4>
+
+                <h5>
+                  <i class="fas fa-user-tie"></i>
+                  {{ pageLoaded ? offerDetails.name : "" }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  المصدر
+                </h4>
+                <h5>
+                  <i class="fas fa-cog"></i
+                  >{{ pageLoaded ? offerDetails.source.name : "" }}
+                </h5>
+              </li>
+              <li>
+                <h4>الخدمة الرئيسية</h4>
+                <h5>
+                  <i class="fas fa-cogs"></i
+                  >{{
+                    pageLoaded ? offerDetails.service.parent_service.name : ""
+                  }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  الخدمة الفرعية
+                </h4>
+                <h5>
+                  <i class="fas fa-cogs"></i>
+                  {{ pageLoaded ? offerDetails.service.name : "" }}
+                </h5>
+              </li>
+              <li>
+                <h4>تاريخ البدء</h4>
+                <h5>
+                  <i class="far fa-calendar-alt"></i>
+                  {{ pageLoaded ? offerDetails.start_date : "" }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  تاريخ الإنتهاء
+                </h4>
+                <h5>
+                  <i class="far fa-calendar-alt"></i>
+                  {{ pageLoaded ? offerDetails.end_date : "" }}
+                </h5>
+              </li>
+
+              <!-- <li>
+                <h4>
+                  صوره العرض
+                </h4>
+                <br />
+
+
+              </li> -->
+              <li style="width: 100%;">
+                <h4>
+                  تفاصيل العرض
+                </h4>
+                <h5>
+                  <i class="fas fa-info-circle"></i>
+                  <span
+                    style="display: inline-block;"
+                    [innerHTML]="pageLoaded ? offerDetails.description : ''"
+                  ></span>
+                </h5>
+              </li>
+            </ul>
+          </div>
+          <!-- End Client Details -->
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

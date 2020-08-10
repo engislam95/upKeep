@@ -1,0 +1,505 @@
+<div class="main_page" id="formPage">
+  <app-alerts></app-alerts>
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title">
+      <h3><i class="fas fa-plus"></i>{{ modeTitle }}</h3>
+      <div class="page_body_main_buttons">
+        <a routerLink="/users/all-users">
+          كل المستخدمين
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_main">
+        <div class="page_block">
+          <div id="add_form">
+            <form (ngSubmit)="onSubmit()" [formGroup]="usersForm">
+              <div class="form_field">
+                <label>إسم المستخدم <span>*</span></label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="name"
+                    matInput
+                    placeholder="إسم المستخدم"
+                    autocomplete="off"
+                    id="name"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-user-tie"></i>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('name').status === 'INVALID' &&
+                      usersForm.get('name').touched) ||
+                    (submitted && usersForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال اسم المستخدم
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="usersForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>الدولة <span>*</span></label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الدولة"
+                    aria-label="Number"
+                    id="country_id"
+                    matInput
+                    formControlName="country_id"
+                    [matAutocomplete]="countriesAutoComplete"
+                    [value]="updateMode ? updatedUserData.country : ''"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('country_id')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-globe-asia"></i>
+                  <mat-autocomplete
+                    #countriesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCountries"
+                  >
+                    <mat-option
+                      *ngFor="let option of countriesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('country_id').status === 'INVALID' &&
+                      usersForm.get('country_id').touched) ||
+                    (submitted &&
+                      usersForm.get('country_id').status === 'INVALID' &&
+                      updateMode == false)
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الدولة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    usersForm.get('country_id').status === 'VALID' ||
+                    usersForm.get('country_id').value
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>البريد الإلكتروني <span>*</span></label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="email"
+                    (focusout)="checkReservation($event.target.value, 'email')"
+                    (focusin)="emailCheckLoaded = false"
+                    matInput
+                    placeholder="البريد الإلكتروني"
+                    autocomplete="off"
+                    id="email"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('email')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-envelope"></i>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    usersForm.get('email').touched &&
+                    usersForm.controls.email.errors?.required
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
+                  بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    usersForm.get('email').touched &&
+                    emailReserved &&
+                    emailCheckLoaded &&
+                    !usersForm.controls.email.errors?.required
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    usersForm.get('email').status === 'VALID' ||
+                    (usersForm.get('email').value &&
+                      !emailReserved &&
+                      emailCheckLoaded)
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>المدينة <span>*</span></label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر المدينة"
+                    aria-label="Number"
+                    id="city_id"
+                    matInput
+                    formControlName="city_id"
+                    [matAutocomplete]="citiesAutoComplete"
+                    [value]="updateMode ? updatedUserData.city : ''"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('city_id')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-globe-asia"></i>
+                  <mat-autocomplete
+                    #citiesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCities"
+                  >
+                    <mat-option
+                      *ngFor="let option of citiesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('city_id').status === 'INVALID' &&
+                      usersForm.get('city_id').touched) ||
+                    (submitted && usersForm.get('city_id').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال المدينة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    usersForm.get('city_id').status === 'VALID' ||
+                    usersForm.get('city_id').value
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>رقم الموبايل <span>*</span></label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    (keyup)="mobileChanged($event.target.value)"
+                    (focusout)="checkReservation($event.target.value, 'mobile')"
+                    (focusin)="mobileCheckLoaded = false"
+                    formControlName="mobileKey"
+                    id="mobileKey"
+                    maxlength="9"
+                    appOnlyNumbers="true"
+                    matInput
+                    placeholder="رقم الموبايل"
+                    onfocus="this.removeAttribute('readonly');"
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('mobileKey')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <span id="phoneKey" *ngIf="showCountryPhoneKey" [@fade]
+                    >{{ countryPhoneKey }}+</span
+                  >
+                  <i class="fas fa-mobile"></i>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('mobileKey').status === 'INVALID' &&
+                      usersForm.get('mobileKey').touched) ||
+                    (submitted &&
+                      usersForm.get('mobileKey').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الموبايل بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    usersForm.get('mobileKey').touched &&
+                    usersForm.get('mobileKey').dirty &&
+                    mobileReserved &&
+                    mobileCheckLoaded &&
+                    usersForm.get('mobileKey').status === 'VALID'
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا الرقم مسجل من قبل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    usersForm.get('mobileKey').status === 'VALID' ||
+                    (usersForm.get('mobileKey').value &&
+                      !mobileReserved &&
+                      mobileCheckLoaded)
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>الوظيفة <span>*</span></label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الوظيفة"
+                    aria-label="Number"
+                    id="role_id"
+                    matInput
+                    formControlName="role_id"
+                    [matAutocomplete]="rolesAutoComplete"
+                    [value]="updateMode ? updatedUserData.role : ''"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('role_id')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-briefcase"></i>
+                  <mat-autocomplete
+                    #rolesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCountries"
+                  >
+                    <mat-option
+                      *ngFor="let option of rolesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('role_id').status === 'INVALID' &&
+                      usersForm.get('role_id').touched) ||
+                    (submitted &&
+                      usersForm.get('role_id').status === 'INVALID' &&
+                      updateMode == false)
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الوظيفة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    usersForm.get('role_id').status === 'VALID' ||
+                    usersForm.get('role_id').value
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div
+                class="form_field"
+                [ngClass]="{ inputWithToggle: updateMode }"
+              >
+                <label
+                  >{{
+                    updateMode
+                      ? "تعديل كلمة السر "
+                      : "كلمة سر الدخول الي النظام "
+                  }}<span *ngIf="!updateMode">*</span>
+                </label>
+                <div *ngIf="updateMode" class="toggleContainer">
+                  <mat-slide-toggle
+                    dir="rtl"
+                    (change)="canUpdatePasswordToggle($event)"
+                  >
+                  </mat-slide-toggle>
+                </div>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    *ngIf="updateMode"
+                    formControlName="password"
+                    type="text"
+                    matInput
+                    placeholder="تعديل كلمة السر"
+                    autocomplete="off"
+                    id="password"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('password')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <input
+                    *ngIf="!updateMode"
+                    formControlName="password"
+                    type="password"
+                    matInput
+                    placeholder="كلمة سر الدخول الي النظام"
+                    autocomplete="off"
+                    id="password"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('password')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-unlock"></i>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (usersForm.get('password').status === 'INVALID' &&
+                      usersForm.get('password').touched) ||
+                    (submitted &&
+                      usersForm.get('password').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال كلمة السر بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="usersForm.get('password').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>إرفق صورة </label>
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImage($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="imageInput"
+                    formControlName="imageInput"
+                  />
+                  <i class="fas fa-image"></i>
+                  <span>{{ imagePlaceHolder }}</span>
+                  <button
+                    style="left: 15px; top: 72%; z-index: 99;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('imageInput')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form_field"></div>
+              <div class="form_field">
+                <img
+                  *ngIf="usersForm.controls.image.value"
+                  src="{{ usersForm.controls.image.value }}"
+                  width="100px"
+                  height="100px"
+                  alt="user-image"
+                />
+              </div>
+              <hr />
+              <div class="form_field fullWidth toggle">
+                <span>حالة التفعيل : </span>
+                <mat-slide-toggle
+                  [checked]="usersForm.value.active"
+                  dir="rtl"
+                  (change)="changeActive($event)"
+                ></mat-slide-toggle>
+              </div>
+              <hr />
+              <div class="form_field fullWidth formButtons">
+                <button
+                  *ngIf="!updateMode"
+                  type="submit"
+                  class="formSubmit formButton"
+                  [disabled]="
+                    submitted ||
+                    !usersForm.controls.name.value ||
+                    !country_id ||
+                    !city_id ||
+                    !usersForm.controls.mobileKey.value ||
+                    !usersForm.controls.email.value ||
+                    !usersForm.controls.password.value ||
+                    !role_id
+                  "
+                >
+                  حفط
+                </button>
+                <button
+                  *ngIf="updateMode"
+                  type="button"
+                  (click)="onUpdate()"
+                  class="formSubmit formButton"
+                >
+                  تعديل
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

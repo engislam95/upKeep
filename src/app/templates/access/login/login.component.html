@@ -1,0 +1,82 @@
+<div class="login_page" id="add_form">
+  <app-alerts></app-alerts>
+  <div class="access_form">
+    <div class="form_logo">
+      <img src="../../../assets/img/4.svg" alt="" />
+    </div>
+    <div class="form_body">
+      <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+        <div class="form-input form_field">
+          <input
+            autofocus
+            autocomplete="on"
+            name="email"
+            formControlName="email"
+            type="email"
+            placeholder="البريد الإلكتروني"
+          />
+          <i class="fas fa-envelope"></i>
+          <div
+            [@fade]
+            class="validationState  errorState"
+            *ngIf="
+              (loginForm.get('email').status === 'INVALID' &&
+                loginForm.get('email').touched) ||
+              (submitted && loginForm.get('email').status === 'INVALID')
+            "
+          >
+            برجاء إدخال  البريد الإلكتروني بشكل صحيح
+          </div>
+          <div
+            [@fade]
+            class="validationState successState"
+            *ngIf="loginForm.get('email').status === 'VALID'"
+          >
+            إدخال صحيح
+          </div>
+        </div>
+        <div class="form-input form_field">
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="كلمة المرور"
+          />
+          <i class="fas fa-lock"></i>
+          <div
+            [@fade]
+            class="validationState  errorState"
+            *ngIf="
+              (loginForm.get('password').status === 'INVALID' &&
+                loginForm.get('password').touched) ||
+              (submitted && loginForm.get('password').status === 'INVALID')
+            "
+          >
+            برجاء إدخال كلمة المرور بشكل صحيح
+          </div>
+          <div
+            [@fade]
+            class="validationState successState"
+            *ngIf="loginForm.get('password').status === 'VALID'"
+          >
+            إدخال صحيح
+          </div>
+        </div>
+        <div class="form-input form_keys">
+          <div class="checkbox_d">
+            <input type="checkbox" id="checkbox" />
+            <label for="checkbox">تذكرني</label>
+          </div>
+          <div class="reset-password">
+            <a href="#"> إستعادة كلمة المرور ؟</a>
+          </div>
+        </div>
+        <div class="form-input form_button">
+          <button type="submit">
+            <i class="fas fa-cog" *ngIf="!loginProccessFinished" [@fade]></i>
+            <span *ngIf="loginProccessFinished" [@fade]>تسجيل الدخول</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,382 @@
+<div class="main_page ownerpage owner-add">
+  <app-alerts></app-alerts>
+  <app-side-menu-owner></app-side-menu-owner>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <div class="header">
+        <div class="borderheader">
+          <div class="header-side"></div>
+        </div>
+        <div class="header-title">
+          <p style="color: #F6A811;">
+            مرحبا بك &nbsp; &nbsp; &nbsp;<span style="color: #fff;">{{
+              user.name
+            }}</span>
+          </p>
+          <span><p>الصفحة الرئيسية &nbsp; | &nbsp; إدارة الخدمات</p></span>
+        </div>
+      </div>
+    </div>
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <div class="page_block">
+          <div class="start-first-title">
+            <div style="display: flex;">
+              <img src="../../../../assets/img/visitor.svg" />
+              <h3>
+                {{ updateMode ? "تعديل خدمة فرعية" : "اضافة خدمة فرعية جديدة" }}
+              </h3>
+            </div>
+          </div>
+          <div class="title-add-owner">
+            <h3>بيانات الادخال</h3>
+          </div>
+          <div id="add_form">
+            <form [formGroup]="classificationForm">
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  اسم التصنيف الرئيسي
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    type="text"
+                    placeholder="التصنيف الرئيسي"
+                    matInput
+                    id="usedService"
+                    [matAutocomplete]="usedService"
+                    formControlName="usedService"
+                    [value]="
+                      serviceObject.classification
+                        ? serviceObject.classification.name
+                        : ''
+                    "
+                  />
+                  <button
+                    style=" background-color: white;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('usedService')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                  <mat-autocomplete
+                    #usedService="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of roleFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    classificationForm.get('usedService').touched &&
+                    !filterServiceID
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال اسم التصنيف الرئيسى
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="filterServiceID"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field location"></div>
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الخدمة الرئيسية
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    type="text"
+                    placeholder=" الخدمة الرئيسية"
+                    matInput
+                    id="usedMainService"
+                    [matAutocomplete]="usedMainService"
+                    formControlName="usedMainService"
+                    [value]="
+                      serviceObject.parent_service
+                        ? serviceObject.parent_service.name
+                        : ''
+                    "
+                  />
+                  <button
+                    style=" background-color: white;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('usedMainService')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                  <mat-autocomplete
+                    #usedMainService="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of serviceFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    classificationForm.get('usedMainService').touched &&
+                    !filterMainServiceID
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال اسم الخدمة الرئيسية
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="filterMainServiceID"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field location"></div>
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الخدمة الفرعية
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="الخدمة الفرعية"
+                    formControlName="name"
+                    id="name"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    (classificationForm.get('name').status === 'INVALID' &&
+                      classificationForm.get('name').touched) ||
+                    (submitted &&
+                      classificationForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال اسم الخدمة الفرعية
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="classificationForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field location"></div>
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  السعر المتوقع للخدمة
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="السعر المتوقع للخدمة"
+                    formControlName="price"
+                    id="price"
+                    type="number"
+                    min="0"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('price')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    (!classificationForm.get('price').value &&
+                      classificationForm.get('price').touched) ||
+                    (submitted &&
+                      classificationForm.get('price').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال السعر المتوقع للخدمة
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="classificationForm.get('price').value"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field location"></div>
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  ملاحظات
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <textarea
+                    matInput
+                    placeholder="ملاحظات"
+                    style="height: 66px;"
+                    formControlName="description"
+                    id="description"
+                  ></textarea>
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('description')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+              </div>
+              <div class="form_field location"></div>
+              <div class="form_field location">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الحالة
+                </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    class="filterInput"
+                    type="text"
+                    id="usersStatus"
+                    placeholder="حالة التفعيل"
+                    matInput
+                    [matAutocomplete]="userStatus"
+                    formControlName="usersStatus"
+                    [value]="
+                      updateMode && serviceObject.active == 1 ? 'مفعل' : ''
+                    "
+                    [value]="
+                      updateMode && serviceObject.active == 0 ? 'غير مفعل' : ''
+                    "
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('usersStatus')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                  <mat-autocomplete
+                    #userStatus="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    (!classificationForm.controls.usersStatus.value &&
+                      classificationForm.get('usersStatus').touched) ||
+                    (submitted &&
+                      !classificationForm.controls.usersStatus.value)
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الحالة
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="classificationForm.controls.usersStatus.value"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="">
+                <div class="">
+                  <mat-checkbox (change)="addToAllCompanies($event)"
+                    >الإضافة الى كل الشركات</mat-checkbox
+                  >
+                </div>
+              </div>
+              <div style="margin-top: 20px;">
+                <div class="">
+                  <mat-checkbox [checked]="accept" (change)="acceptance($event)"
+                    >الموافقة على الادخال</mat-checkbox
+                  >
+                </div>
+              </div>
+              <div class="style-button-add">
+                <button
+                  type="button"
+                  (click)="submitClassifiaction()"
+                  *ngIf="!updateMode"
+                  [disabled]="
+                    !accept ||
+                    !classificationForm.controls.name.value ||
+                    !filterServiceID ||
+                    !filteredStatusId ||
+                    !filterMainServiceID
+                  "
+                >
+                  إضافة الخدمة الفرعية
+                </button>
+                <button
+                  type="button"
+                  (click)="updateClassification()"
+                  *ngIf="updateMode"
+                >
+                  تعديل البيانات
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

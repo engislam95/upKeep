@@ -1,0 +1,488 @@
+.main_page .page_body_title_title {
+  padding: 48px 0;
+}
+
+.alert-error {
+
+  background: #f00;
+  padding: 8px 8px;
+  color: #fff;
+  margin-bottom: 31px;
+  font-size: 14px;
+
+  i {
+    margin-left: 10px;
+  }
+
+}
+
+
+.main_page .page_body_main .page_block .controlers .controller a {
+
+  // width: 102px;
+  // height: 92px !important;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller a i {
+  margin-top: 18px;
+  font-size: 40px;
+}
+
+.main_page .page_body_main .page_block .controlers .controller {
+
+  text-align: center;
+}
+
+.set_maps {
+
+  display: flex;
+  margin-top: 22px;
+  padding: 9px 31px;
+  margin-bottom: 66px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 98%;
+
+  .set_map_one {
+    // width: 25%;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 488px;
+    // background: #f8f8f8;
+
+    // border: 1px dotted #707070;x
+    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    padding: 16px;
+    margin-left: 70px;
+
+    p {
+      font-family: "GE SS Two";
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #000;
+      text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+
+      i {
+        font-size: 18px;
+        margin-right: 8px;
+        color: #407d12;
+      }
+
+    }
+
+    h5 {
+      font-family: "GE SS Two";
+      font-weight: 300;
+      float: left;
+      // position: relative;
+      // top: -13px;
+      font-size: 15px;
+      color: #000;
+      // top: -19px;
+      position: absolute;
+      margin-right: 26%;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      span {
+        font-family: Roboto;
+        font-weight: 500;
+        font-size: 15px;
+        color: #000;
+        text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.16);
+        margin-right: 8px;
+
+      }
+    }
+
+    h6 {
+
+      font-family: "GE SS Two";
+      font-weight: 300;
+      font-size: 15px;
+      text-align: center;
+      color: #000;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      i {
+
+        font-size: 17px;
+        color: #636363;
+        margin-left: 5px;
+
+      }
+
+    }
+
+    .maps-details {
+      width: 525px;
+      height: 70px;
+      background: #fff;
+      border: 1px dotted #707070;
+      filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));
+      position: absolute;
+      margin-top: 470px;
+      z-index: 9;
+      margin-right: 45px;
+
+      button {
+        background: none;
+        border: none;
+        position: absolute;
+        left: 4px;
+        top: 5px;
+
+        i {
+          font-size: 21px;
+          color: #636363;
+        }
+      }
+
+      ul {
+        margin-top: 6px;
+        padding: 14px;
+
+        li {
+          font-family: "GE SS Two";
+          font-weight: 500;
+          font-size: 13px;
+          color: #060606;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+          i {
+            font-size: 4px;
+            background: #242a2d;
+            border: 1px solid #242a2d;
+            margin-left: 10px;
+            top: -4px;
+
+          }
+
+        }
+
+        p {
+          font-family: "GE SS Two";
+          font-weight: 300;
+          font-size: 13px;
+          margin-bottom: 10px;
+          color: #060606;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          margin-right: 17px;
+          padding-top: 4px;
+          margin-bottom: 20px;
+
+
+        }
+      }
+
+
+    }
+
+
+
+  }
+
+  .controlers {
+    // margin-right: 17%;
+    margin-bottom: -15px;
+  }
+
+  .controlers .controller {
+    margin: auto;
+
+    text-align: center;
+    margin-left: 0px;
+    margin-right: -11px;
+
+    a {
+      width: 45px;
+      height: 59px;
+      // border-radius: 10px;
+      // background: #fff;
+      // border: 1px solid rgba(112, 112, 112, 0.34);
+      // box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.16);
+
+      i {
+        font-size: 20px !important;
+        text-align: center;
+        font-weight: bold;
+        color: #060606;
+
+      }
+
+      p {
+        font-family: "GE SS Two";
+        font-weight: 300;
+        font-size: 13px;
+        text-align: center;
+        color: #060606;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      }
+
+    }
+
+    button {
+      width: 70px;
+      height: 59px;
+      // border-radius: 10px;
+      // background: #fff;
+      // border: 1px solid rgba(112, 112, 112, 0.34);
+      // box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.16);
+
+      i {
+        font-size: 17px;
+        text-align: center;
+        color: #060606;
+
+      }
+
+      p {
+        font-family: "GE SS Two";
+        font-weight: 300;
+        font-size: 13px;
+        text-align: center;
+        color: #060606;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      }
+
+    }
+  }
+}
+
+
+/////////////////////////
+#popup #popupData {
+  background: rgba(24, 28, 30, 0.95);
+  background: #fafafa !important;
+
+  .popupMap {
+    // height: 300px;
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  }
+
+  .detailsCilentMap {
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    .form_field {
+      width: calc(50% - 15px);
+      // display: inline-block;
+      display: block;
+      // position: relative;
+      margin-right: 13px;
+
+      .mat-form-field {
+        width: 98%;
+        text-align: right;
+      }
+    }
+
+    .buttonAddLocation {
+      text-align: center;
+
+      margin: 0 auto;
+
+      background: #f6a811 ;
+      color: #242a2d !important;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      border-radius: 2px;
+      // margin-right: 15px;
+      padding: 8px 30px 8px 30px;
+
+      display: block;
+      text-align: center !important;
+
+      font-family: Arabic gess light;
+      border: 1px solid #706f6f;
+
+    }
+  }
+}
+
+// .mat-input-element
+// {
+//   width: unset;
+// }
+.mat-form-field-infix {
+  display: flex !important;
+}
+
+////////////////////////
+
+.clientMapInner {
+  clear: both;
+
+  height: auto !important;
+}
+
+////////////////////////
+
+
+.button-map-search {
+  background: #242a2d;
+  border: none;
+  padding: 10px 18px;
+  padding-top: 8px;
+
+  i {
+
+    font-size: 18px;
+    color: #fff;
+
+  }
+
+}
+
+#add_form form .form_field .mat-form-field .mat-form-field-wrapper i {
+  color: #242A2D !important;
+}
+
+#gpsLocation .resetInput {
+
+  margin-left: -12px;
+}
+
+.style-map-input {
+  position: absolute;
+  z-index: 9;
+  top: 22%;
+  // width: 80%;
+
+  display: flex;
+  width: 84%;
+  margin-right: 3%;
+  justify-content: space-between;
+
+  .form_field {
+    width: calc(42% - 15px);
+
+  }
+
+  .mat-form-field {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    width: 100%;
+  }
+
+}
+
+::ng-deep .mat-tooltip {
+  /* your own custom styles here */
+  /* e.g. */
+  // color: yellow;
+  height: 50px;
+  width: 150px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.buttonPopupMap {
+  padding-bottom: 30px;
+
+  button {
+    background: #f6a811;
+    width: 87px;
+    height: 40px;
+    display: inline-block;
+    margin: 0;
+    margin-right: 16px;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.38);
+    top: 1px;
+    border-radius: 5px;
+    margin-top: -22px;
+    color: #000;
+    border: none;
+    font-size: 19px;
+  }
+}
+
+#gpsLocation .resetInput {
+
+  margin-left: -12px;
+}
+
+#gpsLocation {
+  .resetInput {
+    background: #fff;
+    width: 30px;
+    margin-left: -6px;
+  }
+}
+
+.clientMapInner agm-map {
+  height: 250px;
+}
+
+.number-maps {
+  width: 163px;
+  height: 120px;
+  border-radius: 15px;
+  background: #fff;
+  border: 1px solid rgba(112, 112, 112, 0.59);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  text-align: center;
+  margin-right: 55px;
+
+  i {
+    font-size: 26px;
+    text-align: center;
+    color: #636363;
+    margin-top: 17px;
+  }
+
+  p {
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 15px;
+    color: #000;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+    margin-top: 9px;
+    margin-bottom: 5px;
+  }
+
+  h5 {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 21px;
+    text-align: center;
+    color: #000;
+
+  }
+
+
+}
+
+
+.above_url {
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    top: 1.25em !important;
+  }
+}
+
+.emptyMap {
+  text-align: center;
+  position: relative;
+  padding: 40% 0;
+  border: 1px solid rgba(112, 112, 112, 0.41);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  width: 332px;
+
+  p {
+    text-align: center !important;
+  }
+
+}
+
+.fa-globe-americas {
+  right: 0 !important;
+}

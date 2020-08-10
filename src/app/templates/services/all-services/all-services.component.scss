@@ -1,0 +1,378 @@
+/*
+################################### Start Of Media ###################################
+1 - (max-width: 1199px) & (min-width: 992px)
+2 - (max-width: 991px) & (min-width: 768px)
+3 - (max-width: 767px)
+
+################################### End Of Media ###################################
+*/
+
+.main_page {
+  height: 100vh;
+  background: #fff;
+}
+
+.main_page .middle_page {
+
+  .block {
+    background: #fff;
+
+    .number-company {
+      width: 284px;
+      height: 102px;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.16);
+      position: absolute;
+      top: 148px;
+      display: flex;
+
+      .back-color {
+        background: #F6A811;
+        width: 63px;
+        height: 58px;
+        border-radius: 10px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        margin-right: 30px;
+        margin-top: 19px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .count-name {
+        margin-right: 30px;
+        margin-top: 19px;
+
+        p {
+          font-weight: 300;
+          font-size: 13px;
+          color: #000;
+          opacity: 0.52;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        }
+
+      }
+
+      .count-nm {
+        margin-right: 55px;
+        margin-top: 19px;
+
+        p {
+          font-family: "monospace";
+          font-weight: bold;
+          font-size: 13px;
+          text-align: center;
+          color: #000;
+          padding-bottom: 3px;
+
+        }
+
+      }
+
+    }
+
+    .start-first-title {
+      padding-top: 70px;
+
+      h3 {
+
+        font-weight: 500;
+        font-size: 15px;
+        text-align: center;
+        color: #000;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        margin-right: 35px;
+        margin-top: 3px;
+
+      }
+
+      h4 {
+        margin-top: 10px;
+
+        img {
+          margin-left: 10px;
+        }
+      }
+
+    }
+  }
+
+  .main_block {
+
+    padding-top: 0;
+  }
+
+  .totalSearch {
+    margin-bottom: 4px;
+  }
+
+  .totalSearch p {
+
+    margin-right: 0;
+  }
+
+  #display_table tr {
+    height: 47px;
+  }
+
+  .add-comp {
+    position: absolute;
+    left: 71px;
+    top: 91px;
+    text-align: center;
+
+    .back-color {
+      width: 63px;
+      height: 58px;
+      margin: auto;
+      border-radius: 10px;
+      background: #f6a811;
+      margin-bottom: 10px;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+    }
+
+    p {
+      margin-top: 10px;
+
+      a {
+
+        font-weight: 300;
+        font-size: 15px;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      }
+    }
+
+  }
+}
+
+.main_page .page_body {
+
+  background: #fff;
+}
+
+.resetInput {
+
+  top: 60%;
+}
+
+#display_table td.mat-cell {
+  border: none;
+}
+
+
+@media (max-width: 1425px) and (min-width: 768px) {
+  .main_page .page_body .page_body_main .page_block .controlers {
+    flex-wrap: wrap;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    width: 180px;
+    height: 81px;
+    padding-top: 55px;
+    font-size: 30px;
+    margin-top: 29px;
+  }
+
+  .controlers span {
+    font-size: 16px;
+  }
+
+  .main_page .page_body .page_body_title h3 {
+    font-size: 22px;
+  }
+
+  .main_page .page_body .page_body_main .page_block h4 {
+    font-size: 18px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller {
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .main_page .page_body .page_body_main .page_block .controlers {
+    flex-wrap: wrap;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    margin-top: 10px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    right: auto;
+    transform: none;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    width: 278px;
+    height: 81px;
+    padding-top: 55px;
+    font-size: 30px;
+    margin-top: 29px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller {
+    text-align: center;
+  }
+
+  .main_page .page_body .page_body_title h3 {
+    font-size: 27px;
+  }
+
+  .main_page .page_body .page_body_main .page_block h4 {
+    font-size: 22px;
+  }
+
+  .controlers span {
+    font-size: 22px;
+  }
+}
+
+//################################### End Of Media ###################################
+
+
+
+.header {
+  padding: 0px 44px;
+  padding-right: 58px;
+  background: #242a2d;
+  height: 203px;
+
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  .borderheader {
+    border-bottom: 1px solid #ffffff3b;
+    height: 49px;
+
+    .header-side {
+      position: absolute;
+      right: 289px;
+      top: 12px;
+    }
+  }
+
+  .header-title {
+    padding-top: 20px;
+    padding-right: 10px;
+    text-align: right;
+
+    span {
+      color: #757575;
+      font-size: 13px;
+    }
+  }
+}
+
+.totalSearch select {
+  color: #000;
+  padding: 0;
+  width: 42px;
+  height: 34px;
+  background: #fff;
+  border: 1px solid #707070;
+  padding: 0 15px 0 0;
+}
+
+#showOrdercontrols {
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  border: 1px;
+  border: 1px solid #d8d8d8;
+  background-color: #394247;
+  -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  margin-top: -12px;
+  margin-right: -60px;
+  border-radius: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  img {
+    background: transparent;
+    border: none;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // start toolTip in details menu controls
+  .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    font-size: 15px;
+    background-color: #394247;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltiptext::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  button {
+    &:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:first-child {
+      .tooltiptext {
+        right: -15px;
+      }
+    }
+
+    &:last-child {
+      .tooltiptext {
+        left: 40px;
+      }
+    }
+  }
+
+  // end toolTip in details menu controls
+}
+
+.statue {
+  width: 69px;
+  height: 35px;
+  border-radius: 7px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  padding: 10px 15px;
+  color: #FFF;
+}
+
+.active-1 {
+  background: #2ca103;
+}
+
+.active-0 {
+  background: red;
+}

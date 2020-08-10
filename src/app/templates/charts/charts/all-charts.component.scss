@@ -1,0 +1,246 @@
+.button-save-taxs {
+  margin-top: 28px;
+  margin-right: 10px;
+
+  button {
+    padding-left: 24px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+
+    font-size: 14px;
+    margin-left: 28px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 20px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 27px;
+      margin-right: 3px;
+
+
+    }
+  }
+}
+
+.alert-error {
+
+  background: #B70061;
+  padding: 16px 37px;
+  color: #fff;
+  margin-bottom: 31px;
+  font-size: 14px;
+  margin-top: 50px;
+
+
+}
+
+
+.button-add-taxs {
+  position: absolute;
+  left: 50px;
+  margin-top: -65px;
+
+  button {
+    width: 203px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+    text-align: right;
+
+    margin-bottom: 10px;
+    font-size: 14px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 25px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 27px;
+      margin-right: 3px;
+
+
+    }
+  }
+}
+
+
+.display_table td.mat-cell {
+  border: none;
+}
+
+
+.main_page .page_body_main .page_block {
+
+
+  border: 1px solid #95989a82;
+}
+
+
+
+.countPerPage {
+  position: absolute;
+  left: 58px;
+  margin-top: -56px;
+}
+
+
+
+.main_page .page_body_main .page_block .controlers .controller .invoice-coll {
+  width: 132px;
+  height: 158px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  border: 1px solid #83ac0e;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  i {
+
+    font-weight: 300;
+    font-size: 35px;
+    text-align: center;
+    color: #242a2d;
+    margin-top: 19px;
+    margin-bottom: 10px;
+
+  }
+
+  p {
+
+    font-weight: 300;
+    font-size: 15px;
+    text-align: center;
+    color: #000;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  }
+
+  span {
+
+    font-weight: normal;
+    font-size: 26px;
+    text-align: center;
+    color: #242a2d;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+
+    span {
+
+      font-weight: 300;
+      font-size: 12px;
+      text-align: center;
+      color: #000;
+      margin-top: 21px;
+    }
+
+
+  }
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller {
+  margin-left: 21px;
+  text-align: center;
+}
+
+.selectPerpage {
+  margin: 20px 15px;
+  width: 36px;
+}
+
+.sheet-pdf {
+  position: absolute;
+  left: 7%;
+  margin-top: -32px;
+
+  i {
+    font-size: 21px;
+    margin-left: 20px;
+  }
+}
+
+
+
+.draw-invoice {
+
+
+
+
+  h3 {
+
+
+    font-size: 15px;
+    margin-right: 10px;
+    color: #000;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+  }
+
+  .graph {
+    background: #fff;
+    border: 2px dotted #8F8F8F;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 20px;
+    padding-right: 30px;
+    padding-left: 10px;
+    padding-top: 12px;
+    margin-bottom: 27px;
+
+    h4 {
+
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    .color-active {
+      width: 18px;
+      height: 10px;
+      margin-top: 6px;
+      margin-right: 10px;
+
+      width: 13px;
+      height: 13px;
+      background: #af12a5;
+
+
+
+    }
+
+    .active1 {
+      background: #da04f2;
+
+    }
+
+    .active2 {
+      background: #236BE6;
+
+    }
+
+    .active3 {
+      background: #E62323;
+
+    }
+
+    .active4 {
+      background: #11BEB2;
+
+    }
+
+    .active5 {
+      background: #8AA129;
+
+    }
+
+  }
+}

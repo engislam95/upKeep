@@ -1,0 +1,191 @@
+<div
+  class="overlay"
+  id="overLay"
+  *ngIf="overLayShow"
+  (click)="sidebarOverlayTrigger()"
+></div>
+<div class="page_main_blocks side_page" *ngIf="showSideMenu" [@fade]>
+  <div class="logo">
+    <img
+      [src]="
+        user.company_logo
+          ? user.company_logo
+          : '../../../assets/img/white_logo1.png'
+      "
+      alt=""
+    />
+  </div>
+  <div class="menu ">
+    <ul>
+      <li>
+        <a
+          [routerLink]="['/managment']"
+          routerLinkActive="active"
+          style="display: flex; align-items: center;"
+        >
+          <i class="fal fa-home" style="margin-left: 10px;"></i>
+          الصفحة الرئيسية
+        </a>
+      </li>
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('roles_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <i class="fas fa-user-tag" style="margin-left: 10px;"></i>
+          الصلاحيات
+        </a>
+        <ul class="drop_menu" id="roles_menu">
+          <li>
+            <a routerLink="/roles/all-roles" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              قائمة الادار
+            </a>
+          </li>
+          <li>
+            <a routerLink="/roles/add-role" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة دور جديد
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('resources_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <img
+            style="margin-left: 10px;"
+            src="../../../assets/img/home_page/security-on (1).svg"
+            alt=""
+          />
+          ادوار وصلاحيات
+        </a>
+        <ul class="drop_menu" id="resources_menu">
+          <li>
+            <a
+              routerLink="/permissions/all-permissions"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-th-list"> </i>
+              كل الصلاحيات
+            </a>
+          </li>
+        </ul>
+      </li> -->
+      <!-- <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('services_menu')">
+          <i class="fas fa-tools"></i>
+          الخدمات
+        </a>
+        <ul class="drop_menu" id="services_menu">
+          <li>
+            <a
+              routerLink="/services/add-main-service"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-plus"> </i>
+              إضافة خدمة رئيسية
+            </a>
+          </li>
+          <li>
+            <a routerLink="/services/add-service" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة خدمة فرعية
+            </a>
+          </li>
+          <li>
+            <a routerLink="/services/all-services" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل الخدمات
+            </a>
+          </li>
+        </ul>
+      </li> -->
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('users_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <i class="far fa-users" style="margin-left: 10px;"></i>
+          المستخدمين
+        </a>
+        <ul class="drop_menu" id="users_menu">
+          <li>
+            <a routerLink="/users/add-user" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة مستخدم
+            </a>
+          </li>
+          <li>
+            <a routerLink="/users/all-users" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل المستخدمين
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/receipts-managment']"
+          routerLinkActive="active"
+          style="display: flex; align-items: center;"
+        >
+          <i class="far fa-file-invoice-dollar" style="margin-left: 10px;"></i>
+          إدارة الفواتير
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="['/locations-managment']"
+          routerLinkActive="active"
+          style="display: flex; align-items: center;"
+        >
+          <i class="far fa-location" style="margin-left: 10px;"></i>
+          إدارة المواقع
+        </a>
+      </li>
+      <!-- <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('companies_menu')">
+          <i class="fas fa-building"></i>
+          الشركات
+        </a>
+        <ul class="drop_menu" id="companies_menu">
+          <li>
+            <a routerLink="/companies/add-company" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة شركة
+            </a>
+          </li>
+          <li>
+            <a routerLink="/companies/all-companies" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل الشركات
+            </a>
+          </li>
+        </ul>
+      </li> -->
+    </ul>
+  </div>
+</div>

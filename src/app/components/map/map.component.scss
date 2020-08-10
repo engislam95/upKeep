@@ -1,0 +1,276 @@
+.selectedTechnicalSubmit {
+  padding: 10px;
+  background: #f6a811 !important;
+  height: 43px;
+  position: relative;
+  top: 10px;
+  right: 40%;
+  width: 100px;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-size: 15px;
+}
+
+.errorState {
+  float: right;
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  color: #f44336;
+  i {
+    color: #f44336 !important;
+    position: relative !important;
+    top: 0px !important;
+    bottom: 6px !important;
+    right: 0px !important;
+    font-size: 15px !important;
+    cursor: none !important;
+    margin-top: 5px !important;
+    padding-left: 5px;
+  }
+}
+agm-map {
+  height: calc(100vh - 230px);
+  display: block;
+}
+// start searchingBestTechnicalState
+.searchingBestTechnicalState {
+  i {
+    color: #242a2d !important;
+    position: absolute !important;
+    top: 8px !important;
+    left: 45% !important;
+    font-size: 20px;
+    cursor: pointer;
+    animation: rotate 0.7s infinite linear;
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+// End searchingBestTechnicalState
+.page_block {
+  margin-bottom: 0 !important;
+  position: relative;
+}
+
+.page_block ul {
+  padding-right: 25px;
+  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-width: 300px;
+}
+#smallFillterInputStyle {
+  margin-left: 20px;
+}
+#filterForms {
+  position: absolute;
+  top: 80px;
+  // width: 100%;
+  z-index: 100;
+}
+form {
+  padding-right: 10px;
+  padding-top: 5px;
+  display: flex;
+}
+.noData {
+  position: absolute;
+  z-index: 999;
+  padding: 5px 10px;
+  top: 25px;
+}
+.form_input {
+  clear: both;
+}
+// filter time
+#filterTime {
+  position: relative;
+  background: rgba(0, 0, 0, 0.64);
+  display: inline-block;
+  padding: 27px 20px;
+  width: 70vw;
+
+  margin-right: 15%;
+  i {
+    color: #f6a811;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  h4 {
+    color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  #filterTimeContainer {
+    left: calc(((50% - 0.5px) + 1px) * 1);
+    width: calc(((50% - 0.5px) * 1) + 0px);
+    top: 0px;
+    height: calc(250px);
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+      padding: 10px;
+    }
+    .mat-form-field-infix {
+      height: 30px !important;
+    }
+    .form_field {
+      .timePickerContainer {
+        display: inline-grid;
+
+        mat-label {
+          color: #fff;
+          padding-right: 14px;
+          margin-bottom: 5px;
+        }
+        mat-form-field {
+          width: 280px;
+          height: 26px;
+          margin-right: 10px;
+        }
+
+        .mapOrderDateFilter {
+          background: none !important;
+          padding: 0px 25px 0px 0px;
+          box-shadow: none !important;
+          margin: -8px -8px 0px 0px;
+          border: none !important;
+          font-size: 12px;
+          width: 97%;
+          height: 77%;
+          border-radius: 5px;
+          position: absolute;
+          float: right;
+          display: flex;
+        }
+        input {
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+          border-radius: 5px;
+          background: #fff;
+          padding: 11px 25px;
+          margin: 0 13px;
+          border: 1px solid #ddd;
+          font-size: 12px;
+          width: 77px;
+          border-radius: 0;
+        }
+      }
+
+      button {
+        background: #f6a811 !important;
+        width: 280px;
+        height: 43px;
+        display: inline-block;
+        margin: 0;
+        margin-right: 16px;
+        position: relative;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        top: 10px;
+        border-radius: 4px;
+        margin-top: 0;
+        color: #000;
+        font-size: 17px;
+        border: none;
+      }
+      .fa-search {
+        font-size: large;
+      }
+    }
+  }
+}
+
+.buttonPopupMap {
+  padding-bottom: 30px;
+  button {
+    background: #f6a811;
+    width: 87px;
+    height: 40px;
+    display: inline-block;
+    margin: 0;
+    margin-right: 16px;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.38);
+    top: 1px;
+    border-radius: 5px;
+    margin-top: -22px;
+    color: #000;
+    border: none;
+    font-size: 19px;
+  }
+}
+.timeField {
+  display: flex;
+  margin-top: 10px;
+}
+
+.allTime {
+  height: calc(250px);
+  display: block;
+  position: relative;
+}
+
+.filterTimeTaken {
+  right: calc(((50% - 0.5px) + 1px) * 1);
+  width: calc(((55% - 0.5px) * 1) + 0px);
+  top: 0px;
+  height: calc(250px);
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  padding-right: 30px;
+  margin-right: -78px;
+  p {
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.41);
+    color: #fff;
+  }
+  span {
+    float: left;
+  }
+
+  mat-checkbox {
+    span {
+      margin-right: 30px;
+    }
+  }
+}
+
+.emptyBestTechnicalList {
+  color: #fff;
+  background: none !important;
+  margin-right: 30%;
+}
+.bestTechnical {
+  display: contents;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+
+  p {
+    padding: 10px 15px;
+    background: none !important;
+    color: #fff;
+  }
+  span {
+    float: left;
+  }
+
+  mat-checkbox {
+    span {
+      margin-right: 30px;
+    }
+  }
+}
+// filter time

@@ -1,0 +1,236 @@
+<div class="main_page ownerpage">
+  <app-alerts></app-alerts>
+  <app-side-menu-owner></app-side-menu-owner>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <div class="header">
+        <div class="borderheader">
+          <div class="header-side"></div>
+        </div>
+        <div class="header-title">
+          <p style="color: #F6A811;">
+            مرحبا بك &nbsp; &nbsp; &nbsp;<span style="color: #fff;">{{
+              user.name
+            }}</span>
+          </p>
+          <span><p>الصفحة الرئيسية &nbsp; | &nbsp; إدارة الشركات</p></span>
+        </div>
+      </div>
+    </div>
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <div class="block">
+          <div class="number-company">
+            <div class="back-color">
+              <img src="../../../../assets/img/use.svg" />
+              <h4>عدد المستخدمين</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.users_count ? company.users_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num2">
+            <div class="back-color">
+              <img src="../../../../assets/img/clients.svg" />
+              <h4>عدد العملاء</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.clients_count ? company.clients_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num3">
+            <div class="back-color">
+              <img src="../../../../assets/img/orders.svg" />
+              <h4>عدد الطلبات</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.orders_count ? company.orders_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num4">
+            <div class="back-color">
+              <img src="../../../../assets/img/price.svg" />
+              <h4>التعامل المالى</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.TotalMoney ? company.TotalMoney : "0" }}</p>
+
+              <p class="p-s">SAR</p>
+            </div>
+          </div>
+          <div class="add-comp">
+            <div class="back-color">
+              <img
+                src="../../../../assets/img/visitor.svg"
+                *ngIf="!company.image"
+                style="background: #ffff; padding: 10px;"
+              />
+              <img [src]="company.image" *ngIf="company.image" alt="Logo" />
+              <div class="activeStatue">
+                <span
+                  *ngIf="company.active === 1"
+                  class="statue active-{{ company.active }}"
+                >
+                  نشط
+                </span>
+                <span
+                  *ngIf="company.active === 0"
+                  class="statue active-{{ company.active }}"
+                >
+                  غير نشط
+                </span>
+              </div>
+            </div>
+            <p>
+              <a> {{ company.name ? company.name : "-" }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-details-owner">
+      <div
+        class="info1"
+        [routerLink]="['/companies/company-details']"
+        [queryParams]="{ companyId: company.id }"
+      >
+        <div class="active">
+          <a>
+            <img
+              style="padding-top: 5px;"
+              src="../../../../assets/img/register.svg"
+            />
+          </a>
+        </div>
+        <p>معلومات التسجيل</p>
+      </div>
+      <div class="info2">
+        <div class="not_active">
+          <a>
+            <div class="count-info">
+              <span>{{ company.services_count }}</span>
+            </div>
+            <img src="../../../../assets/img/files.svg" />
+            <img
+              src="../../../../assets/img/foursquare-check-in.svg"
+              alt=""
+              style="position: relative;
+            right: -60px;
+            top: 23px;
+        "
+            />
+          </a>
+        </div>
+        <p>الخدمات</p>
+      </div>
+      
+      <!--  -->
+      <div class="info3" [routerLink]="['/companies/company-cities']"
+      [queryParams]="{ companyId: company.id }">
+        <div class="active">
+          <a>
+
+            <div class="count-info">
+              <span>{{ company.cities }}</span>
+            </div>
+          
+            <img class="marker" src="../../../../assets/img/map-marked-alt.svg" />
+            <img
+              src="../../../../assets/img/foursquare-check-in.svg"
+              alt=""
+              style="position: relative;
+            right: -60px;
+            top: 23px;
+        "
+            />
+          </a>
+        </div>
+        <p>المدن</p>
+      </div>
+      <!--  -->
+
+    </div>
+    <div class="page_body section-body">
+      <div style="display: flex; align-items: center;">
+        <img src="../../../../assets/img/files.svg" />
+        <h4 style="margin-right: 10px ;">اضافة خدمات</h4>
+      </div>
+      <br />
+      <form class="filter_form" [formGroup]="companyForm">
+        <div class="form_input" id="smallFillterInputStyle">
+          <mat-form-field dir="rtl" appearance="outline">
+            <input
+              type="text"
+              placeholder="التصنيف"
+              matInput
+              id="usedService"
+              [matAutocomplete]="usedService"
+              formControlName="usedService"
+              [value]="className ? className : ''"
+            />
+            <button
+              type="button"
+              class="resetInput"
+              (click)="xResetInputs('usedService')"
+            >
+              <img src="../../../../assets/img/close.svg" />
+            </button>
+            <mat-autocomplete
+              #usedService="matAutocomplete"
+              [displayWith]="displayOptionsFunction"
+            >
+              <mat-option
+                *ngFor="let option of ClassiciationFilteredOptions | async"
+                [value]="option"
+              >
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </form>
+      <div class="checkbos-block">
+        <div class="span-count" *ngIf="services.length || company.services">
+          <span>{{ services.length }}</span>
+        </div>
+        <h4 *ngIf="services.length || company.services">
+          <img
+            style="margin-left: 5px;"
+            src="../../../../assets/img/dotted.svg"
+          />
+          {{ className }}
+        </h4>
+        <br />
+        <div
+          style="margin-bottom: 10px;"
+          *ngIf="services.length || company.services"
+        >
+          <mat-checkbox
+            style="margin-bottom: 20px;"
+            (change)="checkAll($event)"
+          >
+            الكل
+          </mat-checkbox>
+        </div>
+        <div *ngIf="services.length || company.services">
+          <mat-checkbox
+            *ngFor="let service of services; let i = index"
+            (change)="checkItem($event, service, i)"
+            [value]="service.id"
+            [checked]="service.checked"
+            >{{ service.name }}
+          </mat-checkbox>
+        </div>
+      </div>
+      <div class="style-button-add">
+        <button
+          type="button"
+          (click)="assignServices()"
+          [disabled]="!company.id || !IDsArray.length"
+        >
+          اضافة خدمات
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

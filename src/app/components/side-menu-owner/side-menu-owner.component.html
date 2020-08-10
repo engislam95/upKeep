@@ -1,0 +1,134 @@
+<div
+  class="overlay"
+  id="overLay"
+  *ngIf="overLayShow"
+  (click)="sidebarOverlayTrigger()"
+></div>
+<div class="page_main_blocks side_page" *ngIf="showSideMenu" [@fade]>
+  <div class="logo">
+    <img src="../../../assets/img/4.svg" alt="" />
+  </div>
+  <div class="user">
+    <img [src]="user.image" alt="" />
+    <h3>{{ user.name }}</h3>
+    <h6>{{ user.privilege }}</h6>
+  </div>
+  <div class="menu ">
+    <ul>
+      <li>
+        <a
+          [routerLink]="['/owner']"
+          routerLinkActive="active"
+          style="display: flex; align-items: center;"
+        >
+          لوحة التحكم
+        </a>
+      </li>
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('roles_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <img
+            src="../../../assets/img/visitor.svg"
+            style="width: 18%; margin-left: 10px;"
+            alt=""
+          />
+          إدارة الشركات
+        </a>
+        <ul class="drop_menu" id="roles_menu">
+          <li>
+            <a routerLink="/companies/all-companies" routerLinkActive="active">
+              سجل الشركات
+            </a>
+          </li>
+          <li>
+            <a routerLink="/companies/add-company" routerLinkActive="active">
+              اضافة شركة جديدة
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('users_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <img
+            style="margin-left: 10px;"
+            src="../../../assets/img/support.svg"
+            alt=""
+          />
+          إدارة الخدمات
+        </a>
+        <ul class="drop_menu" id="users_menu">
+          <li>
+            <a routerLink="/services/all-services" routerLinkActive="active">
+              الخدمات الرئيسية
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/services/all-inner-services"
+              routerLinkActive="active"
+            >
+              الخدمات الفرعية
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          (click)="toggle_drop_List('class_menu')"
+          style="display: flex; align-items: center;"
+        >
+          <img
+            style="margin-left: 10px;"
+            src="../../../assets/img/service.svg"
+            alt=""
+          />
+          إدارة التصنيفات
+        </a>
+        <ul class="drop_menu" id="class_menu">
+          <li>
+            <a
+              routerLink="/classifications/all-classifications"
+              routerLinkActive="active"
+            >
+              التصنيفات الرئيسية
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/classifications/add-classification"
+              routerLinkActive="active"
+            >
+              اضافة تصنيف رئيسي
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<img
+  src="../../../assets/img/hum.svg"
+  alt="hum"
+  style="position: absolute;
+  top: 3%;
+  left: 86%;
+  cursor: pointer;"
+  (click)="hideMenu()"
+/>

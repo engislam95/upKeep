@@ -1,0 +1,180 @@
+<div class="main_page">
+  <app-alerts></app-alerts>
+<!-- ######################### Start Side Menu ######################### -->
+<app-side-menu></app-side-menu>
+<!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header> </app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_title">
+        <h3><i class="fas fa-file-invoice"></i>تفاصيل الفاتورة</h3>
+        <div class="page_body_main_buttons"></div>
+      </div>
+      <div class="page_body_main">
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block controlPanel">
+          <ul>
+            <li>
+              <a target="_blank" href="{{ baseAPI + invoiceData.urlcode }}"
+                ><i class="fas fa-file-invoice-dollar"></i></a
+              ><span>تحميل الفاتورة</span>
+            </li>
+            <li
+              *ngIf="
+                invoiceData.receipt_client_type === 'source'
+                  ? invoiceData.client.email
+                  : invoiceData.client.user.email
+              "
+            >
+              <a (click)="sendInvoice('mail')"
+                ><i class="fas fa-envelope"></i></a
+              ><span>إرسال الفاتورة Email</span>
+            </li>
+            <li
+              *ngIf="
+                invoiceData.receipt_client_type === 'source'
+                  ? invoiceData.client.phone
+                  : invoiceData.client.user.mobile
+              "
+            >
+              <a (click)="sendInvoice('sms')"><i class="fas fa-sms"></i></a
+              ><span>إرسال الفاتورة SMS</span>
+            </li>
+            <li>
+              <a (click)="sendInvoiceWhatsapp()"
+                ><i class="fab fa-whatsapp"></i></a
+              ><span>إرسال الفاتورة WhatApp</span>
+            </li>
+          </ul>
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block detailsContainer">
+          <!-- Start Client Details -->
+          <div class="profileDetails">
+            <ul>
+              <li class="fullWidth">
+                <h4>
+                  بنود الفاتورة
+                </h4>
+                <!-- Start Table -->
+                <div class="orderItemsTable">
+                  <div class="tableHeader">
+                    <div class="tableHeaderCell">إسم البند</div>
+                    <div class="tableHeaderCell">سعر البند</div>
+                    <div class="tableHeaderCell">الملاحظات</div>
+                  </div>
+                  <div class="tableBody">
+                    <div
+                      class="tableRow"
+                      *ngFor="let item of invoiceData.items"
+                    >
+                      <div class="tableBodyCell">{{ item.name }}</div>
+                      <div class="tableBodyCell">{{ item.price }}</div>
+                      <div class="tableBodyCell">{{ item.description }}</div>
+                    </div>
+                    <div class="tableRow totalPrice">
+                      <div class="tableBodyCell">المجموع</div>
+                      <div class="tableBodyCell">
+                        {{
+                          invoiceData.total -
+                            invoiceData.tax +
+                            invoiceData.discount
+                        }}
+                      </div>
+                    </div>
+                    <div class="tableRow totalPrice">
+                      <div class="tableBodyCell">الخصم</div>
+                      <div class="tableBodyCell">
+                        {{ invoiceData.discount }}
+                      </div>
+                    </div>
+                    <div class="tableRow totalPrice">
+                      <div class="tableBodyCell">القيمة المضافة</div>
+                      <div class="tableBodyCell">{{ invoiceData.tax }}</div>
+                    </div>
+                    <div class="tableRow finalPrice">
+                      <div class="tableBodyCell">الإجمالي المطلوب</div>
+                      <div class="tableBodyCell">{{ invoiceData.total }}</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Table -->
+              </li>
+              <br />
+              <li>
+                <h4>إسم العميل</h4>
+                <h5>
+                  <i class="fas fa-user-tie"></i
+                  >{{
+                    invoiceData.receipt_client_type === 'source'
+                      ? invoiceData.client.name
+                      : invoiceData.client.user.name
+                  }}
+                </h5>
+              </li>
+              <li>
+                <h4>رقم الفاتورة</h4>
+                <h5>
+                  <i class="fas fa-user-tie"> </i
+                  >{{ invoiceData.receipt_number }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  الحالة
+                </h4>
+                <h5>
+                  <i class="fas fa-cog"></i
+                  >{{ invoiceData.receipt_client_type }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  وقت / تاريخ الإصدار
+                </h4>
+                <h5>
+                  <i class="fas fa-calendar-alt"></i
+                  >{{ invoiceData.created_at }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  تم الإصدار بواسطة
+                </h4>
+                <h5>
+                  <i class="fas fa-globe"></i>
+                  {{
+                    invoiceData.user.name
+                      ? invoiceData.user.name +
+                        '(' +
+                        invoiceData.user.privilege_type.description +
+                        ')'
+                      : ''
+                  }}
+                </h5>
+              </li>
+              <li>
+                <h4>
+                  إجمالي الفاتورة
+                </h4>
+                <h5>
+                  <i class="fas fa-dollar-sign"></i
+                  >{{ invoiceData.total + ' ' + invoiceData.currency.name }}
+                </h5>
+              </li>
+            </ul>
+          </div>
+          <!-- End Client Details -->
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

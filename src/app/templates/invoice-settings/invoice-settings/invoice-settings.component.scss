@@ -1,0 +1,58 @@
+.page_block {
+  height: 600px;
+
+  h3 {
+
+
+    font-weight: 500;
+    font-size: 17px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    color: #540d77;
+
+  }
+
+  hr {
+
+    border: navajowhite;
+    border-bottom: 1px dotted #7070709e;
+  }
+
+  p {
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 17px;
+    text-align: center;
+    color: #464646;
+
+  }
+
+}
+
+.button-save-taxs {
+  margin-top: 28px;
+  margin-right: 10px;
+
+  button {
+    padding-left: 24px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+    font-size: 14px;
+    margin-left: 28px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 20px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 27px;
+      margin-right: 3px;
+
+    }
+  }
+}

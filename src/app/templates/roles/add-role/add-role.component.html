@@ -1,0 +1,111 @@
+<div class="main_page" id="formPage">
+  <app-alerts></app-alerts>
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title">
+      <h3 style="display: flex; align-items: center;">
+        <img
+          style="margin-left: 10px; width: 19%;"
+          src="../../../assets/img/home_page/security-on.svg"
+          alt=""
+        />{{ modeTitle }}
+      </h3>
+      <div class="page_body_main_buttons">
+        <a routerLink="/roles/all-roles">
+          الرجوع الى قائمة الادوار
+          <i
+            ><img
+              style="width: 60%;"
+              src="../../../assets/img/home_page/security-on.svg"
+              alt=""
+          /></i>
+        </a>
+      </div>
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_main">
+        <div class="page_block">
+          <div id="add_form">
+            <form (ngSubmit)="onSubmit()" [formGroup]="rolesForm">
+              <div class="form_field">
+                <label>إسم الدور <span>*</span></label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="name"
+                    matInput
+                    placeholder="إسم الدور"
+                    autocomplete="off"
+                    id="name"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-briefcase"></i>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (rolesForm.get('name').status === 'INVALID' &&
+                      rolesForm.get('name').touched) ||
+                    (submitted && rolesForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال اسم الدور
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="rolesForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field full_width">
+                <label>الملاحظات</label>
+                <ckeditor
+                  formControlName="description"
+                  [config]="config"
+                  [editor]="Editor"
+                  data="<p>تجربة نص</p>"
+                ></ckeditor>
+              </div>
+              <div
+                class="form_field fullWidth formButtons"
+                style="justify-content: start;"
+              >
+                <button
+                  *ngIf="!updateMode"
+                  type="submit"
+                  class="formSubmit formButton"
+                  [disabled]="rolesForm.invalid || submitted"
+                >
+                  اضافة الى دور القائمة
+                </button>
+                <button
+                  *ngIf="updateMode"
+                  type="button"
+                  (click)="onUpdate()"
+                  class="formSubmit formButton"
+                  [disabled]="rolesForm.invalid || submitted"
+                >
+                  تعديل الدور
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

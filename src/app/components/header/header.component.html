@@ -1,0 +1,139 @@
+<audio autoplay *ngIf="playNotificationSound">
+  <source src="./../../../assets/notification-sound.mp3" type="audio/mpeg" />
+</audio>
+<div class="header">
+  <div
+    id="userNotification"
+    (mouseenter)="showNotification = true"
+    (mouseleave)="showNotification = false"
+  >
+    <i class="fas fa-bell">
+      <span class="tinyCounter" *ngIf="message.length > 0" [@fade]>{{
+        message.length
+      }}</span>
+    </i>
+    <div
+      [ngClass]="
+        showNotification ? 'showNotificationPanel' : 'hideNotificationPanel'
+      "
+      id="notificationBodyContainer"
+    >
+      <div id="notificationBody">
+        <h3><i class="fas fa-bell"></i> الإشعارات</h3>
+        <ul id="listBody">
+          <li *ngIf="message.length === 0">
+            لا يوجد إشعارات
+          </li>
+          <li
+            *ngFor="let messageItem of message"
+            [routerLink]="['/orders/order-details']"
+            [queryParams]="{ orderId: messageItem.data.id }"
+          >
+            <ng-container *ngIf="!messageItem.data.body"
+              >{{ messageItem.data.title }}
+            </ng-container>
+            <ng-container *ngIf="messageItem.data.body">
+              <h4>
+                <img
+                  alt=""
+                  src="../../../../assets/img/icons/Rectangle 904.svg"
+                />
+                {{ messageItem.data.title }}
+              </h4>
+              <p>{{ messageItem.data.body }}</p>
+              <span>{{ messageItem.created_at | date: "MM/dd/yyyy" }}</span>
+            </ng-container>
+          </li>
+          <li *ngIf="!emptyNotificationArray">
+            <div class="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="userComments">
+    <i class="fas fa-comments">
+      <!-- <span class="counterComments" *ngIf="message.length > 0"></span> -->
+    </i>
+  </div>
+  <div id="userExclamation">
+    <i class="fas fa-exclamation-circle">
+      <!-- <span class="counterExclamation" *ngIf="message.length > 0"></span> -->
+    </i>
+  </div>
+  <div id="newDateToday">
+    <p>
+      {{
+        today | date: " dd/MM/yyyy &nbsp; &nbsp;  h:mm:ss &nbsp; a ":" UTC +3 "
+      }}
+      &nbsp; &nbsp; (KSA Time)
+    </p>
+  </div>
+  <div
+    class="alert-notification"
+    id="alert-notification-{{ i }}"
+    *ngFor="let notification of currentNotification; let i = index"
+    [@fade]
+  >
+    <span class="notification-container">
+      <span class="xClose">
+        <i class="fas fa-times" (click)="closeNotifications(i)"></i>
+      </span>
+      <span class="bell">
+        <i class="far fa-bell"> </i>
+      </span>
+      <h4 class="notiifation-tilte">{{ notification.data.title }}</h4>
+      <img src="{{ adminImage }}" alt="" />
+      <h5>{{ notification.data.body }}</h5>
+      <a
+        [routerLink]="['/orders/order-details']"
+        [queryParams]="{
+          orderId: order_id
+        }"
+        >الذهاب الى طلب</a
+      >
+    </span>
+  </div>
+  <div
+    class="user_menu"
+    (mouseenter)="showLoggedUser = true"
+    (mouseleave)="showLoggedUser = false"
+  >
+    <span class="activeGreen"></span>
+    <img src="{{ adminImage }}" alt="" />
+    <div *ngIf="showLoggedUser" [@popupAnimation] id="loggedUserBodyContainer">
+      <div id="loggedUserBody">
+        <div id="head">
+          <div class="loggedUserBigImage">
+            <img src="{{ adminImage }}" alt="" />
+          </div>
+          <span>{{ adminTitle }}</span>
+        </div>
+        <div id="body">
+          <ul>
+            <li>
+              <button type="button" (click)="logOut()">
+                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="layout_sidebar" (click)="sidebarTrigger()">
+    <a class="sidebar_trigger">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <mat-progress-bar
+    *ngIf="loading"
+    [@fade]
+    mode="indeterminate"
+  ></mat-progress-bar>
+</div>

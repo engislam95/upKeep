@@ -1,0 +1,81 @@
+#NameFillterInputStyle {
+  width: calc(350px);
+  margin-left: 10px;
+}
+#NameFillterInputStyle mat-form-field {
+  width: calc(350px);
+  .mat-form-field-wrapper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1399px) and (min-width: 700px) {
+  .filter_form {
+    #NameFillterInputStyle {
+      width: calc(95% / 2);
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+  }
+}
+.resetInput {
+  color: #95989a;
+  margin-top: 2px;
+  background-color: white;
+}
+@media (max-width: 1399px) and (min-width: 992px) {
+  #NameFillterInputStyle {
+    width: 100%;
+  }
+  #NameFillterInputStyle mat-form-field {
+    width: 100%;
+  }
+
+  .filter_form mat-form-field {
+    margin-right: 0;
+    width: 100%;
+    display: inline-flex;
+    margin-left: 10%;
+  }
+
+  .filter_form {
+    display: flex !important;
+  }
+  .mat-form-field-wrapper {
+    width: 75%;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    width: 428px !important;
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  #NameFillterInputStyle {
+    width: 100%;
+  }
+
+  mat-form-field-wrapper {
+    width: 70%;
+  }
+  .filter_form mat-form-field {
+    margin-right: 0;
+    width: 100%;
+    // display: inline-flex;
+    margin-left: 10%;
+  }
+
+  .filter_form {
+    display: flex !important;
+  }
+  .filter_form mat-form-field input {
+    width: 75%;
+  }
+}
+@media (max-width: 767px) {
+  #NameFillterInputStyle mat-form-field {
+    width: 100%;
+  }
+  #NameFillterInputStyle {
+    width: 100%;
+  }
+}
+// ********************

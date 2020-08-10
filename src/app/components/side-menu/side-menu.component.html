@@ -1,0 +1,254 @@
+<div
+  class="overlay"
+  id="overLay"
+  *ngIf="overLayShow"
+  (click)="sidebarOverlayTrigger()"
+></div>
+<div class="page_main_blocks side_page" *ngIf="showSideMenu" [@fade]>
+  <div class="logo">
+    <img
+      [src]="
+        user.company_logo
+          ? user.company_logo
+          : '../../../assets/img/white_logo1.png'
+      "
+      alt=""
+    />
+  </div>
+  <div class="menu ">
+    <ul>
+      <li>
+        <a [routerLink]="['/home']" routerLinkActive="active">
+          <i class="fas fa-home"></i>
+          لوحة التحكم
+        </a>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || orders"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('orders_menu')">
+          <i class="fas fa-th-list"> </i>
+          الطلبات
+        </a>
+        <ul class="drop_menu" id="orders_menu">
+          <li *ngIf="user.privilege == 'super-admin' || order_add">
+            <a routerLink="/orders/add-order" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة طلب
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || order_all">
+            <a routerLink="/orders/all-orders" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل الطلبات
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || order_all">
+            <a routerLink="/orders/orders-table" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              جدول الطلبات
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || order_all">
+            <a routerLink="/orders/orders-map" routerLinkActive="active">
+              <i class="fas fa-map-marker-alt"> </i>
+              خريطة الطلبات
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || technicians"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('technicians_menu')">
+          <i class="fas fa-users-cog"> </i>
+          الفنيين
+        </a>
+        <ul class="drop_menu" id="technicians_menu">
+          <li *ngIf="user.privilege == 'super-admin' || technician_add">
+            <a
+              routerLink="/technicians/add-technical"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-plus"> </i>
+              إضافة فني
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || technician_all">
+            <a
+              routerLink="/technicians/all-technicians"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-th-list"> </i>
+              كل الفنيين
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || resoureces"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('resources_menu')">
+          <i class="fas fa-user-friends"> </i>
+          المصادر
+        </a>
+        <ul class="drop_menu" id="resources_menu">
+          <li *ngIf="user.privilege == 'super-admin' || resource_add">
+            <a routerLink="/resources/add-resource" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة مصدر
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || resources_all">
+            <a routerLink="/resources/all-resources" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل المصادر
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || clients"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('clients_menu')">
+          <i class="fas fa-users"> </i>
+          العملاء
+        </a>
+        <ul class="drop_menu" id="clients_menu">
+          <li *ngIf="user.privilege == 'super-admin' || client_add">
+            <a routerLink="/clients/add-client" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة عميل
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || client_all">
+            <a routerLink="/clients/all-clients" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل العملاء
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || offers"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('offers_menu')">
+          <i class="fas fa-gift"> </i>
+          العروض
+        </a>
+        <ul class="drop_menu" id="offers_menu">
+          <li *ngIf="user.privilege == 'super-admin' || offer_add">
+            <a routerLink="/offers/add-offer" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إضافة عرض
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || offer_all">
+            <a routerLink="/offers/all-offers" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              كل العروض
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        *ngIf="user.privilege == 'super-admin' || receipts"
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('invoices_menu')">
+          <i class="fas fa-file-invoice"> </i>
+          الفواتير
+        </a>
+        <ul class="drop_menu" id="invoices_menu">
+          <li
+            *ngIf="
+              (user.privilege == 'super-admin' || receipt_add) && receipt == 1
+            "
+          >
+            <a routerLink="/invoices/add-invoice" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              إصدار فاتورة
+            </a>
+          </li>
+          <li *ngIf="user.privilege == 'super-admin' || receipt_all">
+            <a routerLink="/invoices/all-invoices" routerLinkActive="active">
+              <i class="fas fa-th-list"> </i>
+              جميع الفواتير
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li
+        class="drop_list"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a (click)="toggle_drop_List('services_menu')">
+          <i class="fas fa-tools"></i>
+          الخدمات
+        </a>
+        <ul class="drop_menu" id="services_menu">
+          <li>
+            <a
+              routerLink="/company-services/all-main-services"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-th-list"> </i>
+              خدمات رئيسية
+            </a>
+          </li>
+          <!-- <li>
+            <a
+              routerLink="/company-services/all-sub-services"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-th-list"> </i>
+              خدمات فرعية
+            </a>
+          </li> -->
+        </ul>
+      </li>
+      <li
+        class="drop_list"
+        *ngIf="user.privilege == 'super-admin'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/managment"
+      >
+        <a>
+          <i class="fas fa-user-shield"></i>
+          الادارة
+        </a>
+      </li>
+      <!-- <li
+        class="drop_list"
+        *ngIf="user.privilege == 'super-admin'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/owner"
+      >
+        <a>
+          <i class="fas fa-user-shield"></i>
+          المالك
+        </a>
+      </li> -->
+    </ul>
+  </div>
+</div>

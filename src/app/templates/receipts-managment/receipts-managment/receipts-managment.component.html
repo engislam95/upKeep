@@ -1,0 +1,109 @@
+<div class="main_page">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        < إدارة الفواتير
+      </h4>
+
+      <p class="alert-error" *ngIf="flage">
+        <i class="fas fa-exclamation-triangle"></i> نظام الفواتير غير مفعل يمكنك
+        الذهاب الى الاعدادات لتفعيل نظام الفواتير
+      </p>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <div class="controlers">
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/receipts-templates"
+              >
+                <i style=" color: #045D48;" class="fas fa-file-alt"></i>
+              </a>
+              <p>القوالب</p>
+            </div>
+            <div class="controller">
+              <a
+                routerLink="/receipts-managment/receipts-templates/template-one"
+              >
+                <i style="color: #540D77;" class="fas fa-tasks"></i>
+              </a>
+              <p style="text-align: center;">اعدادات القوالب</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/all-models"
+              >
+                <i style="color: #E61919;" class="fas fa-user-tag"></i>
+              </a>
+              <p>نماذج البيانات</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/all-taxes"
+              >
+                <i style="color: #FF4600;" class="fas fa-receipt"></i>
+              </a>
+              <p>أنواع الضرائب</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/charts"
+              >
+                <i style="color: #83AC0E;" class="fas fa-chart-bar"></i>
+              </a>
+              <p>تقارير بيانية</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/reports"
+              >
+                <i style="color: #4A4A4A;" class="fas fa-file-signature"></i>
+              </a>
+              <p>تقارير تفصيلية</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="/receipts-managment/all-blocks"
+              >
+                <i style="color: #23AB99;" class="fas fa-pause-circle"></i>
+              </a>
+              <p>صلاحية اصدار</p>
+            </div>
+
+            <div class="controller">
+              <a
+                matBadgePosition="after"
+                routerLink="//receipts-managment/invoice-settings"
+              >
+                <i style="color: #540D77;" class="fas fa-cog"></i>
+              </a>
+              <p>الاعدادات</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

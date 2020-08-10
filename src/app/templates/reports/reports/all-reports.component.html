@@ -1,0 +1,470 @@
+<div class="main_page form-taxs-mng form-graphic-mng ">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < تقارير تفصيلية
+      </h4>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <h3 style="color: #4A4A4A;">
+            <i
+              style="color: #4A4A4A; margin-left: 5px;"
+              class="fas fa-file-signature"
+            ></i>
+            تقارير تفصيلية
+          </h3>
+
+          <div class="main_block filterMainBlock">
+            <form class="filter_form" [formGroup]="reportForm">
+              <div id="todaysOrdersContainer">
+                <div id="CheckBoxTodayFilter">
+                  <label class="todayfilterLabel">طلبات اليوم</label>
+                  <mat-slide-toggle
+                    dir="rtl"
+                    (change)="todayReport($event)"
+                    required
+                  ></mat-slide-toggle>
+                </div>
+              </div>
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <label> <i class="fal fa-calendar-minus"></i> المدة من </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    [matDatepicker]="fromFilterDate"
+                    placeholder=""
+                    (dateInput)="orderDateChanged($event)"
+                  />
+
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="fromFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <label> <i class="fal fa-calendar-minus"></i> المدة الى </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    [matDatepicker]="toFilterDate"
+                    placeholder=" "
+                    (dateInput)="orderDateChanged2($event)"
+                  />
+
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="toFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div
+                style="width: 31%;"
+                class="form_input"
+                id="smallFillterInputStyle"
+              >
+                <div class="form_field">
+                  <!-- <mat-form-field appearance="outline" dir="rtl">
+                    <mat-select>
+                      <mat-option value="option">اسم الفني / الخدمة</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <!-- <div class="form_input" id="smallFillterInputStyle"> -->
+                  <label></label>
+                  <app-multiselect-filter
+                    [multiSelectList]="servicesWithTechniciansList"
+                    [multiSelectListPlaceholder]="techniciansFilterPlaceholder"
+                    [multiSelectListType]="nestedType"
+                    [componentId]="filterTechniciansComponentId"
+                    (search)="search($event)"
+                  ></app-multiselect-filter>
+                  <!-- </div> -->
+                </div>
+              </div>
+
+              <div class="button-save-taxs" style="margin-top: 29px;">
+                <button (click)="applySearch(reportForm.value)">
+                  <i class="fal fa-search"></i>
+                  بحث
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <h3 class="h3-style-mng">بيانات عامة</h3>
+          <div class="controlers">
+            <div class="controller" *ngIf="counter.general">
+              <div class="invoice-coll">
+                <i class="fal fa-file-invoice"></i>
+                <p>عدد الفواتير</p>
+                <span>{{
+                  counter.general ? counter.general.receipts : 0
+                }}</span>
+              </div>
+            </div>
+            <div style="background: #CCFFD5;" class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-file-invoice-dollar"></i>
+                <p>اجمالى الفواتير</p>
+                <span>{{ counter.general ? counter.general.total : 0 }} </span>
+                <h5>SAR</h5>
+              </div>
+            </div>
+
+            <div style="background: #EBF9FF;" class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-sack-dollar"></i>
+                <p>اجمالى الفواتير</p>
+                <span
+                  >{{ counter.general ? counter.general.WithoutTax : 0 }}
+                </span>
+                <h5>SAR</h5>
+
+                <p style="  font-size: 11px;">بدون قيمة مضافة</p>
+              </div>
+            </div>
+
+            <div class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-hand-spock"></i>
+                <p>خدمات و أجور يد</p>
+                <span
+                  >{{ counter.general ? counter.general.Service : 0 }}
+                </span>
+                <h5>SAR</h5>
+              </div>
+            </div>
+
+            <div class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-server"></i>
+                <p>قطع الغيار</p>
+                <span>{{ counter.general ? counter.general.Spare : 0 }}</span>
+              </div>
+            </div>
+
+            <div class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-badge-percent"></i>
+                <p>القيمة المضافة</p>
+                <span>{{ counter.general ? counter.general.Tax : 0 }} </span>
+                <h5>SAR</h5>
+              </div>
+            </div>
+
+            <!-- <div class="controller">
+              <div class="invoice-coll">
+                <i class="fal fa-align-slash"></i>
+                <p>عدد الفواتير الملغاة</p>
+                <span>0 </span>
+                <h5
+                  style="color: #FF0000; font-size: 14px; font-weight: 300; margin-top: -8px;"
+                >
+                  <i
+                    style="color: #FF0000; font-weight: 700; font-size: 18px;"
+                    class="fas fa-thumbs-up"
+                  ></i>
+                  0%
+                </h5>
+              </div>
+            </div> -->
+          </div>
+
+          <h3 class="h3-style-mng">الخدمات</h3>
+          <div class="controlers">
+            <div class="controller" *ngFor="let service of counter.Service">
+              <div class="invoice-coll contt-color">
+                <i class="fal fa-air-conditioner"></i>
+                <p style="    margin-top: -6px;">{{ service.name }}</p>
+                <span>{{ service.TotalPerService }}</span>
+                <h5>SAR</h5>
+                <h5
+                  style="font-size: 14px; font-weight: 300; margin-top: -4px;"
+                >
+                  0%
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="h3-style-mng">المصادر</h3>
+          <div class="controlers">
+            <div class="controller" *ngFor="let source of counter.Source">
+              <div class="invoice-coll contt-colorr">
+                <p style="    margin-top: 30px;  margin-bottom: 8px;">
+                  {{ source.name }}
+                </p>
+                <span>{{ source.TotalSource }}</span>
+                <h5>SAR</h5>
+                <h5
+                  style="font-size: 14px; font-weight: 300; margin-top: -4px;"
+                >
+                  0%
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="table_tabs">
+            <h3>الخدمات</h3>
+
+            <!-- <div class="main_block filterMainBlock">
+              <form class="filter_form filtter-table">
+                <div class="form_input" id="smallFillterInputStyle">
+                  <label> الترتيب حسب الخدمة </label>
+                  <div class="form_field">
+                    <mat-form-field appearance="outline" dir="rtl">
+                      <mat-select>
+                        <mat-option value="option">عدد الفواتير</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="form_input" id="smallFillterInputStyle">
+                  <label> الترتيب حسب الخدمة </label>
+                  <div class="form_field">
+                    <mat-form-field appearance="outline" dir="rtl">
+                      <mat-select>
+                        <mat-option value="option">عدد الفواتير</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+            </div> -->
+
+            <table
+              id="t01"
+              class="table-tabs-style"
+              style="border-collapse: collapse"
+            >
+              <tr>
+                <th>#</th>
+                <th>اسم الخدمة</th>
+                <th style="width: 357px;">اسم الفنى</th>
+                <!-- <th style="border-right: 1px dotted #C2C2C2;">
+                  عدد الطلبات بدون فواتير
+                </th> -->
+                <th style="border-right: 1px dotted #C2C2C2;">عدد الفواتير</th>
+                <th style="border-right: 1px dotted #C2C2C2;">
+                  اجمالى الفواتير
+                </th>
+                <th style="border-right: 1px dotted #C2C2C2;">خدمات</th>
+                <th style="border-right: 1px dotted #C2C2C2;">قطع غيار</th>
+                <th style="border-right: 1px dotted #C2C2C2;">قيمة مضافة</th>
+                <th style="border-right: 1px dotted #C2C2C2;">فواتير ملغاه</th>
+              </tr>
+              <tr *ngFor="let main of mainTable; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ main.servicename }}</td>
+                <td>{{ main.techName }}</td>
+                <!-- <td>
+                  <span style="border-right: 1px dotted #645C5C;">10</span>
+                </td> -->
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;">{{
+                    main.receipts
+                  }}</span>
+                </td>
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;"
+                    >{{ main.total }}
+                    <span style="margin-top: -4px;">SAR</span></span
+                  >
+                </td>
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;"
+                    >{{ main.Service }}
+                    <span style="margin-top: -4px;">SAR</span></span
+                  >
+                </td>
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;"
+                    >{{ main.Spare }}
+                    <span style="margin-top: -4px;">SAR</span></span
+                  >
+                </td>
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;"
+                    >{{ main.Tax }}
+                    <span style="margin-top: -4px;">SAR</span></span
+                  >
+                </td>
+                <td>
+                  <span style="border-right: 1px dotted #645C5C;"
+                    >0 <span style="margin-top: -4px;">SAR</span></span
+                  >
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="    margin-top: -32px; ">
+            <div style="display: flex;">
+              <div style="    width: 33%;" class="table_tabs-bottom">
+                <h3 style="font-size: 15px; margin-bottom: 15px; ">المصادر</h3>
+
+                <table
+                  mat-table
+                  [dataSource]="dataSource2"
+                  class="mat-elevation-z8"
+                  width="100%"
+                  dir="rtl"
+                  id="display_table"
+                >
+                  <!-- id Column -->
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
+                    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                  </ng-container>
+
+                  <!-- source_name Column -->
+                  <ng-container matColumnDef="source_name">
+                    <th mat-header-cell *matHeaderCellDef>اسم المصدر</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </td>
+                  </ng-container>
+
+                  <!-- number_of_bills Column -->
+                  <ng-container matColumnDef="number_of_bills">
+                    <th mat-header-cell *matHeaderCellDef>عدد الفواتير</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.receipt }}
+                    </td>
+                  </ng-container>
+
+                  <!-- total_bills Column -->
+                  <ng-container matColumnDef="total_bills">
+                    <th mat-header-cell *matHeaderCellDef>
+                      اجمالى عدد الفواتير
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.TotalSource }}
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns2"
+                  ></tr>
+                </table>
+
+                <br /><br />
+              </div>
+
+              <div
+                style="    margin-right: 23px;
+      width: 63%;"
+                class="table_tabs-bottom"
+              >
+                <h3 style="font-size: 15px; margin-bottom: 15px; ">
+                  الخدمات الفرعية
+                </h3>
+
+                <table
+                  mat-table
+                  [dataSource]="dataSource1"
+                  class="mat-elevation-z8"
+                  width="100%"
+                  dir="rtl"
+                  id="display_table"
+                >
+                  <!-- id Column -->
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
+                    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                  </ng-container>
+
+                  <!-- source_name Column -->
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>
+                      اسم الخدمة الفرعية
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.name }}
+                    </td>
+                  </ng-container>
+
+                  <!-- number_of_bills Column -->
+                  <ng-container matColumnDef="service">
+                    <th mat-header-cell *matHeaderCellDef>الخدمة الرئيسية</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.parentname }}
+                    </td>
+                  </ng-container>
+
+                  <!-- total_bills Column -->
+                  <ng-container matColumnDef="numbers_of_orders">
+                    <th mat-header-cell *matHeaderCellDef>
+                      عدد الطلبات
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.orders }}
+                    </td>
+                  </ng-container>
+                  <!-- total_bills Column -->
+                  <ng-container matColumnDef="numbers_of_invoices">
+                    <th mat-header-cell *matHeaderCellDef>
+                      عدد الفواتير
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.receipts }}
+                    </td>
+                  </ng-container>
+                  <!-- total_bills Column -->
+                  <ng-container matColumnDef="total_bills">
+                    <th mat-header-cell *matHeaderCellDef>
+                      اجمالى عدد الفواتير
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.Total }}
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns1"
+                  ></tr>
+                </table>
+
+                <br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

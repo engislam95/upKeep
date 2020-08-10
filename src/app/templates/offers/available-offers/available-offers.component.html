@@ -1,0 +1,219 @@
+<div class="main_page" id="listPage">
+  <app-alerts> </app-alerts>
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <!-- ################################ start header client icons ############################ -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-th-list"></i>كل العروض</h3>
+
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/offers/add-offer"
+          *ngIf="offer_add || user.privilege == 'super-admin'"
+        >
+          إضافة عرض
+          <i class="fas fa-user-cog"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ################################ End header client icons ############################ -->
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block">
+          <!-- Start Search -->
+          <div class="main_block ">
+            <div class="totalSearch">
+              <p>
+                <i class="fas fa-search"></i>
+                <span> نتيجة البحث </span>
+                مجموع الطلبات:
+                <span class="totalNumber">
+                  {{ getOffersResponseTotal?.length }}
+                </span>
+              </p>
+            </div>
+          </div>
+          <!-- End Search -->
+          <!-- Start Table -->
+          <table
+            width="100%"
+            dir="rtl"
+            mat-table
+            [dataSource]="offersArray"
+            class="mat-elevation-z8"
+            id="display_table"
+          >
+            <!-- Donator id -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>المسلسل</th>
+
+              <td mat-cell *matCellDef="let element">
+                {{ element.active === 1 ? element.id : "" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>إسم العرض</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.active === 1 ? element.name : "" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="sourceName">
+              <th mat-header-cell *matHeaderCellDef>إسم المصدر</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.active === 1 ? element.source.name : "" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="serviceName">
+              <th mat-header-cell *matHeaderCellDef>إسم الخدمة</th>
+
+              <td mat-cell *matCellDef="let element">
+                {{ element.active === 1 ? element.service.name : "" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+
+            <!-- Active -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>
+                حالة التفعيل
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  *ngIf="element.active === 1"
+                  class="activeStatus status-{{ element.active }}"
+                >
+                  <i class="far fa-check-circle"></i>
+                </span>
+              </td>
+            </ng-container>
+            <!-- Active -->
+
+            <!-- Resource Details -->
+            <ng-container matColumnDef="offer_details">
+              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  *ngIf="element.active === 1"
+                  [routerLink]="['/offers/offer-details']"
+                  [queryParams]="{
+                    offerId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                  <i class="fas fa-plus"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!--  Rescource Details  -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="edit_order">
+              <th mat-header-cell *matHeaderCellDef>تعديل البيانات</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  *ngIf="element.active === 1"
+                  [routerLink]="['/offers/update-offer']"
+                  [queryParams]="{
+                    updateMode: true,
+                    updatedOfferId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="delete_order">
+              <th mat-header-cell *matHeaderCellDef>حذف الحساب</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  (click)="openDeletePopup(element.id, element.name)"
+                  class="basic_button"
+                  type="button"
+                >
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <!-- End Table -->
+          <!-- Start Pagination -->
+          <div class="pagination">
+            <ul>
+              <li class="pagination_button ">
+                <a (click)="goPage(1)">الصفحة الأولي</a>
+              </li>
+              <li class="previousPagePagination moveOnePageButton">
+                <button
+                  (click)="goPage(pageId - 1)"
+                  type="button"
+                  [disabled]="firstPage"
+                >
+                  <i class="fas fa-angle-right"></i>
+                </button>
+              </li>
+              <li *ngFor="let i of pagesNumbers" (click)="goPage(i)">
+                <a [class]="pageId == i ? 'active' : ''">{{ i }}</a>
+              </li>
+              <li class="nextPagePagination moveOnePageButton">
+                <button
+                  (click)="goPage(pageId + 1)"
+                  type="button"
+                  [disabled]="lastPage"
+                >
+                  <i class="fas fa-angle-left"></i>
+                </button>
+              </li>
+              <li class="pagination_button ">
+                <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Pagination -->
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+  <!-- ######################### Start Delete Popup ######################### -->
+  <div id="popup" *ngIf="showDeletePopup" [@parentAnimation]>
+    <div id="backDrop"></div>
+    <div id="popupData" [@childAnimation]>
+      <i class="fas fa-times" (click)="closePopup()"></i>
+      <h2>
+        هل انت متأكد من حذف العرض
+        <br />
+        {{ deletedOfferName }}
+      </h2>
+      <div id="confirmationButtons">
+        <button type="button" (click)="deleteOffer()">نعم متأكد</button>
+        <button type="button" (click)="closePopup()">إلغاء الحذف</button>
+      </div>
+    </div>
+  </div>
+  <!-- ######################### End Delete Popup ######################### -->
+</div>

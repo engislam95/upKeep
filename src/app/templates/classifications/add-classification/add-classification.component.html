@@ -1,0 +1,174 @@
+<div class="main_page ownerpage owner-add">
+  <app-alerts></app-alerts>
+  <app-side-menu-owner></app-side-menu-owner>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <div class="header">
+        <div class="borderheader">
+          <div class="header-side"></div>
+        </div>
+        <div class="header-title">
+          <p style="color: #F6A811;">
+            مرحبا بك &nbsp; &nbsp; &nbsp;<span style="color: #fff;">{{
+              user.name
+            }}</span>
+          </p>
+          <span><p>الصفحة الرئيسية &nbsp; | &nbsp; إدارة التصنيفات</p></span>
+        </div>
+      </div>
+    </div>
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <div class="page_block">
+          <div class="start-first-title">
+            <div style="display: flex;">
+              <img src="../../../../assets/img/visitor.svg" />
+              <h3>
+                {{
+                  updateMode ? "تعديل تصنيف رئيسي" : "اضافة تصنيف رئيسي جديد"
+                }}
+              </h3>
+            </div>
+          </div>
+          <div class="title-add-owner">
+            <h3>بيانات الادخال</h3>
+          </div>
+          <div id="add_form">
+            <form [formGroup]="classificationForm">
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  اسم التصنيف الرئيسي
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="اسم التصنيف الرئيسي"
+                    formControlName="name"
+                    id="name"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    (classificationForm.get('name').status === 'INVALID' &&
+                      classificationForm.get('name').touched) ||
+                    (submitted &&
+                      classificationForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال اسم التصنيف الرئيسى
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="classificationForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field location"></div>
+              <!-- <div class="form_field location">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الحالة
+                </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    class="filterInput"
+                    type="text"
+                    id="usersStatus"
+                    placeholder="حالة التفعيل"
+                    matInput
+                    [matAutocomplete]="userStatus"
+                    formControlName="usersStatus"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('usersStatus')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #userStatus="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    (!classificationForm.controls.usersStatus.value &&
+                      classificationForm.get('usersStatus').touched) ||
+                    (submitted &&
+                      !classificationForm.controls.usersStatus.value)
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الحالة
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="classificationForm.controls.usersStatus.value"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div> -->
+              <div class="">
+                <div class="">
+                  <mat-checkbox (change)="acceptance($event)" [checked]="accept"
+                    >الموافقة على الادخال الحساب</mat-checkbox
+                  >
+                </div>
+              </div>
+              <div class="style-button-add">
+                <button
+                  type="button"
+                  (click)="submitClassifiaction()"
+                  *ngIf="!updateMode"
+                  [disabled]="
+                    !accept || !classificationForm.controls.name.value
+                  "
+                >
+                  إضافة التصنيف الرئيسي
+                </button>
+                <button
+                  type="button"
+                  (click)="updateClassification()"
+                  *ngIf="updateMode"
+                  [disabled]="
+                    !accept || !classificationForm.controls.name.value
+                  "
+                >
+                  تعديل البيانات
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

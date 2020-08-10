@@ -1,0 +1,120 @@
+<div class="main_page form-taxs-mng blocks-tabs">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < صلاحية اصدار
+      </h4>
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <!-- <div class="blocks">
+            <span>1</span>
+            <a><i class="fas fa-pause-circle"></i></a>
+            <p>طلبات في الحظر</p>
+          </div> -->
+          <h3 style="color: #23AB99;">
+            <i
+              style="color: #23AB99; margin-left: 5px;"
+              class="fas fa-pause-circle"
+            ></i>
+            صلاحية اصدار
+          </h3>
+          <h5
+            style="font-size: 19px;margin-top: 5px;    margin-right: 23px;color: #242a2d;"
+          >
+            {{ clientName ? clientName : '-' }}
+          </h5>
+          <br /><br />
+
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-checkbox
+                    labelPosition="before"
+                    [checked]="techIDs.length == techData.length"
+                    (change)="checkAllValues($event)"
+                  >
+                    <label> الفنيين </label>
+                  </mat-checkbox>
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ techIDs.length }}/{{ techData.length }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div *ngFor="let tech of techData; let i = index">
+                <mat-checkbox
+                  [value]="tech.id"
+                  (change)="getCheckValue($event)"
+                  labelPosition="before"
+                  [checked]="tech.check"
+                >
+                  <p>{{ tech.name }}</p>
+                </mat-checkbox>
+                <br />
+                <hr style="border-color: #70707040;" />
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel *ngFor="let role of roleData; let i = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <!-- <mat-checkbox
+                    labelPosition="before"
+                    [checked]="roleArrayIDs.length == roleData.length"
+                    [disabled]="true"
+                  > -->
+                  <label
+                    style="color: #fff;
+                    margin-right: 19px;"
+                  >
+                    {{ role.name }}
+                  </label>
+                  <!-- </mat-checkbox> -->
+                </mat-panel-title>
+                <!-- <mat-panel-description>
+                  {{ roleArrayIDs.length }}/{{ roleData[i]["users"].length }}
+                </mat-panel-description> -->
+              </mat-expansion-panel-header>
+              <div *ngFor="let user of role.users">
+                <mat-checkbox
+                  labelPosition="before"
+                  [value]="user.id"
+                  (change)="getRoleCheckValue($event, i)"
+                  [checked]="user.check"
+                >
+                  <p>{{ user.name }}</p>
+                </mat-checkbox>
+                <br />
+                <hr style="border-color: #70707040;" />
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div class="button-add-taxs">
+            <button (click)="addBlock()">
+              <i class="fal fa-file-plus"></i>اضافة صلاحية اصدار
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

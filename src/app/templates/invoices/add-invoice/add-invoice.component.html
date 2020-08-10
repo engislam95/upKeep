@@ -1,0 +1,103 @@
+<!-- <div class="main_page">
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header> </app-header>
+    </div>
+    <div class="page_body_title">
+      <h3>
+        <i class="fas fa-file-invoice"></i>
+        الفواتير
+      </h3>
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/invoices/all-invoices"
+          *ngIf="receipt_all || user.privilege == 'super-admin'"
+        >
+          كل الفواتير
+          <i class="fas fa-clipboard-list"></i>
+        </a>
+      </div>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <div class="page_block controlPanel">
+          <h3>
+            إصدار فواتير
+          </h3>
+          <ul>
+            <li>
+              <a routerLink="/invoices/client-invoice"
+                ><i class="fas fa-users"></i></a
+              ><span>إصدار فاتورة لعميل</span>
+            </li>
+            <li>
+              <a routerLink="/invoices/resource-invoice"
+                ><i class="fas fa-users-cog"></i></a
+              ><span>إصدار فاتورة لمصدر</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="main_page">
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header> </app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <div class="page_body_title">
+      <h4>
+        <i class="fas fa-file-invoice-dollar"></i>
+        اصدار فواتير متنوعة
+      </h4>
+      <!-- <div class="page_body_main_buttons">
+        <a routerLink="/invoices/all-invoices">
+          كل الفواتير
+          <i class="fas fa-clipboard-list"></i>
+        </a>
+      </div> -->
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <h4 style="    margin-bottom: 27px;  margin-top: -5px;">
+          <a style="color: #000;" matBadgePosition="after" routerLink="/home"
+            >الصفحة الرئيسية
+          </a>
+          < <a style="color: #000;"> الفواتير </a> < اصدار فواتير متنوعة
+        </h4>
+
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block controlPanel">
+          <ul>
+            <li>
+              <a routerLink="/invoices/client-invoice"
+                ><i class="fal fa-user-tie"></i></a
+              ><span>إصدار فاتورة لعميل</span>
+            </li>
+            <li>
+              <a routerLink="/invoices/resource-invoice"
+                ><i class="fas fa-user-visor"></i></a
+              ><span>إصدار فاتورة لمصدر</span>
+            </li>
+            <!-- <li>
+              <a routerLink="/invoices/resource-invoice"
+                ><i class="fas fa-users-medical"></i></a
+              ><span> اصدار فاتورة لطلب او عدة طلبات </span>
+            </li> -->
+          </ul>
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

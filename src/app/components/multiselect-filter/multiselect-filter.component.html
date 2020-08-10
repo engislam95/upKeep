@@ -1,0 +1,64 @@
+<div
+  (focusout)="closeFilterListFn($event, componentId)"
+  class="multiselect-filter"
+  (click)="openFilterListFn(componentId)"
+  id="{{ 'multiselect-filter-container-' + componentId }}"
+>
+  <input
+    type="text"
+    [placeholder]="multiSelectListPlaceholder"
+    [value]="filterListValue"
+  />
+  <span class="multiselect-filter__input-cover"></span>
+  <div
+    tabindex="0"
+    id="{{ componentId }}"
+    class="multiselect-filter__list"
+    *ngIf="openFilterList"
+  >
+    <ul>
+      <div
+        class="multiselect-filter__list__parent-container"
+        *ngFor="let parent of multiSelectList"
+      >
+        <li>
+          <mat-checkbox
+            tabindex="-1"
+            class="multiselect-filter__list--check multiselect-filter__list--check-parent"
+            [checked]="parent.checked"
+            (change)="checkBoxSelected($event)"
+            [value]="parent"
+            >{{ parent.name }}</mat-checkbox
+          >
+        </li>
+        <div *ngIf="parent.technicians">
+          <ng-container *ngFor="let child of parent.technicians">
+            <li>
+              <mat-checkbox
+                class="multiselect-filter__list--check multiselect-filter__list--check-child"
+                [checked]="child.checked"
+                (change)="checkBoxSelected($event)"
+                [value]="child"
+                >{{ child.name }}</mat-checkbox
+              >
+            </li>
+          </ng-container>
+        </div>
+        <div *ngIf="parent.children">
+          <ng-container *ngFor="let child of parent.children">
+            <li>
+              <mat-checkbox
+                class="multiselect-filter__list--check multiselect-filter__list--check-child"
+                [checked]="child.checked"
+                (change)="checkBoxSelected($event)"
+                [value]="child"
+                >{{ child.name }}</mat-checkbox
+              >
+            </li>
+          </ng-container>
+        </div>
+      </div>
+      <button (click)="searchWithFiltered()">إبحث</button>
+    </ul>
+  </div>
+</div>

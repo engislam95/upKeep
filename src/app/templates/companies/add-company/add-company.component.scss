@@ -1,0 +1,196 @@
+body {
+  background: #fff !important;
+}
+
+.main_page {
+  height: 100vh;
+  background: #fff;
+}
+
+
+.main_page .page_body {
+  background: #fff;
+}
+
+.main_page .page_body_main .page_block {
+  box-shadow: none;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+
+.title-add-owner {
+  h3 {
+    background: #242a2d;
+    border: 1px solid #d8d8d8;
+    font-weight: 300;
+    font-size: 15px;
+    color: #fff;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 11px;
+    margin-bottom: 27px;
+  }
+}
+
+#uploadImageContainer {
+  box-shadow: none;
+  border: 1px dotted #94949440;
+}
+
+.start-first-title {
+  margin-bottom: 20px;
+
+  h3 {
+
+    font-weight: 500;
+    font-size: 15px;
+    margin-right: 10px;
+    color: #000;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  }
+}
+
+
+.style-button-add {
+  button {
+    width: 213px;
+    height: 45px;
+    background: #f6a811;
+    border: 1px solid #707070;
+    color: #000;
+    margin-top: 20px;
+    margin-bottom: 70px;
+    margin-left: 20px;
+
+  }
+}
+
+
+.header {
+  padding: 0px 44px;
+  padding-right: 58px;
+  background: #242a2d;
+  height: 203px;
+
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  .borderheader {
+    border-bottom: 1px solid #ffffff3b;
+    height: 49px;
+
+    .header-side {
+      position: absolute;
+      right: 289px;
+      top: 12px;
+    }
+  }
+
+  .header-title {
+    padding-top: 20px;
+    padding-right: 10px;
+    text-align: right;
+
+    span {
+      color: #757575;
+      font-size: 13px;
+    }
+  }
+}
+
+.totalSearch select {
+  color: #000;
+  padding: 0;
+  width: 42px;
+  height: 34px;
+  background: #fff;
+  border: 1px solid #707070;
+  padding: 0 15px 0 0;
+}
+
+#showOrdercontrols {
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  border: 1px;
+  border: 1px solid #d8d8d8;
+  background-color: #394247;
+  -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  margin-top: -12px;
+  margin-right: -60px;
+  border-radius: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  img {
+    background: transparent;
+    border: none;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // start toolTip in details menu controls
+  .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    font-size: 15px;
+    background-color: #394247;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltiptext::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  button {
+    &:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:first-child {
+      .tooltiptext {
+        right: -15px;
+      }
+    }
+
+    &:last-child {
+      .tooltiptext {
+        left: 40px;
+      }
+    }
+  }
+
+  // end toolTip in details menu controls
+}
+
+#phoneKey {
+  background: 0;
+  left: 30px;
+}

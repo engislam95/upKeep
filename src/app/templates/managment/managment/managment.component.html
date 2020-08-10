@@ -1,0 +1,79 @@
+<div class="main_page">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+    <div class="page_body">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        الصفحة الرئيسية
+      </h4>
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <div class="controlers">
+            <div class="controller">
+              <a matBadgePosition="after" routerLink="/home">
+                <i class="far fa-cubes"></i>
+              </a>
+              <p>الرجوع للنظام</p>
+            </div>
+            <div class="controller">
+              <a routerLink="/roles/all-roles">
+                <i class="fas fa-shield-check"></i>
+              </a>
+              <p style="text-align: center;">الصلاحيات</p>
+            </div>
+            <!-- location_marker -->
+            <div class="controller">
+              <!-- <span class="count-mng">5</span> -->
+              <a matBadgePosition="after" routerLink="/users/all-users">
+                <i class="fal fa-users"></i>
+              </a>
+
+              <p>المستخدمين</p>
+            </div>
+
+            <div class="controller">
+              <a matBadgePosition="after" routerLink="/receipts-managment">
+                <span
+                  style="color: #3E970C;"
+                  class="fal fa-check-circle"
+                ></span>
+                <span
+                  style="color: #FF0000;     top: 28px;"
+                  class="fal fa-times-circle"
+                ></span>
+
+                <i class="fal fa-file-invoice-dollar"></i>
+              </a>
+              <p>إدارة الفواتير</p>
+            </div>
+
+            <div class="controller">
+              <a matBadgePosition="after" routerLink="/locations-managment">
+                <img
+                  style="margin-top:20px"
+                  src="../../../../assets/img/location_marker.svg"
+                  alt=""
+              /></a>
+              <p style="text-align: center;">إدارة المواقع</p>
+            </div>
+
+            <!-- <div class="controller">
+              <a matBadgePosition="after" routerLink="/companies/all-companies">
+                <span class="badgeNumber badg_color_a">
+                  {{ receiptedCount }}</span
+                >
+                <img src="../../../../assets/img/home_page/company.svg" alt=""
+              /></a>
+              <p>جميع الشركات</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

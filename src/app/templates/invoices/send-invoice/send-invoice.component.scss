@@ -1,0 +1,118 @@
+.page_body_main {
+  .orderDetailsContainer {
+    background: #fbfbff !important;
+    h3 {
+      text-align: center;
+      padding: 25px 0;
+    }
+    hr {
+      background: #242a2d;
+      height: 1px;
+    }
+    .clientDetails {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        li {
+          width: 50%;
+          margin: 15px 0;
+          h4 {
+            color: #242a2d;
+          }
+          h5 {
+            margin-top: 15px;
+            color: #565656;
+            font-size: 14px;
+            i {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .controlPanel {
+    background: #fbfbff;
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+    ul {
+      display: flex;
+      margin: 30px 0;
+      li {
+        text-align: center;
+        margin-left: 40px;
+        a {
+          background: #242a2d;
+          color: #fff;
+          line-height: 1;
+          margin: 0 auto;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          font-size: 30px;
+          margin-bottom: 15px;
+          justify-content: center;
+          align-items: center;
+          border-radius: 4px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+        }
+        span {
+          width: 90px;
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.orderItemsTable {
+  margin-top: 15px;
+  .tableHeader {
+    display: flex;
+    background: #f6a811;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    padding: 0px 25px;
+    .tableHeaderCell {
+      color: #242a2d;
+      padding: 15px 0;
+      width: 25%;
+      text-align: right;
+    }
+  }
+  .tableBody {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    margin-bottom: 10px;
+
+    .tableRow {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding: 0px 25px;
+      &:last-child {
+        border-bottom: 0;
+      }
+      .tableBodyCell {
+        width: 25%;
+        text-align: right;
+        margin: 15px 0;
+      }
+      &.totalPrice {
+        background: #f2f3f8;
+        .tableBodyCell {
+          font-family: 'Arabic Light' !important;
+        }
+      }
+      &.finalPrice {
+        background: #b1b1b1;
+        .tableBodyCell {
+          font-family: 'Arabic Light' !important;
+        }
+      }
+    }
+  }
+}

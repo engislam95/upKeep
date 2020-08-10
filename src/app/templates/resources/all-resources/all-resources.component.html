@@ -1,0 +1,232 @@
+<div class="main_page" id="listPage">
+  <app-alerts> </app-alerts>
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ######################### Start Middle Page ######################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ######################### Start Header ######################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ######################### End Header ######################### -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-th-list"></i>كل المصادر</h3>
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/resources/add-resource"
+          *ngIf="resource_add || user.privilege == 'super-admin'"
+        >
+          إضافة مصدر
+          <i class="fas fa-user-cog"></i>
+        </a>
+      </div>
+    </div>
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <!-- ######################### Start Page Block ######################### -->
+        <div class="page_block">
+          <!-- Start Search -->
+          <div class="main_block filterMainBlock">
+            <form [formGroup]="filterForm" class="filter_form">
+              <!-- Start Form field -->
+              <div class="form_input" id="smallFillterInputStyle">
+                <!-- Resourse Name -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="إسم المصدر , رقم الهاتف , البريد الإلكتروني"
+                    autocomplete="off"
+                    id="filterName"
+                    formControlName="filterName"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('filterName')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </mat-form-field>
+              </div>
+              <!-- End Fillter Technician  Name -->
+              <!-- Start Form field -->
+              <div class="form_input" id="smallFillterInputStyle">
+                <!-- Sub Service -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    class="filterInput"
+                    placeholder="حالة التفعيل"
+                    matInput
+                    [matAutocomplete]="ResourcesStatus"
+                    formControlName="ResourcesStatusObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('ResourcesStatusObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <mat-autocomplete
+                    #ResourcesStatus="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Sub Service -->
+              </div>
+              <!-- End Form field -->
+            </form>
+          </div>
+          <!-- End Search -->
+          <!-- Start Table -->
+          <table
+            width="100%"
+            dir="rtl"
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8"
+            id="display_table"
+          >
+            <!-- ID -->
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef>المسلسل</th>
+              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            </ng-container>
+            <!-- ID -->
+            <!-- Name -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>إسم المصدر</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            <!-- Name -->
+            <!-- Phone -->
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>رقم الهاتف</th>
+              <td mat-cell *matCellDef="let element">{{ element.phone }}+</td>
+            </ng-container>
+            <!-- Phone -->
+            <!-- Active -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>
+                حالة التفعيل
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  *ngIf="element.active === 1"
+                  class="activeStatus status-{{ element.active }}"
+                >
+                  <i class="far fa-check-circle"></i>
+                </span>
+                <span
+                  *ngIf="element.active === 0"
+                  class="activeStatus status-{{ element.active }}"
+                >
+                  <i class="far fa-times-circle"></i>
+                </span>
+              </td>
+            </ng-container>
+            <!-- Active -->
+            <!-- Add Responsible -->
+            <!-- <ng-container matColumnDef="add_responsible">
+              <th mat-header-cell *matHeaderCellDef>إضافة مسؤول</th>
+              <td mat-cell *matCellDef="let element">
+                <button class="addButton listButton" type="button">
+                  إضافة مسؤول
+                </button>
+              </td>
+            </ng-container> -->
+            <!-- Add Responsible -->
+            <!-- Update Resource -->
+            <ng-container matColumnDef="edit_order">
+              <th mat-header-cell *matHeaderCellDef>تعديل المصدر</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  [routerLink]="['/resources/update-resource']"
+                  [queryParams]="{
+                    updateMode: true,
+                    updatedResourceId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                  <i class="far fa-edit"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Update Resource -->
+
+            <!-- Resource Details -->
+            <ng-container matColumnDef="resources_details">
+              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  [routerLink]="['/resources/resources-details']"
+                  [queryParams]="{
+                    resourcesId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                  <i class="fas fa-plus"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!--  Rescource Details  -->
+
+            <!-- Delete Resource -->
+            <ng-container matColumnDef="delete_order">
+              <th mat-header-cell *matHeaderCellDef>حذف المصدر</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  class="basic_button"
+                  type="button"
+                  (click)="openDeletePopup(element.id, element.name)"
+                >
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Delete Resource -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <!-- End Table -->
+        </div>
+        <!-- ######################### End Page Block ######################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ######################### End Middle Page ######################### -->
+  <!-- ######################### Start Delete Popup ######################### -->
+  <div id="popup" *ngIf="showDeletePopup" [@parentAnimation]>
+    <div id="backDrop"></div>
+    <div id="popupData" [@childAnimation]>
+      <i class="fas fa-times" (click)="closePopup()"></i>
+      <h2>
+        هل انت متأكد من حذف المصدر
+        <br />
+        {{ deletedResourcesName }}
+      </h2>
+      <div id="confirmationButtons">
+        <button type="button" (click)="deleteResource()">نعم متأكد</button>
+        <button type="button" (click)="closePopup()">إلغاء الحذف</button>
+      </div>
+    </div>
+  </div>
+  <!-- ######################### End Delete Popup ######################### -->
+</div>

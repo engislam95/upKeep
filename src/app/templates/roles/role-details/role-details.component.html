@@ -1,0 +1,58 @@
+<div class="main_page">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title">
+      <h3><i class="fas fa-briefcase"></i>بيانات الوظيفة</h3>
+      <div class="page_body_main_buttons">
+        <a
+          [routerLink]="['/roles/update-role']"
+          [queryParams]="{
+            updateMode: true,
+            updatedRoleID: roleID
+          }"
+        >
+          تعديل الوظيفة<i class="far fa-edit"></i>
+        </a>
+        <a [routerLink]="['/roles/all-roles']">
+          كل الوظائف
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <div class="page_block detailsContainer">
+          <div class="profileDetails">
+            <div class="profileDetails">
+              <ul>
+                <li>
+                  <h4>إسم الوظيفة</h4>
+                  <h5>
+                    <i class="fas fa-briefcase"></i
+                    >{{ pageLoaded ? roleDetails.name : "" }}
+                  </h5>
+                </li>
+                <li>
+                  <h4>التفاصيل</h4>
+                  <h5>
+                    <i class="fas fa-receipt"></i>
+                    <ckeditor
+                      *ngIf="description"
+                      [config]="config"
+                      [editor]="Editor"
+                      disabled="true"
+                      [data]="description"
+                    ></ckeditor>
+                  </h5>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

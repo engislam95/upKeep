@@ -1,0 +1,94 @@
+<div class="main_page form-taxs-mng form-graphic-mng ">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < القوالب
+      </h4>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+        <div class="page_block">
+          <h3 style="color: #045D48;">
+            <i
+              style="color: #045D48; margin-left: 5px;"
+              class="fas fa-file-alt"
+            ></i>
+            القوالب
+          </h3>
+
+          <div class="main_block filterMainBlock">
+            <p style="color: #464646; font-size: 12px;">
+              من فضلك اختر القالب الذى يناسبك
+            </p>
+
+            <div class="controlers">
+              <mat-radio-group aria-label="Select an option">
+                <mat-radio-button value="1" [checked]="print_model == '1'">
+                  <div class="controller" (click)="openPopup()">
+                    <a>
+                      <p>نموذج</p>
+                      <p>1</p>
+                      <i class="fal fa-search-plus"></i>
+                    </a>
+                  </div>
+                </mat-radio-button>
+                <!-- <mat-radio-button value="2" [checked]="print_model == '2'">
+                  <div class="controller" (click)="template('2')">
+                    <a>
+                      <p>نموذج</p>
+                      <p>2</p>
+                      <i class="fal fa-search-plus"></i>
+                    </a>
+                  </div>
+                </mat-radio-button> -->
+              </mat-radio-group>
+            </div>
+            <div
+              class="button-invoice"
+              style="text-align: center; margin-top: 40px;"
+            >
+              <button
+                style="    border: none;
+              background: #df9100;
+              font-size: 16px;
+              padding: 10px 29px;"
+                (click)="template('1')"
+              >
+                حفظ البيانات
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="popup" *ngIf="showPopup">
+  <div id="backDrop"></div>
+  <div id="popupData">
+    <i class="fas fa-times" (click)="closePopup()"></i>
+    <img
+      style="width: 1123px;"
+      src="../../../../assets/img/Inovice.png"
+      alt=""
+    />
+    <div id="confirmationButtons"></div>
+  </div>
+</div>

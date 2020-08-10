@@ -1,0 +1,912 @@
+.page_body_main {
+  .orderDetailsContainer {
+    background: #fbfbff !important;
+    padding-top: 0 !important;
+    padding-bottom: 0;
+
+    h3 {
+      text-align: center;
+      padding-bottom: 0;
+    }
+
+    hr {
+      background: #adaeb1;
+      height: 1px;
+      opacity: 0.5;
+    }
+
+    .clientDetails {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+
+        li {
+          width: 50%;
+          margin: 25px 0;
+
+          h4 {
+            color: #242a2d;
+          }
+
+          h5 {
+            margin-top: 15px;
+            color: #565656;
+            font-size: 14px;
+
+            i {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.form_field:not(#addItemButton) {
+  input {
+    text-indent: 35px;
+  }
+
+  i {
+    position: absolute;
+    right: -10px;
+    top: 4px;
+    background: #f6a810;
+    color: #242a2d;
+    width: 35px;
+    height: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 44px;
+
+    background: #232e5b;
+    color: #fff;
+    font-size: 18px;
+
+
+  }
+}
+
+.orderItemsTable {
+  margin-top: 15px;
+
+  .tableHeader {
+    display: flex;
+    background: #f6a811;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    padding: 0px 25px;
+
+    .tableHeaderCell {
+      color: #242a2d;
+      padding: 15px 0;
+      width: calc(100% / 6);
+      text-align: center;
+    }
+  }
+
+  .deleteInvoiceListItem {
+    background: #f6a810;
+    color: #242a2d;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    border: 0;
+    padding: 5px 13px;
+    font-size: 14px;
+    border-radius: 5px 0 5px 0;
+  }
+
+  .tableBody {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    margin-bottom: 10px;
+
+    .tableRow {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding: 0px 25px;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      .tableBodyCell {
+        width: calc(100% / 6);
+        text-align: center;
+        margin: 15px 0;
+      }
+
+      &.totalPrice {
+        background: #f2f3f8;
+
+        .tableBodyCell {
+          font-family: 'Arabic Light' !important;
+        }
+      }
+
+      &.finalPrice {
+        background: #b1b1b1;
+
+        .tableBodyCell {
+          font-family: 'Arabic Light' !important;
+        }
+      }
+    }
+  }
+}
+
+#addItemsForm {
+  display: flex;
+  align-items: center;
+
+  li {
+    margin-left: 20px;
+
+    &:last-child {
+      width: 50px;
+      margin: 0;
+
+      button {
+        background: #f6a811;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        position: relative;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+        border-radius: 6px;
+        top: 8px;
+
+        i {
+          position: absolute;
+          color: #242a2d;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
+.form_field {
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  i {
+    position: absolute;
+    left: 5px;
+    top: 21px;
+    color: #95989a;
+  }
+}
+
+li.fullWidth {
+  margin-top: 0 !important;
+}
+
+:host ::ng-deep .ck-editor__editable {
+  min-height: 200px;
+
+  ul {
+    padding-right: 15px;
+
+    li {
+      list-style: circle;
+    }
+  }
+
+  ol {
+    padding-right: 15px;
+
+    li {
+      list-style-type: decimal;
+    }
+  }
+}
+
+.SaveInvoiceFormButton {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 35px;
+
+  button {
+    margin: 0;
+    background: #f6a811;
+    color: #242a2d;
+    padding: 10px 25px;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    font-size: 18px;
+  }
+}
+
+
+.main_page .page_body {
+  padding: 0 0px;
+}
+
+.main_page .page_body_title {
+  padding: 30px 3px;
+  padding: 31px 23px;
+  font-size: 19px;
+  color: #464646;
+
+  i {
+    margin-left: 9px;
+  }
+}
+
+#formPage .formContainer .page_block {
+  margin: 0 25px;
+}
+
+.header-blu {
+  margin-left: -20px;
+  margin-right: -20px;
+  height: 51px;
+  background: #232e5b;
+
+}
+
+.header-invoice-client {
+  margin-left: -20px;
+  margin-right: -20px;
+  height: 218px;
+  background: #b7b7b740;
+  border: 1px dotted #70707069;
+
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+.details-right-client {
+  width: 17%;
+  // border-left: 1px solid #707070a6;
+  margin-top: 22px;
+
+  h5 {
+    font-weight: 300;
+    font-size: 19px;
+    color: #464646;
+    padding-right: 29px;
+    padding-top: 5px;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+    i {
+      margin-left: 7px;
+    }
+
+
+  }
+
+  span {
+    width: 66px;
+    height: 31px;
+    border-radius: 5px;
+    background: #232e5b;
+    border: 1px solid #707070;
+    color: #fff;
+    margin-right: 50px;
+    padding: 1px 13px;
+    font-size: 16px;
+
+  }
+
+  button {
+    display: block;
+    margin-top: 15px;
+    margin-right: 48px;
+    // font-family: "GE SS Two";
+    /* font-weight: 300; */
+    font-size: 17px;
+    width: 225px;
+    height: 49px;
+    border-radius: 5px;
+    background: #252a2e;
+    border: 1px solid #707070;
+    text-align: right;
+    color: #fff;
+    padding-right: 25px;
+
+    i {
+      margin-left: 10px;
+    }
+  }
+}
+
+.details-left-client {
+  display: inline-flex;
+  margin-top: 26px;
+
+  label {
+    font-weight: 500;
+    font-size: 16px;
+
+    color: #464646;
+
+    span {
+      width: 38px;
+      height: 33px;
+      border-radius: 5px;
+      background: #fff;
+      border: 1px solid rgba(112, 112, 112, 0.31);
+
+      i {
+
+        margin-left: 8px;
+        font-size: 17px;
+        text-align: center;
+        color: #232e5b;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        padding-right: 7px;
+
+      }
+
+    }
+  }
+
+  p {
+
+    font-weight: 300;
+    font-size: 15px;
+    text-align: right;
+    color: #000;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    margin-top: 10px;
+    margin-right: 25px;
+
+  }
+}
+
+.bnod-invioce {
+  margin-top: 39px;
+  margin-right: 31px;
+
+
+  .buttpn-band {
+    display: block;
+    margin-top: 15px;
+
+    // font-family: "GE SS Two";
+    /* font-weight: 300; */
+    font-size: 17px;
+    width: 225px;
+    height: 49px;
+    border-radius: 5px;
+    background: #252a2e;
+    border: 1px solid #707070;
+    text-align: right;
+    color: #fff;
+    padding-right: 25px;
+    margin-bottom: 21px;
+
+    i {
+      margin-left: 10px;
+    }
+
+  }
+
+
+  .button-add-taxs {
+    padding-left: 24px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+
+    font-size: 14px;
+    margin-left: 28px;
+    margin-bottom: 20px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 25px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 27px;
+      margin-right: 3px;
+
+
+    }
+  }
+
+}
+
+
+#formPage .formContainer .page_block .form_field label {
+  margin-bottom: 0;
+}
+
+.total-invoice {
+  direction: ltr;
+
+  .button-add-taxs {
+    padding-left: 24px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding-left: 45%;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 25px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 187px;
+      margin-right: 3px;
+
+
+    }
+  }
+
+  .total-invoce {
+
+    width: 510px;
+    margin-bottom: 2px;
+    text-align: center;
+    color: #252a2e;
+    padding: 14px 12px;
+
+    p {
+      font-size: 19px;
+      text-align: center;
+      color: #000;
+
+    }
+  }
+
+  .total-invoce-price {
+
+    width: 481px;
+    margin-bottom: 2px;
+    text-align: center;
+    color: #252a2e;
+    background: #252a2e;
+    border: 1px solid #707070;
+    color: #fff;
+    padding: 14px 17px;
+
+    p {
+      font-size: 19px;
+      text-align: center;
+      color: #FFE600;
+      font-family: Roboto;
+      font-weight: normal;
+      font-size: 35px;
+      text-align: center;
+      color: #ffe600;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+    }
+  }
+
+  .back-invoice {
+    width: 481px;
+    margin-bottom: 2px;
+    background: #252a2e;
+    border: 1px solid #707070;
+    color: #fff;
+    padding: 14px 17px;
+
+    label {
+
+      font-weight: 300;
+      font-size: 16px;
+      text-align: right;
+      color: #fff;
+
+    }
+
+    input {
+      width: 76px;
+      padding: 7px;
+      margin-left: 6px;
+      border-radius: 0;
+      border: none;
+    }
+
+    .span-sar {
+      width: 70px;
+      /* height: 36px; */
+      background: #fff;
+      // border: 1px solid #707070;
+      color: #000000;
+      font-family: Roboto;
+      font-weight: normal;
+      font-size: 15px;
+      text-align: center;
+      color: #000;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      padding: 6px 18px;
+      padding-bottom: 10px;
+    }
+
+    .label-sar {
+      display: inline-grid;
+      margin-right: 40%;
+      float: left;
+
+      label {
+        font-family: Roboto;
+
+        font-size: 19px;
+
+        color: #fff;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        span {
+          font-family: Roboto;
+          font-weight: normal;
+          font-size: 11px;
+          color: #fff;
+
+        }
+
+      }
+    }
+
+  }
+
+
+}
+
+.mat-option-text {
+  font-size: 12px !important;
+}
+
+
+.resetInput {
+  left: -13px;
+  top: 47%;
+
+  i {
+    background: none !important;
+    color: #707070 !important;
+  }
+}
+
+
+
+.page-block-edit-background {
+
+  margin: 0 25px;
+  background: #fbfbff !important;
+  padding-top: 0 !important;
+  padding-bottom: 0;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  padding: 15px 20px;
+  padding-right: 0;
+
+  .style-right-block-details {
+    width: 503px;
+    // height: 763px;
+    background: #e4e4e4;
+    border: 1px solid #707070;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    padding: 20px;
+    // height: 100vh;
+
+    .details-right-client-1 {
+
+
+      h5 {
+        font-weight: 300;
+        font-size: 19px;
+        color: #464646;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        font-family: 'Arabic gess light';
+        margin-bottom: 6%;
+
+
+
+
+
+        i {
+          margin-left: 10px;
+          font-weight: 300;
+          font-size: 20px;
+          color: #242a2d;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        }
+      }
+
+      span {
+        width: 66px;
+        height: 31px;
+        border-radius: 5px;
+        background: #232e5b;
+        border: 1px solid #707070;
+        color: #fff;
+        margin-right: 50px;
+        padding: 1px 13px;
+        font-size: 16px;
+        position: absolute;
+        margin-right: 406px;
+        text-align: center;
+
+      }
+
+
+    }
+
+    label {
+
+      font-weight: 500;
+      font-size: 15px;
+      color: #232e5b;
+
+      i {
+        font-size: 17px;
+        color: #232e5b;
+        margin-left: 5px;
+
+      }
+
+    }
+
+    .p-style-label {
+
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #000;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+      margin-right: 27px;
+      margin-bottom: 31px;
+
+
+    }
+
+  }
+
+
+
+  .style-left-block-details {
+    width: 67%;
+    padding-right: 10px;
+
+    .style-block-left {
+      padding: 21px 63px;
+
+      h4 {
+
+        font-weight: 300;
+        font-size: 19px;
+        text-align: right;
+        color: #464646;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        font-family: 'Arabic gess light';
+
+      }
+
+      label {
+        button {
+          border: none;
+          background: #f8a902;
+          padding: 3px 9px;
+          margin-left: 8px;
+          border-radius: 3px;
+          color: #fff;
+        }
+      }
+
+      .button-save-enter {
+        float: left;
+        margin-top: 9px;
+        margin-bottom: 20px;
+
+        p {
+          margin-bottom: 2px;
+
+          font-weight: 500;
+          font-size: 15px;
+
+          color: #464646;
+
+          span {
+
+            font-size: 15px;
+
+            color: #000;
+            margin-right: 10px;
+
+          }
+
+        }
+
+        .button-add-taxs {
+          padding-left: 24px;
+          height: auto;
+          background: #f6a811;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          border: none;
+
+          font-size: 14px;
+
+          margin-bottom: 20px;
+
+          i {
+
+            background: #242a2d;
+            color: #fff;
+            font-size: 20px;
+            padding: 10px;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-left: 27px;
+            margin-right: 3px;
+            // padding-bottom: 14px;
+          }
+        }
+      }
+    }
+
+
+    .cal-total-invoice {
+      display: flex;
+      width: 100%;
+
+      .cal-total-invoice-right {
+        text-align: center;
+        width: 50%;
+
+        h4 {
+
+          font-weight: 500;
+          font-size: 23px;
+          color: #464646;
+          margin-bottom: 15px;
+        }
+
+        p {
+          font-family: Roboto;
+          font-weight: normal;
+          font-size: 28px;
+          text-align: center;
+          color: #000;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          margin-bottom: 15px;
+          font-weight: 900;
+
+          span {
+            font-family: Roboto;
+            font-weight: normal;
+            font-size: 13px;
+            text-align: center;
+            color: #000;
+            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          }
+        }
+
+        .button-add-taxs {
+          padding-left: 130px;
+          margin-top: 24px;
+          margin-bottom: 20px;
+          /* padding-right: 10px; */
+          height: auto;
+          background: #f6a811;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          border: none;
+          font-size: 14px;
+          margin-bottom: 42px;
+
+          i {
+
+            background: #242a2d;
+            color: #fff;
+            font-size: 20px;
+            padding: 10px;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-left: 97px;
+            margin-right: 3px;
+            // padding-bottom: 14px;
+          }
+        }
+      }
+
+      .cal-total-invoice-left {
+
+
+        .total-invoice .back-invoice input {
+          width: 47px;
+          padding: 7px;
+          margin-left: 6px;
+          border-radius: 0;
+          border: none;
+          /* float: left; */
+          /* text-align: left; */
+          text-align: center;
+          position: relative;
+          left: -260px;
+          /* margin-bottom: 11px; */
+          /* top: 4px; */
+          margin-top: -6px;
+          height: 20px;
+          border: 1px solid;
+          /* width: 75px; */
+          /* height: 36px; */
+          background: #fff;
+          border: 1px solid #707070bd;
+          margin-left: 26px;
+        }
+
+        .total-invoice .back-invoice {
+
+          margin-bottom: 12px;
+          background: #252a2e;
+          border: 1px solid #707070;
+          color: #fff;
+          padding: 9px 17px;
+
+          background: #f5f5f5;
+          border: 1px solid #bebebe;
+        }
+
+        .total-invoice .back-invoice label {
+          font-weight: 300;
+          font-size: 16px;
+          text-align: right;
+          color: #fff;
+          /* font-family: "GE SS Two"; */
+          font-weight: 300;
+          font-size: 16px;
+          /* text-align: right; */
+          color: #000;
+          // font-family: 'Arabic gess light';
+        }
+
+        .total-invoice .back-invoice .label-sar label span {
+          font-family: Roboto;
+          font-weight: normal;
+          font-size: 11px;
+          color: #fff;
+          font-family: Roboto;
+          font-weight: normal;
+          font-size: 13px;
+          text-align: center;
+          color: #000;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        }
+      }
+    }
+  }
+}
+
+#addItemsForm li {
+  margin-left: 10px;
+}
+
+.resetInput {
+  left: -13px;
+  top: 47%;
+
+  i {
+    background: none !important;
+    color: #707070 !important;
+  }
+}

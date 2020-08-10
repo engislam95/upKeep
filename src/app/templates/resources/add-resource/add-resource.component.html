@@ -1,0 +1,677 @@
+<div class="main_page" id="formPage">
+  <app-alerts></app-alerts>
+  <!-- ####################### Start Side Menu ####################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ####################### End Side Menu ####################### -->
+  <!-- ####################### Start Middle Page ####################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ####################### Start Header ####################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ####################### End Header ####################### -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-plus"></i>{{ modeTitle }}</h3>
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/resources/all-resources"
+          *ngIf="resources_all || user.privilege == 'super-admin'"
+        >
+          كل المصادر
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_main">
+        <!-- ####################### Start Page Block ####################### -->
+        <div class="page_block">
+          <!-- ####################### Start Add Order Form ####################### -->
+          <div id="add_form">
+            <form (ngSubmit)="onSubmit()" [formGroup]="resourcesForm">
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>إسم المصدر <span>*</span></label>
+                <!-- Resorce Name -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="name"
+                    matInput
+                    placeholder="إسم المصدر"
+                    autocomplete="off"
+                    id="name"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-user-tie"></i>
+                </mat-form-field>
+                <!-- Resorce Name -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('name').status === 'INVALID' &&
+                      resourcesForm.get('name').touched) ||
+                    (submitted &&
+                      resourcesForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الإسم
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="resourcesForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>البريد الإلكتروني <span>*</span></label>
+                <!-- Email -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="email"
+                    matInput
+                    (focusout)="checkReservation($event.target.value, 'email')"
+                    (focusin)="emailCheckLoaded = false"
+                    placeholder="البريد الإلكتروني"
+                    autocomplete="off"
+                    id="email"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('email')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-envelope"></i>
+                </mat-form-field>
+                <!-- Email -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('email').status === 'INVALID' &&
+                      resourcesForm.get('email').touched) ||
+                    (submitted &&
+                      resourcesForm.get('email').status === 'INVALID' &&
+                      resourcesForm.get('email').dirty)
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال البريد الإلكتروني بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    resourcesForm.get('email').touched &&
+                    emailReserved &&
+                    emailCheckLoaded
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    resourcesForm.get('email').status === 'VALID' &&
+                    !emailReserved &&
+                    emailCheckLoaded
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الدولة <span>*</span></label>
+                <!-- Countries -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الدولة"
+                    id="countriesObj"
+                    aria-label="Number"
+                    matInput
+                    formControlName="countriesObj"
+                    [matAutocomplete]="countriesAutoComplete"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('countriesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-globe"></i>
+                  <mat-autocomplete
+                    #countriesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCountries"
+                  >
+                    <mat-option
+                      *ngFor="let option of countriesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Countries -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('countriesObj').status === 'INVALID' &&
+                      resourcesForm.get('countriesObj').touched) ||
+                    (submitted &&
+                      resourcesForm.get('countriesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الدولة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="resourcesForm.get('countriesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>المدينة <span>*</span></label>
+                <!-- Cities -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر المدينة"
+                    id="citiesObj"
+                    aria-label="Number"
+                    matInput
+                    formControlName="citiesObj"
+                    [matAutocomplete]="citiesAutoComplete"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('citiesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-map-marked-alt"></i>
+                  <mat-autocomplete
+                    #citiesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCities"
+                  >
+                    <mat-option
+                      *ngFor="let option of citiesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Cities -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('citiesObj').status === 'INVALID' &&
+                      citiesLoaded &&
+                      resourcesForm.get('citiesObj').touched) ||
+                    (submitted &&
+                      resourcesForm.get('citiesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال المدينة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    resourcesForm.get('citiesObj').status === 'VALID' &&
+                    citiesLoaded
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>العنوان <span>*</span></label>
+                <!-- Address -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    formControlName="address"
+                    id="address"
+                    placeholder="العنوان"
+                    autocomplete="off"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('address')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-map-marker-alt"></i>
+                </mat-form-field>
+                <!-- Address -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('address').status === 'INVALID' &&
+                      resourcesForm.get('address').touched) ||
+                    (submitted &&
+                      resourcesForm.get('address').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال العنوان
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="resourcesForm.get('address').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>رقم الموبايل <span>*</span></label>
+                <!-- Phone -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="mobileKey"
+                    appOnlyNumbers="true"
+                    (keyup)="mobileChanged($event.target.value)"
+                    (focusout)="checkReservation($event.target.value, 'phone')"
+                    (focusin)="mobileCheckLoaded = false"
+                    maxlength="9"
+                    matInput
+                    placeholder="رقم الموبايل"
+                    autocomplete="off"
+                    id="mobileKey"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('mobileKey')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <span id="phoneKey" *ngIf="showCountryPhoneKey" [@fade]
+                    >{{ countryPhoneKey }}+</span
+                  >
+                  <i class="fas fa-mobile"></i>
+                </mat-form-field>
+                <!-- Phone -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('mobileKey').status === 'INVALID' &&
+                      citiesLoaded &&
+                      resourcesForm.get('mobileKey').touched) ||
+                    (submitted &&
+                      resourcesForm.get('mobileKey').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال رقم الهاتف بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    resourcesForm.get('mobileKey').touched &&
+                    resourcesForm.get('mobileKey').dirty &&
+                    mobileReserved &&
+                    mobileCheckLoaded &&
+                    resourcesForm.get('mobileKey').status === 'VALID'
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا الرقم مسجل من قبل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    resourcesForm.get('mobileKey').status === 'VALID' &&
+                    !mobileReserved &&
+                    mobileCheckLoaded
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>نوع المصدر <span>*</span></label>
+                <!-- Resource Types -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر نوع المصدر"
+                    aria-label="Number"
+                    matInput
+                    formControlName="resourceTypesObj"
+                    id="resourceTypesObj"
+                    [matAutocomplete]="resourceTypesComplete"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('resourceTypesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-cogs"></i>
+                  <mat-autocomplete
+                    #resourceTypesComplete="matAutocomplete"
+                    [displayWith]="displayResourceTypes"
+                  >
+                    <mat-option
+                      *ngFor="
+                        let option of resourceTypesFilteredOptions | async
+                      "
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Resource Types -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (resourcesForm.get('resourceTypesObj').status ===
+                      'INVALID' &&
+                      resourcesForm.get('resourceTypesObj').touched) ||
+                    (submitted &&
+                      resourcesForm.get('resourceTypesObj').status ===
+                        'INVALID')
+                  "
+                >
+                  <i class="fas fa-cogs"></i>
+                  برجاء إدخال نوع المصدر
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    resourcesForm.get('resourceTypesObj').status === 'VALID'
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>إرفق لوجو</label>
+                <!-- Logo -->
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImage($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="imageInputObj"
+                    formControlName="imageInputObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    style="left: 15px; top: 72%; z-index: 99;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('imageInputObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-image"></i>
+                  <span>{{ imagePlaceHolder }}</span>
+                </div>
+                <!-- Logo -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الموقع الإلكتروني </label>
+                <!-- Website -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="website"
+                    pattern="(https||http)://.*.com.*"
+                    matInput
+                    placeholder="الموقع الإلكتروني"
+                    autocomplete="off"
+                    id="website"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('website')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-link"></i>
+                </mat-form-field>
+                <!-- Website -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="resourcesForm.get('website').status === 'INVALID'"
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الموقع بشكل صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field location">
+                <label>الموقع GPS </label>
+                <!-- Location GPS -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    pattern="https://.*.com.*"
+                    formControlName="location"
+                    id="location"
+                    matInput
+                    placeholder="الموقع GPS"
+                    autocomplete="off"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('location')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-compass"></i>
+                </mat-form-field>
+                <!-- Location GPS -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الفاكس</label>
+                <!-- Date -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="fax"
+                    id="fax"
+                    matInput
+                    placeholder="الفاكس"
+                    autocomplete="off"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('fax')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-fax"></i>
+                </mat-form-field>
+                <!-- Date -->
+              </div>
+              <!-- End Form field -->
+              <hr />
+              <!-- Start Form field -->
+              <div class="form_field fullWidth">
+                <label>الخدمات <span>*</span></label>
+                <!-- Services -->
+                <div class="services">
+                  <mat-checkbox
+                    formArrayName="services"
+                    *ngFor="let service of mainServiceArray; let i = index"
+                    [checked]="service.status"
+                    (change)="checkServices(service.id, $event.checked)"
+                    id="serviceBox-{{ service.id }}"
+                    >{{ service.name }}</mat-checkbox
+                  >
+                </div>
+                <!-- Services -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    resourcesForm.get('services').status === 'INVALID' &&
+                    ((submitted &&
+                      resourcesForm.get('services').status === 'INVALID') ||
+                      showCheckboxesStatus)
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال خدمة واحدة علي الأقل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    resourcesForm.get('services').status === 'VALID' &&
+                    showCheckboxesStatus
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <hr />
+              <div class="form_field fullWidth toggle">
+                <span>حالة التفعيل : </span>
+                <mat-slide-toggle
+                  [checked]="resourcesForm.value.active"
+                  dir="rtl"
+                  (change)="changeActive($event)"
+                >
+                </mat-slide-toggle>
+              </div>
+              <hr />
+              <div class="form_field fullWidth formButtons">
+                <button
+                  *ngIf="!updateMode"
+                  [disabled]="resourcesForm.invalid"
+                  type="submit"
+                  class="formSubmit formButton"
+                >
+                  حفط
+                </button>
+                <button
+                  *ngIf="updateMode"
+                  [disabled]="resourcesForm.invalid"
+                  type="button"
+                  class="formSubmit formButton"
+                  (click)="onUpdate()"
+                >
+                  تعديل
+                </button>
+                <!-- <button type="reset" class="formButton">إعادة تعيين</button> -->
+              </div>
+            </form>
+          </div>
+          <!-- ####################### End Add Order Form ####################### -->
+        </div>
+        <!-- ####################### End Page Block ####################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ####################### End Middle Page ####################### -->
+</div>

@@ -1,0 +1,471 @@
+<div class="main_page client-edit-block" id="formPage">
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+
+    <div class="page_body_title">
+      <h3><i class="fas fa-th-list"></i>لوحة الإدارة</h3>
+      <!-- <div class="page_body_main_buttons" (click)="addAdress()">
+        <a >
+         إضافة موقع
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>     -->
+    </div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h3
+        style="  font-size: 16px; font-weight: bold ;  margin-bottom: 27px;  margin-top: 45px;"
+      >
+        <!-- <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a> -->
+        <i class="fas fa-map-marker-alt" style="margin-left:10px"></i>
+        إدارة المواقع
+      </h3>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <h3
+            style="  font-size: 16px; font-weight: normal ;  margin-bottom: 27px;  margin-top: 0px;"
+          >
+            <i class="fas fa-flag" style="margin-left:10px"></i>
+            المملكة العربية السعودية
+          </h3>
+
+          <div class="set_maps">
+            <div *ngFor="let cityLocation of citiesArray">
+              <div
+                class="set_map_one"
+                *ngIf="!cityLocation.pivot.lat && !cityLocation.pivot.long"
+              >
+                <h6 style="text-align: right;">
+                  <i class="fas fa-map-marker-check"></i>
+                  {{ cityLocation.name }}
+                </h6>
+                <div
+                  style="
+                      width: 332px;
+                      margin-top: 10px;
+                      z-index: 9; margin-bottom: 2%;"
+                  class="map clientMapInner"
+                >
+                  <div
+                    class="emptyMap"
+                    *ngIf="!cityLocation.pivot.lat && !cityLocation.pivot.long"
+                  >
+                    <p>لا يوجد خريطة للمدينة</p>
+                  </div>
+
+                  <!-- <app-map
+                *ngIf="cityLocation.long  && cityLocation.lat "
+                [clientDetailsPageMode]="true"
+                [clientDetailsPageModeDtailsMap]="true"
+                [clientDetailsOrgins]="{
+                  lng: cityLocation.long,
+                  lat: cityLocation.lat
+                }"
+              ></app-map> -->
+                </div>
+
+                <h3 style="margin-bottom: -25px; opacity: 0.3;">
+                  لا يوجد ملاحظات خاصة بالموقع
+                </h3>
+
+                <div id="popup" *ngIf="showDeletePopup" [@parentAnimation]>
+                  <div id="backDrop"></div>
+                  <div id="popupData" [@childAnimation]>
+                    <i class="fas fa-times" (click)="closePopup()"></i>
+                    <h2 style="color: black;">
+                      هل انت متأكد من حذف الموقع <br />
+                    </h2>
+                    <div id="confirmationButtons">
+                      <button type="button">نعم متأكد</button>
+                      <button type="button">إلغاء الحذف</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="controlers" style="opacity: 0.3; ">
+                  <div class="controller">
+                    <a target="_blank">
+                      <i
+                        class="fal fa-globe-americas"
+                        style="position: relative; right: 0;"
+                      ></i>
+                    </a>
+                  </div>
+
+                  <div class="controller">
+                    <a>
+                      <i class="fal fa-copy"></i>
+                    </a>
+                  </div>
+
+                  <div class="controller">
+                    <a data-action="share/whatsapp/share" target="_blank">
+                      <i class="fal fa-comments"></i>
+                    </a>
+                  </div>
+
+                  <!-- <div class="controller"  >
+                <a>
+                  <i class="fal fa-trash-alt"></i>
+                  <p style="text-align: center;"> الغاء </p>
+                </a>
+              </div> -->
+                </div>
+                <button
+                  (click)="addAdress(cityLocation)"
+                  style="width: 50%; height: 8%; background: #4E4E4E; color: #fff;"
+                  mat-button
+                  color="black"
+               
+                >
+                  <i
+                    style=" margin-left: 8px ;  font-size: 15px; color: #fff;
+              "
+                    class="fas fa-plus-square"
+                  ></i>
+                  إضافة
+                </button>
+              </div>
+            </div>
+
+            <div *ngFor="let cityLocation of citiesArray">
+              <div
+                class="set_map_one"
+                *ngIf="cityLocation.pivot.long && cityLocation.pivot.lat"
+              >
+                <h6 style="text-align: right;">
+                  <i class="fas fa-map-marker-check"></i>
+                  {{ cityLocation.name }}
+                </h6>
+                <div
+                  style="
+                   width: 332px;
+                  margin-top: 10px;
+                  z-index: 9; margin-bottom: 2%;"
+                  class="map clientMapInner"
+                >
+                  <!-- <div class="emptyMap" *ngIf="!cityLocation.long  && !cityLocation.lat ">
+                <p> لا يوجد خريطة للمدينة </p>
+              </div> -->
+
+                  <app-map
+                    *ngIf="cityLocation.pivot.long && cityLocation.pivot.lat"
+                    [clientDetailsPageMode]="true"
+                    [clientDetailsPageModeDtailsMap]="true"
+                    [clientDetailsOrgins]="{
+                      lng: cityLocation.pivot.long,
+                      lat: cityLocation.pivot.lat
+                    }"
+                  ></app-map>
+                </div>
+
+                <h3 style="margin-bottom: -25px;">
+                  {{ cityLocation.pivot.notes }}
+                </h3>
+
+                <div id="popup" *ngIf="showDeletePopup" [@parentAnimation]>
+                  <div id="backDrop"></div>
+                  <div id="popupData" [@childAnimation]>
+                    <i class="fas fa-times" (click)="closePopup()"></i>
+                    <h2 style="color: black;">
+                      هل انت متأكد من حذف الموقع <br />
+                    </h2>
+                    <div id="confirmationButtons">
+                      <button
+                        type="button"
+                        (click)="deleteLocation(cityLocation.id)"
+                      >
+                        نعم متأكد
+                      </button>
+                      <button type="button" (click)="closePopup()">
+                        إلغاء الحذف
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="controlers">
+                  <div class="controller">
+                    <a [href]="cityLocation.pivot.above_url" target="_blank">
+                      <i class="fal fa-globe-americas"></i>
+                    </a>
+                  </div>
+
+                  <div class="controller">
+                    <a (click)="copyURL(cityLocation.pivot.above_url)">
+                      <i class="fal fa-copy"></i>
+                    </a>
+                  </div>
+
+                  <div class="controller">
+                    <a
+                      href="https://api.whatsapp.com/send?text=check out this link : {{
+                        cityLocation.pivot.above_url
+                      }}"
+                      data-action="share/whatsapp/share"
+                      target="_blank"
+                    >
+                      <i class="fal fa-comments"></i>
+                    </a>
+                  </div>
+
+                  <!-- <div class="controller"  (click)="showDeletePopup=true">
+                <a>
+                  <i class="fal fa-trash-alt"></i>
+                  <p style="text-align: center;"> الغاء </p>
+                </a>
+              </div> -->
+                </div>
+                <button
+                  (click)="getLocationDetails(cityLocation)"
+                  style="width: 20%; height: 8%; background: #4E4E4E; color: #fff;"
+                  mat-button
+                  color="black"
+                
+                >
+                  تعديل
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="popup" *ngIf="showMapPopup">
+            <!-- changeVidOrgins() -->
+
+            <div
+              class="overlay"
+              id="overLay"
+              *ngIf="overLayShow"
+              (click)="
+                showMapPopup = false;
+                updateAdressMode = false;
+                addNewAddressModeStatus = false
+              "
+            ></div>
+
+            <div id="popupData">
+              <div class="popupMap">
+                <!-- enter the url above map  -->
+                <form #form="ngForm" [formGroup]="locationsForm">
+                  <div style=" width: 100%;" class="form_field">
+                    <!-- top:1.25em !important;     -->
+                    <mat-form-field
+                      style="width: 94%; "
+                      appearance="outline"
+                      dir="rtl"
+                    >
+                      <i
+                        style="font-weight: normal; font-size: 17px; top: -2px; color: #636363; float: right;    position: absolute;
+                  top: 13px;"
+                        class="fal fa-globe-americas"
+                      ></i>
+                      <input
+                        matInput
+                        autocomplete="off"
+                        formControlName="above_url"
+                        id="above_url"
+                        required
+                        style="padding-right: 26px"
+                      
+                      />
+                      <button
+                        type="button"
+                        class="resetInput"
+                        (click)="xResetInputs('above_url')"
+                      >
+                        <i
+                          class="fas fa-times-circle"
+                          style="position: relative; top:0px"
+                        ></i>
+                      </button>
+                    </mat-form-field>
+                    <p *ngIf="locationsForm.get('above_url').value === '' || locationsForm.get('above_url').value === null " style="font-size: 14px; color:green ; position: absolute; top: 58px;" >الموقع سيتم ظهوره عند الضغط على البحث    </p>
+
+                    <button class="button-map-search" type="button" style="top: 3px;"   (click)="setUrl(locationsForm.controls.above_url.value)">
+                      <i class="fal fa-search" style="    font-size: 13px;"></i>
+                    </button>
+                  </div>
+
+                  <div class="style-map-input">
+                    <!-- خطوط الطول  -->
+                    <div class="form_field">
+                      <mat-form-field appearance="outline" dir="rtl">
+                        <input
+                          matInput
+                          autocomplete="off"
+                          id="formAddress"
+                          formControlName="lat"
+                          required
+                          placeholder="خطوط الطول "
+                        />
+                      </mat-form-field>
+                    </div>
+
+                    <!-- دوائر العرض  -->
+
+                    <div class="form_field">
+                      <mat-form-field appearance="outline" dir="rtl">
+                        <input
+                          matInput
+                          autocomplete="off"
+                          id="formAddress"
+                          formControlName="long"
+                          placeholder="دوائر العرض"
+                          required
+                        />
+                      </mat-form-field>
+                      <button
+                        style="position: absolute;     margin-top: 3px;                  "
+                        class="button-map-search"
+                        (click)="searchWithLatlng()"
+                      >
+                        <i class="fal fa-search" style="font-size:13px ;"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- NOTE  -->
+                  <app-map
+                    [addNewAddressMode]="addNewAddressModeStatus ? true : false"
+                    [clientDetailsPageMode]="true"
+                    [clientDetailsPageModeAddMap]="true"
+                    [updatedLocationData]="true"
+                    [clientDetailsOrgins]="{
+                      lng: locationsForm.controls.long.value,
+                      lat: locationsForm.controls.lat.value
+                    }"
+                    [clientDetailsPopupOpen]="showMapPopup"
+                    (clickedNewClientOrgin)="clickedNewOrgins($event)"
+                  >
+                  </app-map>
+                  <!-- NOTE  -->
+                  <!-- TODO  -->
+
+                  <!-- TODO  -->
+                  <div class="detailsCilentMap">
+                    <div class=" ">
+                      <div class="form_field">
+                  <label>العنوان بالتفاصيل <span>*</span></label>
+
+                  <mat-form-field appearance="outline" dir="rtl">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      formControlName="locations_address"
+                      id="formAddress"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    [@fade]
+                    class="validationState  errorState"
+                    *ngIf="
+                      locationsForm.get('locations_address').touched &&
+                      locationsForm.get('locations_address').value == ''
+                    "
+                  >
+                    <i class="fas fa-times"></i> برجاء إدخال العنوان
+                    بشكل صحيح
+                  </div>
+                </div>
+
+                      <div class="form_field">
+                        <label> الملاحظات <span>*</span></label>
+
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <textarea
+                            matInput
+                            autocomplete="off"
+                            id="mapFormOrgins"
+                            formControlName="notes"
+                            required
+                          >
+                          </textarea>
+                        </mat-form-field>
+                        <div
+                          class="validationState  errorState"
+                          *ngIf="
+                            locationsForm.get('notes').touched &&
+                            locationsForm.get('notes').value == ''
+                          "
+                        >
+                          <i class="fas fa-times"></i> برجاء إدخال الملاحظات
+                          بشكل صحيح
+                        </div>
+                      </div>
+                      <!-- End Form field -->
+
+                      <div class="form_field">
+                  <label>المدينة <span>*</span></label>
+
+                  <mat-form-field appearance="outline" dir="rtl">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      id="formArea"
+                      formControlName="locations_area"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    [@fade]
+                    class="validationState  errorState"
+                    *ngIf="
+                      locationsForm.get('locations_area').touched &&
+                      locationsForm.get('locations_area').value == ''
+                    "
+                  >
+                    <i class="fas fa-times"></i> برجاء إدخال المنطقة
+                       بشكل صحيح
+                  </div>
+                </div>
+
+                      <button
+                        (click)="addNewLocation()"
+                        *ngIf="!isUpdate"
+                        class="buttonAddLocation"
+                        type="button"
+                        [disabled]="
+                        !passPopup||
+                        !locationsForm.controls.long.value ||
+                        !locationsForm.controls.lat.value || 
+                        !locationsForm.controls.locations_address.value || 
+                        !locationsForm.controls.locations_area.value
+                      "
+                      >
+                        حفظ
+                      </button>
+
+                      <button
+                        (click)="updateLocation()"
+                        *ngIf="isUpdate"
+                        class="buttonAddLocation"
+                        type="button"
+                        [disabled]="
+                        !passPopup||
+                        !locationsForm.controls.long.value ||
+                        !locationsForm.controls.lat.value || 
+                        !locationsForm.controls.locations_address.value || 
+                        !locationsForm.controls.locations_area.value
+                      "
+                      >
+                        تعديل
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

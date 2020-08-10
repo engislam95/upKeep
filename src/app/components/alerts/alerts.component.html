@@ -1,0 +1,20 @@
+<div id="alerts">
+  <div class="alert warn" *ngIf="warn" [@fade]>
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ warnData }}
+  </div>
+  <div class="alert details" *ngIf="details" [@fade]>
+    <i class="fas fa-gifts"></i>
+    <span [innerHTML]="detailsData"></span>
+  </div>
+  <ng-container *ngFor="let message of messeges">
+    <div class="alert wrong" *ngIf="wrong" [@fade]>
+      <i class="fas fa-times"></i>
+      {{ message }}
+    </div>
+  </ng-container>
+  <div class="alert success" *ngIf="success" [@fade]>
+    <i class="fas fa-check"></i>
+    {{ successData }}
+  </div>
+</div>

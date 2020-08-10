@@ -1,0 +1,134 @@
+/*
+################################### Start Of Media ###################################
+1 - (max-width: 1199px) & (min-width: 992px)
+2 - (max-width: 991px) & (min-width: 768px)
+3 - (max-width: 767px)
+
+################################### End Of Media ###################################
+*/
+
+.main_page .page_body_main .page_block .controlers .controller a {
+
+  width: 102px;
+  height: 87px !important;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(112, 112, 112, 0.34);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller a i {
+
+  margin-top: 18px;
+
+  font-size: 42px;
+  text-align: center;
+  color: #464646;
+
+
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller a span {
+  position: absolute;
+  top: 3px;
+  right: 67px;
+  font-size: 19px;
+  padding: 5px 10px;
+  border-radius: 7px;
+}
+
+.count-mng {
+
+  background: #fb5252;
+  color: #fff;
+  border-radius: 50%;
+  padding: 5px;
+  padding-left: 14px;
+  padding-right: 14px;
+  position: absolute;
+  margin-top: -8px;
+  z-index: 9;
+  /* left: 0; */
+  /* margin-left: -3px; */
+  margin-right: 29px;
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller {
+
+
+  text-align: center;
+}
+
+@media (max-width: 1425px) and (min-width: 768px) {
+  .main_page .page_body .page_body_main .page_block .controlers {
+    flex-wrap: wrap;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    width: 180px;
+    height: 81px;
+    padding-top: 55px;
+    font-size: 30px;
+    margin-top: 29px;
+  }
+
+  .controlers span {
+    font-size: 16px;
+  }
+
+  .main_page .page_body .page_body_title h3 {
+    font-size: 22px;
+  }
+
+  .main_page .page_body .page_body_main .page_block h4 {
+    font-size: 18px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller {
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .main_page .page_body .page_body_main .page_block .controlers {
+    flex-wrap: wrap;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    margin-top: 10px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    right: auto;
+    transform: none;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller a {
+    width: 278px;
+    height: 81px;
+    padding-top: 55px;
+    font-size: 30px;
+    margin-top: 29px;
+  }
+
+  .main_page .page_body .page_body_main .page_block .controlers .controller {
+    text-align: center;
+  }
+
+  .main_page .page_body .page_body_title h3 {
+    font-size: 27px;
+  }
+
+  .main_page .page_body .page_body_main .page_block h4 {
+    font-size: 22px;
+  }
+
+  .controlers span {
+    font-size: 22px;
+  }
+}
+
+//################################### End Of Media ###################################

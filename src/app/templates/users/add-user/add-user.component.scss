@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.cell {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding-bottom: 25px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 5px;
+}
+
+.form_field {
+  img {
+    position: relative;
+    top: 21px;
+    width: 50px;
+    left: -177px;
+    height: 50px;
+  }
+}
+
+.disabledofferInput input:disabled {
+  background: #dddddd;
+}
+
+#phoneKey {
+  left: 22px;
+  background: #eeeeee0d;
+}

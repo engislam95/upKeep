@@ -1,0 +1,59 @@
+.controlPanel {
+  background: #fbfbff;
+
+  h3 {
+    margin-top: 10px;
+    display: inline-block;
+    color: #95989a;
+  }
+
+  ul {
+    display: flex;
+    margin: 30px 0;
+
+    li {
+      text-align: center;
+      margin-left: 30px;
+      text-align: center;
+
+      a {
+        background: #242a2d;
+        color: #fff;
+        line-height: 1;
+        margin: 0 auto;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        font-size: 30px;
+        margin-bottom: 15px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+        width: 102px;
+        height: 85px;
+        border-radius: 10px;
+        background: #fff;
+        border: 1px solid rgba(112, 112, 112, 0.34);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        i {
+          color: #434343;
+          font-size: 40px;
+        }
+
+      }
+
+      span {
+        width: 100px;
+        display: block;
+      }
+    }
+  }
+}
+
+.main_page .page_body_main .page_block {
+
+  padding: 37px 59px;
+
+}

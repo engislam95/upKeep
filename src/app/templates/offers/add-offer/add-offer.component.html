@@ -1,0 +1,429 @@
+<div class="main_page" id="formPage">
+  <app-alerts> </app-alerts>
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <!-- ################################ start header client icons ############################ -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-plus"></i>{{ modeTitle }}</h3>
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/offers/all-offers"
+          *ngIf="user.privilege == 'super-admin' || offer_all"
+        >
+          كل العروض
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <!-- ################################ End header client icons ############################ -->
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_main">
+        <!-- ############################ Start Page Block ############################ -->
+        <div class="page_block">
+          <!-- ############################ Start Add Order Form ############################ -->
+          <div id="add_form">
+            <form (ngSubmit)="onSubmit()" [formGroup]="offersForm">
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>إسم العرض <span>*</span></label>
+                <!-- Offer Name -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="name"
+                    matInput
+                    placeholder="إسم العرض"
+                    autocomplete="off"
+                    id="name"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('name')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-user-tie"></i>
+                </mat-form-field>
+                <!-- Offer Name -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (offersForm.get('name').status === 'INVALID' &&
+                      offersForm.get('name').touched) ||
+                    (submitted && offersForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الإسم
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="offersForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>المصدر <span>*</span></label>
+                <!-- Resource Name -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر المصدر"
+                    aria-label="Number"
+                    matInput
+                    formControlName="sourceObj"
+                    [matAutocomplete]="sourcesAutoComplete"
+                    id="sourceObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('sourceObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-cog"></i>
+                  <mat-autocomplete
+                    #sourcesAutoComplete="matAutocomplete"
+                    [displayWith]="displayResources"
+                  >
+                    <mat-option
+                      *ngFor="let option of resourcesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Resource Name -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (offersForm.get('sourceObj').status === 'INVALID' &&
+                      offersForm.get('sourceObj').touched) ||
+                    (submitted &&
+                      offersForm.get('sourceObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال المصدر
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="offersForm.get('sourceObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الخدمة الرئيسية <span>*</span></label>
+                <!-- Main Service -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الرئيسية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="servicesObj"
+                    [matAutocomplete]="servicesAutoComplete"
+                    id="servicesObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('servicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-cogs"></i>
+                  <mat-autocomplete
+                    #servicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayServices"
+                  >
+                    <mat-option
+                      *ngFor="let option of servicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Main Service -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (offersForm.get('servicesObj').status === 'INVALID' &&
+                      offersForm.get('servicesObj').touched) ||
+                    (submitted &&
+                      offersForm.get('servicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الرئيسية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="offersForm.get('servicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الخدمة الفرعية <span>*</span></label>
+                <!-- Sub Service -->
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الفرعية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="subServicesObj"
+                    [matAutocomplete]="subServicesAutoComplete"
+                    id="subServicesObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('subServicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-cogs"></i>
+                  <mat-autocomplete
+                    #subServicesAutoComplete="matAutocomplete"
+                    [displayWith]="displaySubServices"
+                  >
+                    <mat-option
+                      *ngFor="let option of subServicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <!-- Sub Service -->
+                <!-- Start Validation status -->
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (offersForm.get('subServicesObj').status === 'INVALID' &&
+                      offersForm.get('subServicesObj').touched) ||
+                    (submitted &&
+                      offersForm.get('subServicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الفرعية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="offersForm.get('subServicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+                <!-- End Validation status -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>تاريخ البدء </label>
+                <!-- Start Date -->
+                <div *ngIf="updateMode" id="customeStarDate">
+                  <i class="fas fa-calendar-alt"></i>
+                  <input
+                    formControlName="offerStartDateObj"
+                    matInput
+                    *ngIf="updateMode"
+                  />
+                </div>
+
+                <mat-form-field
+                  *ngIf="!updateMode"
+                  appearance="outline"
+                  dir="rtl"
+                >
+                  <input
+                    formControlName="offerStartDateObj"
+                    [min]="updateMode ? '' : todayDate"
+                    (dateInput)="dateChanged($event, 'start')"
+                    matInput
+                    [matDatepicker]="startDate"
+                    placeholder="تاريخ البدء"
+                    autocomplete="off"
+                    id="offerStartDateObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    *ngIf="!updateMode"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('offerStartDateObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-calendar-alt"></i>
+                  <mat-datepicker-toggle class="dateButton" [for]="startDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #startDate> </mat-datepicker>
+                </mat-form-field>
+                <!-- Start Date -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>تاريخ الإنتهاء </label>
+                <!-- Start Date -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="offerEndDateObj"
+                    [min]="todayDate"
+                    (dateInput)="dateChanged($event, 'end')"
+                    matInput
+                    [matDatepicker]="endDate"
+                    placeholder="تاريخ الإنتهاء"
+                    autocomplete="off"
+                    id="offerEndDateObj"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('offerEndDateObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <i class="fas fa-calendar-alt"></i>
+                  <mat-datepicker-toggle class="dateButton" [for]="endDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #endDate> </mat-datepicker>
+                </mat-form-field>
+                <!-- Start Date -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>صورة العرض</label>
+                <!-- Logo -->
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImage($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="imageInputObj"
+                    formControlName="imageInputObj"
+                  />
+
+                  <i class="fas fa-image"></i>
+                  <span>{{ imagePlaceHolder }}</span>
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('imageInputObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </div>
+                <!-- Logo -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field full_width">
+                <label>التفاصيل <span>*</span></label>
+                <ckeditor
+                  formControlName="description"
+                  [config]="config"
+                  [editor]="Editor"
+                  data="<p>تجربة نص</p>"
+                ></ckeditor>
+              </div>
+              <!-- End Form field -->
+              <hr />
+              <div class="form_field fullWidth toggle">
+                <span>حالة التفعيل : </span>
+                <mat-slide-toggle
+                  [checked]="offersForm.value.active"
+                  dir="rtl"
+                  (change)="changeActive($event)"
+                ></mat-slide-toggle>
+              </div>
+              <hr />
+              <div class="form_field fullWidth formButtons">
+                <button
+                  type="submit"
+                  class="formSubmit formButton"
+                  [disabled]="offersForm.invalid"
+                  *ngIf="!updateMode"
+                >
+                  حفط
+                </button>
+                <button
+                  [disabled]="offersForm.invalid"
+                  type="button"
+                  class="formSubmit formButton"
+                  *ngIf="updateMode"
+                  (click)="onUpdate()"
+                >
+                  تعديل
+                </button>
+                <!-- <button type="reset" class="formButton">إعادة تعيين</button> -->
+              </div>
+            </form>
+          </div>
+          <!-- ############################ End Add Order Form ############################ -->
+        </div>
+        <!-- ############################ End Page Block ############################ -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

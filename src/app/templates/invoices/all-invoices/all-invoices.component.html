@@ -1,0 +1,809 @@
+<div class="main_page form-taxs-mng invoice-style-color ">
+  <app-alerts></app-alerts>
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header> </app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-th-list"></i>كل الفواتير</h3>
+      <!-- <div class="page_body_main_buttons">
+        <a routerLink="/invoices/add-invoice">
+          إضافة فاتورة
+          <i class="fas fa-plus"></i>
+        </a>
+      </div> -->
+    </div>
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="page_body_main">
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block">
+          <!-- Start Search -->
+          <div class="main_block filterMainBlock">
+            <form class="filter_form" [formGroup]="filterForm">
+              <!-- Start  Fillter client invoices  Name -->
+              <div id="todaysOrdersContainer">
+                <div id="CheckBoxTodayFilter">
+                  <label class="todayfilterLabel">فواتير اليوم</label>
+                  <mat-slide-toggle
+                    dir="rtl"
+                    (change)="todayDateFillterToggle($event)"
+                    required
+                  ></mat-slide-toggle>
+                </div>
+              </div>
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field
+                  appearance="outline"
+                  dir="rtl"
+                  class="ForceWidth"
+                >
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="اسم العميل، رقم الهاتف "
+                    autocomplete="off"
+                    id="filterName"
+                    formControlName="filterName"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('filterName')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </mat-form-field>
+              </div>
+              <!-- End Fillter client invoices  Name -->
+
+              <!-- Start  Fillter client invoices  invoices number -->
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field
+                  appearance="outline"
+                  dir="rtl"
+                  class="ForceWidth"
+                >
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="رقم الفاتورة"
+                    autocomplete="off"
+                    id="InvoicesNumber"
+                    formControlName="InvoicesNumber"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('InvoicesNumber')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </mat-form-field>
+              </div>
+              <!-- End Fillter client invoices  invocies number -->
+
+              <!-- start Fillter order number-->
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field
+                  appearance="outline"
+                  dir="rtl"
+                  class="ForceWidth"
+                >
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="رقم الطلب"
+                    autocomplete="off"
+                    id="filterOrderIdNumber"
+                    formControlName="filterOrderIdNumber"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('filterOrderIdNumber')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </mat-form-field>
+              </div>
+              <!-- End Fillter order number -->
+
+              <!-- Start Form field -->
+              <div
+                class="form_input"
+                id="smallFillterInputStyle"
+                [ngClass]="{ backGround: todayFilltered }"
+              >
+                <!-- Date -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    (dateInput)="invoicesDateChanged($event, 'from')"
+                    matInput
+                    [matDatepicker]="fromFilterDate"
+                    placeholder="تاريخ الفواتير من"
+                    autocomplete="off"
+                    formControlName="startDateFilter"
+                    id="filterStartDate"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('startDateFilter')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="fromFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                </mat-form-field>
+                <!-- Date -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start TO field -->
+              <div
+                class="form_input"
+                id="smallFillterInputStyle"
+                [ngClass]="{ backGround: todayFilltered }"
+              >
+                <!-- Date -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    id="styleDisable"
+                    (dateInput)="invoicesDateChanged($event, 'to')"
+                    matInput
+                    [matDatepicker]="toFilterDate"
+                    placeholder="تاريخ الفواتير إلى"
+                    autocomplete="off"
+                    formControlName="endDateFilter"
+                  />
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('endDateFilter')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="toFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
+                </mat-form-field>
+                <!-- Date -->
+              </div>
+              <!-- End TO field -->
+
+              <!-- START TODO  -->
+
+              <!-- Start Form field -->
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="servicesWithTechniciansList"
+                  [multiSelectListPlaceholder]="techniciansFilterPlaceholder"
+                  [multiSelectListType]="nestedType"
+                  [componentId]="filterTechniciansComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+              <!-- End Form field -->
+
+              <!-- END TODO  -->
+
+              <!-- start Fillter order number-->
+
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field
+                  appearance="outline"
+                  dir="rtl"
+                  class="ForceWidth"
+                >
+                  <mat-select
+                    formControlName="status"
+                    id="filterOrderIdNumber"
+                    placeholder="حالة الفاتورة"
+                    (selectionChange)="statusInvoice($event.value)"
+                  >
+                    <mat-option value="">كل الفواتير</mat-option>
+                    <mat-option value="confirm">تم الاصدار</mat-option>
+                    <mat-option value="cancel">تم الالغاء</mat-option>
+                    <mat-option value="undoconfirm">لم تعتمد</mat-option>
+                  </mat-select>
+                  <!-- Reset Input Button -->
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('filterOrderIdNumber')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <!-- Reset Input Button -->
+                </mat-form-field>
+              </div>
+              <!-- End Fillter order number -->
+
+              <!-- End Fillter client invoices  type -->
+            </form>
+          </div>
+          <!-- End Search -->
+          <!-- start result -->
+
+          <div class="left-style-result" *ngIf="show">
+            <div class="result result_1" (click)="applyAction('undocancel')">
+              <p>ارجاع</p>
+              <i class="fas fa-trash-undo-alt"></i>
+            </div>
+
+            <div class="result result_2" (click)="applyAction('cancel')">
+              <p>الغاء</p>
+              <i class="fas fa-trash"></i>
+            </div>
+
+            <div class="result result_3" (click)="applyAction('undoconfirm')">
+              <p>الغاء اعتماد</p>
+              <i class="fas fa-pause"></i>
+            </div>
+
+            <div class="result result_4" (click)="applyAction('confirm')">
+              <p>اعتماد</p>
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+
+          <!-- End result -->
+
+          <!-- start total search-->
+          <div class="p-total-search">
+            <p>
+              <span> نتيجة البحث </span>
+              مجموع الفواتير:
+              <span class="totalNumber">
+                {{ getInvoicesTotal?.total }}
+              </span>
+            </p>
+          </div>
+          <!-- End total search-->
+
+          <!-- start total invoice-->
+          <div class="total-invoice">
+            <div class="invoice">
+              <p>فواتير ملغاه</p>
+              <h5>
+                {{
+                  getInvoicesCounts.cancelled ? getInvoicesCounts.cancelled : 0
+                }}
+              </h5>
+            </div>
+
+            <div class="invoice">
+              <p>فواتير لم تعمد</p>
+              <h5>
+                {{
+                  getInvoicesCounts.unconfirmed
+                    ? getInvoicesCounts.unconfirmed
+                    : 0
+                }}
+              </h5>
+            </div>
+
+            <div class="invoice">
+              <p>فواتير تم اصدارها</p>
+              <h5>
+                {{ getInvoicesCounts.created ? getInvoicesCounts.created : 0 }}
+              </h5>
+            </div>
+          </div>
+
+          <!-- End total invoice-->
+
+          <!-- start cheackbox Badge-->
+
+          <!-- <div class="badgeCheckbox">
+            <mat-checkbox (change)="checkBoxOnChange($event)">
+              احصائيات</mat-checkbox
+            >
+          </div> -->
+          <!-- end cheackbox Badge-->
+
+          <!--  START BADGE -->
+
+          <!-- <div class="badge" *ngIf="statisticsRow">
+            <div class="badgeCounterInvoice">
+              <p>مجموع الفواتير</p>
+
+              <span>
+                {{ getInvoicesData?.total.toLocaleString('en') }} &nbsp;
+                {{ getInvoicesCurrency?.symbol }}</span
+              >
+            </div>
+
+            <div class="badgeCounterInvoice">
+              <p>الإجمالى بدون قيمة مضافة</p>
+
+              <span>
+                {{ getInvoicesData?.total_before_tax.toLocaleString('en') }}
+                &nbsp; {{ getInvoicesCurrency?.symbol }}</span
+              >
+            </div>
+            <div class="badgeCounterInvoice" *ngFor="let element of taxesArray">
+              <p>
+                {{ getInvoicesData ? element.name : '' }}
+              </p>
+
+              <span>
+                {{ getInvoicesData ? element.value : '' }} &nbsp;
+                {{ getInvoicesCurrency?.symbol }}</span
+              >
+            </div>
+          </div> -->
+          <!-- END BADGE -->
+          <!-- start countPerPage-->
+          <div class="countPerPage">
+            <select
+              name=""
+              id=""
+              (change)="setCountPerPage($event.target.value)"
+              class="selectPerpage"
+            >
+              <option *ngFor="let option of countPerPage" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+
+            <!-- <div class="number-invoice">
+              <div class="num-invoice">
+                <p><i class="fas fa-times-circle"></i> 2021456</p>
+              </div>
+
+              <div class="num-invoice">
+                <p><i class="fas fa-times-circle"></i> 2021456</p>
+              </div>
+            </div> -->
+          </div>
+          <!-- start countPerPage-->
+          <!-- Start Table -->
+          <table
+            width="100%"
+            dir="rtl"
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8"
+            id="display_table"
+          >
+            <!-- Donator id -->
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [aria-label]="checkboxLabel()"
+                  (change)="action($event.checked)"
+                >
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(element) : null"
+                  [checked]="selection.isSelected(element)"
+                  [aria-label]="checkboxLabel(element)"
+                  (change)="action($event.checked)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="invoice_number">
+              <th mat-header-cell *matHeaderCellDef>
+                رقم الفاتورة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span> {{ element.receipt_number }} </span>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="client_name">
+              <th mat-header-cell *matHeaderCellDef>
+                إسم العميل
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                  element.client !== null
+                    ? element.client.user
+                      ? element.client.user.name
+                      : element.client.name
+                    : ""
+                }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="number_order">
+              <th mat-header-cell *matHeaderCellDef>
+                رقم الطلب
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.order ? element.order.id : "-" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="service_date">
+              <th mat-header-cell *matHeaderCellDef>
+                التاريخ
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span> {{ element.created_at | date: "MM/dd/yyyy" }} </span>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="order_status">
+              <th mat-header-cell *matHeaderCellDef>
+                نوع الفاتورة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                  element.receipt_type.name == "client"
+                    ? "عميل"
+                    : element.receipt_type.name == "source"
+                    ? "مصدر"
+                    : "طلب"
+                }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="service_order">
+              <th mat-header-cell *matHeaderCellDef>
+                الخدمة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.order?.service ? element.order.service.name : "" }}
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="technicians">
+              <th mat-header-cell *matHeaderCellDef>
+                اسم الفنى
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                  element.order?.technician ? element.order.technician.name : ""
+                }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>
+                الحالة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="stautsInvoice"
+                  *ngIf="element.cancel_status == 1"
+                  [ngClass]="{
+                    cancel: element.cancel_status == 1
+                  }"
+                >
+                  تم الالغاء
+                </span>
+                <span
+                  class="stautsInvoice"
+                  *ngIf="
+                    element.confirm_status == 1 && element.cancel_status == 0
+                  "
+                  [ngClass]="{
+                    confirm:
+                      element.confirm_status == 1 && element.cancel_status == 0
+                  }"
+                >
+                  تم الاصدار
+                </span>
+                <span
+                  class="stautsInvoice"
+                  *ngIf="
+                    element.confirm_status == 0 && element.cancel_status == 0
+                  "
+                  [ngClass]="{
+                    notConfirm:
+                      element.confirm_status == 0 && element.cancel_status == 0
+                  }"
+                >
+                  لم تعتمد
+                </span>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="total_invoice">
+              <th mat-header-cell *matHeaderCellDef>
+                اجمالى الفاتورة
+              </th>
+              <td style="direction: ltr" mat-cell *matCellDef="let element">
+                <span> {{ element.total }} {{ element.currency.symbol }} </span>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="invoice_status">
+              <th mat-header-cell *matHeaderCellDef>
+                تحميل الفاتورة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  class="basic_button"
+                  type="button"
+                  *ngIf="element.urlcode"
+                >
+                  <a target="_blank" href="{{ baseAPI + element.urlcode }}">
+                    <i class="fas fa-file-invoice"></i>
+                  </a>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="invoice_detailss">
+              <th mat-header-cell *matHeaderCellDef>
+                تفاصيل / إرسال الفاتورة
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  class="basic_button"
+                  type="button"
+                  *ngIf="element.urlcode"
+                >
+                  <a
+                    [routerLink]="['/invoices/send-invoice/']"
+                    [queryParams]="{ incoiveID: element.id }"
+                  >
+                    <i class="fas fa-align-justify"></i>
+                  </a>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <!-- Donator id -->
+            <ng-container matColumnDef="invoice_details">
+              <th mat-header-cell *matHeaderCellDef>
+                التفاصيل
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (mouseenter)="hideme[element.id] = !hideme[element.id]"
+                (mouseleave)="hideme[element.id] = !hideme[element.id]"
+              >
+                <div
+                  id="showOrdercontrols"
+                  [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
+                  *ngIf="hideme[element.id]"
+                >
+                  <!-- <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.urlcode"
+                  >
+                    <a target="_blank" href="{{ baseAPI + element.urlcode }}">
+                      <img
+                        src="../../../../assets/img/icons/pdf-file-format-symbol.png"
+                        alt=""
+                      />
+                    </a>
+                    <span class="tooltiptext">عرض الفاتورة</span>
+
+                  </button> -->
+
+                  <!-- <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.urlcode"
+                  >
+                    <a>
+                      <i class="fas fa-unlink"></i>
+                    </a>
+                    <span>الغاء ارتباط </span>
+                  </button> -->
+
+                  <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.urlcode"
+                    [routerLink]="['/invoices/details-invoice']"
+                    [queryParams]="{ incoiveID: element.id }"
+                  >
+                    <a>
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <p class="">تفاصيل</p>
+                  </button>
+
+                  <button
+                    class="basic_button"
+                    type="button"
+                    (click)="rowAction(element, 'undoconfirm')"
+                    *ngIf="
+                      element.confirm_status == 1 && element.cancel_status == 0
+                    "
+                  >
+                    <a>
+                      <i class="fas fa-pause"></i>
+                    </a>
+                    <p class="">الغاء اعتماد</p>
+                  </button>
+
+                  <button
+                    class="basic_button"
+                    type="button"
+                    (click)="rowAction(element, 'confirm')"
+                    *ngIf="
+                      element.confirm_status == 0 && element.cancel_status == 0
+                    "
+                  >
+                    <a>
+                      <i class="fas fa-check"></i>
+                    </a>
+                    <p class="">اعتماد</p>
+                  </button>
+
+                  <button
+                    *ngIf="element.cancel_status == 0"
+                    class="basic_button"
+                    type="button"
+                    (click)="rowAction(element, 'cancel')"
+                  >
+                    <a>
+                      <i class="fas fa-trash"></i>
+                    </a>
+                    <p class="">الغاء</p>
+                  </button>
+
+                  <button
+                    *ngIf="element.cancel_status == 1"
+                    class="basic_button"
+                    type="button"
+                    (click)="rowAction(element, 'undocancel')"
+                  >
+                    <a>
+                      <i class="fas fa-trash-undo-alt"></i>
+                    </a>
+                    <p class="">ارجاع</p>
+                  </button>
+
+                  <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.receipt_type.name == 'client'"
+                  >
+                    <a
+                      [routerLink]="['/invoices/client-invoice/']"
+                      [queryParams]="{
+                        incoiveID: element.id,
+                        updatedMode: true
+                      }"
+                    >
+                      <i class="fal fa-edit"></i>
+                    </a>
+                    <p class="">تعديل</p>
+                  </button>
+                  <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.receipt_type.name == 'source'"
+                  >
+                    <a
+                      [routerLink]="['/invoices/resource-invoice/']"
+                      [queryParams]="{
+                        incoiveID: element.id,
+                        updatedMode: true
+                      }"
+                    >
+                      <i class="fal fa-edit"></i>
+                    </a>
+                    <p class="">تعديل</p>
+                  </button>
+                  <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.receipt_type.name == 'order'"
+                  >
+                    <a
+                      [routerLink]="['/invoices/order-invoice/']"
+                      [queryParams]="{
+                        incoiveID: element.id,
+                        updatedMode: true
+                      }"
+                    >
+                      <i class="fal fa-edit"></i>
+                    </a>
+                    <p class="">تعديل</p>
+                  </button>
+                </div>
+
+                <div class="basic_button" type="button">
+                  <img src="../../../../assets/img/icons/Menu.svg" alt="" />
+                </div>
+              </td>
+            </ng-container>
+            <!-- Donator id -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              [ngClass]="{
+                'cancel-bg': row.cancel_status == 1 && row.confirm_status == 0,
+                'notConfirm-bg':
+                  row.confirm_status == 0 && row.cancel_status == 0
+              }"
+            ></tr>
+          </table>
+
+          <!-- End Table -->
+          <!-- Start Pagination -->
+          <div class="pagination">
+            <ul>
+              <li class="pagination_button ">
+                <a (click)="goPage(1)">الصفحة الأولي</a>
+              </li>
+              <li class="previousPagePagination moveOnePageButton">
+                <button
+                  (click)="goPage(pageId - 1)"
+                  type="button"
+                  [disabled]="firstPage"
+                >
+                  <i class="fas fa-angle-right"></i>
+                </button>
+              </li>
+              <li *ngFor="let i of pagesNumbers" (click)="goPage(i)">
+                <a [class]="pageId == i ? 'active' : ''">{{ i }}</a>
+              </li>
+              <li class="nextPagePagination moveOnePageButton">
+                <button
+                  (click)="goPage(pageId + 1)"
+                  type="button"
+                  [disabled]="lastPage"
+                >
+                  <i class="fas fa-angle-left"></i>
+                </button>
+              </li>
+              <li class="pagination_button ">
+                <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Pagination -->
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

@@ -1,0 +1,61 @@
+<div class="main_page setting-invoice">
+  <app-alerts></app-alerts>
+  <app-side-menu-mgt></app-side-menu-mgt>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title"></div>
+
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h4 style="    margin-bottom: 27px;  margin-top: -14px;">
+        <a style="color: #000;" matBadgePosition="after" routerLink="/managment"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #000;"
+          matBadgePosition="after"
+          routerLink="/receipts-managment"
+        >
+          ادارة الفواتير
+        </a>
+        < الاعدادات
+      </h4>
+
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+
+        <div class="page_block">
+          <h3 style="color: #540D77;">
+            <i style="color: #540D77; margin-left: 5px;" class="fas fa-cog"></i>
+            الاعدادات
+          </h3>
+
+          <div>
+            <hr />
+            <mat-checkbox (change)="invoiceActive($event)" [checked]="receipt">
+              <p>تفعيل الفواتير</p>
+            </mat-checkbox>
+            <br />
+            <hr />
+            <!-- <mat-checkbox (change)="smsActive($event)" [checked]="sms">
+              <p>تفعيل ارسال الرسائل النصية</p>
+            </mat-checkbox>
+            <hr /> -->
+          </div>
+          <div
+            class="button-save-taxs"
+            style="position: relative;
+          "
+          >
+            <button (click)="saveModel()">
+              <i class="fal fa-save"></i>
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

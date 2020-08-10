@@ -1,0 +1,856 @@
+// start new style client details data
+.clientDetails-name {
+  padding: 0px 50px;
+ul{
+  display: flex;
+  li {
+    margin-bottom: 1px;
+    margin-left: 15px;
+  }
+  .clientDetails-id {
+    background: #27282a;
+    color: #fff;
+    padding: 0px 10px 0px 5px;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  .cilentAccount-type {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    color: #636363;
+    padding: 3px 18px;
+    width: 105px;
+      height: 30px;
+      background: #f2f3f8;
+      border: 2px solid rgba(112, 112, 112, 0.34);
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      padding-bottom: 5px;
+
+  }
+
+  .cilentAccount-type-0 {
+
+    background: #1e9a19;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    color: #fff;
+    padding: 4px 29px;
+    padding-bottom: 7px;
+
+
+  }
+
+  .cilentAccount-type-1 {
+    width: 125px;
+    height: 30px;
+    background: #444;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 15px;
+    text-align: right;
+    color: #fff;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+    padding: 7px 29px;
+
+  }
+}
+
+}
+
+.button-add-taxs{
+  position: absolute;
+  margin-top: -7px;
+  left: 23px;
+  button{
+    padding-left: 19px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+
+    font-size: 14px;
+    margin-left: 28px;
+i{
+
+background: #242a2d;
+color: #fff;
+font-size: 25px;
+padding: 10px;
+padding-right: 15px;
+padding-left: 15px;
+margin-left: 14px;
+margin-right: 3px;
+
+font-family: "Font Awesome 5 Pro";
+font-weight: 300;
+font-size: 18px;
+text-align: center;
+color: #fff;
+text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+
+}
+  }
+}
+
+.main_page .page_body_main .page_block {
+  margin: 20px 40px;
+  padding-top: 0px;
+  padding-right: 0;
+  padding-left: 0;
+
+  h4{
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 17px;
+    color: #464646;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    margin-top: 35px;
+    margin-right: 34px;
+    margin-bottom: 25px;
+    i{
+      font-size: 16px;
+      margin-left: 8px;
+      color: #242a2d;
+    }
+
+  }
+  .number-maps{
+    width: 163px;
+    height: 120px;
+    border-radius: 15px;
+    background: #fff;
+    border: 1px solid rgba(112, 112, 112, 0.59);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    text-align: center;
+    margin-right: 55px;
+    i{
+      font-size: 26px;
+      text-align: center;
+      color: #636363;
+      margin-top: 17px;
+    }
+    p{
+      font-family: "GE SS Two";
+      font-weight: 300;
+      font-size: 15px;
+      color: #000;
+      text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+      margin-top: 9px;
+      margin-bottom: 5px;
+    }
+    h5{
+      font-family: Roboto;
+      font-weight: 500;
+      font-size: 21px;
+      text-align: center;
+      color: #000;
+
+    }
+
+
+  }
+  .set_maps{
+
+    display: flex;
+    margin-top: 22px;
+    padding: 9px 31px;
+    margin-bottom: 66px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 98%;
+
+    .set_map_one{
+      width: 40%;
+      margin-bottom: 50px;
+      display: flex;
+      flex-direction: column;
+      height: 488px;
+      background: #f8f8f8;
+
+      border: 1px dotted #707070;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      padding: 16px;
+      margin-left: 70px;
+      p{
+        font-family: "GE SS Two";
+        font-weight: 300;
+        font-size: 15px;
+        text-align: right;
+        color: #000;
+        text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+        i{
+          font-size: 18px;
+          margin-right: 8px;
+          color: #407d12;
+        }
+
+      }
+
+      h5{
+        font-family: "GE SS Two";
+        font-weight: 300;
+        float: left;
+        // position: relative;
+        // top: -13px;
+        font-size: 15px;
+        color: #000;
+        // top: -19px;
+        position: absolute;
+        margin-right: 26%;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        span{
+          font-family: Roboto;
+          font-weight: 500;
+          font-size: 15px;
+          color: #000;
+          text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.16);
+          margin-right: 8px;
+
+        }
+      }
+
+      h6{
+
+        font-family: "GE SS Two";
+        font-weight: 300;
+        font-size: 15px;
+        text-align: center;
+        color: #000;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+        i{
+
+          font-size: 17px;
+          color: #636363;
+          margin-left: 5px;
+
+        }
+
+      }
+
+      .maps-details
+      {
+      width: 525px;
+      height: 70px;
+      background: #fff;
+      border: 1px dotted #707070;
+      filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));
+      position: absolute;
+    margin-top: 470px;
+    z-index: 9;
+    margin-right: 45px;
+
+      button {
+       background: none;
+       border: none;
+       position: absolute;
+       left: 4px;
+       top: 5px;
+
+        i{
+          font-size: 21px;
+          color: #636363;
+        }
+      }
+
+      ul{
+        margin-top: 6px;
+        padding: 14px;
+        li{
+          font-family: "GE SS Two";
+          font-weight: 500;
+          font-size: 13px;
+          color: #060606;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+          i{
+            font-size: 4px;
+            background: #242a2d;
+            border: 1px solid #242a2d;
+            margin-left: 10px;
+            top: -4px;
+
+          }
+
+        }
+
+        p{
+          font-family: "GE SS Two";
+          font-weight: 300;
+          font-size: 13px;
+          margin-bottom: 10px;
+          color: #060606;
+          text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+          margin-right: 17px;
+          padding-top: 4px;
+          margin-bottom: 20px;
+
+
+        }
+      }
+
+
+      }
+
+
+
+      }
+
+      .controlers{
+        margin-right: 17%;
+      }
+
+      .controlers .controller {
+        margin: auto;
+
+        text-align: center;
+        margin-left: 23px;
+        margin-right: -11px;
+      
+        a{
+          width: 70px;
+          height: 59px;
+          border-radius: 10px;
+          background: #fff;
+          border: 1px solid rgba(112, 112, 112, 0.34);
+          box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.16);
+
+          i{
+              font-size: 17px;
+              text-align: center;
+              color: #060606;
+
+          }
+          p{
+            font-family: "GE SS Two";
+            font-weight: 300;
+            font-size: 13px;
+            text-align: center;
+            color: #060606;
+            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+          }
+
+        }
+
+        button{
+          width: 70px;
+          height: 59px;
+          border-radius: 10px;
+          background: #fff;
+          border: 1px solid rgba(112, 112, 112, 0.34);
+          box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.16);
+
+          i{
+              font-size: 17px;
+              text-align: center;
+              color: #060606;
+
+          }
+          p{
+            font-family: "GE SS Two";
+            font-weight: 300;
+            font-size: 13px;
+            text-align: center;
+            color: #060606;
+            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+          }
+
+        }
+      }
+    }
+
+    .set_map_two{
+      width: 40%;
+      height: 488px;
+      background: #f8f8f8;
+      border: 1px dotted #707070;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      margin-right: 32px;
+    }
+  }
+
+.block_client_header{
+  h3{
+
+    background: #2b2b2b;
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 18px;
+    text-align: right;
+    color: #fff;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    padding: 11px 16px;
+
+    i{
+
+
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      margin-left: 7px;
+
+    }
+
+
+  }
+}
+
+#gpsLocation {
+  .resetInput {
+    background: #fff;
+    width: 30px;
+    margin-left: -6px;
+  }
+}
+
+.add-location {
+  border: none;
+  background: #f6a811;
+  color: #242a2d;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  margin-right: 15px;
+  padding: 10px 10px 10px 16px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+/////////////////////////
+.clientMapInner agm-map {
+  height: 250px;
+}
+
+// TODO trying creat css grid system pure
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  // grid-template-rows: 1fr 1fr 1fr;
+}
+.cell {
+  // display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+#checkSign {
+  float: left;
+}
+// TODO
+
+.airConditionerDetails {
+  span {
+    padding-left: 7px;
+  }
+  //
+}
+
+.mainAddressToggleContainer {
+  margin-top: 20px;
+  margin-right: 50px;
+}
+mat-slide-toggle {
+  margin-top: -30px;
+  margin-right: 130px;
+  position: relative;
+  float: right;
+}
+// .progressState {
+//   font-size: 18px;
+//   display: flex;
+//   position: fixed;
+//   margin-top: -25px;
+// }
+// NOTE
+.disabledDelete {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// NOTE
+
+agm-map {
+  height: calc(50vh - 140px);
+  display: block;
+}
+// start new style client details data
+.clientDetails-name {
+  padding: 0px 50px;
+  li {
+    margin-bottom: 10px;
+  }
+  .clientDetails-id {
+    background: #27282a;
+    color: #fff;
+    padding: 0px 10px 0px 5px;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  .cilentAccount-type {
+    background: #27282a;
+
+    color: #fff;
+    padding: 0px 10px 0px 5px;
+  }
+}
+.clientDetails-data-block {
+  height: 371px;
+
+  margin: auto;
+  padding: 20px 40px;
+  .divleft {
+    float: left;
+    width: 44%;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    padding-right: 60px;
+    height: 305px;
+    padding-top: 30px;
+    h3 {
+      font-family: 'Arabic gess Bold';
+    }
+    ul {
+      display: flex;
+      margin-top: 30px;
+      li {
+        margin-left: 36px;
+        text-align: center;
+        border: 1px solid #7070708f;
+        padding: 12px 14px;
+        border-radius: 15px;
+        width: 80px;
+        button {
+          background: none;
+          /* border: navajowhite; */
+          border: none;
+        }
+        span {
+          font-family: 'roboto Bold';
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  .divRight {
+    float: right;
+    width: 50%;
+    overflow: hidden;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+
+    h2 {
+      font-family: 'Arabic gess Bold';
+      margin-bottom: 18px;
+      font-size: 22px;
+    }
+
+    .ul-clientData {
+      background: #fff;
+
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      padding: 21px 67px;
+      i {
+        padding-left: 10px;
+      }
+      img {
+        padding-left: 10px;
+      }
+      h5 {
+        color: #565656;
+        font-size: 16px;
+        padding: 0px 25px 10px 5px;
+      }
+      .clientDetails-Image {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        border-radius: 50%;
+        position: absolute;
+        top: 31%;
+        left: 47%;
+      }
+    }
+  }
+}
+
+// end new style of client details page
+
+.submitButton {
+  background: #f6a811;
+  color: #242a2d;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  margin-right: 15px;
+  padding: 8px 30px 8px 30px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0;
+  margin-top: 0;
+  font-family: Arabic gess light;
+  border: 1px solid #706f6f;
+}
+/////////////////////////////////////////////
+.clientMap {
+  padding: 20px 40px;
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  margin-bottom: 100px;
+
+  .buttonAddLocation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    h3 {
+      font-family: 'Arabic gess Bold';
+
+      font-size: 22px;
+    }
+    a {
+      background: #f6a811;
+      color: #242a2d;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      border-radius: 2px;
+      margin-right: 15px;
+      padding: 8px 30px 8px 30px;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 0;
+      margin-top: 0;
+      font-family: Arabic gess light;
+      border: 1px solid #706f6f;
+    }
+
+    // .mapFormSubmit {
+    //   background: #f6a811;
+    //   color: #242a2d;
+    //   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    //   border-radius: 2px;
+    //   margin-right: 15px;
+    //   padding: 8px 30px 8px 30px;
+    //   position: relative;
+    //   display: inline-block;
+    //   margin-bottom: 0;
+    //   margin-top: 0;
+    //   font-family: Arabic gess light;
+    //   border: 1px solid #706f6f;
+    // }
+
+    // .disabledClass {
+    //   background: gray;
+    //   pointer-events: none;
+    //   cursor: none;
+    // }
+  }
+  p {
+    font-family: 'Arabic gess med';
+  }
+
+  h5 {
+    font-family: 'Arabic gess light';
+    font-size: 15px;
+    img {
+      width: 15px;
+      margin-left: 4px;
+    }
+  }
+
+  .addAdress {
+    border: none;
+    background: none;
+  }
+  .editMap {
+    height: 50px;
+    .location {
+      float: right;
+      width: 60%;
+      overflow: hidden;
+    }
+    .editIcon {
+      float: left;
+      width: 23%;
+      overflow: hidden;
+      p {
+        text-align: left;
+        margin-left: 10px;
+      }
+      ul {
+        display: flex;
+
+        li {
+          margin-left: 0;
+          margin-right: 30px;
+        }
+      }
+      button {
+        height: 85%;
+        background: none;
+        border: none;
+        width: 22px;
+        // margin-right: -15px;
+        margin-right: -32px;
+        margin-top: 5px;
+        img {
+          width: 100px;
+        }
+      }
+    }
+  }
+  .map {
+    width: 450px;
+    margin-top: 10px;
+    height: 250px;
+    margin-bottom: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  }
+  ul {
+    // display: flex;
+    li {
+      // margin-left: 30px;
+      // width: 100%;
+      padding-left: 23px;
+      width: 70%;
+      padding: 10px;
+      margin-right: 70px;
+    }
+  }
+}
+/////////////////////////
+#popup #popupData {
+  background: rgba(24, 28, 30, 0.95);
+  background: #fafafa !important;
+  .popupMap {
+    // height: 300px;
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  }
+  .detailsCilentMap {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    .form_field {
+      width: calc(50% - 15px);
+      // display: inline-block;
+      display: block;
+      // position: relative;
+      margin-right: 13px;
+      .mat-form-field {
+        width: 98%;
+        text-align: right;
+      }
+    }
+    .buttonAddLocation {
+      text-align: center;
+
+      margin: 0 auto ;
+
+        background: #f6a811 !important;
+        color: #242a2d  !important;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        border-radius: 2px;
+        // margin-right: 15px;
+        padding: 8px 30px 8px 30px;
+
+        display: block;
+        text-align:center !important ;
+
+        font-family: Arabic gess light;
+        border: 1px solid #706f6f;
+
+    }
+  }
+}
+////////////////////////
+
+.page_body_main {
+  .orderDetailsContainer {
+    background: #fbfbff !important;
+    padding-top: 0 !important;
+    h3 {
+      text-align: center;
+      padding: 25px 0;
+    }
+    hr {
+      background: #242a2d;
+      height: 1px;
+    }
+    .clientDetails {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        li {
+          width: 50%;
+          margin: 15px 0;
+          h4 {
+            color: #242a2d;
+          }
+          h5 {
+            margin-top: 15px;
+            color: #565656;
+            font-size: 14px;
+            i {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.clientMapInner {
+  clear: both;
+
+  height: auto !important;
+}
+
+////////////////////////
+
+
+.button-map-search{
+background: #242a2d;
+border: none;
+padding: 8px 18px;
+padding-top: 11px;
+i{
+
+  font-size: 18px;
+  color: #fff;
+
+}
+
+}
+#add_form form .form_field .mat-form-field .mat-form-field-wrapper i {
+  color: #242A2D !important;
+}
+
+#gpsLocation .resetInput{
+
+  margin-left: -12px;
+}
+
+.style-map-input{
+  position: absolute;
+  z-index: 9;
+  top: 19%;
+  width: 80%;
+  margin-right: 3%;
+
+}
+
+::ng-deep .mat-tooltip {
+  /* your own custom styles here */ 
+  /* e.g. */
+  // color: yellow;
+  height: 50px;
+  width: 150px;
+  font-size: 15px ;
+  text-align: center;
+}

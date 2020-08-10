@@ -1,0 +1,154 @@
+<div class="main_page">
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title_title">
+      <h3><i class="fas fa-home"></i>لوحة التحكم</h3>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <app-alerts></app-alerts>
+        <div class="page_block">
+          <h4>الإختصارات</h4>
+          <div class="controlers">
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_add"
+            >
+              <a routerLink="/orders/add-order">
+                <img
+                  src="../../../../assets/img/home_page/Component28.svg"
+                  alt=""
+              /></a>
+              <p>طلب جديد</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_all"
+            >
+              <a routerLink="/orders/orders-map">
+                <img
+                  src="../../../../assets/img/home_page/Group52.svg"
+                  width="30px"
+                  alt=""
+              /></a>
+              <p>خريطة الطلبات</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_all"
+            >
+              <a routerLink="/orders/all-orders">
+                <img src="../../../../assets/img/home_page/30537.png" alt=""
+              /></a>
+              <p>البحث عن طلب</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_all"
+            >
+              <a
+                matBadgePosition="after"
+                routerLink="/orders/all-orders"
+                [queryParams]="{
+                  todayOrders: true
+                }"
+              >
+                <span class="badgeNumber badg_color_c">
+                  {{ todayCount }}
+                </span>
+                <img
+                  src="../../../../assets/img/home_page/Component29.svg"
+                  alt=""
+              /></a>
+              <p>طلبات اليوم</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_all"
+            >
+              <a
+                matBadgePosition="after"
+                matBadgeColor="yellow"
+                routerLink="/orders/suspended-orders"
+              >
+                <span class="badgeNumber badg_color_d">
+                  {{ stoppedCount }}</span
+                >
+                <img
+                  src="../../../../assets/img/home_page/Group58.svg"
+                  width="50px"
+                  alt=""
+              /></a>
+              <p>طلبات إيقاف مؤقت</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || order_all"
+            >
+              <a matBadgePosition="after" routerLink="/orders/postponed-orders">
+                <span class="badgeNumber badg_color_e">
+                  {{ postponedCount }}</span
+                >
+                <img
+                  src="../../../../assets/img/home_page/24-hour-service(1).png"
+                  alt=""
+              /></a>
+              <p>طلبات مؤجلة</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || receipt_all"
+            >
+              <a matBadgePosition="after" routerLink="/invoices/all-invoices">
+                <span class="badgeNumber badg_color_a">
+                  {{ receiptedCount }}</span
+                >
+                <img src="../../../../assets/img/home_page/Group55.svg" alt=""
+              /></a>
+              <p>جميع الفواتير</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || client_add"
+            >
+              <a matBadgePosition="after" routerLink="/clients/add-client">
+                <span class="badgeNumber badg_color_b">
+                  {{ clientsCount }} </span
+                ><img
+                  src="../../../../assets/img/home_page/Component27.svg"
+                  alt=""
+              /></a>
+              <p>عميل جديد</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || offer_all"
+            >
+              <a matBadgePosition="after" routerLink="/offers/available-offers">
+                <span class="badgeNumber badg_color_f"> {{ offersCount }}</span>
+                <img src="../../../../assets/img/home_page/discount.png" alt=""
+              /></a>
+              <p>العروض المتاحة</p>
+            </div>
+            <div
+              class="controller"
+              *ngIf="user.privilege == 'super-admin' || service_all"
+            >
+              <a
+                matBadgePosition="after"
+                routerLink="/company-services/all-main-services"
+              >
+                <span class="badgeNumber badg_color_f"> {{ offersCount }}</span>
+                <img src="../../../../assets/img/home_page/surface1.svg" alt=""
+              /></a>
+              <p>الخدمات المتاحة</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

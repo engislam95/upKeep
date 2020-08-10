@@ -1,0 +1,237 @@
+<div class="main_page ownerpage">
+  <app-side-menu-owner></app-side-menu-owner>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <div class="header">
+        <div class="borderheader">
+          <div class="header-side"></div>
+        </div>
+        <div class="header-title">
+          <p style="color: #F6A811;">
+            مرحبا بك &nbsp; &nbsp; &nbsp;<span style="color: #fff;">{{
+              user.name
+            }}</span>
+          </p>
+          <span><p>الصفحة الرئيسية &nbsp; | &nbsp; إدارة الشركات</p></span>
+        </div>
+      </div>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <div class="block">
+          <div class="number-company">
+            <div class="back-color">
+              <img src="../../../../assets/img/use.svg" />
+              <h4>عدد المستخدمين</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.users_count ? company.users_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num2">
+            <div class="back-color">
+              <img src="../../../../assets/img/clients.svg" />
+              <h4>عدد العملاء</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.clients_count ? company.clients_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num3">
+            <div class="back-color">
+              <img src="../../../../assets/img/orders.svg" />
+              <h4>عدد الطلبات</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.orders_count ? company.orders_count : "0" }}</p>
+            </div>
+          </div>
+          <div class="number-company num4">
+            <div class="back-color">
+              <img src="../../../../assets/img/price.svg" />
+              <h4>التعامل المالى</h4>
+            </div>
+            <div class="count-nm">
+              <p>{{ company.TotalMoney ? company.TotalMoney : "0" }}</p>
+
+              <p class="p-s">SAR</p>
+            </div>
+          </div>
+          <div class="add-comp">
+            <div class="back-color">
+              <img
+                src="../../../../assets/img/visitor.svg"
+                *ngIf="!company.image"
+                style="background: #ffff; padding: 10px;"
+              />
+              <img [src]="company.image" *ngIf="company.image" alt="Logo" />
+              <div class="activeStatue">
+                <span
+                  *ngIf="company.active === 1"
+                  class="statue active-{{ company.active }}"
+                >
+                  نشط
+                </span>
+                <span
+                  *ngIf="company.active === 0"
+                  class="statue active-{{ company.active }}"
+                >
+                  غير نشط
+                </span>
+              </div>
+            </div>
+            <p>
+              <a> {{ company.name ? company.name : "-" }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-details-owner">
+      <div class="info1">
+        <div class="not_active">
+          <a>
+            <img src="../../../../assets/img/register-black.svg" />
+            <img
+              src="../../../../assets/img/foursquare-check-in.svg"
+              alt=""
+              style="position: relative;
+                right: -75px;
+    top: 15px;
+        "
+            />
+          </a>
+        </div>
+        <p>معلومات التسجيل</p>
+      </div>
+      <div
+        class="info2"
+        [routerLink]="['/companies/company-dashboard']"
+        [queryParams]="{ companyId: company.id }"
+      >
+        <div class="active">
+          <a>
+            <div class="count-info">
+              <span>{{ company.services_count }}</span>
+            </div>
+            <img src="../../../../assets/img/files-white.svg" />
+          </a>
+        </div>
+        <p>الخدمات</p>
+      </div>
+
+        <!--  -->
+        <div class="info3" [routerLink]="['/companies/company-cities']"
+                            [queryParams]="{ companyId: company.id }">
+          <div class="active">
+            <a>
+
+              <div class="count-info">
+                <span>{{ company.cities }}</span>
+              </div>
+             
+              <img class="marker" src="../../../../assets/img/map-marked-alt.svg" />
+              <img
+                src="../../../../assets/img/foursquare-check-in.svg"
+                alt=""
+                style="position: relative;
+              right: -60px;
+              top: 23px;
+          "
+              />
+            </a>
+          </div>
+          <p>المدن</p>
+        </div>
+        <!--  -->
+
+    </div>
+    <div class="page_body section-body">
+      <button
+        class="edit-button"
+        [routerLink]="['/companies/add-company']"
+        [queryParams]="{
+          companyId: company.id,
+          updateMode: true
+        }"
+      >
+        <img src="../../../../assets/img/editss.svg" /> تعديل
+      </button>
+      <div class="change-details">
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> تاريخ التسجيل</p>
+          <p>{{ company.created_at ? company.created_at : "-" }}</p>
+        </div>
+        <div class="form_field"></div>
+      </div>
+
+      <div class="change-details">
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> اسم الشركة</p>
+          <p>{{ company.name ? company.name : "-" }}</p>
+        </div>
+
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> اسم مسئول الحساب</p>
+          <p>
+            {{ superAdmin ? superAdmin.name : "-" }}
+          </p>
+        </div>
+      </div>
+
+      <div class="change-details">
+        <div class="form_field">
+          <p>
+            <img src="../../../../assets/img/reg.svg" /> المدينة
+            <span> ( المملكة العربية السعودية ) </span>
+          </p>
+          <p>{{ company.city ? company.city.name : "-" }}</p>
+        </div>
+
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> رقم الاتصال</p>
+          <p>{{ company.phone ? company.phone : "-" }}</p>
+        </div>
+      </div>
+
+      <div class="change-details">
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> العنوان</p>
+          <p>{{ company.address ? company.address : "-" }}</p>
+        </div>
+
+        <div class="form_field">
+          <p>
+            <img src="../../../../assets/img/reg.svg" /> البريد الالكترونى
+            للمراسلات
+          </p>
+          <p>{{ company.email ? company.email : "-" }}</p>
+        </div>
+      </div>
+      <div class="change-details">
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> اسم الدخول</p>
+          <p>
+            {{ superAdmin ? superAdmin.email : "-" }}
+          </p>
+        </div>
+
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> الموقع الالكترونى</p>
+          <p>{{ company.website ? company.website : "-" }}</p>
+        </div>
+      </div>
+
+      <div class="change-details">
+        <div class="form_field">
+          <p><img src="../../../../assets/img/reg.svg" /> رقم السجل التجارى</p>
+          <p>
+            {{
+              company.commercial_register ? company.commercial_register : "-"
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+.main_page .page_body_title_title {
+  padding: 48px 0;
+}
+
+.alert-error {
+
+  background: #f00;
+  padding: 8px 8px;
+  color: #fff;
+  margin-bottom: 31px;
+  font-size: 14px;
+
+  i {
+    margin-left: 10px;
+  }
+
+}
+
+
+.main_page .page_body_main .page_block .controlers .controller a {
+
+  width: 102px;
+  height: 92px !important;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(112, 112, 112, 0.34);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+.main_page .page_body_main .page_block .controlers .controller a i {
+  margin-top: 18px;
+  font-size: 40px;
+}
+
+.main_page .page_body_main .page_block .controlers .controller {
+
+  text-align: center;
+}

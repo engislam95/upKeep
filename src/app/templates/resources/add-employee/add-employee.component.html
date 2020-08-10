@@ -1,0 +1,118 @@
+<div class="main_page" id="formPage">
+  <!-- ######################### Start Side Menu ######################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ######################### End Side Menu ######################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <div class="page_body_title">
+      <h3><i class="fas fa-plus"></i>إضافة مسؤول</h3>
+      <div class="page_body_main_buttons">
+        <a routerLink="/resources/all-resources">
+          جميع المصادر
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <div class="page_body formContainer">
+      <div class="page_body_main">
+        <!-- ################################### Start Page Block ################################### -->
+        <div class="page_block">
+          <!-- ################################### Start Add Order Form ################################### -->
+          <div id="add_form">
+            <form>
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>إسم المصدر <span>*</span></label>
+                <!-- Client Name -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input matInput placeholder="إسم المصدر" autocomplete="off" />
+                  <i class="fas fa-user-tie"></i>
+                </mat-form-field>
+                <!-- Client Name -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>إسم المسؤول <span>*</span></label>
+                <!-- Client Name -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="إسم المسؤول"
+                    autocomplete="off"
+                  />
+                  <i class="fas fa-user-tie"></i>
+                </mat-form-field>
+                <!-- Client Name -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>البريد الإلكتروني <span>*</span></label>
+                <!-- Main Service -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="البريد الإلكتروني"
+                    autocomplete="off"
+                  />
+                  <i class="fas fa-envelope"></i>
+                </mat-form-field>
+                <!-- Main Service -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>رقم الموبايل <span>*</span></label>
+                <!-- Main Service -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="رقم الموبايل"
+                    autocomplete="off"
+                  />
+                  <i class="fas fa-mobile"></i>
+                </mat-form-field>
+                <!-- Main Service -->
+              </div>
+              <!-- End Form field -->
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>الوظيفة <span>*</span> </label>
+                <!-- Sub Service -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input matInput placeholder="الوظيفة" autocomplete="off" />
+                  <i class="fas fa-cog"></i>
+                </mat-form-field>
+                <!-- Sub Service -->
+              </div>
+              <!-- End Form field -->
+
+              <hr />
+              <div class="form_field fullWidth toggle">
+                <span>حالة التفعيل : </span>
+                <mat-slide-toggle
+                  checked="checked"
+                  dir="rtl"
+                ></mat-slide-toggle>
+              </div>
+              <hr />
+              <div class="form_field fullWidth formButtons">
+                <a href="" class="formSubmit formButton">حفط</a>
+                <!-- <a href="" class=" formButton">إعادة تعيين</a> -->
+              </div>
+            </form>
+          </div>
+          <!-- ################################### End Add Order Form ################################### -->
+        </div>
+        <!-- ################################### End Page Block ################################### -->
+      </div>
+    </div>
+  </div>
+  <!-- ################################### End Middle Page ################################### -->
+</div>

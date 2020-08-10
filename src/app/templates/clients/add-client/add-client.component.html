@@ -1,0 +1,1046 @@
+<div class="main_page client-edit-block" id="formPage">
+  <app-alerts></app-alerts>
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title editClientTitle">
+      <h4><i class="fas fa-user"></i>إدارة العملاء</h4>
+      <!-- <div class="page_body_main_buttons">
+          <a routerLink="/clients/all-clients">
+            كل العملاء
+            <i class="fas fa-th-list"></i>
+          </a>
+        </div> -->
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <h4 style="    margin-bottom: 27px; font-size: 14px; color: #464646;">
+        <a style="color: #464646;" matBadgePosition="after" routerLink="/home"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #464646;"
+          matBadgePosition="after"
+          routerLink="/clients/all-clients"
+        >
+          العملاء
+        </a>
+        < اضافة عميل جديد
+      </h4>
+
+      <div class="page_body_main">
+        <div id="add_form">
+          <form
+            (ngSubmit)="onSubmit()"
+            #form="ngForm"
+            [formGroup]="clientsForm"
+          >
+            <div class="page_block registerForm">
+              <h5><i class="fas fa-user"></i> اضافة عميل جديد</h5>
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label> <i class="fas fa-user"></i> إسم العميل </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="name"
+                    matInput
+                    placeholder="إسم العميل"
+                    autocomplete="off"
+                    id="name"
+                  />
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (clientsForm.get('name').status === 'INVALID' &&
+                      clientsForm.get('name').touched) ||
+                    (submitted && clientsForm.get('name').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الإسم
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="clientsForm.get('name').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <!-- End Form field -->
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-phone-alt"></i> رقم هاتف العميل
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    (keyup)="mobileChanged($event.target.value)"
+                    (focusout)="checkReservation($event.target.value, 'mobile')"
+                    (focusin)="mobileCheckLoaded = false"
+                    formControlName="mobileKey"
+                    appOnlyNumbers="true"
+                    maxlength="9"
+                    matInput
+                    placeholder="رقم هاتف العميل"
+                    autocomplete="off"
+                    id="mobileKey"
+                  />
+                  <span id="phoneKey" *ngIf="showCountryPhoneKey" [@fade]
+                    >{{ countryPhoneKey }}+</span
+                  >
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (clientsForm.get('mobileKey').status === 'INVALID' &&
+                      clientsForm.get('mobileKey').touched) ||
+                    (submitted &&
+                      clientsForm.get('mobileKey').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الهاتف بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    clientsForm.get('mobileKey').touched &&
+                    mobileReserved &&
+                    mobileCheckLoaded &&
+                    clientsForm.get('mobileKey').status === 'VALID'
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا الرقم موجود بالفعل في قاعدة
+                  البيانات
+                  <a style="background: #000;text-decoration: underline;">
+                    اضغط هنا لتفاصيل العميل
+                  </a>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    clientsForm.get('mobileKey').status === 'VALID' &&
+                    !mobileReserved &&
+                    mobileCheckLoaded
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <!-- end Form field -->
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label> <i class="fas fa-city"></i> المدينة </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="ادخل مدينة العميل"
+                    aria-label="Number"
+                    matInput
+                    formControlName="citiesObj"
+                    [matAutocomplete]="cities"
+                    id="citiesObj"
+                    #search
+                  />
+
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('citiesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+
+                  <mat-autocomplete
+                    #cities="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                    (optionSelected)="getCites($event.option.value)"
+                  >
+                    <mat-option
+                      *ngFor="let option of citiesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <p
+                  *ngIf="clientsForm.get('citiesObj').value === ''"
+                  style="font-size: 14px; color:green ; position: absolute; left: 97px;"
+                >
+                  يجب ان يكون موقع العميل متطابق مع المدينة
+                </p>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (clientsForm.get('citiesObj').status === 'INVALID' &&
+                      clientsForm.get('citiesObj').touched) ||
+                    (submitted &&
+                      clientsForm.get('citiesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال المدينة بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="clientsForm.get('citiesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label> <i class="fas fa-child"></i> نوع العميل </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر النوع"
+                    aria-label="Number"
+                    matInput
+                    formControlName="genderObj"
+                    [matAutocomplete]="genderTypes"
+                    id="genderObj"
+                  />
+
+                  <mat-autocomplete
+                    #genderTypes="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of gendersFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    clientsForm.get('genderObj').touched &&
+                    !isNumber(clientsForm.get('gender').value) &&
+                    clientsForm.get('genderObj').value !== ''
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال النوع بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    clientsForm.get('genderObj').status === 'VALID' &&
+                    isNumber(clientsForm.get('gender').value)
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <!-- end Form field -->
+
+              <!-- end Form field -->
+              <div class="form_field" id="gpsLocation">
+                <label>
+                  <i class="fas fa-globe-americas"></i> احداثيات الموقع على
+                  الخريطة</label
+                >
+                <div style="width: 100%;">
+                  <!-- <mat-form-field
+                    style="width: 66%; margin-left: 3px;"
+                    appearance="outline"
+                    dir="rtl"
+                  >
+                    <input
+                      (keyup)="addMapLocation($event)"
+                      matInput
+                      autocomplete="off"
+                      formControlName="locations_address"
+                      id="location"
+                    />
+                  </mat-form-field> -->
+
+                  <button
+                    *ngIf="!updateMode"
+                    class="button-add"
+                    [disabled]="!clientsForm.controls.citiesObj.value"
+                    type="button"
+                    (click)="addAdress()"
+                  >
+                    <i class="fas fa-map-marker-check"></i> اضافة
+                  </button>
+                  <button
+                    *ngIf="updateMode"
+                    class="button-add"
+                    [disabled]="!clientsForm.controls.citiesObj.value"
+                    type="button"
+                    (click)="addAdress()"
+                  >
+                    <i class="fas fa-map-marker-check"></i> تعديل
+                  </button>
+                </div>
+
+                <!-- <div style="
+                border: 1px dotted;
+                position: absolute;
+                width: 86%;
+                height: 199px;
+                margin-top: 10px;
+                z-index: 9;">
+                  <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d475322.6559150807!2d39.491334617198696!3d21.45052893666832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3d01fb1137e59%3A0xe059579737b118db!2z2KzYr9ipINin2YTYs9i52YjYr9mK2Kk!5e0!3m2!1sar!2seg!4v1592824144662!5m2!1sar!2seg"
+                  width= "100%"
+                  height= "199px" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div> -->
+
+                <div
+                  style="
+
+                position: absolute;
+                width: 86%;
+                height: 199px;
+                margin-top: 10px;
+                z-index: 9; margin-bottom: 2%;"
+                  class="map clientMapInner"
+                >
+                  <app-map
+                    [clientDetailsPageMode]="true"
+                    [clientDetailsPageModeDtailsMap]="true"
+                    [clientDetailsOrgins]="{
+                      lng: clientsForm.controls.long.value,
+                      lat: clientsForm.controls.lat.value
+                    }"
+                  ></app-map>
+                </div>
+
+                <div id="popup" *ngIf="showMapPopup" [@fade]>
+                  <!-- changeVidOrgins() -->
+
+                  <div
+                    class="overlay"
+                    id="overLay"
+                    *ngIf="overLayShow"
+                    (click)="
+                      showMapPopup = false;
+                      updateAdressMode = false;
+                      addNewAddressModeStatus = false
+                    "
+                  ></div>
+                  <div id="popupData">
+                    <div class="popupMap">
+                      <!-- enter the url above map  -->
+
+                      <div style=" width: 100%;" class="form_field">
+                        <mat-form-field
+                          style="width: 94%;"
+                          appearance="outline"
+                          dir="rtl"
+                        >
+                          <i
+                            style="font-weight: normal; font-size: 17px; top: -2px; color: #636363;"
+                            class="fal fa-globe-americas"
+                          ></i>
+                          <input
+                            style="    padding-right: 30px;"
+                            matInput
+                            autocomplete="off"
+                            formControlName="aboveUrl"
+                            placeholder=" ادخل هنا lat & long لتحديد الاحداثيات   "
+                            required
+                            id="Text1"
+                          />
+                          <!-- maxlength="120" -->
+
+                          <button
+                            type="button"
+                            class="resetInput"
+                            (click)="xResetInputs('aboveUrl')"
+                          >
+                            <i class="fas fa-times-circle"></i>
+                          </button>
+                        </mat-form-field>
+                        <p
+                          *ngIf="
+                            clientsForm.get('aboveUrl').value === '' ||
+                            clientsForm.get('aboveUrl').value === null
+                          "
+                          style="font-size: 14px; color:green ; position: absolute;"
+                        >
+                          الموقع سيتم ظهوره عند الضغط على البحث
+                        </p>
+                        <button
+                          type="button"
+                          (click)="setUrl(clientsForm.controls.aboveUrl.value)"
+                          class="button-map-search"
+                        >
+                          <i class="fal fa-search"></i>
+                        </button>
+                      </div>
+
+                      <div class="style-map-input">
+                        <!-- خطوط الطول  -->
+                        <div class="form_field">
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              autocomplete="off"
+                              id="formAddress"
+                              formControlName="lat"
+                              required
+                              placeholder="خطوط الطول "
+                            />
+                          </mat-form-field>
+                        </div>
+
+                        <!-- دوائر العرض  -->
+
+                        <div class="form_field">
+                          <mat-form-field appearance="outline" dir="rtl">
+                            <input
+                              matInput
+                              autocomplete="off"
+                              id="formAddress"
+                              formControlName="long"
+                              placeholder="دوائر العرض"
+                              required
+                            />
+                          </mat-form-field>
+                          <button
+                            style="position: absolute;"
+                            type="button"
+                            class="button-map-search"
+                            (click)="searchWithLatlng()"
+                          >
+                            <i class="fal fa-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- NOTE  -->
+                      <app-map
+                        [addNewAddressMode]="
+                          addNewAddressModeStatus ? true : false
+                        "
+                        [clientDetailsPageMode]="true"
+                        [clientDetailsPageModeAddMap]="true"
+                        [updatedLocationData]="true"
+                        [clientDetailsOrgins]="{
+                          lng: clientsForm.controls.long.value,
+                          lat: clientsForm.controls.lat.value
+                        }"
+                        [clientDetailsPopupOpen]="showMapPopup"
+                        (clickedNewClientOrgin)="clickedNewOrgins($event)"
+                      >
+                      </app-map>
+                      <!-- NOTE  -->
+                      <!-- TODO  -->
+
+                      <!-- TODO  -->
+                      <div class="detailsCilentMap">
+                        <div class=" ">
+                          <!-- <form [formGroup]="updatedMapForm"> -->
+                          <!-- Start Form field -->
+                          <div class="form_field">
+                            <label>العنوان بالتفاصيل</label>
+                            <!-- Client Name -->
+
+                            <mat-form-field appearance="outline" dir="rtl">
+                              <input
+                                matInput
+                                autocomplete="off"
+                                formControlName="locations_address"
+                                id="formAddress"
+                                required
+                              />
+                            </mat-form-field>
+                            <div
+                              [@fade]
+                              class="validationState  errorState"
+                              *ngIf="
+                                clientsForm.get('locations_address').touched &&
+                                clientsForm.get('locations_address').value == ''
+                              "
+                            >
+                              <i class="fas fa-times"></i> برجاء إدخال العنوان
+                              بشكل صحيح
+                            </div>
+                          </div>
+                          <!-- End Form field -->
+                          <!-- Start Form field -->
+
+                          <div class="form_field">
+                            <label> الملاحظات</label>
+                            <!-- Client Name -->
+
+                            <mat-form-field appearance="outline" dir="rtl">
+                              <textarea
+                                matInput
+                                autocomplete="off"
+                                id="mapFormOrgins"
+                                formControlName="locations_notes"
+                                required
+                              ></textarea>
+                              <!-- (keyup)="onChangeMapOrgin($event)" -->
+                              <!-- (chang)="addMapLocation()" -->
+                              <!-- (clickedNewClientOrgin)="clickedNewOrgins($event)" -->
+                              <!-- (change)="clickedNewOrgins()" -->
+                            </mat-form-field>
+                            <div
+                              [@fade]
+                              class="validationState  errorState"
+                              *ngIf="
+                                clientsForm.get('locations_notes').touched &&
+                                clientsForm.get('locations_notes').value == ''
+                              "
+                            >
+                              <i class="fas fa-times"></i> برجاء إدخال الملاحظات
+                              بشكل صحيح
+                            </div>
+                          </div>
+                          <!-- End Form field -->
+
+                          <div class="form_field">
+                            <label>المنطقة</label>
+                            <!-- Client Name -->
+
+                            <mat-form-field appearance="outline" dir="rtl">
+                              <input
+                                matInput
+                                autocomplete="off"
+                                id="formArea"
+                                formControlName="locations_area"
+                                required
+                              />
+                            </mat-form-field>
+                            <div
+                              [@fade]
+                              class="validationState  errorState"
+                              *ngIf="
+                                clientsForm.get('locations_area').touched &&
+                                clientsForm.get('locations_area').value == ''
+                              "
+                            >
+                              <i class="fas fa-times"></i> برجاء إدخال المنطقة
+                              بشكل صحيح
+                            </div>
+                          </div>
+                          <!-- [value]="
+                                  clientsForm.controls.citiesObj.value.name
+                                " -->
+
+                          <!-- End Form field -->
+                          <!-- Start Form field -->
+
+                          <!-- <div class="buttonAddLocation"> -->
+                          <!--
+                            [disabled]="
+                            clientsForm.controls.locations_city.value
+                              .invalid ||
+                            clientsForm.controls.locations_notes.value
+                              .invalid ||
+                            clientsForm.controls.locations_address.value
+                              .invalid
+                          " -->
+
+                          <!-- clientsForm.controls.locations_notes.value
+                                        == '' || clientsForm.controls.locations_notes.value
+                                        == null -->
+
+                          <button
+                            (click)="savePopup()"
+                            class="buttonAddLocation"
+                            type="button"
+                            [disabled]="
+                              !clientsForm.controls.long.value ||
+                              !clientsForm.controls.lat.value ||
+                              !clientsForm.controls.locations_address.value ||
+                              !clientsForm.controls.locations_area.value ||
+                              !passPopup
+                            "
+                          >
+                            حفظ
+                          </button>
+                          <!-- </div> -->
+                          <!-- </form> -->
+                        </div>
+                        <!-- TODO  -->
+                      </div>
+                      <!-- </form> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-envelope"></i> البريد الإلكتروني
+                </label>
+                <!-- Email -->
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="email"
+                    (focusout)="checkReservation($event.target.value, 'email')"
+                    (focusin)="emailCheckLoaded = false"
+                    matInput
+                    placeholder="البريد الإلكتروني"
+                    autocomplete="off"
+                    id="email"
+                  />
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (clientsForm.get('email').status === 'INVALID' &&
+                      clientsForm.get('email').touched) ||
+                    (submitted &&
+                      clientsForm.get('email').status === 'INVALID' &&
+                      clientsForm.get('email').dirty)
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
+                  بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    clientsForm.get('email').touched &&
+                    emailReserved &&
+                    emailCheckLoaded
+                  "
+                >
+                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    clientsForm.get('email').status === 'VALID' &&
+                    clientsForm.get('email').value !== '' &&
+                    !emailReserved &&
+                    emailCheckLoaded
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+
+              <!-- start fack Form field -->
+              <div style="opacity: 0;" class="form_field" id="gpsLocation">
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input matInput
+                /></mat-form-field>
+              </div>
+
+              <!-- end fack Form field -->
+
+              <!-- start Form field -->
+              <!-- <div class="form_field" id="gpsLocation">
+                <label> <i class="fas fa-clipboard"></i> الملاحظات</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <textarea matInput></textarea>
+                </mat-form-field>
+              </div> -->
+
+              <div class="form_field" id="gpsLocation">
+                <label> <i class="fas fa-clipboard"></i> الملاحظات</label>
+                <!-- Client Name -->
+
+                <mat-form-field appearance="outline" dir="rtl">
+                  <textarea
+                    matInput
+                    autocomplete="off"
+                    id="mapFormOrgins"
+                    formControlName="notes"
+                    required
+                  >
+                  </textarea>
+
+                  <!-- (keyup)="onChangeMapOrgin($event)" -->
+                  <!-- (chang)="addMapLocation()" -->
+                  <!-- (clickedNewClientOrgin)="clickedNewOrgins($event)" -->
+                  <!-- (change)="clickedNewOrgins()" -->
+                </mat-form-field>
+              </div>
+              <!-- end Form field -->
+
+              <div class="checkbox-client" style="padding-top: 2%;">
+                <mat-checkbox
+                  [checked]="verified"
+                  *ngIf="!updateMode"
+                  (change)="changeValue($event.checked)"
+                  >أوافق على إضافة العميل
+                </mat-checkbox>
+
+                <mat-checkbox
+                  [checked]="verified"
+                  *ngIf="updateMode"
+                  (change)="changeValue($event.checked)"
+                  >أوافق على تعديل العميل
+                </mat-checkbox>
+              </div>
+
+              <!-- <div class="form_field fullWidth formButtons">
+                <button
+                  *ngIf="!updateMode"
+                  [disabled]="clientsForm.invalid"
+                  type="submit"
+                  class="formSubmit formButton"
+                >
+                  اضافة العميل
+                </button>
+              </div> -->
+
+              <div class="form_field fullWidth formButtons">
+                <button
+                  *ngIf="!updateMode"
+                  [disabled]="
+                    !verified ||
+                    clientsForm.get('name').status === 'INVALID' ||
+                    clientsForm.get('lat').status === 'INVALID' ||
+                    clientsForm.get('long').status === 'INVALID' ||
+                    clientsForm.get('citiesObj').status === 'INVALID' ||
+                    clientsForm.get('mobileKey').status === 'INVALID'
+                  "
+                  type="submit"
+                  class="formSubmit formButton"
+                >
+                  اضافة العميل
+                </button>
+                <button
+                  *ngIf="updateMode"
+                  [disabled]="
+                    !verified ||
+                    clientsForm.get('name').status === 'INVALID' ||
+                    clientsForm.get('lat').status === 'INVALID' ||
+                    clientsForm.get('long').status === 'INVALID' ||
+                    clientsForm.get('citiesObj').status === 'INVALID' ||
+                    clientsForm.get('mobileKey').status === 'INVALID'
+                  "
+                  type="button"
+                  class="formSubmit formButton"
+                  (click)="onUpdate()"
+                >
+                  تعديل
+                </button>
+              </div>
+
+              <!-- <div class="form_field">
+                <label>المنطقة</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input formControlName="zone" matInput placeholder="المنطقة" autocomplete="off" id="zone" />
+
+                  <button type="button" class="resetInput" (click)="xResetInputs('zone')">
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-map-marker-alt"></i>
+                </mat-form-field>
+              </div> -->
+              <!-- <div class="form_field">
+                <label>العنوان</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input formControlName="address" matInput placeholder="العنوان" autocomplete="off" id="address" />
+                  <button type="button" class="resetInput" (click)="xResetInputs('address')">
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-location-arrow"></i>
+                </mat-form-field>
+              </div> -->
+              <!-- <div class="form_field">
+                <label>خطوط الطول</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="longObj"
+                    matInput
+                    placeholder="خطوط الطول"
+                    autocomplete="off"
+                    id="longObj"
+                  />
+                  <i class="fas fa-map-signs"></i>
+                </mat-form-field>
+              </div> -->
+              <!-- <div class="form_field">
+                <label>دوائر العرض</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="latObj"
+                    matInput
+                    placeholder="دوائر العرض"
+                    autocomplete="off"
+                    id="latObj"
+                  />
+                  <i class="fas fa-map-signs"></i>
+                </mat-form-field>
+              </div> -->
+            </div>
+
+            <!--
+            <div class="page_block clientHouseDetails">
+              <h3>بيانات منزل العميل</h3>
+              <br />
+              <div class="form_field">
+                <label>نوع العقار </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر نوع العقار"
+                    aria-label="Number"
+                    matInput
+                    formControlName="homeTypesObj"
+                    [matAutocomplete]="homeTypes"
+                    id="homeTypesObj"
+                  />
+                  <button type="button" class="resetInput" (click)="xResetInputs('homeTypesObj')">
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-home"></i>
+                  <mat-autocomplete #homeTypes="matAutocomplete" [displayWith]="displayOptionsFunction">
+                    <mat-option *ngFor="let option of homeTypesFilteredOptions | async" [value]="option">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    clientsForm.get('homeTypesObj').touched &&
+                    !isNumber(clientsForm.get('home_type').value) &&
+                    clientsForm.get('homeTypesObj').value !== ''
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال نوع العقار بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    clientsForm.get('homeTypesObj').status === 'VALID' && isNumber(clientsForm.get('home_type').value)
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>نوع العقد </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر نوع العقد"
+                    aria-label="Number"
+                    matInput
+                    formControlName="homeContractTypesObj"
+                    [matAutocomplete]="homeContractTypes"
+                    id="homeContractTypesObj"
+                  />
+                  <button type="button" class="resetInput" (click)="xResetInputs('homeContractTypesObj')">
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-file-contract"></i>
+                  <mat-autocomplete #homeContractTypes="matAutocomplete" [displayWith]="displayOptionsFunction">
+                    <mat-option *ngFor="let option of homeContractTypesFilteredOptions | async" [value]="option">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    clientsForm.get('homeContractTypesObj').touched &&
+                    !isNumber(clientsForm.get('home_contract_type').value) &&
+                    clientsForm.get('homeContractTypesObj').value !== ''
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال نوع العقد بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    clientsForm.get('homeContractTypesObj').status === 'VALID' &&
+                    isNumber(clientsForm.get('home_contract_type').value)
+                  "
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>المساحة</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="area"
+                    matInput
+                    placeholder="المساحة"
+                    autocomplete="off"
+                    id="area"
+                  />
+                  <i class="fas fa-chart-area"></i>
+                </mat-form-field>
+              </div>
+              <div class="form_field">
+                <label>عدد الطوابق</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="floor_number"
+                    matInput
+                    placeholder="عدد الطوابق"
+                    autocomplete="off"
+                    id="floor_number"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+              </div>
+              <div class="form_field">
+                <label>عدد الغرف</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="room_number"
+                    matInput
+                    placeholder="عدد الغرف"
+                    autocomplete="off"
+                    id="room_number"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+              </div>
+              <div class="form_field">
+                <label>عدد الحمامات</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="bathroom_number"
+                    matInput
+                    placeholder="عدد الحمامات"
+                    autocomplete="off"
+                    id="bathroom_number"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+              </div>
+              <div class="form_field">
+                <label>عدد المطابخ</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="kitchen_number"
+                    matInput
+                    placeholder="عدد المطابخ"
+                    autocomplete="off"
+                    id="kitchen_number"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+              </div>
+              <div class="form_field">
+                <label>عدد الكاميرات</label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    formControlName="camera_number"
+                    matInput
+                    placeholder="عدد الكاميرات"
+                    autocomplete="off"
+                    id="camera_number"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+              </div>
+              <hr />
+              <br />
+              <div class="form_field">
+                <label>نوع المكيف </label>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    id="airTypeInput"
+                    type="text"
+                    placeholder="إختر نوع المكيف"
+                    aria-label="Number"
+                    matInput
+                    formControlName="airConditionerTypesObj"
+                    [matAutocomplete]="airConditionerTypes"
+                  />
+                  <i class="fas fa-air-freshener"></i>
+                  <mat-autocomplete #airConditionerTypes="matAutocomplete" [displayWith]="displayOptionsFunction">
+                    <mat-option *ngFor="let option of airConditionerTypesFilteredOptions | async" [value]="option">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div [@fade] class="validationState successState" *ngIf="isNumber(this.airConditionerTypeSelected)">
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>عدد المكيفات</label>
+                <mat-form-field id="customeInput" appearance="outline" dir="rtl">
+                  <input
+                    id="airCountInput"
+                    (keyup)="addAirConditionCount($event.target.value)"
+                    appOnlyNumbers="true"
+                    matInput
+                    placeholder="عدد المكيفات"
+                    autocomplete="off"
+                    formControlName="airConditionerNumbersObj"
+                  />
+                  <i class="fas fa-sort-numeric-up"></i>
+                </mat-form-field>
+                <button
+                  [disabled]="
+                    !(
+                      isNumber(airConditionerCountSelected) &&
+                      airConditionerCountSelected !== 0 &&
+                      isNumber(airConditionerTypeSelected)
+                    )
+                  "
+                  type="button"
+                  (click)="addAirCondition()"
+                  id="customeAdd"
+                >
+                  إضافة
+                </button>
+              </div>
+              <div class="AirCountBodyList">
+                <div [@fade] class="AirCountBodyItem" *ngFor="let airC of clientsForm.value.air_conditioner">
+                  <span>النوع : {{ airC.name }}</span>
+                  <span>العدد : {{ airC.count }}</span>
+                  <span class="deleteSelectedAirConditioner" (click)="deleteAirConditioner(airC.id)"
+                    ><i class="fas fa-times"></i
+                  ></span>
+                </div>
+              </div>
+              <hr />
+              <div class="form_field fullWidth toggle">
+                <span>حالة التفعيل : </span>
+                <mat-slide-toggle
+                  [checked]="clientsForm.value.active"
+                  dir="rtl"
+                  (change)="changeActive($event)"
+                ></mat-slide-toggle>
+              </div>
+              <hr />
+
+            </div> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

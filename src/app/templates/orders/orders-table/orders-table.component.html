@@ -1,0 +1,229 @@
+<div class="main_page" id="formPage">
+  <app-alerts> </app-alerts>
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_title">
+        <h3><i class="fas fa-plus"></i>جدول الطلبات</h3>
+        <div class="page_body_main_buttons">
+          <a
+            routerLink="/orders/all-orders"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
+            كل الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+          <a
+            routerLink="/orders/orders-map"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
+            خريطة الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+          <a
+            routerLink="/orders/add-order"
+            *ngIf="order_add || user.privilege == 'super-admin'"
+          >
+            إضافة طلب
+            <i class="fas fa-th-list"></i>
+          </a>
+        </div>
+      </div>
+      <div class="page_body_main">
+        <div class="page_block">
+          <form>
+            <div class="main_block filterMainBlock">
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    (dateInput)="orderDateChanged($event)"
+                    matInput
+                    [matDatepicker]="fromFilterDate"
+                    placeholder="تاريخ الطلبات"
+                    autocomplete="off"
+                    id="filterStartDate"
+                    [value]="todayDate.value"
+                  />
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="fromFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="servicesWithTechniciansList"
+                  [multiSelectListPlaceholder]="techniciansFilterPlaceholder"
+                  [multiSelectListType]="nestedType"
+                  [componentId]="filterTechniciansComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+            </div>
+          </form>
+          <div class="m-portlet__body update-technical-form" [@fadeBottomTop]>
+            <div id="timeTable">
+              <div id="tableHeader">
+                <div>الإسم</div>
+                <div *ngFor="let hour of dayHoursArray">
+                  <ng-container *ngIf="hour !== 12 && hour != 0">
+                    {{ hour > 12 ? hour - 12 + ':00 م' : hour + ':00 ص' }}
+                  </ng-container>
+                  <ng-container *ngIf="hour === 12">
+                    {{ hour === 12 ? 12 + ':00 م' : null }}
+                  </ng-container>
+                  <ng-container *ngIf="hour === 0">
+                    {{ hour === 0 ? 12 + ':00 ص' : null }}
+                  </ng-container>
+                </div>
+              </div>
+              <div id="tableBody">
+                <div class="tableRow" *ngFor="let tech of orderTechnicians">
+                  <div class="nameCell">
+                    <label class="table-name" for="{{ tech.id }}">{{
+                      tech.name
+                    }}</label>
+                  </div>
+                  <div class="loopCell" #loopContainer>
+                    <!-- Start Order Loop -->
+                    <ng-container
+                      *ngFor="let order of tech.workingOrders; let i = index"
+                    >
+                      <div
+                        (mouseenter)="hideme[order.id] = !hideme[order.id]"
+                        (mouseleave)="hideme[order.id] = !hideme[order.id]"
+                        class="order-bar status-{{ order.status.id }}"
+                        [ngStyle]="{
+                          right:
+                            ((order.fromH - 0) * 60 + order.fromM) *
+                              (loopCellWidth / 1442) +
+                            'px',
+                          width:
+                            ((order.toH - 0) * 60 +
+                              order.toM -
+                              (order.fromH - 0) * 60) *
+                              (loopCellWidth / 1450) +
+                            'px'
+                        }"
+                        [routerLink]="['/orders/order-details']"
+                        [queryParams]="{ orderId: order.id }"
+                      ></div>
+                      <div
+                        class="popupOrder"
+                        [@fadeBottomTop]
+                        id="orderId_{{ order.id }}"
+                        *ngIf="hideme[order.id]"
+                        [ngStyle]="{
+                          position: 'absolute',
+                          right:
+                            ((order.fromH - 0) * 60 + order.fromM) *
+                              (loopCellWidth / 1450) +
+                            'px'
+                        }"
+                      >
+                        <div class="popupOrderState">
+                          <span class="status-{{ order.status.id }}"></span>
+                          <p>{{ order.status.name }}</p>
+                        </div>
+                        <div class="popupList">
+                          <ul>
+                            <li>
+                              <span>إسم العميل : </span
+                              >{{ order.client.user.name }}
+                            </li>
+                            <li>
+                              <span>رقم الجوال : </span
+                              >{{ order.client.user.mobile }}+
+                            </li>
+                            <li>
+                              <span>الوقت : </span>
+                              <ng-container *ngIf="order.fromH !== 12">
+                                <span class="timeTitleSpan">من : </span
+                                >{{
+                                  order.fromH > 12
+                                    ? order.fromH - 12 + ':' + order.fromM + 'م'
+                                    : order.fromH + ':' + order.fromM + 'ص'
+                                }}
+                              </ng-container>
+                              <ng-container *ngIf="order.fromH === 12">
+                                <span class="timeTitleSpan">من : </span
+                                >{{
+                                  order.fromH === 12
+                                    ? 12 + ':' + order.fromM + 'م'
+                                    : null
+                                }}
+                              </ng-container>
+                              <ng-container *ngIf="order.toH !== 12">
+                                <span class="timeTitleSpan"> الي : </span
+                                >{{
+                                  order.toH > 12
+                                    ? order.toH - 12 + ':' + order.toM + 'م'
+                                    : order.toH + ':' + order.toM + 'ص'
+                                }}
+                              </ng-container>
+                              <ng-container *ngIf="order.toH === 12">
+                                <span class="timeTitleSpan"> الي : </span
+                                >{{
+                                  order.toH === 12
+                                    ? 12 + ':' + order.toM + 'م'
+                                    : null
+                                }}
+                              </ng-container>
+                            </li>
+                            <li *ngIf="order.offer">
+                              <span>العرض : </span>{{ order.offer.description }}
+                            </li>
+                            <li *ngIf="order.source">
+                              <span>المصدر : </span>{{ order.source.name }}
+                            </li>
+                            <li *ngIf="order.details">
+                              <span>المطلوب : </span>
+                              <div [innerHTML]="order.details"></div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div
+                      *ngFor="let hour of hours"
+                      id="hour{{ hour }}"
+                      class="hourCell"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group m-form__group" id="time_container">
+              <div class="table-keys">
+                <label>
+                  <span class="span-bg admin_approved"></span>
+                  تم الموافقة من الأدمن
+                </label>
+                <label
+                  ><span class="span-bg technician_approved"></span>تم الموافقة
+                  من الفني</label
+                >
+                <label><span class="span-bg started"></span>تم البدء</label>
+                <label><span class="span-bg finished"></span>تم الإنتهاء</label>
+                <label
+                  ><span class="span-bg receipt_done"></span>تم إصدار
+                  فاتورة</label
+                >
+                <label><span class="span-bg canceled"></span>تم الإلغاء</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
