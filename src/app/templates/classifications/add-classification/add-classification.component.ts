@@ -32,7 +32,7 @@ export class AddClassificationComponent implements OnInit {
   classificationForm = new FormGroup({
     name: new FormControl('', Validators.required),
     usersStatus: new FormControl(),
-    active: new FormControl(''),
+    active: new FormControl('')
   });
   /* ------------------ Constructor ------------------------ */
   constructor(
@@ -42,7 +42,7 @@ export class AddClassificationComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
   /* -------------------- Oninit ------------------------ */
   ngOnInit() {
@@ -61,17 +61,21 @@ export class AddClassificationComponent implements OnInit {
 
     /* ----------------------------- Update Mode --------------------------- */
     this.activatedRoute.queryParams.subscribe(queryParams => {
-      console.log(queryParams)
+      console.log(queryParams);
       if (queryParams.updateMode) {
         this.updateMode = queryParams.updateMode === 'true';
         this.updatedClassID = queryParams.classificationID;
         this.startLoading();
-        this.coreService.superGet('owner/classification/show/' + this.updatedClassID).subscribe(classificaion => {
-          console.log(classificaion);
-          this.classificationForm.controls.name.setValue(classificaion['data'].name);
-          this.accept = true;
-          this.endLoading();
-        });
+        this.coreService
+          .superGet('owner/classification/show/' + this.updatedClassID)
+          .subscribe(classificaion => {
+            console.log(classificaion);
+            this.classificationForm.controls.name.setValue(
+              classificaion['data'].name
+            );
+            this.accept = true;
+            this.endLoading();
+          });
       }
     });
   }
@@ -94,7 +98,7 @@ export class AddClassificationComponent implements OnInit {
 
   /* -------------------- Reset ---------------------- */
   xResetInputs(key) {
-    console.log(key)
+    console.log(key);
     if (key === 'name') {
       (document.getElementById('name') as HTMLInputElement).value = '';
       this.classificationForm.patchValue({ name: '' });
@@ -102,7 +106,7 @@ export class AddClassificationComponent implements OnInit {
     // if (key === 'usersStatus') {
     //   (document.getElementById('usersStatus') as HTMLInputElement).value = '';
     //   this.classificationForm.patchValue({ usersStatus: '' });
-    // } 
+    // }
     else {
       (document.getElementById(key) as HTMLInputElement).value = '';
       this.classificationForm.controls[key].patchValue('');
@@ -153,8 +157,7 @@ export class AddClassificationComponent implements OnInit {
     console.log(event);
     if (event.checked == true) {
       this.accept = true;
-    }
-    else if (event.checked == false) {
+    } else if (event.checked == false) {
       this.accept = false;
     }
   }
@@ -163,42 +166,50 @@ export class AddClassificationComponent implements OnInit {
     console.log(this.classificationForm.controls.name.value);
     this.submitted = true;
     this.startLoading();
-    this.coreService.superPost('owner/classification/create', { name: this.classificationForm.controls.name.value }).subscribe(
-      () => {
-        this.showSuccess('تم تسجيل التصنيف بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/classifications/all-classifications']);
-        }, 2500);
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.coreService
+      .superPost('owner/classification/create', {
+        name: this.classificationForm.controls.name.value
+      })
+      .subscribe(
+        () => {
+          this.showSuccess('تم تسجيل التصنيف بنجاح');
+          setTimeout(() => {
+            this.router.navigate(['/classifications/all-classifications']);
+          }, 2500);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
 
   updateClassification() {
     console.log(this.classificationForm.controls.name.value);
     this.submitted = true;
     this.startLoading();
-    this.coreService.superUpdate('owner/classification/update/' + this.updatedClassID, { name: this.classificationForm.controls.name.value }).subscribe(
-      () => {
-        this.showSuccess('تم تعديل التصنيف بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/classifications/all-classifications']);
-        }, 2500);
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.coreService
+      .superUpdate('owner/classification/update/' + this.updatedClassID, {
+        name: this.classificationForm.controls.name.value
+      })
+      .subscribe(
+        () => {
+          this.showSuccess('تم تعديل التصنيف بنجاح');
+          setTimeout(() => {
+            this.router.navigate(['/classifications/all-classifications']);
+          }, 2500);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
 
   /* ----------------------- Active Status ----------------------- */
@@ -218,14 +229,16 @@ export class AddClassificationComponent implements OnInit {
     this.loaderService.endLoading();
   }
 
-
   /* ----------------------------- Show Error Messages --------------------- */
   showErrors(errors) {
     this.endLoading();
     this.submitted = false;
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
   /* ----------------------------- Show Success Messages --------------------- */
   showSuccess(successText) {
@@ -233,6 +246,9 @@ export class AddClassificationComponent implements OnInit {
     this.submitted = false;
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
 }

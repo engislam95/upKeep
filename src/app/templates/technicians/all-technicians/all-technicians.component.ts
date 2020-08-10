@@ -43,7 +43,7 @@ export class AllTechniciansComponent implements OnInit {
     'technical_name',
     'phone',
     'main_service',
-    'status',
+    'status'
     // 'technicians_details',
     // 'edit_technical',
     // 'delete_technical'
@@ -77,19 +77,23 @@ export class AllTechniciansComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'add': this.technician_add = true;
+          case 'add':
+            this.technician_add = true;
             break;
-          case 'show': this.technician_all = true;
+          case 'show':
+            this.technician_all = true;
             break;
-          case 'update': this.technician_update = true;
+          case 'update':
+            this.technician_update = true;
             break;
-          case 'delete': this.technician_delete = true;
+          case 'delete':
+            this.technician_delete = true;
             break;
         }
       });
@@ -284,7 +288,7 @@ export class AllTechniciansComponent implements OnInit {
   }
   //  ######################### End Update Technical #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() { }
+  dataExistance() {}
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {

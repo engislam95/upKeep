@@ -23,7 +23,7 @@ export class CompanyDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
   /* ------------------ Oninit ----------------------- */
   ngOnInit() {

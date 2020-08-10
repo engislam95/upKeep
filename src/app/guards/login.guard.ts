@@ -3,9 +3,9 @@ import { Router, CanActivate } from '@angular/router';
 @Injectable()
 export class LoginGuard implements CanActivate {
   /* ---------------- Contructor ---------------------- */
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
   canActivate() {
-    if (sessionStorage.getItem('currentUser')) {
+    if (localStorage.getItem('currentUser')) {
       this.router.navigate(['/']);
       return false;
     }
