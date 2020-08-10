@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { fadeAnimation } from './animations';
 import { MessagingService } from './tools/shared-services/messaging.service';
 import { CoreService } from './tools/shared-services/core.service';
+import Pusher from 'pusher-js';
+import { WebSocketService } from './tools/shared-services/web-socket.service';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +11,20 @@ import { CoreService } from './tools/shared-services/core.service';
   styleUrls: ['./app.component.scss'],
   animations: [fadeAnimation]
 })
+
 export class AppComponent implements OnInit {
+  pusher: any ;
+  channel: any ;
+  channels:[] = [] ; 
   showSideMenu = false;
   // message: any = '';
-    constructor(private messagingService: MessagingService , private coreService: CoreService) { 
+    constructor(private messagingService: MessagingService , private coreService: CoreService , private WebSocket: WebSocketService) { 
 
-        
+  // when close window remove notification
     window.addEventListener('beforeunload', function (e) { 
-      // e.preventDefault(); 
-      // console.log(sessionStorage.getItem('notificationToken') )
-
       coreService
       .postMethod('fcm/remove', {
         token: sessionStorage.getItem('notificationToken')
-        // token: 'dZpGTF2VNsU:APA91bHHtkq4qJIMbUPoSZ-Cq-nkHnuYLGqZdN7aVZeBH2jlEroIMaMhuOcQGyQrley91Eqx0uF0e1ANEES1ln8XRgIz3QU6G341MTVKdtQeI4VjUqsz3UGDVnD6muGeRSN-g13d5dio'
       })
       .subscribe(
         (res) => {
@@ -32,8 +34,23 @@ export class AppComponent implements OnInit {
           console.log(err)
         }
       );
-          // e.returnValue = "Hello! I am an alert box!!"; 
        }); 
+
+
+  // web soket test  
+
+       this.WebSocket.listenChannel(['orders','test'])
+
+
+
+
+     
+
+
+
+
+
+
     }
     
   ngOnInit() {

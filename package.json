@@ -45,6 +45,7 @@
     "node-geometry-library": "^1.2.3",
     "primeicons": "^4.0.0-rc.2",
     "primeng": "^8.1.1",
+    "pusher-js": "^7.0.0",
     "rxjs": "~6.3.3",
     "snazzy-info-window": "^1.1.1",
     "tslib": "^1.9.0",
