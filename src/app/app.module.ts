@@ -21,8 +21,6 @@ import { AngularFireModule } from '@angular/fire';
 import { MessagingService } from './tools/shared-services/messaging.service';
 import { environment } from '../environments/environment';
 import { AsyncPipe } from '../../node_modules/@angular/common';
-import { WebSocketService } from './tools/shared-services/web-socket.service';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -43,9 +41,7 @@ import { WebSocketService } from './tools/shared-services/web-socket.service';
     CoreService,
     SidebarTriggerService,
     MessagingService,
-    AsyncPipe ,
-    WebSocketService
-
+    AsyncPipe
   ],
   bootstrap: [AppComponent]
 })

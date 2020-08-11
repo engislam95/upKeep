@@ -122,66 +122,6 @@
                 </div>
               </div>
               <div class="form_field">
-                <label>المدينة التابع لها <span>*</span></label>
-                <mat-form-field
-                  dir="rtl"
-                  appearance="outline"
-                  style="display: block;"
-                >
-                  <input
-                    type="text"
-                    placeholder="ادخل مدينة "
-                    aria-label="Number"
-                    matInput
-                    formControlName="city_tech_id"
-                    [matAutocomplete]="cities"
-                    id="city_tech_id"
-                    #search
-                    [value]="
-                      updateMode && updatedTechnicalData['city']
-                        ? updatedTechnicalData['city']['name']
-                        : ''
-                    "
-                  />
-
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('city_tech_id')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <i class="fas fa-cog"></i>
-                  <mat-autocomplete
-                    #cities="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
-                  >
-                    <mat-option
-                      *ngFor="let option of citiesFilteredOptions | async"
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    !city_tech_id && techniciansForm.get('city_tech_id').touched
-                  "
-                >
-                  <i class="fas fa-times"></i> برجاء إدخال المدينة
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="city_tech_id"
-                >
-                  <i class="fas fa-check"></i> إدخال صحيح
-                </div>
-              </div>
-              <div class="form_field">
                 <label>رقم الموبايل <span>*</span></label>
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
@@ -305,8 +245,8 @@
                 <label
                   >{{
                     updateMode
-                      ? 'تعديل كلمة السر '
-                      : 'كلمة سر الدخول الي النظام '
+                      ? "تعديل كلمة السر "
+                      : "كلمة سر الدخول الي النظام "
                   }}<span *ngIf="!updateMode">*</span>
                 </label>
                 <div *ngIf="updateMode" class="toggleContainer">
@@ -418,41 +358,9 @@
                   <i class="fas fa-times"></i> هذا البريد مسجل من قبل
                 </div>
               </div>
-              <div class="form_field"></div>
               <div class="form_field">
                 <label>إرفق صورة </label>
-                <div
-                  id="uploadImageContainer"
-                  Style="opacity:0.5"
-                  *ngIf="!imageUpdated2 && updateMode"
-                >
-                  <input
-                    type="file"
-                    alife-file-to-base64
-                    (onFileChanged)="onUploadImage($event)"
-                    accept="image/x-png,image/jpeg,image/jpg"
-                    class="uploadImageInput"
-                    id="imageInputObj"
-                    formControlName="imageInputObj"
-                    disabled="true"
-                  />
-                  <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolder }}</span>
-                  <button
-                    style="left: 15px; top: 72%; z-index: 99;"
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('imageInputObj')"
-                    (click)="deleteIMG()"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                </div>
-                <div
-                  id="uploadImageContainer"
-                  Style="opacity:1"
-                  *ngIf="imageUpdated2 || !updateMode"
-                >
+                <div id="uploadImageContainer">
                   <input
                     type="file"
                     alife-file-to-base64
@@ -469,152 +377,11 @@
                     type="button"
                     class="resetInput"
                     (click)="xResetInputs('imageInputObj')"
-                    (click)="deleteIMG()"
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
                 </div>
               </div>
-
-              <div class="form_field">
-                <label>إرفق دبوس </label>
-                <div
-                  id="uploadImageContainer"
-                  Style="opacity:0.5"
-                  *ngIf="!imageUpdated && updateMode"
-                >
-                  <input
-                    type="file"
-                    alife-file-to-base64
-                    (onFileChanged)="onUploadImagePin($event)"
-                    accept="image/x-png,image/jpeg,image/jpg"
-                    class="uploadImageInput"
-                    id="imageInputObjPin"
-                    formControlName="imageInputObjPin"
-                    disabled="true"
-                  />
-                  <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
-                  <button
-                    style="left: 15px; top: 72%; z-index: 99;"
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('imageInputObjPin')"
-                    (click)="deleteIMGPin()"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                </div>
-                <div
-                  id="uploadImageContainer"
-                  Style="opacity:1"
-                  *ngIf="imageUpdated || !updateMode"
-                >
-                  <input
-                    type="file"
-                    alife-file-to-base64
-                    (onFileChanged)="onUploadImagePin($event)"
-                    accept="image/x-png,image/jpeg,image/jpg"
-                    class="uploadImageInput"
-                    id="imageInputObjPin"
-                    formControlName="imageInputObjPin"
-                  />
-                  <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
-                  <button
-                    style="left: 15px; top: 72%; z-index: 99;"
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('imageInputObjPin')"
-                    (click)="deleteIMGPin()"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="form_field">
-                <img
-                  *ngIf="techniciansForm.controls.image.value"
-                  src="{{ techniciansForm.controls.image.value }}"
-                  width="100px"
-                  height="100px"
-                  alt="user-image"
-                />
-                <img
-                  *ngIf="updatedTechnicalData['image'] && updateMode"
-                  src="{{ updatedTechnicalData['image'] }}"
-                  width="100px"
-                  height="100px"
-                  alt="user-image"
-                />
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="techniciansForm.controls.image.value"
-                  (click)="xResetInputs('imageInputObj')"
-                  (click)="deleteIMG()"
-                  style="position: relative;
-                  left: -30px;
-                  top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="updatedTechnicalData['image']"
-                  (click)="deleteIMG()"
-                  (click)="xResetInputs('imageInputObj')"
-                  style="position: relative;
-                left: -30px;
-                top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
-              </div>
-
-              <div class="form_field">
-                <img
-                  *ngIf="techniciansForm.controls.imagePin.value"
-                  src="{{ techniciansForm.controls.imagePin.value }}"
-                  width="100px"
-                  height="100px"
-                  alt="user-image"
-                />
-                <img
-                  *ngIf="updatedTechnicalData['imagePin'] && updateMode"
-                  src="{{ updatedTechnicalData['imagePin'] }}"
-                  width="100px"
-                  height="100px"
-                  alt="user-image"
-                />
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="techniciansForm.controls.imagePin.value"
-                  (click)="xResetInputs('imageInputObjPin')"
-                  (click)="deleteIMGPin()"
-                  style="position: relative;
-                  left: -30px;
-                  top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="updatedTechnicalData['imagePin']"
-                  (click)="deleteIMGPin()"
-                  (click)="xResetInputs('imageInputObjPin')"
-                  style="position: relative;
-                left: -30px;
-                top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
-              </div>
-
               <hr />
               <div class="form_field fullWidth toggle">
                 <span>حالة التفعيل : </span>
@@ -639,14 +406,7 @@
                   type="button"
                   (click)="onUpdate()"
                   class="formSubmit formButton"
-                  [disabled]="
-                    !techniciansForm.controls.name.value ||
-                    !techniciansForm.controls.service_id.value ||
-                    !techniciansForm.controls.serviceObj.value ||
-                    !techniciansForm.controls.countriesObj.value ||
-                    !techniciansForm.controls.active.value ||
-                    !techniciansForm.controls.city_tech_id.value
-                  "
+                  [disabled]="techniciansForm.invalid || submitted"
                 >
                   تعديل
                 </button>

@@ -8,14 +8,20 @@ import { fade } from './../../tools/shared_animations/fade';
   styleUrls: ['./side-menu-mgt.component.scss'],
   animations: [
     trigger('fade', [
-      transition(':enter', [
-        style({ transform: 'translateX(5%)', opacity: 0 }),
-        animate('300ms', style({ transform: 'translateX(0)', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ transform: 'translateX(0)', opacity: 1 }),
-        animate('300ms', style({ transform: 'translateX(5%)', opacity: 0 }))
-      ])
+      transition(
+        ':enter',
+        [
+          style({ transform: 'translateX(5%)', opacity: 0 }),
+          animate('300ms', style({ transform: 'translateX(0)', opacity: 1 }))
+        ]
+      ),
+      transition(
+        ':leave',
+        [
+          style({ transform: 'translateX(0)', opacity: 1 }),
+          animate('300ms', style({ transform: 'translateX(5%)', opacity: 0 }))
+        ]
+      )
     ]),
     fade
   ]
@@ -28,7 +34,7 @@ export class SideMenuMgtComponent implements OnInit {
   user: any = {};
   /* ----------------------- Constructor ------------------------ */
   constructor(private sidebarTriggerService: SidebarTriggerService) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* --------------------- Oninit ------------------------------- */
   ngOnInit() {

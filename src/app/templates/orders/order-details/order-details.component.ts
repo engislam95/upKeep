@@ -108,7 +108,7 @@ export class OrderDetailsComponent implements OnInit {
     private messagingService: MessagingService,
     private headersService: HeadersService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {

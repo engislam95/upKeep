@@ -1,20 +1,8 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  AfterViewInit,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, fromEvent } from 'rxjs';
-import {
-  startWith,
-  map,
-  debounceTime,
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { startWith, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectSearchService } from './../../../tools/shared-services/select-search.service';
 import { emptyValidator } from '../../../tools/shared_validators/Empty.validator';
 import { LoaderService } from '../../../tools/shared-services/loader.service';
@@ -135,33 +123,34 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   hours: any = [];
   technicians: any = [];
   /* -------------------- Order Form ------------------------ */
-  ordersForm = new FormGroup(
-    {
-      client_id: new FormControl('', Validators.required),
-      clientIdObj: new FormControl('', [emptyValidator, Validators.required]),
-      technician_id: new FormControl(null, [Validators.required]),
-      start: new FormControl(''),
-      startObj: new FormControl('', [Validators.required]),
-      end: new FormControl(''),
-      endObj: new FormControl('', [Validators.required]),
-      details: new FormControl('', [detailsValidator, Validators.required]),
-      location_id: new FormControl(''),
-      main_service_id: new FormControl(),
-      subServicesObj: new FormControl('', [
-        emptyValidator,
-        Validators.required
-      ]),
-      service_id: new FormControl(),
-      offer_id: new FormControl(),
-      offersObj: new FormControl(''),
-      source_id: new FormControl(),
-      sourceObj: new FormControl('', [emptyValidator, Validators.required]),
-      servicesObj: new FormControl('', [emptyValidator, Validators.required]),
-      order_date: new FormControl(''),
-      orderDateObj: new FormControl('', [Validators.required])
-    },
+  ordersForm = new FormGroup({
+    client_id: new FormControl('', Validators.required),
+    clientIdObj: new FormControl('', [emptyValidator, Validators.required]),
+    technician_id: new FormControl(null, [Validators.required]),
+    start: new FormControl(''),
+    startObj: new FormControl('', [Validators.required]),
+    end: new FormControl(''),
+    endObj: new FormControl('', [Validators.required]),
+    details: new FormControl('', [detailsValidator, Validators.required]),
+    location_id: new FormControl(''),
+    main_service_id: new FormControl(),
+    subServicesObj: new FormControl('', [
+      emptyValidator,
+      Validators.required
+    ]),
+    service_id: new FormControl(),
+    offer_id: new FormControl(),
+    offersObj: new FormControl(''),
+    source_id: new FormControl(),
+    sourceObj: new FormControl('', [emptyValidator, Validators.required]),
+    servicesObj: new FormControl('', [emptyValidator, Validators.required]),
+    order_date: new FormControl(''),
+    orderDateObj: new FormControl('', [Validators.required])
+  },
     [noAddressValidator, startEndTimeValidator]
   );
+
+
 
   /* ---------------------- Constructor -------------------------- */
   constructor(
@@ -173,27 +162,24 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     private actvatdRoute: ActivatedRoute,
     private selectSearchService: SelectSearchService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
       this.orders.map(ele => {
         switch (ele) {
-          case 'create':
-            this.order_add = true;
+          case 'create': this.order_add = true;
             break;
-          case 'show':
-            this.order_all = true;
+          case 'show': this.order_all = true;
             break;
-          case 'update':
-            this.order_update = true;
+          case 'update': this.order_update = true;
             break;
         }
       });
     }
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -218,10 +204,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       this.updateMode = params.updateMode === 'true';
       this.updateButton = params.updateMode === 'true';
       this.updatedOrderId = +params.updatedOrderId;
-      if (
-        (this.updateMode && this.order_update) ||
-        this.user.privilege == 'super-admin'
-      ) {
+      if ((this.updateMode && this.order_update) || this.user.privilege == 'super-admin') {
         this.getUpdatedOrderDetails();
       }
     });
@@ -478,7 +461,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* ----------------------- Display Options ------------------------ */
   displayOptionsFunction = state => {
     return this.selectSearchService.displaySelected(state);
-  };
+  }
   /* ------------------------- Get Update Data ----------------------- */
   getUpdatedOrderDetails() {
     this.coreService
@@ -716,22 +699,23 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       }
       if (type === 'start') {
         this.startTimeChanged(pmTime);
-        localStorage.setItem('startTimeType', splitedTime[1]);
+        sessionStorage.setItem('startTimeType', splitedTime[1]);
+
       } else {
         this.endTimeChanged(pmTime);
-        localStorage.setItem('endTimeType', splitedTime[1]);
+        sessionStorage.setItem('endTimeType', splitedTime[1])
       }
     } else {
       amTime = splitedTime[0];
       console.log(amTime);
       if (type === 'start') {
         const typeOfTime = splitedTime[1];
-        localStorage.setItem('startTimeType', typeOfTime);
+        sessionStorage.setItem('startTimeType', typeOfTime)
         console.log(typeOfTime);
         this.startTimeChanged(amTime);
       } else {
         const typeOfTime = splitedTime[1];
-        localStorage.setItem('endTimeType', typeOfTime);
+        sessionStorage.setItem('endTimeType', typeOfTime)
         console.log(typeOfTime);
         this.endTimeChanged(amTime);
       }
@@ -794,17 +778,17 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     this.startLoading();
     console.log(this.ordersForm.value);
     console.log(this.ordersForm.value.start);
-    let am = this.ordersForm.value.startObj.split(' ')[1];
+    let am = this.ordersForm.value.startObj.split(" ")[1];
     if (am == 'am') {
-      let startHour = this.ordersForm.value.start.split(':')[0];
-      const startMin = this.ordersForm.value.start.split(':')[1];
-      if (startHour == 12 && localStorage.getItem('startTimeType') == 'am') {
+      let startHour = this.ordersForm.value.start.split(":")[0];
+      const startMin = this.ordersForm.value.start.split(":")[1];
+      if (startHour == 12 && sessionStorage.getItem('startTimeType') == 'am') {
         startHour = 0;
         this.ordersForm.value.start = startHour + '0' + ':' + startMin;
       }
-      let endHour = this.ordersForm.value.end.split(':')[0];
-      const endMin = this.ordersForm.value.end.split(':')[1];
-      if (endHour == 12 && localStorage.getItem('endTimeType') == 'am') {
+      let endHour = this.ordersForm.value.end.split(":")[0];
+      const endMin = this.ordersForm.value.end.split(":")[1];
+      if (endHour == 12 && sessionStorage.getItem('endTimeType') == 'am') {
         endHour = 0;
         this.ordersForm.value.end = endHour + '0' + ':' + endMin;
       }

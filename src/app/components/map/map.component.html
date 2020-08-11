@@ -430,7 +430,7 @@
             [zoom]="zoom"
             (mapClick)="mapClicked($event)"
           >
-            <!-- <agm-marker
+            <agm-marker
               *ngIf="
                 ordersLoaded &&
                 !orderDetailsMode &&
@@ -444,15 +444,15 @@
               [longitude]="vidCoordinates.long"
               iconUrl="./../../../../assets/img/marker_vid.png"
             >
-            </agm-marker> -->
+            </agm-marker>
             <ng-container *ngIf="citiesLating.length">
               <agm-marker
                 *ngFor="let city of citiesLating"
                 [agmFitBounds]="true"
-                [latitude]="city.pivot.lat"
-                [longitude]="city.pivot.long"
+                [latitude]="city.lat"
+                [longitude]="city.long"
                 [iconUrl]="{
-                  url: './../../../../assets/img/marker_vid.png',
+                  url: './../../../../assets/img/marker.png',
                   scaledSize: { height: 50, width: 50 }
                 }"
               >

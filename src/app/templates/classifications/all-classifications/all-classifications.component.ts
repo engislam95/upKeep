@@ -54,7 +54,7 @@ export class AllClassificationsComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* ---------------- Oninit ----------------------- */
   ngOnInit() {

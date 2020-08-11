@@ -6,8 +6,6 @@ export class HeadersService {
   // companySlug = 'upkeep';
   companySlug;
   // baseAPI = '/upkeep/';
-  // baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
-
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '192.168.1.2:8000/api/';
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';
@@ -19,11 +17,11 @@ export class HeadersService {
   baseUrl: string = '';
   superURL: string = '';
   constructor() {
-    if (localStorage.getItem('currentUser')) {
-      this.companySlug = JSON.parse(localStorage.getItem('currentUser'))[
+    if (sessionStorage.getItem('currentUser')) {
+      this.companySlug = JSON.parse(sessionStorage.getItem('currentUser'))[
         'company_slug'
       ];
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
       this.token = currentUser.access_token;
       // this.companySlug = currentUser.company_slug;
       this.baseUrl = this.baseAPI + 'api/company/' + this.companySlug + '/';

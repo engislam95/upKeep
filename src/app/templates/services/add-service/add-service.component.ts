@@ -1,19 +1,7 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { LoaderService } from 'src/app/tools/shared-services/loader.service';
 import { Observable, fromEvent } from 'rxjs';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-  FormArray
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { ResponseStateService } from 'src/app/tools/shared-services/response-state.service';
 import { CoreService } from 'src/app/tools/shared-services/core.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -48,7 +36,7 @@ export class AddServiceComponent implements OnInit {
     name: new FormControl('', Validators.required),
     usedService: new FormControl(),
     usersStatus: new FormControl(),
-    active: new FormControl('')
+    active: new FormControl(''),
   });
   /* ------------------ Constructor ------------------------ */
   constructor(
@@ -58,20 +46,18 @@ export class AddServiceComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     /* --------------------- Get Classifications ------------------------- */
-    this.coreService
-      .superGet('owner/classification/all')
-      .subscribe(classification => {
-        console.log(classification);
-        this.classificationArray = classification;
-        this.roleFilteredOptions = this.classificationForm
-          .get('usedService')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterService(value))
-          );
-      });
+    this.coreService.superGet('owner/classification/all').subscribe(classification => {
+      console.log(classification);
+      this.classificationArray = classification;
+      this.roleFilteredOptions = this.classificationForm
+        .get('usedService')
+        .valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterService(value))
+        );
+    });
   }
 
   /* -------------------- Oninit ------------------------ */
@@ -95,27 +81,21 @@ export class AddServiceComponent implements OnInit {
         this.startLoading();
         this.updateMode = queryParams.updateMode === 'true';
         this.updatedID = queryParams.serviceID;
-        this.coreService
-          .superGet('owner/services/show/' + this.updatedID)
-          .subscribe(service => {
-            console.log(service['data']);
-            this.serviceObject = service['data'];
-            this.classificationForm.controls.name.setValue(
-              service['data'].name
-            );
-            if (service['data']['classification']) {
-              this.classificationForm.controls.usedService.setValue(
-                service['data']['classification'].name
-              );
-              this.filterServiceID = service['data']['classification'].id;
-            }
-            if (this.serviceObject.active == 1) {
-              this.filteredStatusId = 1;
-              this.classificationForm.controls.usersStatus.setValue('مفعل');
-            }
-            this.accept = true;
-            this.endLoading();
-          });
+        this.coreService.superGet('owner/services/show/' + this.updatedID).subscribe(service => {
+          console.log(service['data']);
+          this.serviceObject = service['data'];
+          this.classificationForm.controls.name.setValue(service['data'].name);
+          if (service['data']['classification']) {
+            this.classificationForm.controls.usedService.setValue(service['data']['classification'].name);
+            this.filterServiceID = service['data']['classification'].id;
+          }
+          if (this.serviceObject.active == 1) {
+            this.filteredStatusId = 1;
+            this.classificationForm.controls.usersStatus.setValue('مفعل');
+          }
+          this.accept = true;
+          this.endLoading();
+        });
       }
     });
   }
@@ -137,9 +117,7 @@ export class AddServiceComponent implements OnInit {
     if (value === '') {
       this.filterServiceID = '';
     }
-    return this.classificationArray.filter(option =>
-      option.name.includes(value)
-    );
+    return this.classificationArray.filter(option => option.name.includes(value));
   }
   /* ------------------------ Display Option ----------------------------- */
   displayOptionsFunction(state) {
@@ -149,17 +127,20 @@ export class AddServiceComponent implements OnInit {
   }
   /* -------------------- Reset ---------------------- */
   xResetInputs(key) {
-    console.log(key);
+    console.log(key)
     if (key === 'name') {
       (document.getElementById('name') as HTMLInputElement).value = '';
       this.classificationForm.patchValue({ name: '' });
-    } else if (key === 'usersStatus') {
+    }
+    else if (key === 'usersStatus') {
       (document.getElementById('usersStatus') as HTMLInputElement).value = '';
       this.classificationForm.patchValue({ usersStatus: '' });
-    } else if (key === 'usedService') {
+    }
+    else if (key === 'usedService') {
       (document.getElementById('usedService') as HTMLInputElement).value = '';
       this.classificationForm.patchValue({ usedService: '' });
-    } else {
+    }
+    else {
       (document.getElementById(key) as HTMLInputElement).value = '';
       this.classificationForm.controls[key].patchValue('');
     }
@@ -170,7 +151,8 @@ export class AddServiceComponent implements OnInit {
     console.log(event);
     if (event.checked == true) {
       this.accept = true;
-    } else if (event.checked == false) {
+    }
+    else if (event.checked == false) {
       this.accept = false;
     }
   }
@@ -179,7 +161,8 @@ export class AddServiceComponent implements OnInit {
     console.log(event);
     if (event.checked == true) {
       this.addToAllCompany = true;
-    } else if (event.checked == false) {
+    }
+    else if (event.checked == false) {
       this.addToAllCompany = false;
     }
   }
@@ -193,54 +176,50 @@ export class AddServiceComponent implements OnInit {
     });
     this.submitted = true;
     this.startLoading();
-    this.coreService
-      .superPost('owner/services', {
-        name: this.classificationForm.controls.name.value,
-        classification_id: this.filterServiceID,
-        active: this.filteredStatusId,
-        add_to_all: this.addToAllCompany
-      })
-      .subscribe(
-        () => {
-          this.showSuccess('تم تسجيل الخدمة بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/services/all-services']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.superPost('owner/services', {
+      name: this.classificationForm.controls.name.value,
+      classification_id: this.filterServiceID,
+      active: this.filteredStatusId,
+      add_to_all: this.addToAllCompany
+    }).subscribe(
+      () => {
+        this.showSuccess('تم تسجيل الخدمة بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/services/all-services']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   updateClassification() {
     this.submitted = true;
     this.startLoading();
-    this.coreService
-      .superUpdate('owner/services/' + this.updatedID, {
-        name: this.classificationForm.controls.name.value,
-        classification_id: this.filterServiceID,
-        active: this.filteredStatusId,
-        add_to_all: this.addToAllCompany
-      })
-      .subscribe(
-        () => {
-          this.showSuccess('تم تعديل الخدمة بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/services/all-services']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.superUpdate('owner/services/' + this.updatedID, {
+      name: this.classificationForm.controls.name.value,
+      classification_id: this.filterServiceID,
+      active: this.filteredStatusId,
+      add_to_all: this.addToAllCompany
+    }).subscribe(
+      () => {
+        this.showSuccess('تم تعديل الخدمة بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/services/all-services']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   /* ----------------------- Active Status ----------------------- */
   // changeActive(e) {
@@ -264,10 +243,7 @@ export class AddServiceComponent implements OnInit {
     this.submitted = false;
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
   /* ----------------------------- Show Success Messages --------------------- */
   showSuccess(successText) {
@@ -275,9 +251,6 @@ export class AddServiceComponent implements OnInit {
     this.submitted = false;
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
 }

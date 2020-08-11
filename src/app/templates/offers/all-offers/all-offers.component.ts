@@ -42,7 +42,7 @@ export class AllOffersComponent implements OnInit {
     'name',
     'sourceName',
     'serviceName',
-    'status'
+    'status',
     // 'email',
     // 'offer_details'
     // "delete_order"
@@ -67,33 +67,29 @@ export class AllOffersComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.offers = this.user.modules.offers;
     if (this.offers) {
       this.offers.map(ele => {
         switch (ele) {
-          case 'create':
-            this.offer_add = true;
+          case 'create': this.offer_add = true;
             break;
-          case 'show':
-            this.offer_all = true;
+          case 'show': this.offer_all = true;
             break;
-          case 'update':
-            this.offer_update = true;
+          case 'update': this.offer_update = true;
             break;
-          case 'delete':
-            this.offer_delete = true;
+          case 'delete': this.offer_delete = true;
             break;
         }
       });
     }
     if (this.user.privilege == 'super-admin' || this.offer_all) {
-      console.log(this.displayedColumns);
+      console.log(this.displayedColumns)
       this.displayedColumns[5] = 'offer_details';
     }
     if (this.user.privilege == 'super-admin' || this.offer_update) {
-      console.log(this.displayedColumns);
+      console.log(this.displayedColumns)
       this.displayedColumns[6] = 'edit_order';
     }
   }
@@ -299,7 +295,7 @@ export class AllOffersComponent implements OnInit {
   // ─── START CHECK FOR DATA EXISTANCE ──────────────────────────────
   //
 
-  dataExistance() {}
+  dataExistance() { }
 
   //
   // ────────────────────────────── END CHECK FOR DATA EXISTANCE ─────

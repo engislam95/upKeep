@@ -51,19 +51,11 @@ export class AddResourceComponent implements OnInit {
     email: new FormControl('', [Validators.email, Validators.required]),
     type: new FormControl(),
     imageInputObj: new FormControl(''),
-    resourceTypesObj: new FormControl('', [
-      emptyValidator,
-      Validators.required
-    ]),
+    resourceTypesObj: new FormControl('', [emptyValidator, Validators.required]),
     phone: new FormControl(''),
     mobileKey: new FormControl(
       '', //
-      [
-        Validators.required,
-        Validators.pattern('[0-9]* || [٠-٩]*'),
-        Validators.minLength(9),
-        Validators.maxLength(9)
-      ]
+      [Validators.required, Validators.pattern('[0-9]* || [٠-٩]*'), Validators.minLength(9), Validators.maxLength(9)]
     ),
     logo: new FormControl(''),
     services: new FormControl([]),
@@ -107,22 +99,18 @@ export class AddResourceComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     this.resoureces = this.user.modules.resources;
     if (this.resoureces) {
       this.resoureces.map(ele => {
         switch (ele) {
-          case 'create':
-            this.resource_add = true;
+          case 'create': this.resource_add = true;
             break;
-          case 'all':
-            this.resources_all = true;
+          case 'all': this.resources_all = true;
             break;
-          case 'delete':
-            this.resources_delete = true;
+          case 'delete': this.resources_delete = true;
             break;
-          case 'update':
-            this.resources_update = true;
+          case 'update': this.resources_update = true;
             break;
         }
       });
@@ -142,34 +130,27 @@ export class AddResourceComponent implements OnInit {
       this.endLoading();
       // End End Loading
       // Start Select Search For Main Services
-      this.countriesFilteredOptions = this.resourcesForm
-        .get('countriesObj')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCountries(value))
-        );
+      this.countriesFilteredOptions = this.resourcesForm.get('countriesObj').valueChanges.pipe(
+        startWith(''),
+        map(value => this.filterCountries(value))
+      );
       // End Select Search For Main Services
     });
     //  End Get Countries
     // Start Get All Services
-    this.coreService
-      .getMethod('services/active', {})
-      .subscribe((services: any) => {
-        this.mainServiceArray = services.data;
-        this.mainServicesLoaded = true;
-        this.pushServicesArray();
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        if (
-          this.resourcesForm.value.services.length === 0 &&
-          !this.updateMode
-        ) {
-          setTimeout(() => {
-            this.resourcesForm.get('services').setErrors({ emptyArray: true });
-          }, 500);
-        }
-      });
+    this.coreService.getMethod('services/active', {}).subscribe((services: any) => {
+      this.mainServiceArray = services.data;
+      this.mainServicesLoaded = true;
+      this.pushServicesArray();
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+      if (this.resourcesForm.value.services.length === 0 && !this.updateMode) {
+        setTimeout(() => {
+          this.resourcesForm.get('services').setErrors({ emptyArray: true });
+        }, 500);
+      }
+    });
     // End Get All Services
     // Start Get Resource Types
     this.getResourceTypes();
@@ -257,8 +238,7 @@ export class AddResourceComponent implements OnInit {
       this.resourcesForm.patchValue({ phone: '' });
     }
     if (key === 'resourceTypesObj') {
-      (document.getElementById('resourceTypesObj') as HTMLInputElement).value =
-        '';
+      (document.getElementById('resourceTypesObj') as HTMLInputElement).value = '';
       this.resourcesForm.patchValue({ source_type: '' });
     }
     if (key === 'imageInputObj') {
@@ -286,17 +266,15 @@ export class AddResourceComponent implements OnInit {
   //  ############################# End X Reset Inputs #############################
   //  ############################# Start Get Resource Details #############################
   getUpdatedResourceDetails() {
-    this.coreService
-      .getMethod('resources/' + this.updatedResourceId, {})
-      .subscribe((updatedResource: any) => {
-        this.updatedResourceDataLoaded = true;
-        this.updatedResourceData = updatedResource.data;
-        this.pushServicesArray();
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        this.assignUpdatedData();
-      });
+    this.coreService.getMethod('resources/' + this.updatedResourceId, {}).subscribe((updatedResource: any) => {
+      this.updatedResourceDataLoaded = true;
+      this.updatedResourceData = updatedResource.data;
+      this.pushServicesArray();
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+      this.assignUpdatedData();
+    });
   }
   //  ############################# End Get Resource Details #############################
   //  ############################# End Assign Updated Data #############################
@@ -338,26 +316,21 @@ export class AddResourceComponent implements OnInit {
     });
     this.submitted = true;
     this.startLoading();
-    this.coreService
-      .updateMethod(
-        'resources/' + this.updatedResourceId,
-        this.resourcesForm.value
-      )
-      .subscribe(
-        () => {
-          this.showSuccess('تم تعديل المصدر بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/resources/all-resources']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.updateMethod('resources/' + this.updatedResourceId, this.resourcesForm.value).subscribe(
+      () => {
+        this.showSuccess('تم تعديل المصدر بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/resources/all-resources']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   //  ######################### Start OnUpdate Form #########################
   // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -424,23 +397,21 @@ export class AddResourceComponent implements OnInit {
       phone: +(this.countryPhoneKey + this.mobileNumber)
     });
     this.startLoading();
-    this.coreService
-      .postMethod('resources', this.resourcesForm.value)
-      .subscribe(
-        () => {
-          this.showSuccess('تم تسجيل المصدر بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/resources/all-resources']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.postMethod('resources', this.resourcesForm.value).subscribe(
+      () => {
+        this.showSuccess('تم تسجيل المصدر بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/resources/all-resources']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   //  ######################### End OnSubmit Form #########################
   //  ######################### Start Filter Countries #########################
@@ -470,23 +441,19 @@ export class AddResourceComponent implements OnInit {
   //  ######################### End Filter Countries #########################
   //  ######################### Start Get Cities #########################
   getCities(id) {
-    this.coreService
-      .getMethod('countries/' + id + '/cities', {})
-      .subscribe((cities: any) => {
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        this.citiesLoaded = true;
-        this.citiesArray = cities.data;
-        // Start Select Search For Main Services
-        this.citiesFilteredOptions = this.resourcesForm
-          .get('citiesObj')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterCities(value))
-          );
-        // End Select Search For Main Services
-      });
+    this.coreService.getMethod('countries/' + id + '/cities', {}).subscribe((cities: any) => {
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+      this.citiesLoaded = true;
+      this.citiesArray = cities.data;
+      // Start Select Search For Main Services
+      this.citiesFilteredOptions = this.resourcesForm.get('citiesObj').valueChanges.pipe(
+        startWith(''),
+        map(value => this.filterCities(value))
+      );
+      // End Select Search For Main Services
+    });
   }
   //  ######################### End Get Cities #########################
   //  ######################### Start Filter Countries #########################
@@ -509,23 +476,19 @@ export class AddResourceComponent implements OnInit {
 
   //  ######################### Start Get Cities #########################
   getResourceTypes() {
-    this.coreService
-      .getMethod('lookup/source-types', {})
-      .subscribe((resourceTypes: any) => {
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        this.resourceTypesLoaded = true;
-        this.resourceTypesArray = resourceTypes.data;
-        // Start Select Search For Main Services
-        this.resourceTypesFilteredOptions = this.resourcesForm
-          .get('resourceTypesObj')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterResourceTypes(value))
-          );
-        // End Select Search For Main Services
-      });
+    this.coreService.getMethod('lookup/source-types', {}).subscribe((resourceTypes: any) => {
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+      this.resourceTypesLoaded = true;
+      this.resourceTypesArray = resourceTypes.data;
+      // Start Select Search For Main Services
+      this.resourceTypesFilteredOptions = this.resourcesForm.get('resourceTypesObj').valueChanges.pipe(
+        startWith(''),
+        map(value => this.filterResourceTypes(value))
+      );
+      // End Select Search For Main Services
+    });
   }
   //  ######################### End Get Cities #########################
   //  ######################### Start Filter Resource Types #########################
@@ -536,9 +499,7 @@ export class AddResourceComponent implements OnInit {
       });
     }
     if (this.resourceTypesArray !== null) {
-      return this.resourceTypesArray.filter(option =>
-        option.name.includes(value)
-      );
+      return this.resourceTypesArray.filter(option => option.name.includes(value));
     }
   }
   displayResourceTypes(state) {
@@ -561,11 +522,7 @@ export class AddResourceComponent implements OnInit {
   }
   endLoading() {
     setTimeout(() => {
-      if (
-        this.mainServicesLoaded &&
-        this.countriesLoaded &&
-        this.resourceTypesLoaded
-      ) {
+      if (this.mainServicesLoaded && this.countriesLoaded && this.resourceTypesLoaded) {
         this.pageLoaded = true;
         this.loaderService.endLoading();
       }
@@ -578,20 +535,14 @@ export class AddResourceComponent implements OnInit {
     this.submitted = false;
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
   showSuccess(successText) {
     this.endLoading();
     this.submitted = false;
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
   //  ############################ End Response Messeges ############################
 }

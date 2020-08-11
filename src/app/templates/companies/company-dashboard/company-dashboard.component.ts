@@ -40,9 +40,9 @@ export class CompanyDashboardComponent implements OnInit {
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private responseStateService: ResponseStateService
+    private responseStateService: ResponseStateService,
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* ------------------ Oninit ----------------------- */
   ngOnInit() {
@@ -72,15 +72,15 @@ export class CompanyDashboardComponent implements OnInit {
                   }
                   this.services.map(item => {
                     if (item.id == ele.id) {
-                      return (item.checked = true);
+                      return item.checked = true;
                     }
-                  });
+                  })
                 });
                 console.log(this.IDsArray);
-              });
+              })
             /* --------------- End Loading ----------------- */
           }
-        });
+        })
       /* --------------------- Get Classifications ------------------------- */
       this.coreService
         .superGet('owner/classification/all')
@@ -120,7 +120,7 @@ export class CompanyDashboardComponent implements OnInit {
           console.log(data);
           this.services = data['data'];
           this.services.map(ele => {
-            return (ele.checked = false);
+            return ele.checked = false;
           });
         });
     }
@@ -136,33 +136,30 @@ export class CompanyDashboardComponent implements OnInit {
     console.log(event);
     this.services.map(ele => {
       if (event.checked == true) {
-        return (ele.checked = true);
+        return ele.checked = true;
       } else if (event.checked == false) {
-        return (ele.checked = false);
+        return ele.checked = false;
       }
     });
     this.services.map(ele => {
       if (event.checked == true && this.IDsArray.indexOf(ele.id) === -1) {
         return this.IDsArray.push(ele.id);
-      } else if (
-        event.checked == false &&
-        this.IDsArray.indexOf(ele.id) != -1
-      ) {
+      }
+      else if (event.checked == false && this.IDsArray.indexOf(ele.id) != -1) {
         this.IDsArray.splice(this.IDsArray.indexOf(ele.id), 1);
       }
-    });
+    })
     console.log(this.services);
     console.log(this.IDsArray);
+
   }
   /* --------------------- Check Item ----------------------- */
   checkItem(event, service, i) {
     console.log(event.source.value);
     if (event.checked == true && this.IDsArray.indexOf(service.id) === -1) {
       this.IDsArray.push(service.id);
-    } else if (
-      event.checked == false &&
-      this.IDsArray.indexOf(service.id) != -1
-    ) {
+    }
+    else if (event.checked == false && this.IDsArray.indexOf(service.id) != -1) {
       this.IDsArray.splice(this.IDsArray.indexOf(service.id), 1);
     }
     console.log(this.IDsArray);
@@ -170,26 +167,24 @@ export class CompanyDashboardComponent implements OnInit {
   /* ------------------ Assign Services -------------------------- */
   assignServices() {
     this.startLoading();
-    this.coreService
-      .superPost('owner/company/services', {
-        company_id: this.company.id,
-        services: this.IDsArray
-      })
-      .subscribe(
-        () => {
-          this.showSuccess('تم اضافة الخدمات الى الشركة بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/companies/all-companies']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.superPost('owner/company/services', {
+      company_id: this.company.id,
+      services: this.IDsArray
+    }).subscribe(
+      () => {
+        this.showSuccess('تم اضافة الخدمات الى الشركة بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/companies/all-companies']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   /* --------------- Start Loading ----------------- */
   startLoading() {

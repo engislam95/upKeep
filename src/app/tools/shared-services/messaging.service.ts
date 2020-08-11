@@ -15,8 +15,7 @@ export class MessagingService {
   constructor(
     private angularFireDB: AngularFireDatabase,
     private angularFireAuth: AngularFireAuth,
-    private angularFireMessaging: AngularFireMessaging
-  ) {
+    private angularFireMessaging: AngularFireMessaging) {
     this.angularFireMessaging.messaging.subscribe(messaging => {
       messaging.onMessage = messaging.onMessage.bind(messaging);
       messaging.onTokenRefresh = messaging.onTokenRefresh.bind(messaging);
@@ -33,7 +32,7 @@ export class MessagingService {
   requestPermission(userId) {
     this.angularFireMessaging.requestToken.subscribe(
       token => {
-        localStorage.setItem('notificationToken', JSON.stringify(token));
+        sessionStorage.setItem('notificationToken', JSON.stringify(token));
         this.tokenSubject.next(token);
         this.updateToken(userId, token);
       },
@@ -45,9 +44,7 @@ export class MessagingService {
   receiveMessage() {
     this.angularFireMessaging.messages.subscribe((payload: any) => {
       console.log(payload.data);
-      this.orderUpdatedNotification.next(
-        JSON.parse(payload.data.notification_value)
-      );
+      this.orderUpdatedNotification.next(JSON.parse(payload.data.notification_value));
       console.log(payload);
       this.messagesArray.push(payload);
       this.currentMessage.next(this.messagesArray);
