@@ -45,9 +45,11 @@ export class AllTechniciansComponent implements OnInit {
     'technical_name',
     'phone',
     'main_service',
-    // 'city_service',
+    'city_service',
+    'email',
+    'national',
     'status',
-    // 'technicians_details',
+    'technicians_details',
     // 'edit_technical',
     // 'delete_technical'
   ];
@@ -60,11 +62,42 @@ export class AllTechniciansComponent implements OnInit {
   //  ###################### Start Select Status ######################
   filterForm = new FormGroup({
     techniciansStatusObj: new FormControl(),
-    filterName: new FormControl()
+    filterName: new FormControl(),
+    service: new FormControl(),
+    serviceCity: new FormControl(),
   });
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
+
+
   statusFilteredOptions: Observable<any>;
+  services: Observable<any>;
   filteredStatusId = '';
+  filteredServiceId = '';
+  serviceArray = [
+                     {
+                      name:'تكيفات'
+                    },
+                    {
+                      name:'سباكه'
+                    },
+                    {
+                      name:'نضافة'
+                    }
+                  ] ;
+
+serviceCityArray = [
+                    {
+                    name:'جده'
+                  },
+                  {
+                    name:'الطائف'
+                  },
+                  {
+                    name:'مكة'
+                  }
+                  ] ;
+
+
   technician_add: boolean = false;
   technician_all: boolean = false;
   technician_update: boolean = false;
@@ -97,15 +130,15 @@ export class AllTechniciansComponent implements OnInit {
         }
       });
     }
-    if (this.technician_all || this.user.privilege == 'super-admin') {
-      this.displayedColumns.push('technicians_details');
-    }
-    if (this.technician_update || this.user.privilege == 'super-admin') {
-      this.displayedColumns.push('edit_technical');
-    }
-    if (this.technician_delete || this.user.privilege == 'super-admin') {
-      this.displayedColumns.push('delete_technical');
-    }
+    // if (this.technician_all || this.user.privilege == 'super-admin') {
+    //   this.displayedColumns.push('technicians_details');
+    // }
+    // if (this.technician_update || this.user.privilege == 'super-admin') {
+    //   this.displayedColumns.push('edit_technical');
+    // }
+    // if (this.technician_delete || this.user.privilege == 'super-admin') {
+    //   this.displayedColumns.push('delete_technical');
+    // }
   }
   //  ############################### Start OnInit ###############################
   ngOnInit() {
@@ -142,7 +175,55 @@ export class AllTechniciansComponent implements OnInit {
         map(value => this.filterTechniciansStatus(value))
       );
     // End Select Search For Status Types
-  }
+  
+
+
+    // Filter services
+    // const filterService = document.getElementById('filterService');
+    // const filterServiceListner = fromEvent(filterService, 'keyup');
+    // filterServiceListner
+    //   .pipe(
+    //     map((event: any) => event.target.value),
+    //     debounceTime(200),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((value: any) => {
+    //     this.pageId = 1;
+    //     this.filteredTechniciansData = value;
+    //     this.getAllTechnicians(this.pageId);
+    //   });
+    // // End Select Search For Status Types
+
+
+    // Filter services Cities
+    // const filterServiceCity = document.getElementById('filterCityService');
+    // const filterServiceCityListner = fromEvent(filterServiceCity, 'keyup');
+    // filterServiceCityListner
+    //   .pipe(
+    //     map((event: any) => event.target.value),
+    //     debounceTime(200),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((value: any) => {
+    //     this.pageId = 1;
+    //     this.filteredTechniciansData = value;
+    //     this.getAllTechnicians(this.pageId);
+    //   });
+    // // End Select Search For Status Types
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
   //  ############################### End OnInit ###############################
   //  ######################### Start Filter Order Status  #########################
   filterTechniciansStatus(value: any) {
@@ -158,6 +239,37 @@ export class AllTechniciansComponent implements OnInit {
     }
     return this.statusArray.filter(option => option.name.includes(value));
   }
+
+
+  
+
+
+    // get technical service
+
+    // getAllServices() {
+    //   this.coreService
+    //     .getMethod('services')
+    //     .subscribe((getServices: any) => {
+    //       console.log(getServices);
+    //       this.serviceArray = getServices.data;
+    //     });
+    // }
+
+
+       // get technical service cities
+
+    // getAllServicesCities() {
+    //   this.coreService
+    //     .getMethod('servicesCities')
+    //     .subscribe((getServices: any) => {
+    //       console.log(getServices);
+    //       this.serviceCityArray = getServices.data;
+    //     });
+    // }
+
+
+
+
   //  ######################### End Filter Order Status  #########################
   //  ######################### start display Options For Select #########################
   displayOptionsFunction(state) {
