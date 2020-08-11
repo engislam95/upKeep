@@ -136,12 +136,12 @@ export class MapComponent implements OnInit {
       this.cities = cities.data;
       console.log(this.cities);
       this.citiesLating = cities.data;
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
+      // this.citiesFilteredOptions = this.cityForm
+      //   .get('city_id')
+      //   .valueChanges.pipe(
+      //     startWith(''),
+      //     map(value => this.filterCities(value))
+      //   );
     });
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
@@ -166,20 +166,20 @@ export class MapComponent implements OnInit {
       });
     }
   }
-  filterCities(value: any) {
-    if (typeof value === 'object') {
-      this.city_id = value.id;
-      this.coreService.getMethod('cities/' + value.id).subscribe(city => {
-        console.log(city);
-        this.citiesLating = city['data'];
-      });
-      this.getOrders();
-    }
+  // filterCities(value: any) {
+  //   if (typeof value === 'object') {
+  //     this.city_id = value.id;
+  //     this.coreService.getMethod('cities/' + value.id).subscribe(city => {
+  //       console.log(city);
+  //       this.citiesLating = city['data'];
+  //     });
+  //     this.getOrders();
+  //   }
 
-    if (this.cities !== null) {
-      return this.cities.filter(option => option.name.includes(value));
-    }
-  }
+  //   if (this.cities !== null) {
+  //     return this.cities.filter(option => option.name.includes(value));
+  //   }
+  // }
   // search by city name
   // getLocationOnMap(cityName) {
   //   let newLocation = {
@@ -214,7 +214,15 @@ export class MapComponent implements OnInit {
   //     console.log(this.citiesLating);
   //   }, 1000);
   // }
-
+  selectCity(cityID) {
+    console.log('City ID -> ', cityID);
+    this.coreService.getMethod('cities/' + cityID).subscribe(city => {
+      console.log(city);
+      this.citiesLating = city['data'];
+    });
+    this.city_id = cityID;
+    this.getOrders();
+  }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
     if (state !== null && state !== undefined) {
@@ -225,44 +233,44 @@ export class MapComponent implements OnInit {
   xResetInputs(key) {
     (document.getElementById(key) as HTMLInputElement).value = '';
     this.cityForm.controls[key].patchValue('');
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      this.citiesFilteredOptions = cities.data;
-      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-        this.cities = cities.data;
-        console.log(this.cities);
-        this.citiesLating = cities.data;
-        this.citiesFilteredOptions = this.cityForm
-          .get('city_id')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterCities(value))
-          );
-      });
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
+    // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //   this.cities = cities.data;
+    //   console.log(this.cities);
+    //   this.citiesFilteredOptions = cities.data;
+    //   this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //     this.cities = cities.data;
+    //     console.log(this.cities);
+    //     this.citiesLating = cities.data;
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
   }
   /* ---------------------- Oninit -------------------------- */
   ngOnInit() {
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      // this.cities.map(city => {
-      //   this.getLocationOnMap(city.name);
-      // });
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
+    // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //   this.cities = cities.data;
+    //   console.log(this.cities);
+    // this.cities.map(city => {
+    //   this.getLocationOnMap(city.name);
+    // });
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
     this.pickUpTodayDate();
     this.clientLocationOnMap();
     if (!this.multiAddressMapPopupSelections) {
@@ -464,8 +472,8 @@ export class MapComponent implements OnInit {
           return orderOne.totalTimeToArrive > orderTwo.totalTimeToArrives
             ? 1
             : orderTwo.totalTimeToArrive > orderOne.totalTimeToArrive
-            ? -1
-            : 0;
+              ? -1
+              : 0;
         });
         this.bestTechnicalName = this.sortedArray[0].technical.name;
         this.bestTechnicalArriveTime = this.sortedArray[0].totalTimeToArrive;
