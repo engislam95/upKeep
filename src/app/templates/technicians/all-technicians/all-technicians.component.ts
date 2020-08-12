@@ -66,36 +66,19 @@ export class AllTechniciansComponent implements OnInit {
     service: new FormControl(),
     serviceCity: new FormControl(),
   });
+
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
-
-
   statusFilteredOptions: Observable<any>;
-  services: Observable<any>;
   filteredStatusId = '';
-  filteredServiceId = '';
-  serviceArray = [
-                     {
-                      name:'تكيفات'
-                    },
-                    {
-                      name:'سباكه'
-                    },
-                    {
-                      name:'نضافة'
-                    }
-                  ] ;
 
-serviceCityArray = [
-                    {
-                    name:'جده'
-                  },
-                  {
-                    name:'الطائف'
-                  },
-                  {
-                    name:'مكة'
-                  }
-                  ] ;
+ ServiceArray = [];
+ filteredServiceArray = [];
+
+
+  CityArray = [];
+  filteredCityArray = [];
+
+
 
 
   technician_add: boolean = false;
@@ -147,6 +130,8 @@ serviceCityArray = [
     // End START Loading
     // Start Get All Technicians
     this.getAllTechnicians(this.pageId);
+    this.getAllServices()
+    this.getAllServicesCities()
     // End Get All Technicians
 
     //  ############################ Start Filters ############################
@@ -178,21 +163,9 @@ serviceCityArray = [
   
 
 
-    // Filter services
-    // const filterService = document.getElementById('filterService');
-    // const filterServiceListner = fromEvent(filterService, 'keyup');
-    // filterServiceListner
-    //   .pipe(
-    //     map((event: any) => event.target.value),
-    //     debounceTime(200),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe((value: any) => {
-    //     this.pageId = 1;
-    //     this.filteredTechniciansData = value;
-    //     this.getAllTechnicians(this.pageId);
-    //   });
-    // // End Select Search For Status Types
+   
+  
+    // End Select Search For Status Types
 
 
     // Filter services Cities
@@ -241,31 +214,78 @@ serviceCityArray = [
   }
 
 
+  filterTechniciansService(value) {
+    console.log(value)
+    if (value.length > 0) {
+      this.filteredServiceArray = value
+      console.log(this.filteredServiceArray)
+      this.pageId = 1;
+      this.getAllTechnicians(this.pageId);
+    }
+    if (value.length < 1) {
+      this.filteredServiceArray = [];
+      console.log(this.filteredCityArray)
+
+      this.pageId = 1;
+      this.getAllTechnicians(this.pageId);
+    }
+    
+    return this.filteredServiceArray ;
+
+  }
+
+
+  
+  filterTechniciansCity(value) {
+    if (value.length > 0) {
+      this.filteredCityArray = value ;
+      console.log(this.filteredCityArray)
+
+      this.pageId = 1;
+      this.getAllTechnicians(this.pageId);
+    }
+    if (value.length < 1) {
+      this.filteredCityArray = [];
+      console.log(this.filteredCityArray)
+
+      this.pageId = 1;
+      this.getAllTechnicians(this.pageId);
+    }
+
+    return this.filteredCityArray ;
+
+  }
+
+
+
+
   
 
 
-    // get technical service
+   //  get technical service
 
-    // getAllServices() {
-    //   this.coreService
-    //     .getMethod('services')
-    //     .subscribe((getServices: any) => {
-    //       console.log(getServices);
-    //       this.serviceArray = getServices.data;
-    //     });
-    // }
+    getAllServices() {
+      this.coreService
+       .getMethod('services/active', {})
+        .subscribe((getServices: any) => {
+          console.log(getServices);
+          this.ServiceArray = getServices.data;
+        });
+    }
 
 
-       // get technical service cities
+   
 
-    // getAllServicesCities() {
-    //   this.coreService
-    //     .getMethod('servicesCities')
-    //     .subscribe((getServices: any) => {
-    //       console.log(getServices);
-    //       this.serviceCityArray = getServices.data;
-    //     });
-    // }
+     //  get technical service cities
+
+    getAllServicesCities() {
+      this.coreService
+        .getMethod('cities')
+        .subscribe((getCities: any) => {
+          console.log(getCities);
+          this.CityArray = getCities.data;
+        });
+    }
 
 
 
@@ -299,14 +319,22 @@ serviceCityArray = [
   //  ######################### Start Get All Technicians #########################
   getAllTechnicians(pageId) {
     this.loaderService.startLoading();
+    console.log(this.filteredServiceArray)
+    console.log(this.filteredCityArray);
+    
+
     this.coreService
       .getMethod('technicians?page=' + pageId, {
         name: this.filteredTechniciansData,
-        active: this.filteredStatusId
+        active: this.filteredStatusId ,
+        'service[]': this.filteredServiceArray ,
+        'city[]': this.filteredCityArray ,
+
       })
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
         this.dataSource = getTechniciansResponse.data.data;
+        console.log( this.dataSource )
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
