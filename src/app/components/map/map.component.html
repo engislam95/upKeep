@@ -297,10 +297,10 @@
                             class="selectTechnical"
                             value="{{ sortedArray[0].technical.id }}"
                           />
-                          {{ searchingLoaderCog ? bestTechnicalName : "" }}
+                          {{ searchingLoaderCog ? bestTechnicalName : '' }}
                           <span
                             >{{
-                              searchingLoaderCog ? bestTechnicalArriveTime : ""
+                              searchingLoaderCog ? bestTechnicalArriveTime : ''
                             }}
                             د
                           </span>
@@ -427,14 +427,16 @@
               iconUrl="./../../../../assets/img/marker_vid.png"
             >
             </agm-marker> -->
-            <ng-container *ngIf="citiesLating.length">
+            <ng-container
+              *ngIf="citiesLating.length && url !== '/locations-managment'"
+            >
               <agm-marker
                 *ngFor="let city of citiesLating"
                 [agmFitBounds]="true"
                 [latitude]="city.pivot.lat"
                 [longitude]="city.pivot.long"
                 [iconUrl]="{
-                  url: './../../../../assets/img/marker_vid.png',
+                  url: companyPin,
                   scaledSize: { height: 50, width: 50 }
                 }"
               >
@@ -481,16 +483,16 @@
                           <span class="timeTitleSpan">من : </span
                           >{{
                             order.fromH > 12
-                              ? order.fromH - 12 + ":" + order.fromM + "م"
-                              : order.fromH + ":" + order.fromM + "ص"
+                              ? order.fromH - 12 + ':' + order.fromM + 'م'
+                              : order.fromH + ':' + order.fromM + 'ص'
                           }}
                         </ng-container>
                         <ng-container>
                           <span class="timeTitleSpan"> الي : </span
                           >{{
                             order.toH > 12
-                              ? order.toH - 12 + ":" + order.toM + "م"
-                              : order.toH + ":" + order.toM + "ص"
+                              ? order.toH - 12 + ':' + order.toM + 'م'
+                              : order.toH + ':' + order.toM + 'ص'
                           }}
                         </ng-container>
                       </li>
@@ -522,6 +524,7 @@
               [longitude]="orderDetailsOrgins.lng"
             >
             </agm-marker>
+
             <agm-marker
               *ngIf="clientDetailsPageMode || addOrderMapMode"
               [markerDraggable]="true"

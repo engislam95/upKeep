@@ -124,6 +124,7 @@ export class MapComponent implements OnInit {
   });
   city_id = '';
   citiesFilteredOptions: Observable<any>;
+  url: any = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
@@ -132,17 +133,22 @@ export class MapComponent implements OnInit {
     private router: Router,
     private mapsAPILoader: MapsAPILoader
   ) {
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      this.citiesLating = cities.data;
-      // this.citiesFilteredOptions = this.cityForm
-      //   .get('city_id')
-      //   .valueChanges.pipe(
-      //     startWith(''),
-      //     map(value => this.filterCities(value))
-      //   );
-    });
+    this.url = this.router.url;
+    console.log(this.url);
+
+    if (!this.clientDetailsPageMode) {
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.cities = cities.data;
+        console.log(this.cities);
+        this.citiesLating = cities.data;
+        // this.citiesFilteredOptions = this.cityForm
+        //   .get('city_id')
+        //   .valueChanges.pipe(
+        //     startWith(''),
+        //     map(value => this.filterCities(value))
+        //   );
+      });
+    }
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.companyPin = this.user.companyPin;
@@ -215,13 +221,21 @@ export class MapComponent implements OnInit {
   //   }, 1000);
   // }
   selectCity(cityID) {
-    console.log('City ID -> ', cityID);
-    this.coreService.getMethod('cities/' + cityID).subscribe(city => {
-      console.log(city);
-      this.citiesLating = city['data'];
-    });
-    this.city_id = cityID;
-    this.getOrders();
+    if (cityID == '') {
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.cities = cities.data;
+        console.log(this.cities);
+        this.citiesLating = cities.data;
+      });
+    } else {
+      console.log('City ID -> ', cityID);
+      this.coreService.getMethod('cities/' + cityID).subscribe(city => {
+        console.log(city);
+        this.citiesLating = city['data'];
+      });
+      this.city_id = cityID;
+      this.getOrders();
+    }
   }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
@@ -472,8 +486,8 @@ export class MapComponent implements OnInit {
           return orderOne.totalTimeToArrive > orderTwo.totalTimeToArrives
             ? 1
             : orderTwo.totalTimeToArrive > orderOne.totalTimeToArrive
-              ? -1
-              : 0;
+            ? -1
+            : 0;
         });
         this.bestTechnicalName = this.sortedArray[0].technical.name;
         this.bestTechnicalArriveTime = this.sortedArray[0].totalTimeToArrive;
