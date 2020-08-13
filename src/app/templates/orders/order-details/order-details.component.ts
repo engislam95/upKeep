@@ -239,6 +239,7 @@ export class OrderDetailsComponent implements OnInit {
             finishOrderResponse,
             'تم إنتهاء الطلب بنجاح'
           );
+          this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading
@@ -267,6 +268,7 @@ export class OrderDetailsComponent implements OnInit {
             finishOrderResponse,
             'تم إنتهاء الطلب بدون اصدار فاتورة بنجاح'
           );
+          this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading
