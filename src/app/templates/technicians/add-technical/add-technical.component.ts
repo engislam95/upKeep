@@ -17,7 +17,10 @@ import { CoreService } from '../../../tools/shared-services/core.service';
   animations: fade
 })
 export class AddTechnicalComponent implements OnInit {
-  modeTitle = 'إضافة فنى';
+  imageUpdated = false;
+  imageUpdated2 = false;
+
+  modeTitle = 'إضافة فنى جديد';
   //  ################################### Start General Data ###################################
   responseState;
   responseData;
@@ -26,6 +29,8 @@ export class AddTechnicalComponent implements OnInit {
   imagePlaceHolderPin = 'إرفق دبوس';
   pageLoaded = false;
   mainServicesLoaded = false;
+  maincityLoaded = false;
+
   countriesLoaded = false;
   showCountryPhoneKey = false;
   countryPhoneKey = '';
@@ -36,8 +41,6 @@ export class AddTechnicalComponent implements OnInit {
   mobileCheckLoaded = false;
   emailReserved = false;
   emailCheckLoaded = false;
-  imageUpdated = false;
-  imageUpdated2 = false;
   // mobile & email reservation
   //  ############################ End General Data ############################
   //  ############################ Start Form Data ############################
@@ -46,40 +49,45 @@ export class AddTechnicalComponent implements OnInit {
     mobile: new FormControl(''),
     mobileKey: new FormControl(
       '', //
-      [
-        Validators.required,
-        Validators.pattern('[0-9]* || [٠-٩]*'),
-        Validators.minLength(9),
-        Validators.maxLength(9)
-      ]
+      [Validators.required, Validators.pattern('[0-9]* || [٠-٩]*'), Validators.minLength(9), Validators.maxLength(9)]
     ),
     email: new FormControl('', [
       Validators.email,
       Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
     ]),
-    password: new FormControl(
-      { value: '', disabled: !this.canUpdatePassword },
-      Validators.required
-    ),
-    service_id: new FormControl(),
+    password: new FormControl({ value: '', disabled: !this.canUpdatePassword }, Validators.required),
+    confirmPassword: new FormControl({ value: '', disabled: !this.canUpdatePassword }, Validators.required),
+    service_tech: new FormControl(),
+    city_tech: new FormControl(),
+
     serviceObj: new FormControl('', [emptyValidator, Validators.required]),
+    cityObj: new FormControl('', [emptyValidator, Validators.required]),
+
     countriesObj: new FormControl('', [emptyValidator, Validators.required]),
     change_password: new FormControl(false),
     active: new FormControl(true),
+
+
     image: new FormControl(''),
-    imagePin: new FormControl(''),
-    imageInputObj: new FormControl(''),
-    imageInputObjPin: new FormControl(''),
+    imageInputObj: new FormControl('') ,
     delete_image: new FormControl(false),
+
+    imagePin: new FormControl(''),
+    imageInputObjPin: new FormControl(''),
     delete_pin: new FormControl(false),
-    city_tech_id: new FormControl('')
+
+
+
   });
+  notConfirmed = false ;
   submitted = false;
   //  ############################ End Form Data ############################
   //  ###################### Start Select Main Services ######################
   mainServiceArray = [];
   mainServiceFilteredOptions: Observable<any>;
-  citiesFilteredOptions: Observable<any>;
+
+  mainCityArray = [];
+  mainCityFilteredOptions: Observable<any>;
   //  ###################### End Select Main Services ######################
   //  ###################### Start Select Country ######################
   countriesArray = [];
@@ -89,15 +97,15 @@ export class AddTechnicalComponent implements OnInit {
   updateMode = false;
   updatedTechnicalId;
   updatedTechnicalDataLoaded = false;
-  updatedTechnicalData = '';
+  updatedTechnicalData = {};
   technician_add: boolean = false;
   technician_all: boolean = false;
   technician_update: boolean = false;
   technician_delete: boolean = false;
+  fetchedServicee= [] ;
+  fetchedCityy= [] ;
   user: any = '';
   technicians: any = [];
-  citiesArray = [];
-  city_tech_id = '';
   //  ############################ End Update Data ############################
   constructor(
     //
@@ -107,51 +115,22 @@ export class AddTechnicalComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'add':
-            this.technician_add = true;
+          case 'add': this.technician_add = true;
             break;
-          case 'all':
-            this.technician_all = true;
+          case 'all': this.technician_all = true;
             break;
-          case 'update':
-            this.technician_update = true;
+          case 'update': this.technician_update = true;
             break;
-          case 'delete':
-            this.technician_delete = true;
+          case 'delete': this.technician_delete = true;
             break;
         }
       });
-    }
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.citiesArray = cities.data;
-      console.log(this.citiesArray);
-      this.citiesFilteredOptions = this.techniciansForm
-        .get('city_tech_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
-  }
-  filterCities(value: any) {
-    if (typeof value === 'object') {
-      this.city_tech_id = value.id;
-    }
-
-    if (this.citiesArray !== null) {
-      return this.citiesArray.filter(option => option.name.includes(value));
-    }
-  }
-  /* -------------------------- Display ----------------------------- */
-  displayOptionsFunction(state) {
-    if (state !== null && state !== undefined) {
-      return state.name;
     }
   }
   //  ################################### Start OnInit ###################################
@@ -161,23 +140,29 @@ export class AddTechnicalComponent implements OnInit {
     this.startLoading();
     // End START Loading
     // Start Get All Services
-    this.coreService
-      .getMethod('services/active', {})
-      .subscribe((services: any) => {
-        this.mainServiceArray = services.data;
-        this.mainServicesLoaded = true;
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        // Start Select Search For Main Services
-        this.mainServiceFilteredOptions = this.techniciansForm
-          .get('serviceObj')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterMainService(value))
-          );
-        // End Select Search For Main Services
-      });
+    this.coreService.getMethod('services/active', {}).subscribe((services: any) => {
+      this.mainServiceArray = services.data;
+      this.mainServicesLoaded = true;
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+
+
+
+
+      // Start Select Search For Main Services
+
+      // this.mainServiceFilteredOptions = this.techniciansForm.get('serviceObj').valueChanges.pipe(
+      //   startWith(''),
+      //   map(value => this.filterMainService(value))
+      // );
+
+
+      // End Select Search For Main Services
+
+
+
+    });
     // End Get All Services
     //  Start Get Countries
     this.coreService.getMethod('countries', {}).subscribe((countries: any) => {
@@ -188,16 +173,45 @@ export class AddTechnicalComponent implements OnInit {
       // End End Loading
       if (!this.updateMode) {
         // Start Select Search For Main Services
-        this.countriesFilteredOptions = this.techniciansForm
-          .get('countriesObj')
-          .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterCountries(value))
-          );
+        this.countriesFilteredOptions = this.techniciansForm.get('countriesObj').valueChanges.pipe(
+          startWith(''),
+          map(value => this.filterCountries(value))
+        );
         // End Select Search For Main Services
       }
     });
     //  End Get Countries
+
+      // Start Get All cities
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.mainCityArray = cities.data;
+        this.maincityLoaded = true;
+        // Start End Loading
+        this.endLoading();
+        // End End Loading
+
+
+
+
+        // Start Select Search For Main Services
+        // this.mainCityFilteredOptions = this.techniciansForm.get('cityObj').valueChanges.pipe(
+        //   startWith(''),
+        //   map(value => this.filterMainCity(value))
+        // );
+        // End Select Search For Main Services
+
+
+
+
+      });
+
+
+
+
+      this.checkMatched()
+
+
+
     // Start Update Mode
     this.activatedRoute.queryParams.subscribe(queryParams => {
       if (queryParams.updateMode) {
@@ -214,9 +228,30 @@ export class AddTechnicalComponent implements OnInit {
         this.updatedTechnicalDataLoaded = true;
         this.canUpdatePassword = true;
         this.techniciansForm.controls.password.enable();
+        this.techniciansForm.controls.confirmPassword.enable();
+
       }
     });
     // Start Update Mode
+  }
+
+  fetchedService()
+  {
+    console.log(this.techniciansForm.controls.service_tech.value);
+    this.fetchedServicee = this.techniciansForm.controls.service_tech.value.map(ele => ele.id)
+  
+
+  
+  }
+  fetchedCity()
+  {
+
+    console.log(this.techniciansForm.controls.city_tech.value);
+    this.fetchedCityy = this.techniciansForm.controls.city_tech.value.map(ele => ele.id)
+
+
+
+    
   }
   //  ################################### Start OnInit ###################################
   //  ################### Start Check Mobile & Email Reservation ###################
@@ -271,16 +306,20 @@ export class AddTechnicalComponent implements OnInit {
     if (key === 'serviceObj') {
       (document.getElementById('serviceObj') as HTMLInputElement).value = '';
       this.techniciansForm.patchValue({ service: '' });
-      this.techniciansForm.patchValue({ service_id: '' });
+      this.techniciansForm.patchValue({ service_tech: [] });
+    }
+    if (key === 'cityObj') {
+      (document.getElementById('cityObj') as HTMLInputElement).value = '';
+      this.techniciansForm.patchValue({ city: '' });
+      this.techniciansForm.patchValue({ city_tech: [] });
     }
     if (key === 'password') {
       (document.getElementById('password') as HTMLInputElement).value = '';
       this.techniciansForm.patchValue({ password: '' });
     }
-    if (key === 'city_tech_id') {
-      (document.getElementById('password') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ city_tech_id: '' });
-      this.city_tech_id = '';
+    if (key === 'confirmPassword') {
+      (document.getElementById('confirmPassword') as HTMLInputElement).value = '';
+      this.techniciansForm.patchValue({ confirmPassword: '' });
     }
     if (key === 'email') {
       (document.getElementById('email') as HTMLInputElement).value = '';
@@ -304,17 +343,15 @@ export class AddTechnicalComponent implements OnInit {
   //  ############################# End X Reset Inputs #############################
   //  ############################# Start Get Technical Details #############################
   getUpdatedTechnicalDetails() {
-    this.coreService
-      .getMethod('technicians/' + this.updatedTechnicalId, {})
-      .subscribe((updatedTechnical: any) => {
-        this.updatedTechnicalDataLoaded = true;
-        this.updatedTechnicalData = updatedTechnical.data;
-        console.log(this.updatedTechnicalData);
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
-        this.assignUpdatedData();
-      });
+    this.coreService.getMethod('technicians/' + this.updatedTechnicalId, {}).subscribe((updatedTechnical: any) => {
+      this.updatedTechnicalDataLoaded = true;
+      this.updatedTechnicalData = updatedTechnical.data;
+      console.log(this.updatedTechnicalData)
+      // Start End Loading
+      this.endLoading();
+      // End End Loading
+      this.assignUpdatedData();
+    });
   }
   //  ############################# End Get Technical Details #############################
   //  ############################# End Assign Updated Data #############################
@@ -323,26 +360,26 @@ export class AddTechnicalComponent implements OnInit {
     this.countryPhoneKey = data['city'].country.phone_code;
     this.mobileNumber = data['mobile'];
     // Start Select Search For Main Services
-    this.countriesFilteredOptions = this.techniciansForm
-      .get('countriesObj')
-      .valueChanges.pipe(
-        startWith(data['city'].country),
-        map(value => this.filterCountries(value))
-      );
+    this.countriesFilteredOptions = this.techniciansForm.get('countriesObj').valueChanges.pipe(
+      startWith(data['city'].country),
+      map(value => this.filterCountries(value))
+    );
     // End Select Search For Main Services
     this.mobileChanged(data['mobile']);
-    this.city_tech_id = data['city']['id'];
     this.techniciansForm.patchValue({
-      // image: data.image,
-      // imagePin:data.imagePin ,
       name: data['name'],
       email: data['email'],
       mobile: +(this.countryPhoneKey + data['mobile']),
       mobileKey: data['mobile'],
       countriesObj: data['city'].country,
-      service_id: data['service'].id,
+
+
+      service_tech: data['service_tech'],
+      city_tech: data['city_tech'],
+
+
       serviceObj: data['service'],
-      city_tech_id: data['city']['id'],
+      cityObj: data['city'],
       active: data['active'] === 1 ? true : false
     });
     this.imagePlaceHolder = data['image'];
@@ -352,32 +389,27 @@ export class AddTechnicalComponent implements OnInit {
   //  ############################# End Assign Updated Data #############################
   //  ######################### Start OnUpdate Form #########################
   onUpdate() {
-    this.techniciansForm.controls.city_tech_id.setValue(this.city_tech_id);
     this.techniciansForm.patchValue({
       mobile: +(this.countryPhoneKey + this.mobileNumber)
     });
     this.submitted = true;
+    this.checkMatched()
     this.startLoading();
-    this.coreService
-      .updateMethod(
-        'technicians/' + this.updatedTechnicalId,
-        this.techniciansForm.value
-      )
-      .subscribe(
-        () => {
-          this.showSuccess('تم تعديل الفني بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/technicians/all-technicians']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.updateMethod('technicians/' + this.updatedTechnicalId, this.techniciansForm.value).subscribe(
+      () => {
+        this.showSuccess('تم تعديل الفني بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/technicians/all-technicians']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
 
   deleteIMG() {
@@ -400,19 +432,25 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### Start OnUpdate Form #########################
   //  ######################### Start Can Update Password Function #########################
   canUpdatePasswordToggle(e) {
-    let pw = this.techniciansForm.controls.password;
+    // let pw = this.techniciansForm.controls.password;
     this.canUpdatePassword = e.checked;
     if (this.canUpdatePassword) {
       this.techniciansForm.patchValue({
         change_password: this.canUpdatePassword
       });
-      pw.enable();
+      this.techniciansForm.controls.password.enable();
+      this.techniciansForm.controls.confirmPassword.enable();
+      this.checkMatched()
+
     } else {
       this.techniciansForm.patchValue({
         password: '',
+        confirmPassword: '',
         change_password: this.canUpdatePassword
       });
-      pw.disable();
+      this.techniciansForm.controls.password.disable();
+      this.techniciansForm.controls.confirmPassword.disable();
+
     }
   }
 
@@ -435,45 +473,75 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### Start Mobile Changed #########################
   //  ######################### Start OnSubmit Form #########################
   onSubmit() {
-    this.techniciansForm.controls.city_tech_id.setValue(this.city_tech_id);
     this.techniciansForm.patchValue({
       mobile: +(this.countryPhoneKey + this.mobileNumber)
     });
     this.submitted = true;
     this.startLoading();
-    this.coreService
-      .postMethod('technicians', this.techniciansForm.value)
-      .subscribe(
-        () => {
-          this.showSuccess('تم تسجيل الفني بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/technicians/all-technicians']);
-          }, 2500);
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
+    this.coreService.postMethod('technicians', this.techniciansForm.value).subscribe(
+      () => {
+        this.showSuccess('تم تسجيل الفني بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/technicians/all-technicians']);
+        }, 2500);
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
         }
-      );
+      }
+    );
   }
   //  ######################### End OnSubmit Form #########################
   //  ######################### Start Filter Services #########################
   filterMainService(value: any) {
+    console.log(value)
+
     if (value !== '') {
       this.techniciansForm.patchValue({
-        service_id: value.id
+        service_tech: value
       });
     }
     if (this.mainServiceArray !== null) {
-      return this.mainServiceArray.filter(option =>
-        option.name.includes(value)
-      );
+      return this.mainServiceArray;
     }
   }
+
+  filterMainCity(value: any) {
+    console.log(value)
+    if (value !== '') {
+      this.techniciansForm.patchValue({
+        city_tech: value
+      });
+    }
+    if (this.mainCityArray !== null) {
+      return this.mainCityArray;
+    }
+  }
+
+  checkMatched()
+  {
+    if(this.techniciansForm.controls.password.value == this.techniciansForm.controls.confirmPassword.value)
+    {
+      this.notConfirmed = false ; 
+    }
+    else if(this.techniciansForm.controls.password.value !== this.techniciansForm.controls.confirmPassword.value)
+    {
+      this.notConfirmed = true ; 
+
+    }
+  }
+
   displayMainServices(state) {
+    if (state !== null) {
+      return state.name;
+    }
+  }
+
+  displayMainCities(state)
+  {
     if (state !== null) {
       return state.name;
     }
@@ -509,19 +577,16 @@ export class AddTechnicalComponent implements OnInit {
     this.pageLoaded = false;
     this.loaderService.startLoading();
   }
+
   endLoading() {
-    if (
-      this.mainServicesLoaded &&
-      this.countriesLoaded &&
-      this.updatedTechnicalDataLoaded
-    ) {
+    if (this.mainServicesLoaded && this.countriesLoaded && this.updatedTechnicalDataLoaded && this.maincityLoaded) {
       this.pageLoaded = true;
       this.loaderService.endLoading();
     }
   }
   //  ######################### End Loading Functions #########################
   //  ######################### Start Handle Image Base64 #########################
-  onUploadImage(e) {
+   onUploadImage(e) {
     this.imagePlaceHolder = e[0].name;
     this.techniciansForm.patchValue({
       image: e[0].base64
@@ -537,7 +602,9 @@ export class AddTechnicalComponent implements OnInit {
     });
     this.imageUpdated = false;
     this.techniciansForm.controls.delete_pin.setValue(false);
-  }
+  } 
+
+
   //  ######################### End Handle Image Base64 #########################
   //  ######################### Start Response Messeges #########################
   showErrors(errors) {
@@ -545,20 +612,14 @@ export class AddTechnicalComponent implements OnInit {
     this.submitted = false;
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
   showSuccess(successText) {
     this.endLoading();
     this.submitted = false;
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(
-      this.responseState,
-      this.responseData
-    );
+    this.responseStateService.responseState(this.responseState, this.responseData);
   }
   //  ######################### End Response Messeges #########################
 }

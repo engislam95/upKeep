@@ -12,14 +12,20 @@ import { MessagingService } from './../../tools/shared-services/messaging.servic
   styleUrls: ['./header.component.scss'],
   animations: [
     trigger('popupAnimation', [
-      transition(':enter', [
-        style({ transform: 'translateY(5%) ', opacity: 0 }),
-        animate('150ms', style({ transform: 'translateY(0) ', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ transform: 'translateY(0) ', opacity: 1 }),
-        animate('150ms', style({ transform: 'translateY(5%)', opacity: 0 }))
-      ])
+      transition(
+        ':enter',
+        [
+          style({ transform: 'translateY(5%) ', opacity: 0 }),
+          animate('150ms', style({ transform: 'translateY(0) ', opacity: 1 }))
+        ]
+      ),
+      transition(
+        ':leave',
+        [
+          style({ transform: 'translateY(0) ', opacity: 1 }),
+          animate('150ms', style({ transform: 'translateY(5%)', opacity: 0 }))
+        ]
+      )
     ]),
     fade
   ]
@@ -56,8 +62,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     private messagingService: MessagingService
   ) {
     /* -------------- Get User Details ------------------------ */
-    if (localStorage.getItem('currentUser')) {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (sessionStorage.getItem('currentUser')) {
+      const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
       this.adminImage = currentUser.image;
       this.adminTitle = currentUser.name;
     }
@@ -112,11 +118,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     document.getElementById('listBody').addEventListener('scroll', e => {
       const scrollTop = (e.target as HTMLElement).scrollTop;
       const notificationArrayLength = this.message.length;
-      const liHeight = (document.querySelector('#listBody > li') as HTMLElement)
-        .offsetHeight;
+      const liHeight = (document.querySelector('#listBody > li') as HTMLElement).offsetHeight;
       const viewHeight = (e.target as HTMLElement).clientHeight;
-      const totalScroll =
-        (notificationArrayLength - viewHeight / liHeight) * liHeight;
+      const totalScroll = (notificationArrayLength - viewHeight / liHeight) * liHeight;
       if (scrollTop >= totalScroll) {
         if (this.getNotification && !this.emptyNotificationArray) {
           this.getNotification = false;
@@ -129,17 +133,13 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
   /* ------------------- Get Notification ----------------------- */
   getNotifications() {
-    this.coreService
-      .getMethod('notifications', { page: this.pageId })
-      .subscribe((notifications: any) => {
-        notifications.data.notifications.data.length === 0
-          ? (this.emptyNotificationArray = true)
-          : null;
-        notifications.data.notifications.data.forEach(message => {
-          this.message.push(message);
-        });
-        this.getNotification = true;
+    this.coreService.getMethod('notifications', { page: this.pageId }).subscribe((notifications: any) => {
+      notifications.data.notifications.data.length === 0 ? (this.emptyNotificationArray = true) : null;
+      notifications.data.notifications.data.forEach(message => {
+        this.message.push(message);
       });
+      this.getNotification = true;
+    });
   }
   /* --------------------- Sidebar --------------------- */
   sidebarTrigger() {
@@ -153,9 +153,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   /* ----------------- Hide Notification ----------------------- */
   hidePopupNotifications() {
     setTimeout(() => {
-      (document.getElementById(
-        'alert-notification'
-      ) as HTMLElement).setAttribute(
+      (document.getElementById('alert-notification') as HTMLElement).setAttribute(
         'style',
         'transition: 5s; transform: translateY(0); display: none'
       );

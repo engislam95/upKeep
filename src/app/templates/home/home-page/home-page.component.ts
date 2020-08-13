@@ -37,17 +37,15 @@ export class HomePageComponent implements OnInit {
   service_all: boolean = false;
   /* ------------------ Constructor ----------------------- */
   constructor(private coreService: CoreService) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
       this.orders.map(ele => {
         switch (ele) {
-          case 'create':
-            this.order_add = true;
+          case 'create': this.order_add = true;
             break;
-          case 'all':
-            this.order_all = true;
+          case 'all': this.order_all = true;
             break;
         }
       });
@@ -56,11 +54,9 @@ export class HomePageComponent implements OnInit {
     if (this.clients) {
       this.clients.map(ele => {
         switch (ele) {
-          case 'create':
-            this.client_add = true;
+          case 'create': this.client_add = true;
             break;
-          case 'all':
-            this.client_all = true;
+          case 'all': this.client_all = true;
             break;
         }
       });
@@ -69,11 +65,9 @@ export class HomePageComponent implements OnInit {
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'create':
-            this.technician_add = true;
+          case 'create': this.technician_add = true;
             break;
-          case 'all':
-            this.technician_all = true;
+          case 'all': this.technician_all = true;
             break;
         }
       });
@@ -82,11 +76,9 @@ export class HomePageComponent implements OnInit {
     if (this.offers) {
       this.offers.map(ele => {
         switch (ele) {
-          case 'create':
-            this.offer_add = true;
+          case 'create': this.offer_add = true;
             break;
-          case 'all':
-            this.offer_all = true;
+          case 'all': this.offer_all = true;
             break;
         }
       });
@@ -95,11 +87,9 @@ export class HomePageComponent implements OnInit {
     if (this.resoureces) {
       this.resoureces.map(ele => {
         switch (ele) {
-          case 'create':
-            this.resource_add = true;
+          case 'create': this.resource_add = true;
             break;
-          case 'all':
-            this.resources_all = true;
+          case 'all': this.resources_all = true;
             break;
         }
       });
@@ -108,11 +98,9 @@ export class HomePageComponent implements OnInit {
     if (this.receipts) {
       this.receipts.map(ele => {
         switch (ele) {
-          case 'create':
-            this.receipt_add = true;
+          case 'create': this.receipt_add = true;
             break;
-          case 'all':
-            this.receipt_all = true;
+          case 'all': this.receipt_all = true;
             break;
         }
       });
@@ -121,8 +109,7 @@ export class HomePageComponent implements OnInit {
     if (this.services) {
       this.services.map(ele => {
         switch (ele) {
-          case 'all':
-            this.service_all = true;
+          case 'all': this.service_all = true;
             break;
         }
       });

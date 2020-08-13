@@ -412,7 +412,7 @@
             [zoom]="zoom"
             (mapClick)="mapClicked($event)"
           >
-            <!-- <agm-marker
+            <agm-marker
               *ngIf="
                 ordersLoaded &&
                 !orderDetailsMode &&
@@ -433,8 +433,8 @@
               <agm-marker
                 *ngFor="let city of citiesLating"
                 [agmFitBounds]="true"
-                [latitude]="city.pivot.lat"
-                [longitude]="city.pivot.long"
+                [latitude]="city.lat"
+                [longitude]="city.long"
                 [iconUrl]="{
                   url: companyPin,
                   scaledSize: { height: 50, width: 50 }

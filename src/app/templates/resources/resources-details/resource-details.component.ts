@@ -25,22 +25,18 @@ export class ResourcesDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     this.resoureces = this.user.modules.resources;
     if (this.resoureces) {
       this.resoureces.map(ele => {
         switch (ele) {
-          case 'create':
-            this.resource_add = true;
+          case 'create': this.resource_add = true;
             break;
-          case 'all':
-            this.resources_all = true;
+          case 'all': this.resources_all = true;
             break;
-          case 'delete':
-            this.resources_delete = true;
+          case 'delete': this.resources_delete = true;
             break;
-          case 'update':
-            this.resources_update = true;
+          case 'update': this.resources_update = true;
             break;
         }
       });
@@ -52,14 +48,12 @@ export class ResourcesDetailsComponent implements OnInit {
     // // End START Loading
     this.activatedRoute.queryParams.subscribe(params => {
       this.resourcesId = params.resourcesId;
-      this.coreService
-        .getMethod('resources/' + this.resourcesId, {})
-        .subscribe((resourcesDetails: any) => {
-          this.resourcesDetails = resourcesDetails.data;
-          // Start END Loading
-          this.endLoading();
-          // End END Loading
-        });
+      this.coreService.getMethod('resources/' + this.resourcesId, {}).subscribe((resourcesDetails: any) => {
+        this.resourcesDetails = resourcesDetails.data;
+        // Start END Loading
+        this.endLoading();
+        // End END Loading
+      });
     });
   }
 
@@ -68,6 +62,7 @@ export class ResourcesDetailsComponent implements OnInit {
       queryParams: this.resourcesId
     });
   }
+
 
   //  ######################### Start Loading Functions #########################
   startLoading() {

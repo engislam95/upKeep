@@ -81,7 +81,7 @@ export class OrdersTableComponent implements OnInit {
     private coreService: CoreService,
     private messagingService: MessagingService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {

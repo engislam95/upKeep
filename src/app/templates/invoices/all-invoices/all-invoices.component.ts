@@ -135,7 +135,7 @@ export class AllInvoicesComponent implements OnInit {
     private headersService: HeadersService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
     this.receipts = this.user.modules.receipts;
     if (this.receipts) {
       this.receipts.map(ele => {
@@ -229,7 +229,7 @@ export class AllInvoicesComponent implements OnInit {
     }
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
-    } row ${row.position + 1}`;
+      } row ${row.position + 1}`;
   }
 
   rowAction(row, key) {
@@ -481,11 +481,6 @@ export class AllInvoicesComponent implements OnInit {
         InvoicesNumber: ''
       });
       this.filteredInvoicesNumber = '';
-    } else if (key === 'filterOrderIdNumber') {
-      this.filterForm.patchValue({
-        filterOrderIdNumber: ''
-      });
-      this.filterOrderIdNumberData = '';
     } else if (key === 'statusObj') {
       this.filterForm.patchValue({
         fillteredInvicesType: '',
@@ -503,9 +498,6 @@ export class AllInvoicesComponent implements OnInit {
     } else if (key === 'endDateFilter') {
       this.filterForm.patchValue({ filteredToDate: '', endDateFilter: '' });
       this.filteredToDate = '';
-    } else {
-      (document.getElementById(key) as HTMLInputElement).value = '';
-      this.filterForm.controls[key].patchValue('');
     }
 
     this.getAllInvoices(this.pageId);

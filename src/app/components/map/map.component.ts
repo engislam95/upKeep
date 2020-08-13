@@ -177,7 +177,12 @@ export class MapComponent implements OnInit {
   //     this.city_id = value.id;
   //     this.coreService.getMethod('cities/' + value.id).subscribe(city => {
   //       console.log(city);
-  //       this.citiesLating = city['data'];
+  //       this.citiesLating = [
+  //         {
+  //           lat: city['data'][0].pivot.lat,
+  //           long: city['data'][0].pivot.long
+  //         }
+  //       ];
   //     });
   //     this.getOrders();
   //   }
@@ -582,22 +587,22 @@ export class MapComponent implements OnInit {
       }
       if (type === 'start') {
         this.startTimeChanged(pmTime);
-        localStorage.setItem('startTimeType', splitedTime[1]);
+        sessionStorage.setItem('startTimeType', splitedTime[1]);
       } else {
         this.endTimeChanged(pmTime);
-        localStorage.setItem('endTimeType', splitedTime[1]);
+        sessionStorage.setItem('endTimeType', splitedTime[1]);
       }
     } else {
       amTime = splitedTime[0];
       console.log(amTime);
       if (type === 'start') {
         const typeOfTime = splitedTime[1];
-        localStorage.setItem('startTimeType', typeOfTime);
+        sessionStorage.setItem('startTimeType', typeOfTime);
         console.log(typeOfTime);
         this.startTimeChanged(amTime);
       } else {
         const typeOfTime = splitedTime[1];
-        localStorage.setItem('endTimeType', typeOfTime);
+        sessionStorage.setItem('endTimeType', typeOfTime);
         console.log(typeOfTime);
         this.endTimeChanged(amTime);
       }

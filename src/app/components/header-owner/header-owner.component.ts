@@ -12,14 +12,20 @@ import { MessagingService } from './../../tools/shared-services/messaging.servic
   styleUrls: ['./header-owner.component.scss'],
   animations: [
     trigger('popupAnimation', [
-      transition(':enter', [
-        style({ transform: 'translateY(5%) ', opacity: 0 }),
-        animate('150ms', style({ transform: 'translateY(0) ', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ transform: 'translateY(0) ', opacity: 1 }),
-        animate('150ms', style({ transform: 'translateY(5%)', opacity: 0 }))
-      ])
+      transition(
+        ':enter',
+        [
+          style({ transform: 'translateY(5%) ', opacity: 0 }),
+          animate('150ms', style({ transform: 'translateY(0) ', opacity: 1 }))
+        ]
+      ),
+      transition(
+        ':leave',
+        [
+          style({ transform: 'translateY(0) ', opacity: 1 }),
+          animate('150ms', style({ transform: 'translateY(5%)', opacity: 0 }))
+        ]
+      )
     ]),
     fade
   ]
@@ -35,8 +41,8 @@ export class HeaderOwnerComponent implements OnInit {
     private sidebarTriggerService: SidebarTriggerService,
     private messagingService: MessagingService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* ---------------------- Oninit --------------------------- */
-  ngOnInit() {}
+  ngOnInit() { }
 }

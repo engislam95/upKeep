@@ -1,4 +1,4 @@
-<div class="main_page" id="listPage">
+<div class="main_page technicaldesignnew" id="listPage">
   <app-alerts></app-alerts>
   <app-side-menu></app-side-menu>
   <div class="page_main_blocks middle_page">
@@ -6,8 +6,9 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3><i class="fas fa-th-list"></i>كل الفنيين</h3>
-      <div class="page_body_main_buttons">
+
+      <h3><i class="fas fa-user-cog"></i>قائمة بيانات الفنيين </h3>
+      <!-- <div class="page_body_main_buttons">
         <a
           routerLink="/technicians/add-technical"
           *ngIf="technician_add || user.privilege == 'super-admin'"
@@ -15,19 +16,29 @@
           إضافة فني
           <i class="fas fa-user-cog"></i>
         </a>
-      </div>
+      </div> -->
     </div>
     <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="button-add-taxs">
+        <button   routerLink="/technicians/add-technical"
+        *ngIf="technician_add || user.privilege == 'super-admin'">
+        <i class="fal fa-user-plus"></i>
+        إضافة فنى جديد
+
+        </button>
+      </div>
       <div class="page_body_main">
         <div class="page_block">
           <div class="main_block ">
+            <h5> <i class="fas fa-search"></i> البحث  </h5>
             <form [formGroup]="filterForm" class="filter_form">
               <div class="form_input" id="NameFillterInputStyle">
+                <label> اسم الفني او رقم الموبايل</label>
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
                     class="filterInput"
                     matInput
-                    placeholder="إسم الفنى , رقم الهاتف , البريد الإلكتروني"
+                    placeholder="إسم الفنى , رقم الهاتف "
                     autocomplete="off"
                     id="filterName"
                     formControlName="filterName"
@@ -42,7 +53,8 @@
                 </mat-form-field>
               </div>
               <div class="form_input" id="NameFillterInputStyle">
-                <mat-form-field dir="rtl" appearance="outline">
+                <label> حالة التفعيل</label>
+                <mat-form-field  dir="rtl" appearance="outline">
                   <input
                     class="filterInput"
                     type="text"
@@ -71,8 +83,76 @@
                   </mat-autocomplete>
                 </mat-form-field>
               </div>
+
+              <div class="form_input" id="NameFillterInputStyle">
+                <label> الخدمة</label>
+                <mat-form-field dir="rtl" appearance="outline">
+        
+                  <mat-select  class="filterInput" formControlName="service" multiple   placeholder="الخدمة">
+                    <mat-option  *ngFor="let option of ServiceArray "
+                      [value]="option.id"> {{ option.name  }} </mat-option>
+                    <button style="float: left;
+                    margin: 20px;
+                    background: #f6a811;
+                    color: black;
+                    width: 60px;
+                    height: 40px;" type="button" (click)= "filterTechniciansService(filterForm.controls.service.value)"> بحث </button>
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+
+
+              <div class="form_input" id="NameFillterInputStyle">
+                <label> المدينة</label>
+                <mat-form-field  dir="rtl" appearance="outline">
+                  <mat-select id="filterCityService" class="filterInput" formControlName="serviceCity" multiple   placeholder="مدن يخدمها الفنى">
+                    <mat-option  *ngFor="let option of CityArray "
+                    [value]="option.id"> {{ option.name  }} </mat-option>
+                    <button style="float: left;
+                    margin: 20px;
+                    background: #f6a811;
+                    color: black;
+                    width: 60px;
+                    height: 40px;" type="button" (click)= "filterTechniciansCity(filterForm.controls.serviceCity.value)"> بحث </button>
+                  </mat-select>
+
+                  <!-- <input
+                    class="filterInput"
+                    type="text"
+                    placeholder="مدن يخدمها الفنى"
+                    matInput
+                    [matAutocomplete]="techniciansStatus"
+                    formControlName="techniciansStatusObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('techniciansStatusObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button> -->
+
+                </mat-form-field>
+              </div>
             </form>
+
+
+
+          <div class="countPerPage" style="margin-left:-39px">
+            <select
+              name=""
+              class="selectPerpage"
+            >
+              <option >
+            10
+              </option>
+            </select>
           </div>
+          </div>
+          <h4 class="h-out-side"> اجمالى عدد الفنيين <span>25</span></h4>
+
+           <!-- Start Table -->
           <table
             width="100%"
             dir="rtl"
@@ -82,7 +162,7 @@
             id="display_table"
           >
             <ng-container matColumnDef="ID">
-              <th mat-header-cell *matHeaderCellDef>المسلسل</th>
+              <th mat-header-cell *matHeaderCellDef>#</th>
               <td mat-cell *matCellDef="let element">{{ element.id }}</td>
             </ng-container>
             <ng-container matColumnDef="technical_name">
@@ -90,33 +170,71 @@
               <td mat-cell *matCellDef="let element">{{ element.name }}</td>
             </ng-container>
             <ng-container matColumnDef="phone">
-              <th mat-header-cell *matHeaderCellDef>رقم الهاتف</th>
+              <th mat-header-cell *matHeaderCellDef>رقم الموبايل</th>
               <td mat-cell *matCellDef="let element">{{ element.mobile }}+</td>
             </ng-container>
             <ng-container matColumnDef="main_service">
-              <th mat-header-cell *matHeaderCellDef>نوع الخدمة</th>
+              <th mat-header-cell *matHeaderCellDef>الخدمات</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.service.name }}
+                {{ element.service ? element.service.name : 'لا يوجد'  }}
               </td>
             </ng-container>
+            <ng-container matColumnDef="city_service">
+              <th mat-header-cell *matHeaderCellDef>مدن الخدمة</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.city ? element.city : 'لا يوجد'}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef> البريد الإلكتروني</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.email ? element.email : 'لا يوجد' }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="national">
+              <th mat-header-cell *matHeaderCellDef>  الجنسية</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.national  ? element.national : 'لا يوجد'}}
+              </td>
+            </ng-container>
+
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>حالة التفعيل</th>
+              <th mat-header-cell *matHeaderCellDef>الحالة</th>
               <td mat-cell *matCellDef="let element">
                 <span
                   *ngIf="element.active === 1"
                   class="activeStatus status-{{ element.active }}"
                 >
-                  <i class="far fa-check-circle"></i>
+                <p style="    border-radius: 10px;
+                background: #0a8452;
+                font-weight: 300;
+                font-size: 15px;
+                text-align: center;
+                color: #fff;
+                width: 68px;
+                padding: 4px;
+                margin: auto;">
+
+                نشط</p>
                 </span>
                 <span
                   *ngIf="element.active === 0"
                   class="activeStatus status-{{ element.active }}"
                 >
-                  <i class="far fa-times-circle"></i>
+                <p  style="    border-radius: 10px;
+                background: #FF0000;
+                font-weight: 300;
+                font-size: 15px;
+                text-align: center;
+                color: #fff;
+                width: 68px;
+                padding: 4px;
+                margin: auto;"
+                >غير نشط</p>
                 </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="technicians_details">
+            <!-- <ng-container matColumnDef="technicians_details">
               <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
               <td mat-cell *matCellDef="let element">
                 <button
@@ -130,8 +248,69 @@
                   <i class="fas fa-receipt"></i>
                 </button>
               </td>
+
+
+            </ng-container> -->
+            <ng-container matColumnDef="technicians_details">
+              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (mouseenter)="hideme[element.id] = !hideme[element.id]"
+                (mouseleave)="hideme[element.id] = !hideme[element.id]"
+              >
+                <div
+                  id="showOrdercontrols"
+                  [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
+                  *ngIf="hideme[element.id]"
+                >
+                <button
+                class="basic_button"
+                type="button"
+                (click)="openDeletePopup(element.id, element.name)"
+              >
+                    <i class="fal fa-trash-alt"></i>
+                    <p class="">الغاء</p>
+                  </button>
+
+                  <button
+                  [routerLink]="['/technicians/update-technical']"
+                  [queryParams]="{
+                    updateMode: true,
+                    updatedTechnicalId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                    <i class="fal fa-user-edit"></i>
+                    <p class="">تعديل</p>
+                  </button>
+
+                  <button
+                  [routerLink]="['/technicians/technicians_details']"
+                  [queryParams]="{
+                    tecniciansId: element.id
+                  }"
+                  class="basic_button"
+                  type="button"
+                >
+                    <!-- <a
+                      target="blank"
+
+                    > -->
+                    <i class="fal fa-users-cog"></i>
+                    <!-- </a> -->
+                    <p class="">تفاصيل </p>
+                  </button>
+                </div>
+
+                <div class="basic_button" type="button">
+                  <i class="fal fa-bars"></i>
+                </div>
+              </td>
             </ng-container>
-            <ng-container matColumnDef="edit_technical">
+
+            <!-- <ng-container matColumnDef="edit_technical">
               <th mat-header-cell *matHeaderCellDef>تعديل البيانات</th>
               <td mat-cell *matCellDef="let element">
                 <button
@@ -158,7 +337,8 @@
                   <i class="far fa-trash-alt"></i>
                 </button>
               </td>
-            </ng-container>
+            </ng-container> -->
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
