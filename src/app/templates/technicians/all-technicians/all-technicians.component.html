@@ -176,13 +176,13 @@
             <ng-container matColumnDef="main_service">
               <th mat-header-cell *matHeaderCellDef>الخدمات</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.service.name }}
+                {{ element.service ? element.service.name : 'لا يوجد'  }}
               </td>
             </ng-container>
             <ng-container matColumnDef="city_service">
               <th mat-header-cell *matHeaderCellDef>مدن الخدمة</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.city }}
+                {{ element.city ? element.city : 'لا يوجد'}}
               </td>
             </ng-container>
             <ng-container matColumnDef="email">
@@ -194,7 +194,7 @@
             <ng-container matColumnDef="national">
               <th mat-header-cell *matHeaderCellDef>  الجنسية</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.service.name }}
+                {{ element.national  ? element.national : 'لا يوجد'}}
               </td>
             </ng-container>
 

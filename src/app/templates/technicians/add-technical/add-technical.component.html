@@ -159,7 +159,7 @@
                   </button>
 
                   <span id="phoneKey" *ngIf="showCountryPhoneKey" [@fade]
-                    >{{ countryPhoneKey }}+966</span
+                    >+{{ countryPhoneKey}}</span
                   >
 
                 </mat-form-field>
@@ -741,7 +741,7 @@
                   alt="user-image"
                 />
                 <img
-                  *ngIf=" updateMode"
+                  *ngIf=" updatedTechnicalData['image']  && updateMode"
                   src="{{ updatedTechnicalData['image'] }}"
                   width="100px"
                   height="100px"
@@ -771,7 +771,7 @@
                   alt="user-image"
                 />
                 <img
-                  *ngIf=" updateMode"
+                  *ngIf="updatedTechnicalData['imagePin'] &&  updateMode"
                   src="{{ updatedTechnicalData['imagePin'] }}"
                   width="100px"
                   height="100px"

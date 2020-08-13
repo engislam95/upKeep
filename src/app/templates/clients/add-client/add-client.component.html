@@ -109,6 +109,7 @@
                 >
                   <i class="fas fa-times"></i> برجاء إدخال الهاتف بشكل صحيح
                 </div>
+
                 <div
                   [@fade]
                   class="validationState  errorState"
@@ -119,12 +120,14 @@
                     clientsForm.get('mobileKey').status === 'VALID'
                   "
                 >
+                <!-- routerLink="" -->
                   <i class="fas fa-times"></i> هذا الرقم موجود بالفعل في قاعدة
                   البيانات
-                  <a style="background: #000;text-decoration: underline;">
+                  <!-- <a   style="background: #000;text-decoration: underline;" >
                     اضغط هنا لتفاصيل العميل
-                  </a>
+                  </a> -->
                 </div>
+
                 <div
                   [@fade]
                   class="validationState successState"
@@ -132,10 +135,11 @@
                     clientsForm.get('mobileKey').status === 'VALID' &&
                     !mobileReserved &&
                     mobileCheckLoaded
-                  "
-                >
+                    "
+                  >
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
+
               </div>
               <!-- end Form field -->
 
