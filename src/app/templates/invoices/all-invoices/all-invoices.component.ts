@@ -135,7 +135,7 @@ export class AllInvoicesComponent implements OnInit {
     private headersService: HeadersService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.receipts = this.user.modules.receipts;
     if (this.receipts) {
       this.receipts.map(ele => {
@@ -229,7 +229,7 @@ export class AllInvoicesComponent implements OnInit {
     }
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
-      } row ${row.position + 1}`;
+    } row ${row.position + 1}`;
   }
 
   rowAction(row, key) {

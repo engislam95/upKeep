@@ -25,19 +25,23 @@ export class OfferDetailsComponent implements OnInit {
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.offers = this.user.modules.offers;
     if (this.offers) {
       this.offers.map(ele => {
         switch (ele) {
-          case 'create': this.offer_add = true;
+          case 'create':
+            this.offer_add = true;
             break;
-          case 'all': this.offer_all = true;
+          case 'all':
+            this.offer_all = true;
             break;
-          case 'update': this.offer_update = true;
+          case 'update':
+            this.offer_update = true;
             break;
-          case 'delete': this.offer_delete = true;
+          case 'delete':
+            this.offer_delete = true;
             break;
         }
       });

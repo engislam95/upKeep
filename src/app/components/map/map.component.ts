@@ -226,6 +226,8 @@ export class MapComponent implements OnInit {
   //   }, 1000);
   // }
   selectCity(cityID) {
+    console.log(cityID);
+
     if (cityID == '') {
       this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
         this.cities = cities.data;
@@ -587,22 +589,22 @@ export class MapComponent implements OnInit {
       }
       if (type === 'start') {
         this.startTimeChanged(pmTime);
-        sessionStorage.setItem('startTimeType', splitedTime[1]);
+        localStorage.setItem('startTimeType', splitedTime[1]);
       } else {
         this.endTimeChanged(pmTime);
-        sessionStorage.setItem('endTimeType', splitedTime[1]);
+        localStorage.setItem('endTimeType', splitedTime[1]);
       }
     } else {
       amTime = splitedTime[0];
       console.log(amTime);
       if (type === 'start') {
         const typeOfTime = splitedTime[1];
-        sessionStorage.setItem('startTimeType', typeOfTime);
+        localStorage.setItem('startTimeType', typeOfTime);
         console.log(typeOfTime);
         this.startTimeChanged(amTime);
       } else {
         const typeOfTime = splitedTime[1];
-        sessionStorage.setItem('endTimeType', typeOfTime);
+        localStorage.setItem('endTimeType', typeOfTime);
         console.log(typeOfTime);
         this.endTimeChanged(amTime);
       }

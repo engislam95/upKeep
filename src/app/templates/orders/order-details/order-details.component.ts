@@ -23,7 +23,7 @@ export interface Tile {
 })
 export class OrderDetailsComponent implements OnInit {
   //  ######################### Start General Data #########################
-  orderStatusId;
+  orderStatusId: any = '';
   pageLoaded = false;
   responseState;
   responseData;
@@ -108,7 +108,7 @@ export class OrderDetailsComponent implements OnInit {
     private messagingService: MessagingService,
     private headersService: HeadersService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
