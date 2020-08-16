@@ -319,11 +319,10 @@
                         </button>
                         <span>بدء الطلب</span>
                       </li>
-                      <li *ngIf="active22 || orderStatusId == 65">
+                      <li *ngIf="active22">
                         <button
                           (click)="finishOrder()"
                           type="button"
-                          [disabled]="!active22 && !orderStatusId == 65"
                           class="{{
                             pageLoaded
                               ? orderDetails['status'].id === 22
@@ -340,7 +339,7 @@
                           /></button
                         ><span>إنهاء الطلب</span>
                       </li>
-                      <li *ngIf="orderStatusId == 22">
+                      <li *ngIf="active65">
                         <button
                           id="editOrder"
                           type="button"

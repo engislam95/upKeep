@@ -413,7 +413,9 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────
   //
-
+  changePagination(event) {
+    this.getAllClients(event.value);
+  }
   //
   // ─── START CHECK FOR PAGINATION BUTTONS ──────────────────────────
   //

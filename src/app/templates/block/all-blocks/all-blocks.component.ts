@@ -272,4 +272,7 @@ export class AllBlockComponent implements OnInit {
   closePopup() {
     this.showDeletePopup = false;
   }
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
 }

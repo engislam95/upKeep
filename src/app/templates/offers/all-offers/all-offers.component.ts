@@ -309,7 +309,9 @@ export class AllOffersComponent implements OnInit {
   //
 
   dataExistance() {}
-
+  changePagination(event) {
+    this.getAllOffers(event.value);
+  }
   //
   // ────────────────────────────── END CHECK FOR DATA EXISTANCE ─────
   //

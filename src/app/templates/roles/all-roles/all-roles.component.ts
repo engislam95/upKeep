@@ -88,6 +88,9 @@ export class AllRolesComponent implements OnInit {
         map(value => this.filterRolesStatus(value))
       );
   }
+  changePagination(event) {
+    this.getAllRoles(event.value);
+  }
   /* ------------------- Status Filter ----------------------- */
   filterRolesStatus(value: any) {
     if (typeof value === 'object') {

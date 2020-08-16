@@ -426,7 +426,9 @@ export class AllOrdersComponent implements OnInit {
   //
   // ─────────────────────────────────────────────────── END CHECKBOX ON CHANGE ─────
   //
-
+  changePagination(event) {
+    this.getAllOrders(event.value);
+  }
   //
   // ─── START TODAY FILLTER FUNCTION ────────────────────────────────
   //

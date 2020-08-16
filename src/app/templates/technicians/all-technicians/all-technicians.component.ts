@@ -168,6 +168,9 @@ export class AllTechniciansComponent implements OnInit {
       return state.name;
     }
   }
+  changePagination(event) {
+    this.getAllTechnicians(event.value);
+  }
   //  ######################### End display Options For Select #########################
   //  ############################# Start X Reset Inputs #############################
   xResetInputs(key) {

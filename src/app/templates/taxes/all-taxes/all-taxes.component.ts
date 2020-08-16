@@ -66,7 +66,9 @@ export class AllTaxesComponent implements OnInit {
       this.countPerPage.push(option);
     }
   }
-
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
   /* ----------------------------- Get All Data --------------------- */
   getAllData(pageId) {
     this.loaderService.startLoading();

@@ -228,7 +228,19 @@
               </li>
               <li style="margin: 10px; text-align: center; line-height: 31px;">
                 <div class="numberPagination">
-                  {{ current_page }}
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+                              border: 1px solid rgba(112, 112, 112, 0.38);
+                              width: 42px;
+                              height: 31px;
+                              text-align: center;"
+                    type="text"
+                    type="number"
+                    #pageNumber
+                    [value]="current_page"
+                    (keyup.enter)="changePagination(pageNumber)"
+                  />
                 </div>
               </li>
               <li>

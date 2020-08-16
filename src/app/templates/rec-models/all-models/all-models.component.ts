@@ -85,6 +85,9 @@ export class AllModelsComponent implements OnInit {
       this.countPerPage.push(option);
     }
   }
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
   /* ----------------- Get ID ----------- */
   getSubService(event) {
     console.log(event);

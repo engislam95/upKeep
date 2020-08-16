@@ -39,6 +39,9 @@ export class AuthService {
             this.headersService.companySlug +
             '/';
           localStorage.setItem('currentUser', JSON.stringify(user));
+          document.title = JSON.parse(
+            localStorage.getItem('currentUser')
+          ).company_slug;
           const userData = JSON.parse(localStorage.getItem('currentUser'));
           if (userData.privilege == 'owner' || userData.privilege == 'Owner') {
             setTimeout(() => {

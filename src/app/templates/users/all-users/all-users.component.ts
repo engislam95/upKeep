@@ -193,6 +193,9 @@ export class AllUsersComponent implements OnInit {
   prevPage(pageNum) {
     this.getAllUsers(+pageNum - 1);
   }
+  changePagination(event) {
+    this.getAllUsers(event.value);
+  }
   /* ------------------------- Pagination ------------------------- */
   pagination(totalUsersNumber, usersPerPage) {
     this.pagesNumbers = [];

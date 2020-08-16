@@ -677,6 +677,10 @@ export class AllInvoicesComponent implements OnInit {
     }
   }
 
+  changePagination(event) {
+    this.getAllInvoices(event.value);
+  }
+
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────
   //

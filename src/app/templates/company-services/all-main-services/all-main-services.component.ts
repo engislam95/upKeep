@@ -141,6 +141,9 @@ export class AllMainServicesComponent implements OnInit {
   prevPage(pageNum) {
     this.getAllServices(+pageNum - 1);
   }
+  changePagination(event) {
+    this.getAllServices(event.value);
+  }
   /* --------------------------- Get Pagination ----------------------------- */
   pagination(totalServicesNumber, servicesPerPage) {
     this.pagesNumbers = [];
