@@ -46,8 +46,8 @@ export class AllMainServicesComponent implements OnInit {
   lastPage: any = '';
   // tslint:disable-next-line: variable-name
   per_page: any = 10;
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
   /* --------------------------- Form --------------------------------- */
   filterForm = new FormGroup({
     servicesStatus: new FormControl(),

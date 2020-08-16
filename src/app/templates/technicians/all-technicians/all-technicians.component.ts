@@ -68,8 +68,8 @@ export class AllTechniciansComponent implements OnInit {
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   //  ###################### End Select Status ######################
   constructor(

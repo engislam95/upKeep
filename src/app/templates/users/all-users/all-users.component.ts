@@ -55,8 +55,8 @@ export class AllUsersComponent implements OnInit {
   filteredStatusId: any = '';
   filteredRoleId: any = '';
   rolesArray: any = [];
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     usersStatus: new FormControl(),

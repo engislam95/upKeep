@@ -50,8 +50,8 @@ export class AllRolesComponent implements OnInit {
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
   statusFilteredOptions: Observable<any>;
   filteredStatusId: any = '';
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
   /* ----------------- Filter Form ---------------- */
   filterForm = new FormGroup({
     RoleStatus: new FormControl(),

@@ -138,8 +138,8 @@ export class AllOrdersComponent implements OnInit {
   //
   // ── END MULTIPLE SELECT FILTER ─────
   //
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,

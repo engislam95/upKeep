@@ -58,8 +58,8 @@ export class AllOffersComponent implements OnInit {
   offer_update: boolean = false;
   offer_delete: boolean = false;
   user: any = '';
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   // End Table Data
   constructor(

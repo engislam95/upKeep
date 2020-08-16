@@ -44,8 +44,8 @@ export class AllBlockComponent implements OnInit {
   showDeletePopup: boolean = false;
   deletedUserName: any = '';
   deletedUserID: any = '';
-  current_page = '';
-  totalPage = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   blockForm = new FormGroup({
     client_id: new FormControl('', [Validators.required])
