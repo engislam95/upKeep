@@ -77,7 +77,7 @@
 
 
               <div class="form_field">
-                <label> <i class="fas fa-flag"></i> الدولة <span>*</span></label>
+                <label> <i class="fas fa-flag"></i> الجنسية <span>*</span></label>
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
                     type="text"
@@ -118,7 +118,7 @@
                       techniciansForm.get('countriesObj').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال الدولة
+                  <i class="fas fa-times"></i> برجاء إدخال الجنسية
                 </div>
                 <div
                   [@fade]
@@ -247,7 +247,8 @@
                     emailCheckLoaded
                   "
                 >
-                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+                  <i class="fas fa-times"></i> هذا البريد مستخدم من قبل - برجاء ادخال البريد بشكل صحيح 
+
                 </div>
               </div>
 
@@ -261,9 +262,10 @@
                 <label
                   >           <i class="fas fa-unlock"></i> {{
                     updateMode
-                      ? "تعديل كلمة السر "
+                      ? 
+                      "تعديل كلمة السر "
                       : "كلمة السر  "
-                  }}<span *ngIf="!updateMode">*</span>
+                  }}<span >*</span>
                 </label>
                 <div *ngIf="updateMode" class="toggleContainer">
                   <mat-slide-toggle
@@ -337,19 +339,15 @@
               [ngClass]="{ inputWithToggle: updateMode }"
             >
               <label
-                >           <i class="fas fa-unlock"></i> {{
-                  updateMode
-                    ? "تعديل كلمة السر "
-                    : "كلمة السر مرة أخرى  "
-                }}<span *ngIf="!updateMode">*</span>
+                >           <i class="fas fa-unlock"></i> كلمة السر مرة أخرى  <span *ngIf="!updateMode">*</span>
               </label>
-              <div *ngIf="updateMode" class="toggleContainer">
+              <!-- <div *ngIf="updateMode" class="toggleContainer">
                 <mat-slide-toggle
                   dir="rtl"
                   (change)="canUpdatePasswordToggle($event)"
                 >
                 </mat-slide-toggle>
-              </div>
+              </div> -->
               <mat-form-field appearance="outline" dir="rtl">
                 <input
                   *ngIf="updateMode"
@@ -457,10 +455,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('serviceObj').status === 'INVALID' &&
-                     techniciansForm.get('serviceObj').touched) ||
+                    (techniciansForm.get('service_tech').status === 'INVALID' &&
+                     techniciansForm.get('service_tech').touched) ||
                     (submitted &&
-                      techniciansForm.get('serviceObj').status === 'INVALID')
+                      techniciansForm.get('service_tech').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i> برجاء إدخال الخدمة
@@ -468,7 +466,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="techniciansForm.get('serviceObj').status === 'VALID'"
+                  *ngIf="techniciansForm.get('service_tech').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
@@ -525,18 +523,18 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('cityObj').status === 'INVALID' &&
-                      techniciansForm.get('cityObj').touched) ||
+                    (techniciansForm.get('city_tech').status === 'INVALID' &&
+                      techniciansForm.get('city_tech').touched) ||
                     (submitted &&
-                      techniciansForm.get('cityObj').status === 'INVALID')
+                      techniciansForm.get('city_tech').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال الخدمة
+                  <i class="fas fa-times"></i> برجاء إدخال المدينة
                 </div>
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="techniciansForm.get('cityObj').status === 'VALID'"
+                  *ngIf="techniciansForm.get('city_tech').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
@@ -817,7 +815,7 @@
                   type="button"
                   (click)="onUpdate()"
                   class="formSubmit formButton"
-                  [disabled]="techniciansForm.invalid || submitted"
+                 
                 >
                 تعديل بيانات فنى
                 </button>

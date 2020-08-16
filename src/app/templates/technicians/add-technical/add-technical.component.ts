@@ -55,15 +55,15 @@ export class AddTechnicalComponent implements OnInit {
       Validators.email,
       Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
     ]),
-    password: new FormControl({ value: '', disabled: !this.canUpdatePassword }, Validators.required),
-    confirmPassword: new FormControl({ value: '', disabled: !this.canUpdatePassword }, Validators.required),
-    service_tech: new FormControl(),
-    city_tech: new FormControl(),
+    password: new FormControl({ value: '', disabled: !this.canUpdatePassword }, [Validators.required  ,Validators.minLength(8)]),
+    confirmPassword: new FormControl({ value: '', disabled: !this.canUpdatePassword }, [Validators.required  ,Validators.minLength(8)]),
+    service_tech: new FormControl([] , Validators.required),
+    city_tech: new FormControl([] , Validators.required ),
 
-    serviceObj: new FormControl('', [emptyValidator, Validators.required]),
-    cityObj: new FormControl('', [emptyValidator, Validators.required]),
+    serviceObj: new FormControl('',  Validators.required),
+    cityObj: new FormControl('', Validators.required),
 
-    countriesObj: new FormControl('', [emptyValidator, Validators.required]),
+    countriesObj: new FormControl('', Validators.required),
     change_password: new FormControl(false),
     active: new FormControl(true),
 
@@ -183,27 +183,28 @@ export class AddTechnicalComponent implements OnInit {
     //  End Get Countries
 
       // Start Get All cities
-      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-        this.mainCityArray = cities.data;
-        this.maincityLoaded = true;
-        // Start End Loading
-        this.endLoading();
-        // End End Loading
+      
+   
+        this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+          this.mainCityArray = cities.data;
+          this.maincityLoaded = true;
+          // Start End Loading
+          this.endLoading();
+          // End End Loading
 
+          // Start Select Search For Main Services
+          // this.mainCityFilteredOptions = this.techniciansForm.get('cityObj').valueChanges.pipe(
+          //   startWith(''),
+          //   map(value => this.filterMainCity(value))
+          // );
+          // End Select Search For Main Services
 
+  
+        });
 
+      
 
-        // Start Select Search For Main Services
-        // this.mainCityFilteredOptions = this.techniciansForm.get('cityObj').valueChanges.pipe(
-        //   startWith(''),
-        //   map(value => this.filterMainCity(value))
-        // );
-        // End Select Search For Main Services
-
-
-
-
-      });
+     
 
 
 
@@ -233,6 +234,14 @@ export class AddTechnicalComponent implements OnInit {
       }
     });
     // Start Update Mode
+    if(this.updateMode)
+    {
+
+        console.log( this.techniciansForm.controls.city_tech.value);
+      
+
+    }
+  
   }
 
   fetchedService()
@@ -357,6 +366,7 @@ export class AddTechnicalComponent implements OnInit {
   //  ############################# End Assign Updated Data #############################
   assignUpdatedData() {
     const data = this.updatedTechnicalData;
+    console.log(data['cities'])
     this.countryPhoneKey = data['city'].country.phone_code;
     this.mobileNumber = data['mobile'];
     // Start Select Search For Main Services
@@ -373,15 +383,16 @@ export class AddTechnicalComponent implements OnInit {
       mobileKey: data['mobile'],
       countriesObj: data['city'].country,
 
-
-      service_tech: data['service_tech'],
-      city_tech: data['city_tech'],
-
+      service_tech: data['services'].map(el => el.id),
+      city_tech: data['cities'].map(el => el.id),
 
       serviceObj: data['service'],
       cityObj: data['city'],
       active: data['active'] === 1 ? true : false
     });
+
+    console.log( this.techniciansForm);
+    
     this.imagePlaceHolder = data['image'];
     this.imagePlaceHolderPin = data['imagePin'];
     this.showCountryPhoneKey = true;
@@ -480,7 +491,7 @@ export class AddTechnicalComponent implements OnInit {
     this.startLoading();
     this.coreService.postMethod('technicians', this.techniciansForm.value).subscribe(
       () => {
-        this.showSuccess('تم تسجيل الفني بنجاح');
+        this.showSuccess('تم ادخال فنى جديد بنجاح ');
         setTimeout(() => {
           this.router.navigate(['/technicians/all-technicians']);
         }, 2500);

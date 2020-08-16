@@ -29,6 +29,9 @@ export class AllTechniciansComponent implements OnInit {
   responseState;
   responseData;
   //
+  current_page ;
+  totalPage ;
+
   deletedTechnicalName: string;
   deletedTechnicalId: number;
   showDeletePopup = false;
@@ -334,6 +337,8 @@ export class AllTechniciansComponent implements OnInit {
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
         this.dataSource = getTechniciansResponse.data.data;
+        this.current_page = getTechniciansResponse.data.current_page;
+        this.totalPage = getTechniciansResponse.data.last_page;
         console.log( this.dataSource )
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
@@ -365,6 +370,9 @@ export class AllTechniciansComponent implements OnInit {
       this.pagesNumbers.push(pageNumber);
     }
     this.checkPagination(this.pageId);
+  }
+  changePagination(event) {
+    this.getAllTechnicians(event.value);
   }
   //  ######################### End Pagination #########################
   //  ################################### Start Go Page ###################################
@@ -458,5 +466,15 @@ export class AllTechniciansComponent implements OnInit {
       this.responseData
     );
   }
+
+
+  nextPage(pageNum) {
+    this.getAllTechnicians(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllTechnicians(+pageNum - 1);
+  }
   //  ######################### End Response Messeges #########################
 }
+
+

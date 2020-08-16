@@ -84,9 +84,9 @@
                 </mat-form-field>
               </div>
 
-              <div class="form_input" id="NameFillterInputStyle">
+              <div class="form_input" id="NameFillterInputStyle" >
                 <label> الخدمة</label>
-                <mat-form-field dir="rtl" appearance="outline">
+                <mat-form-field dir="rtl" appearance="outline" style="line-height: unset;">
         
                   <mat-select  class="filterInput" formControlName="service" multiple   placeholder="الخدمة">
                     <mat-option  *ngFor="let option of ServiceArray "
@@ -103,9 +103,9 @@
               </div>
 
 
-              <div class="form_input" id="NameFillterInputStyle">
+              <div class="form_input" id="NameFillterInputStyle"  style="line-height: unset;">
                 <label> المدينة</label>
-                <mat-form-field  dir="rtl" appearance="outline">
+                <mat-form-field  dir="rtl" appearance="outline" style="line-height: unset;">
                   <mat-select id="filterCityService" class="filterInput" formControlName="serviceCity" multiple   placeholder="مدن يخدمها الفنى">
                     <mat-option  *ngFor="let option of CityArray "
                     [value]="option.id"> {{ option.name  }} </mat-option>
@@ -175,14 +175,16 @@
             </ng-container>
             <ng-container matColumnDef="main_service">
               <th mat-header-cell *matHeaderCellDef>الخدمات</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.service ? element.service.name : 'لا يوجد'  }}
+              <td mat-cell *matCellDef="let element" style="max-width: 100px;">
+                <!-- {{ element.service ? element.service.name : 'لا يوجد'  }} -->
+                <span *ngFor="let service of element.services"> <span *ngIf="element.services.length > 1"> - </span> {{ service.name }}  </span> 
               </td>
             </ng-container>
             <ng-container matColumnDef="city_service">
               <th mat-header-cell *matHeaderCellDef>مدن الخدمة</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.city ? element.city : 'لا يوجد'}}
+              <td mat-cell *matCellDef="let element" style="max-width: 100px;">
+                <span *ngFor="let city of element.cities">   <span *ngIf="element.cities.length > 1"> - </span> {{ city.name }}   </span> 
+                
               </td>
             </ng-container>
             <ng-container matColumnDef="email">
@@ -194,7 +196,8 @@
             <ng-container matColumnDef="national">
               <th mat-header-cell *matHeaderCellDef>  الجنسية</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.national  ? element.national : 'لا يوجد'}}
+                {{ element.country  ? element.country : 'لا يوجد'}}
+
               </td>
             </ng-container>
 
@@ -254,7 +257,7 @@
 
             </ng-container> -->
             <ng-container matColumnDef="technicians_details">
-              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+              <th mat-header-cell *matHeaderCellDef></th>
               <td
                 mat-cell
                 *matCellDef="let element"
@@ -265,14 +268,15 @@
                   id="showOrdercontrols"
                   [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
                   *ngIf="hideme[element.id]"
+                  
                 >
                 <button
                 class="basic_button"
                 type="button"
                 (click)="openDeletePopup(element.id, element.name)"
               >
-                    <i class="fal fa-trash-alt"></i>
-                    <p class="">الغاء</p>
+                    <i class="fas fa-trash-alt" style="font-size: 30px; padding: 0;"></i>
+                    <!-- <p class="">الغاء</p> -->
                   </button>
 
                   <button
@@ -284,8 +288,8 @@
                   class="basic_button"
                   type="button"
                 >
-                    <i class="fal fa-user-edit"></i>
-                    <p class="">تعديل</p>
+                    <i class="fas fa-user-edit" style="font-size: 30px; padding: 0;"></i>
+                    <!-- <p class="">تعديل</p> -->
                   </button>
 
                   <button
@@ -300,9 +304,9 @@
                       target="blank"
 
                     > -->
-                    <i class="fal fa-users-cog"></i>
+                    <i class="fas fa-users-cog" style="font-size: 30px; padding: 0;"></i>
                     <!-- </a> -->
-                    <p class="">تفاصيل </p>
+                    <!-- <p class="">تفاصيل </p> -->
                   </button>
                 </div>
 
@@ -345,7 +349,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
-          <div class="pagination">
+          <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -375,7 +379,61 @@
                 <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
               </li>
             </ul>
+          </div> -->
+
+          <div class="pagination">
+            <ul style="margin-right: auto; ">
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+                  border: 1px solid rgba(112, 112, 112, 0.38);
+                  width: 42px;
+                  height: 31px;
+                  text-align: center;"
+                    type="text"
+                    type="number"
+                    #pageNumber
+                    [value]="current_page"
+                    (keyup.enter)="changePagination(pageNumber)"
+                  />
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
           </div>
+
+
+
+
+
+
+
         </div>
       </div>
     </div>
