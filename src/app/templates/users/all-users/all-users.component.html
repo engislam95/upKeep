@@ -251,7 +251,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
-          <div class="pagination">
+          <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -279,6 +279,40 @@
               </li>
               <li class="pagination_button ">
                 <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
+              </li>
+            </ul>
+          </div> -->
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  {{ current_page }}
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
               </li>
             </ul>
           </div>

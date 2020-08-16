@@ -439,7 +439,7 @@
                     ? element.client.user
                       ? element.client.user.name
                       : element.client.name
-                    : ""
+                    : ''
                 }}
               </td>
             </ng-container>
@@ -450,7 +450,7 @@
                 رقم الطلب
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.order ? element.order.id : "-" }}
+                {{ element.order ? element.order.id : '-' }}
               </td>
             </ng-container>
             <!-- Donator id -->
@@ -460,7 +460,7 @@
                 التاريخ
               </th>
               <td mat-cell *matCellDef="let element">
-                <span> {{ element.created_at | date: "MM/dd/yyyy" }} </span>
+                <span> {{ element.created_at | date: 'MM/dd/yyyy' }} </span>
               </td>
             </ng-container>
             <!-- Donator id -->
@@ -471,11 +471,11 @@
               </th>
               <td mat-cell *matCellDef="let element">
                 {{
-                  element.receipt_type.name == "client"
-                    ? "عميل"
-                    : element.receipt_type.name == "source"
-                    ? "مصدر"
-                    : "طلب"
+                  element.receipt_type.name == 'client'
+                    ? 'عميل'
+                    : element.receipt_type.name == 'source'
+                    ? 'مصدر'
+                    : 'طلب'
                 }}
               </td>
             </ng-container>
@@ -486,7 +486,7 @@
                 الخدمة
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.order?.service ? element.order.service.name : "" }}
+                {{ element.order?.service ? element.order.service.name : '' }}
               </td>
             </ng-container>
             <!-- Donator id -->
@@ -497,7 +497,7 @@
               </th>
               <td mat-cell *matCellDef="let element">
                 {{
-                  element.order?.technician ? element.order.technician.name : ""
+                  element.order?.technician ? element.order.technician.name : ''
                 }}
               </td>
             </ng-container>
@@ -768,7 +768,7 @@
 
           <!-- End Table -->
           <!-- Start Pagination -->
-          <div class="pagination">
+          <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -796,6 +796,41 @@
               </li>
               <li class="pagination_button ">
                 <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
+              </li>
+            </ul>
+          </div> -->
+
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  {{ current_page }}
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
               </li>
             </ul>
           </div>

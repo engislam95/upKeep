@@ -126,6 +126,9 @@ export class AllInvoicesComponent implements OnInit {
   nestedType = 'nested';
   filterTechniciansComponentId = 'filterTechnicians';
 
+  current_page: any = '';
+  totalPage: any = '';
+
   // ###################################### Table Data ######################################
   constructor(
     //
@@ -569,6 +572,8 @@ export class AllInvoicesComponent implements OnInit {
         this.getInvoicesData = getInvoicesResponse.data.totals;
         this.getInvoicesCurrency = getInvoicesResponse.data.currency;
         this.taxesArray = getInvoicesResponse.data.totals.taxes;
+        this.current_page = getInvoicesResponse.data.receipts.current_page;
+        this.totalPage = getInvoicesResponse.data.receipts.last_page;
 
         if (this.dataSource.length === 0 && this.pageId > 1) {
           // last page
@@ -588,7 +593,12 @@ export class AllInvoicesComponent implements OnInit {
         //  End Pagination Count
       });
   }
-
+  nextPage(pageNum) {
+    this.getAllInvoices(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllInvoices(+pageNum - 1);
+  }
   //
   // ────────────────────────────────────── END GET ALL INVOICES ─────
   //

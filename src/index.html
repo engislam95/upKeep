@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Up Keep</title>
+    <title></title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta content="IE=Edge;chrome=35+" https-equiv="X-UA-Compatible" />
@@ -26,5 +26,10 @@
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"
     ></script>
+    <script>
+      document.title = JSON.parse(localStorage.getItem('currentUser'))[
+        'company_slug'
+      ];
+    </script>
   </body>
 </html>

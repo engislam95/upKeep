@@ -533,7 +533,7 @@
                             (mouseleave)="hideme[order.id] = !hideme[order.id]"
                             [ngClass]="{
                               animateOrder:
-                                selectedCityID == order.location.city_id
+                                selectedCityID !== order.location.city_id
                             }"
                             class="order-bar status-{{ order.status.id }}"
                             [ngStyle]="{

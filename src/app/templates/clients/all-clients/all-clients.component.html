@@ -89,10 +89,11 @@
                 <div class="form_input" id="smallFillterInputStyle">
                   <label> نوع العميل </label>
                   <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select (selectionChange)="selectStatus($event.value)"
-                    placeholder="نوع العميل "
+                    <mat-select
+                      (selectionChange)="selectStatus($event.value)"
+                      placeholder="نوع العميل "
                     >
-                      <mat-option [value]="''">  كل العملاء</mat-option>
+                      <mat-option [value]="''"> كل العملاء</mat-option>
 
                       <mat-option
                         *ngFor="let clientStatus of clientStatusArray"
@@ -109,9 +110,11 @@
                 <div class="form_input" id="smallFillterInputStyle">
                   <label> طريقة التعاقد </label>
                   <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select (selectionChange)="selectWay($event.value)"
-                    placeholder=" طريقة التعاقد ">
-                      <mat-option [value]="''">  كل الطرق</mat-option>
+                    <mat-select
+                      (selectionChange)="selectWay($event.value)"
+                      placeholder=" طريقة التعاقد "
+                    >
+                      <mat-option [value]="''"> كل الطرق</mat-option>
                       <mat-option
                         *ngFor="let clientWay of clientWayArray"
                         [value]="clientWay.id"
@@ -134,8 +137,9 @@
                       formControlName="startDateFilter"
                       id="filterStartDate"
                       readonly
-                      placeholder="  تاريخ التسجيل من ">
-                
+                      placeholder="  تاريخ التسجيل من "
+                    />
+
                     <!-- Reset Input Button -->
                     <button
                       type="button"
@@ -212,9 +216,11 @@
                 <div class="form_input" id="smallFillterInputStyle">
                   <label> المدينة </label>
                   <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select (selectionChange)="selectCity($event.value)"
-                    placeholder="  المدينة ">
-                      <mat-option [value]="''">  كل المدن</mat-option>
+                    <mat-select
+                      (selectionChange)="selectCity($event.value)"
+                      placeholder="  المدينة "
+                    >
+                      <mat-option [value]="''"> كل المدن</mat-option>
 
                       <mat-option
                         *ngFor="let selectedCity of citiesArray"
@@ -228,7 +234,9 @@
               </form>
             </div>
 
-            <h5>عدد النتائج <span>{{ totalSize }}</span></h5>
+            <h5>
+              عدد النتائج <span>{{ totalSize }}</span>
+            </h5>
             <!-- End filters -->
           </div>
           <!-- Start Table -->
@@ -272,16 +280,17 @@
                 <h5>ملاحظات</h5>
               </div>
               <td style="text-align: right;" mat-cell *matCellDef="let element">
-                
-                    <p>
-                      {{ element.user.name }} 
-                      <span class="details">
-                        <i class="fal fa-info-circle"></i>
-                        <div class="notes-client">
-                          <h5> {{element.notes ? element.notes : 'لا يوجد ملاحظات'}} </h5>
-                        </div>
-                      </span>
-                    </p>
+                <p>
+                  {{ element.user.name }}
+                  <span class="details">
+                    <i class="fal fa-info-circle"></i>
+                    <div class="notes-client">
+                      <h5>
+                        {{ element.notes ? element.notes : 'لا يوجد ملاحظات' }}
+                      </h5>
+                    </div>
+                  </span>
+                </p>
               </td>
             </ng-container>
             <!-- Client Name -->
@@ -299,7 +308,7 @@
               <th mat-header-cell *matHeaderCellDef>نوع العميل</th>
               <td mat-cell *matCellDef="let element">
                 <p class="kind_client_v kind_client_0">
-                  {{ element.status}} <span class="fal fa-smile"></span>
+                  {{ element.status }} <span class="fal fa-smile"></span>
                 </p>
                 <!-- <p class="kind_client_v kind_client_1"> VIP <span class="fas fa-crown"></span> </p>
                   <p class="kind_client_v kind_client_2"> سيئ  <span class="fal fa-frown"></span> </p> -->
@@ -320,7 +329,7 @@
             <ng-container matColumnDef="order_number">
               <th mat-header-cell *matHeaderCellDef>عدد الطلبات</th>
               <td mat-cell *matCellDef="let element">
-                <p >{{ element.orders.count  }}</p>
+                <p>{{ element.orders.count }}</p>
               </td>
             </ng-container>
             <!-- order_number -->
@@ -338,7 +347,13 @@
             <ng-container matColumnDef="date_last_request">
               <th mat-header-cell *matHeaderCellDef>تاريخ اخر طلب</th>
               <td mat-cell *matCellDef="let element">
-                <p>{{ element.orders.order_date ? element.orders.order_date : 'لا يوجد'  }}</p>
+                <p>
+                  {{
+                    element.orders.order_date
+                      ? element.orders.order_date
+                      : 'لا يوجد'
+                  }}
+                </p>
               </td>
             </ng-container>
             <!-- date_last_request -->
@@ -447,7 +462,7 @@
                     > -->
                     <i class="fal fa-users-cog"></i>
                     <!-- </a> -->
-                    <p class="">تفاصيل </p>
+                    <p class="">تفاصيل</p>
                   </button>
                 </div>
 
@@ -478,7 +493,7 @@
 
           <!-- End Table -->
           <!-- Start Pagination -->
-          <div class="pagination">
+          <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -508,8 +523,42 @@
                 <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
               </li>
             </ul>
-          </div>
+          </div> -->
           <!-- End Pagination -->
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  {{ current_page }}
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <!-- ################################### End Page Block ################################### -->
       </div>

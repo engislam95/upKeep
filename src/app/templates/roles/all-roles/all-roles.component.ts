@@ -5,7 +5,12 @@ import { ResponseStateService } from '../../../tools/shared-services/response-st
 import { popup } from '../../../tools/shared_animations/popup';
 import { PaginationService } from './../../../tools/shared-services/pagination.service';
 import { fromEvent, Observable } from 'rxjs';
-import { debounceTime, map, distinctUntilChanged, startWith } from 'rxjs/operators';
+import {
+  debounceTime,
+  map,
+  distinctUntilChanged,
+  startWith
+} from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-all-roles',
@@ -45,6 +50,8 @@ export class AllRolesComponent implements OnInit {
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
   statusFilteredOptions: Observable<any>;
   filteredStatusId: any = '';
+  current_page = '';
+  totalPage = '';
   /* ----------------- Filter Form ---------------- */
   filterForm = new FormGroup({
     RoleStatus: new FormControl(),
@@ -56,7 +63,7 @@ export class AllRolesComponent implements OnInit {
     private responseStateService: ResponseStateService,
     private coreService: CoreService,
     private paginationService: PaginationService
-  ) { }
+  ) {}
   /* ------------------------ Oninit -------------------------- */
   ngOnInit() {
     this.startLoading();
@@ -127,6 +134,8 @@ export class AllRolesComponent implements OnInit {
       })
       .subscribe((roles: any) => {
         console.log(roles);
+        this.current_page = roles.current_page;
+        this.totalPage = roles.last_page;
         this.dataSource = roles.data;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
@@ -136,11 +145,14 @@ export class AllRolesComponent implements OnInit {
           this.goPage(this.pageId);
         }
         this.endLoading();
-        this.pagination(
-          roles.total,
-          roles.per_page
-        );
+        this.pagination(roles.total, roles.per_page);
       });
+  }
+  nextPage(pageNum) {
+    this.getAllRoles(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllRoles(+pageNum - 1);
   }
   /* ------------------------ Pagination --------------------- */
   pagination(totalRolesNumber, rolePerPage) {

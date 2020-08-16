@@ -58,6 +58,8 @@ export class AllOffersComponent implements OnInit {
   offer_update: boolean = false;
   offer_delete: boolean = false;
   user: any = '';
+  current_page = '';
+  totalPage = '';
 
   // End Table Data
   constructor(
@@ -171,6 +173,8 @@ export class AllOffersComponent implements OnInit {
       .subscribe((getOffersResponse: any) => {
         // Start Assign Data
         this.dataSource = getOffersResponse.data.data;
+        this.current_page = getOffersResponse.data.current_page;
+        this.totalPage = getOffersResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -192,7 +196,12 @@ export class AllOffersComponent implements OnInit {
         //  End Pagination Count
       });
   }
-
+  nextPage(pageNum) {
+    this.getAllOffers(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllOffers(+pageNum - 1);
+  }
   //
   // ──────────────────────────────────────── END GET ALL OFFERS ─────
   //

@@ -311,6 +311,7 @@ export class OrderDetailsComponent implements OnInit {
             startOrderResponse,
             'تم بدء الطلب بنجاح'
           );
+          this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading

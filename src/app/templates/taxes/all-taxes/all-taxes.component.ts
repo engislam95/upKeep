@@ -31,7 +31,7 @@ export class AllTaxesComponent implements OnInit {
     'tax_name',
     'tax_name_on_invoice',
     'value_tax',
-    'details',
+    'details'
   ];
   dataSource: any = [];
   pagesNumbers: any = [];
@@ -43,6 +43,8 @@ export class AllTaxesComponent implements OnInit {
   showDeletePopup: boolean = false;
   deletedUserName: any = '';
   deletedUserID: any = '';
+  current_page = '';
+  totalPage = '';
 
   constructor(
     private loaderService: LoaderService,
@@ -50,7 +52,7 @@ export class AllTaxesComponent implements OnInit {
     private coreService: CoreService,
     private router: Router,
     private paginationService: PaginationService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.startLoading();
@@ -70,7 +72,7 @@ export class AllTaxesComponent implements OnInit {
     this.loaderService.startLoading();
     this.coreService
       .getMethod('Taxes/all?page=' + pageId, {
-        per_page: this.per_page,
+        per_page: this.per_page
         // service_parent_id: this.mainServiceID,
         // service_id: this.subServiceID,
         // set_type_id: this.serviceID,
@@ -78,6 +80,8 @@ export class AllTaxesComponent implements OnInit {
       .subscribe((getTechniciansResponse: any) => {
         console.log(getTechniciansResponse);
         this.dataSource = getTechniciansResponse.data;
+        this.current_page = getTechniciansResponse.current_page;
+        this.totalPage = getTechniciansResponse.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -92,6 +96,12 @@ export class AllTaxesComponent implements OnInit {
           getTechniciansResponse.per_page
         );
       });
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
   }
   /* ----------------------- Pagination ---------------------------- */
   pagination(totalTechniciansNumber, techniciansPerPAge) {
@@ -142,14 +152,20 @@ export class AllTaxesComponent implements OnInit {
     this.endLoading();
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
   /* ----------------------------- Show Success Messages --------------------- */
   showSuccess(successText) {
     this.endLoading();
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
   /* ------------------------ Open Delete Popup ---------------------- */
   openDeletePopup(id, name) {

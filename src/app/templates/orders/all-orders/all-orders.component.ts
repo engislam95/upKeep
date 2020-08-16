@@ -138,6 +138,8 @@ export class AllOrdersComponent implements OnInit {
   //
   // ── END MULTIPLE SELECT FILTER ─────
   //
+  current_page = '';
+  totalPage = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -477,6 +479,8 @@ export class AllOrdersComponent implements OnInit {
         // Start Assign Data
         this.ordersArray = getOrdersResponse.orders.data;
         this.getOrdersResponseTotal = getOrdersResponse.orders;
+        this.current_page = getOrdersResponse.orders.current_page;
+        this.totalPage = getOrdersResponse.orders.last_page;
 
         this.getOrderNumber = getOrdersResponse.totals;
 
@@ -500,6 +504,14 @@ export class AllOrdersComponent implements OnInit {
         );
         //  End Pagination Count
       });
+  }
+  nextPage(pageNum) {
+    this.pageId = +pageNum + 1;
+    this.getAllOrders();
+  }
+  prevPage(pageNum) {
+    this.pageId = +pageNum - 1;
+    this.getAllOrders();
   }
   //
   // ──────────────────────────────────────── END GET ALL ORDERS ─────
