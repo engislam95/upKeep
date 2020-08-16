@@ -57,7 +57,7 @@
                     formControlName="clientIdObj"
                     [matAutocomplete]="clientAutoComplete"
                     id="clientIdObj"
-                    (keyup)="getClientlocationsArray($event)"
+                    (keyup.enter)="getClientlocationsArray($event)"
                   />
                   <button
                     type="button"
