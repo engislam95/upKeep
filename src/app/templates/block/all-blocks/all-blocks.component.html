@@ -244,6 +244,7 @@
                     type="text"
                     type="number"
                     #pageNumber
+                    [max]="totalPage"
                     min="1"
                     [value]="current_page"
                     (keyup.enter)="changePagination(pageNumber)"

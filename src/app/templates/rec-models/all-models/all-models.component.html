@@ -263,6 +263,7 @@
                     type="text"
                     min="1"
                     type="number"
+                    [max]="totalPage"
                     #pageNumber
                     [value]="current_page"
                     (keyup.enter)="changePagination(pageNumber)"

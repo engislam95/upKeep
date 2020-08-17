@@ -824,6 +824,7 @@
                     type="number"
                     #pageNumber
                     min="1"
+                    [max]="totalPage"
                     [value]="current_page"
                     (keyup.enter)="changePagination(pageNumber)"
                   />
