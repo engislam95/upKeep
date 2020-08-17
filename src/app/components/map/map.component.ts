@@ -227,7 +227,7 @@ export class MapComponent implements OnInit {
   // }
   selectCity(cityID) {
     console.log(cityID);
-
+    this.city_id = cityID;
     if (cityID == '') {
       this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
         this.cities = cities.data;
@@ -240,9 +240,8 @@ export class MapComponent implements OnInit {
         console.log(city);
         this.citiesLating = city['data'];
       });
-      this.city_id = cityID;
-      this.getOrders();
     }
+    this.getOrders();
   }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
