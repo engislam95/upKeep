@@ -9,8 +9,7 @@ import { CoreService } from './../../../tools/shared-services/core.service';
 export class OwnerComponent implements OnInit {
   user: any = '';
   constructor(private coreService: CoreService) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

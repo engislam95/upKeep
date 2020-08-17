@@ -7,7 +7,12 @@ import { PaginationService } from './../../../tools/shared-services/pagination.s
 import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
 import { popup } from '../../../tools/shared_animations/popup';
 import { fromEvent, Observable } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import {
+  map,
+  debounceTime,
+  distinctUntilChanged,
+  startWith
+} from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-all-users',
@@ -50,6 +55,8 @@ export class AllUsersComponent implements OnInit {
   filteredStatusId: any = '';
   filteredRoleId: any = '';
   rolesArray: any = [];
+  current_page: any = '';
+  totalPage: any = '';
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     usersStatus: new FormControl(),
@@ -62,7 +69,7 @@ export class AllUsersComponent implements OnInit {
     private responseStateService: ResponseStateService,
     private coreService: CoreService,
     private paginationService: PaginationService
-  ) { }
+  ) {}
   /* ------------------- Oninit --------------------- */
   ngOnInit() {
     this.startLoading();
@@ -76,7 +83,7 @@ export class AllUsersComponent implements OnInit {
           startWith(''),
           map(value => this.filterUsersUserRole(value))
         );
-    })
+    });
     // Filter Name
     const filterName = document.getElementById('filterName');
     const filterNameListner = fromEvent(filterName, 'keyup');
@@ -145,8 +152,7 @@ export class AllUsersComponent implements OnInit {
         filteredStatusId: '',
         usersStatus: ''
       });
-    }
-    else if (key === 'userRole') {
+    } else if (key === 'userRole') {
       this.filterForm.patchValue({
         filteredRoleId: '',
         userRole: ''
@@ -168,6 +174,8 @@ export class AllUsersComponent implements OnInit {
       .subscribe((users: any) => {
         console.log(users);
         this.dataSource = users.data;
+        this.current_page = users.current_page;
+        this.totalPage = users.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -176,11 +184,17 @@ export class AllUsersComponent implements OnInit {
           this.goPage(this.pageId);
         }
         this.endLoading();
-        this.pagination(
-          users.total,
-          users.per_page
-        );
+        this.pagination(users.total, users.per_page);
       });
+  }
+  nextPage(pageNum) {
+    this.getAllUsers(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllUsers(+pageNum - 1);
+  }
+  changePagination(event) {
+    this.getAllUsers(event.value);
   }
   /* ------------------------- Pagination ------------------------- */
   pagination(totalUsersNumber, usersPerPage) {

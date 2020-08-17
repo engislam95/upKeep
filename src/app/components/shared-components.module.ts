@@ -23,6 +23,7 @@ import {
   MatInputModule,
   MatAutocompleteModule
 } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
 /* -------------------- Ngx TimePicker ---------------------- */
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 /* --------------- Map ----------------- */
@@ -45,6 +46,7 @@ import { AgmCoreModule } from '@agm/core';
     HeaderOwnerComponent,
     FormsModule,
     MatAutocompleteModule,
+    MatSelectModule,
     SideMenuComponent,
     HeaderComponent,
     AlertsComponent,
@@ -56,6 +58,7 @@ import { AgmCoreModule } from '@agm/core';
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
+    MatSelectModule,
     MatProgressBarModule,
     MatCheckboxModule,
     MatFormFieldModule,
@@ -72,4 +75,4 @@ import { AgmCoreModule } from '@agm/core';
   ],
   providers: [LoaderService, ResponseStateService]
 })
-export class SharedComponentsModule {}
+export class SharedComponentsModule { }

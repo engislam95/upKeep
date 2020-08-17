@@ -126,6 +126,9 @@ export class AllInvoicesComponent implements OnInit {
   nestedType = 'nested';
   filterTechniciansComponentId = 'filterTechnicians';
 
+  current_page: any = '';
+  totalPage: any = '';
+
   // ###################################### Table Data ######################################
   constructor(
     //
@@ -135,7 +138,7 @@ export class AllInvoicesComponent implements OnInit {
     private headersService: HeadersService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.receipts = this.user.modules.receipts;
     if (this.receipts) {
       this.receipts.map(ele => {
@@ -229,7 +232,7 @@ export class AllInvoicesComponent implements OnInit {
     }
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
-      } row ${row.position + 1}`;
+    } row ${row.position + 1}`;
   }
 
   rowAction(row, key) {
@@ -569,6 +572,8 @@ export class AllInvoicesComponent implements OnInit {
         this.getInvoicesData = getInvoicesResponse.data.totals;
         this.getInvoicesCurrency = getInvoicesResponse.data.currency;
         this.taxesArray = getInvoicesResponse.data.totals.taxes;
+        this.current_page = getInvoicesResponse.data.receipts.current_page;
+        this.totalPage = getInvoicesResponse.data.receipts.last_page;
 
         if (this.dataSource.length === 0 && this.pageId > 1) {
           // last page
@@ -588,7 +593,12 @@ export class AllInvoicesComponent implements OnInit {
         //  End Pagination Count
       });
   }
-
+  nextPage(pageNum) {
+    this.getAllInvoices(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllInvoices(+pageNum - 1);
+  }
   //
   // ────────────────────────────────────── END GET ALL INVOICES ─────
   //
@@ -665,6 +675,10 @@ export class AllInvoicesComponent implements OnInit {
       // End START Loading
       this.getAllInvoices(this.pageId);
     }
+  }
+
+  changePagination(event) {
+    this.getAllInvoices(event.value);
   }
 
   //

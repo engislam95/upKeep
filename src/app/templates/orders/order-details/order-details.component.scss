@@ -4,6 +4,7 @@
     padding-top: 5px;
   }
 }
+
 .page_body_title {
   .update_Disabled {
     color: currentColor;
@@ -15,33 +16,41 @@
     pointer-events: none;
   }
 }
+
 .page_body_main {
   .orderDetailsContainer {
     background: #fbfbff !important;
     padding-top: 0 !important;
+
     h3 {
       text-align: center;
       padding: 25px 0;
     }
+
     hr {
       background: #242a2d;
       height: 1px;
     }
+
     .clientDetails {
       ul {
         display: flex;
         flex-wrap: wrap;
         margin: 20px 0;
+
         li {
           width: 50%;
           margin: 15px 0;
+
           h4 {
             color: #242a2d;
           }
+
           h5 {
             margin-top: 15px;
             color: #565656;
             font-size: 14px;
+
             i {
               margin-left: 10px;
             }
@@ -50,19 +59,23 @@
       }
     }
   }
+
   .orderDetails {
     h4 {
       color: #242a2d;
       margin-top: 35px;
     }
+
     h5 {
       margin-top: 15px;
       color: #565656;
       font-size: 14px;
+
       i {
         margin-left: 10px;
       }
     }
+
     .technicalReport {
       border: 1px solid;
       border-radius: 5px;
@@ -71,14 +84,17 @@
       margin: 15px 22px;
     }
   }
+
   .orderStatusTable {
     .orderSatus {
       margin-top: 15px;
+
       .tableHeader {
         display: flex;
         background: #242a2d;
         border-radius: 6px;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+
         .tableHeaderCell {
           color: #fff;
           padding: 15px 0;
@@ -86,21 +102,27 @@
           text-align: center;
         }
       }
+
       .tableBody {
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
         margin-bottom: 10px;
+
         .tableRow {
           display: flex;
           border-bottom: 1px solid #ddd;
+
           &:last-child {
             border-bottom: 0;
           }
+
           .tableBodyCell {
             width: 25%;
             text-align: center;
             margin: 15px 0;
+
             &:first-child {
               text-align: right;
+
               span {
                 display: inline-block;
                 width: 20px;
@@ -122,6 +144,7 @@
   .controlPanel {
     background: #fff;
     width: 100%;
+
     img {
       position: absolute;
     }
@@ -130,16 +153,20 @@
       margin-top: 4px;
       display: inline-block;
       margin-right: 35px;
+
       i {
         margin-left: 11px;
       }
     }
+
     ul {
       display: flex;
       margin: 30px 0;
+
       li {
         text-align: center;
         margin-left: 40px;
+
         button {
           background: #f1f1f1;
           color: #fff;
@@ -160,15 +187,18 @@
 
         #cancelOrder {
           background: #ff00009c;
+
           img {
             width: 28px;
           }
         }
+
         #delayOrder {
           background: #ff00009c;
         }
+
         span {
-          width: 60px;
+          // width: 60px;
           display: block;
         }
 
@@ -179,9 +209,11 @@
     }
   }
 }
+
 #locationLink {
   color: #7a00b4;
 }
+
 .orderDetails .profileDetails ul li {
   margin: 0 0;
 }
@@ -199,6 +231,7 @@
   .right_block {
     width: 61%;
   }
+
   .left_block {
     position: absolute;
     width: 32%;
@@ -207,19 +240,23 @@
     .mapDetails {
       .controlpanelTime {
         display: flex;
+
         img {
           position: relative;
         }
+
         .technicianOrder {
           width: 25%;
           text-align: center;
           padding-top: 15px;
           padding-bottom: 22px;
+
           img {
             width: 75px;
             margin-bottom: 10px;
           }
         }
+
         .timeOrder {
           width: 66%;
           margin-right: 10px;
@@ -232,15 +269,18 @@
             padding: 2px 18px;
             border: 1px solid #7070707a;
           }
+
           h5 {
             font-size: 13px;
             padding-bottom: 6px;
           }
+
           ul {
             margin: 23px 0;
           }
         }
       }
+
       .timeGO {
         float: left;
         margin-top: -16px;
@@ -248,6 +288,7 @@
         h5 {
           font-size: 13px;
         }
+
         .changeColorBlu {
           background: #6083c9;
           color: #fff;
@@ -255,6 +296,7 @@
           padding-right: 5px;
           margin-top: -1px;
         }
+
         .changeColorGreen {
           background: #15b196;
           color: #fff;
@@ -262,6 +304,7 @@
           padding-right: 5px;
           margin-top: -1px;
         }
+
         .changeColorYellow {
           background: #adc960;
           color: #fff;
@@ -280,15 +323,18 @@
   .totalInvoice {
     margin-top: 42px;
     width: 48%;
+
     p {
       font-size: 13px;
       padding-right: 0;
       color: #888786;
     }
+
     h1 {
       font-family: Arabic Bold;
       margin-top: -9px;
       margin-bottom: -11px;
+
       span {
         font-family: 'Arabic Light', sans-serif;
         padding-right: 0;
@@ -299,13 +345,16 @@
         margin-right: 26px;
       }
     }
+
     h2 {
       margin-right: 0;
     }
+
     img {
       position: relative;
       padding-left: 3px;
     }
+
     span {
       font-weight: bold;
       font-size: 15px;
@@ -313,6 +362,7 @@
       font-family: Arabic Bold;
     }
   }
+
   .printInvoice {
     button {
       background: #f1f1f1;
@@ -327,6 +377,7 @@
       border-radius: 6px;
       margin-top: 18px;
       border: 1px solid #bcb4b4bd;
+
       img {
         position: absolute;
 
@@ -336,6 +387,7 @@
         transform: translate(-50%, -50%);
       }
     }
+
     h5 {
       margin-top: 17px;
       font-size: 15px;
@@ -349,6 +401,7 @@
   padding: 15px 0px !important;
   padding-right: 17px !important;
 }
+
 .detailsOrder {
   margin-right: 16px;
   width: 50%;
@@ -358,18 +411,22 @@
       margin-left: 10px;
     }
   }
+
   h4 {
     font-size: 16px;
     margin-top: 6px;
     font-family: 'Arabic Light';
+
     img {
       padding-left: 5px;
     }
   }
+
   h5 {
     font-size: 14px;
     margin-right: 17px;
     margin-bottom: 3px;
+
     span {
       background: #242a2d;
       color: #fff;
@@ -377,6 +434,7 @@
       border-radius: 4px;
     }
   }
+
   .styleBorderBottom {
     border-bottom: 1px solid #70707061;
     width: 93%;
@@ -387,53 +445,48 @@
 .controlPanelOrder {
   width: 87%;
 }
+
 .mapDetails {
   height: 380px;
 }
+
 .detailsAdminOrder {
   display: flex;
+
   .adminsOrder {
     width: 25%;
     text-align: center;
     padding-top: 30px;
     padding-bottom: 22px;
+
     // background-color: #f6a811;
     h5 {
       font-size: 15px;
     }
+
     p {
       color: #565656;
     }
   }
 
-  body
-    > app-root
-    > main
-    > app-order-details
-    > div
-    > div
-    > div.page_body
-    > div
-    > div
-    > div.all_Block
-    > div.left_block
-    > div
-    > div.ng-tns-c1-1
-    > app-map
-    > div {
+  body>app-root>main>app-order-details>div>div>div.page_body>div>div>div.all_Block>div.left_block>div>div.ng-tns-c1-1>app-map>div {
     width: 97%;
   }
+
   .serviceOrder {
     width: 48%;
     border-right: 1px solid #70707061;
     margin-right: 15px;
     padding-top: 15px;
+
     .detailsOrder {
       h5 {
         font-size: 16px;
       }
+
       ul {
         width: 424px;
+
         li {
           margin-bottom: 11px;
           text-align: justify;
@@ -441,6 +494,7 @@
       }
     }
   }
+
   // order map custom style
 
   agm-map {
@@ -449,15 +503,18 @@
     margin-top: 17px;
     display: block;
   }
+
   .offerOrder {
     width: 25%;
     text-align: center;
     padding-top: 15px;
     border-right: 1px solid #70707061;
+
     h5 {
       padding-left: 20px;
       padding-right: 20px;
       margin-top: 50px;
+
       span {
         font-size: 16px;
         color: #ff0000;
@@ -467,34 +524,34 @@
     }
   }
 }
+
 .detailsContainer {
   margin-top: 249px;
 }
+
 @media (max-width: 1570px) and (min-width: 1198px) {
   .all_Block .right_block {
     width: 100%;
   }
+
   .all_Block {
     display: inline;
   }
+
   .all_Block .left_block {
     position: relative;
     width: 98%;
     left: 0;
   }
+
   .detailsContainer {
     margin-top: 26px;
   }
 }
+
 // ################################### 1 - Start (max-width: 1199px) & (min-width: 992px) ###################################
 @media (max-width: 1199px) and (min-width: 992px) {
-  .page_body_main[_ngcontent-c1]
-    .orderStatusTable[_ngcontent-c1]
-    .orderSatus[_ngcontent-c1]
-    .tableBody[_ngcontent-c1]
-    .tableRow[_ngcontent-c1]
-    .tableBodyCell[_ngcontent-c1]:first-child
-    span[_ngcontent-c1] {
+  .page_body_main[_ngcontent-c1] .orderStatusTable[_ngcontent-c1] .orderSatus[_ngcontent-c1] .tableBody[_ngcontent-c1] .tableRow[_ngcontent-c1] .tableBodyCell[_ngcontent-c1]:first-child span[_ngcontent-c1] {
     margin-left: 5px;
     margin-right: 5px;
     flex-wrap: wrap;
@@ -502,6 +559,7 @@
     margin-bottom: 5px;
   }
 }
+
 // // ################################### 1 - end (max-width: 1199px) & (min-width: 992px) ###################################
 // @media (max-width: 400px) and (min-width: 300px) {
 //   .page_body_main .controlPanel ul {
@@ -511,22 +569,15 @@
 // }
 // ################################### 2 - Start (max-width: 991px) and (min-width: 768px) ###################################
 @media (max-width: 1120px) and (min-width: 768px) {
-  .page_body_main[_ngcontent-c1]
-    .orderStatusTable[_ngcontent-c1]
-    .orderSatus[_ngcontent-c1]
-    .tableBody[_ngcontent-c1]
-    .tableRow[_ngcontent-c1]
-    .tableBodyCell[_ngcontent-c1]:first-child
-    span[_ngcontent-c1] {
+  .page_body_main[_ngcontent-c1] .orderStatusTable[_ngcontent-c1] .orderSatus[_ngcontent-c1] .tableBody[_ngcontent-c1] .tableRow[_ngcontent-c1] .tableBodyCell[_ngcontent-c1]:first-child span[_ngcontent-c1] {
     margin-left: 5px;
     margin-right: 5px;
     flex-wrap: wrap;
     display: block;
     margin-bottom: 5px;
   }
-  .page_body_main[_ngcontent-c29]
-    .controlPanel[_ngcontent-c29]
-    ul[_ngcontent-c29] {
+
+  .page_body_main[_ngcontent-c29] .controlPanel[_ngcontent-c29] ul[_ngcontent-c29] {
     flex-wrap: wrap;
   }
 
@@ -534,52 +585,41 @@
     margin-right: 2px !important;
   }
 }
+
 // ################################### 2 - end (max-width: 991px) and (min-width: 768px) ###################################
 // ################################### 3 - Start (max-width: 767px) ###################################
 @media (max-width: 767px) {
-  .page_body_main[_ngcontent-c1]
-    .controlPanel[_ngcontent-c1]
-    ul[_ngcontent-c1] {
+  .page_body_main[_ngcontent-c1] .controlPanel[_ngcontent-c1] ul[_ngcontent-c1] {
     flex-wrap: wrap;
     position: relative;
     left: -10%;
   }
-  .page_body_main[_ngcontent-c1]
-    .controlPanel[_ngcontent-c1]
-    ul[_ngcontent-c1]
-    li[_ngcontent-c1]
-    a[_ngcontent-c1] {
+
+  .page_body_main[_ngcontent-c1] .controlPanel[_ngcontent-c1] ul[_ngcontent-c1] li[_ngcontent-c1] a[_ngcontent-c1] {
     width: 115px;
     height: 115px;
   }
-  .page_body_main[_ngcontent-c1]
-    .controlPanel[_ngcontent-c1]
-    ul[_ngcontent-c1]
-    li[_ngcontent-c1]
-    span[_ngcontent-c1] {
+
+  .page_body_main[_ngcontent-c1] .controlPanel[_ngcontent-c1] ul[_ngcontent-c1] li[_ngcontent-c1] span[_ngcontent-c1] {
     width: 125px;
     margin-bottom: 17px;
   }
-  .page_body_main[_ngcontent-c1]
-    .orderStatusTable[_ngcontent-c1]
-    .orderSatus[_ngcontent-c1]
-    .tableBody[_ngcontent-c1]
-    .tableRow[_ngcontent-c1]
-    .tableBodyCell[_ngcontent-c1]:first-child
-    span[_ngcontent-c1] {
+
+  .page_body_main[_ngcontent-c1] .orderStatusTable[_ngcontent-c1] .orderSatus[_ngcontent-c1] .tableBody[_ngcontent-c1] .tableRow[_ngcontent-c1] .tableBodyCell[_ngcontent-c1]:first-child span[_ngcontent-c1] {
     margin-left: 5px;
     margin-right: 5px;
     flex-wrap: wrap;
     display: block;
     margin-bottom: 5px;
   }
-  .page_body_main[_ngcontent-c29]
-    .controlPanel[_ngcontent-c29]
-    ul[_ngcontent-c29] {
+
+  .page_body_main[_ngcontent-c29] .controlPanel[_ngcontent-c29] ul[_ngcontent-c29] {
     flex-wrap: wrap;
   }
+
   span[_ngcontent-c1] {
     margin-right: 2px !important;
   }
 }
+
 // ################################### 3 - End (max-width: 767px) ###################################

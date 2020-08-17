@@ -38,7 +38,7 @@ export class AllSubServicesComponent implements OnInit {
     'ID',
     'name',
     'count',
-    'details',
+    'details'
   ];
   dataSource = [];
   /* -------------------- Pagination ------------------------ */
@@ -49,6 +49,8 @@ export class AllSubServicesComponent implements OnInit {
   lastPage: any = '';
   // tslint:disable-next-line: variable-name
   per_page: any = 10;
+  current_page: any = '';
+  totalPage: any = '';
   /* --------------------------- Form --------------------------------- */
   filterForm = new FormGroup({
     ServiceTypeObj: new FormControl(),
@@ -124,11 +126,13 @@ export class AllSubServicesComponent implements OnInit {
     this.coreService
       .getMethod('services/children/' + this.service_id + '?page=' + pageId, {
         name: this.filterServicesData,
-        per_page: this.per_page,
+        per_page: this.per_page
       })
       .subscribe((getServicesResponse: any) => {
         console.log(getServicesResponse);
         this.dataSource = getServicesResponse.data.data;
+        this.current_page = getServicesResponse.data.current_page;
+        this.totalPage = getServicesResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -142,6 +146,15 @@ export class AllSubServicesComponent implements OnInit {
           getServicesResponse.data.per_page
         );
       });
+  }
+  nextPage(pageNum) {
+    this.getAllServices(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllServices(+pageNum - 1);
+  }
+  changePagination(event) {
+    this.getAllServices(event.value);
   }
   /* --------------------------- Get Pagination ----------------------------- */
   pagination(totalServicesNumber, servicesPerPage) {

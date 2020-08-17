@@ -43,7 +43,7 @@ export class AllTechniciansComponent implements OnInit {
     'technical_name',
     'phone',
     'main_service',
-    'status',
+    'status'
     // 'technicians_details',
     // 'edit_technical',
     // 'delete_technical'
@@ -68,6 +68,8 @@ export class AllTechniciansComponent implements OnInit {
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
+  current_page: any = '';
+  totalPage: any = '';
 
   //  ###################### End Select Status ######################
   constructor(
@@ -77,19 +79,23 @@ export class AllTechniciansComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'add': this.technician_add = true;
+          case 'add':
+            this.technician_add = true;
             break;
-          case 'show': this.technician_all = true;
+          case 'show':
+            this.technician_all = true;
             break;
-          case 'update': this.technician_update = true;
+          case 'update':
+            this.technician_update = true;
             break;
-          case 'delete': this.technician_delete = true;
+          case 'delete':
+            this.technician_delete = true;
             break;
         }
       });
@@ -162,6 +168,9 @@ export class AllTechniciansComponent implements OnInit {
       return state.name;
     }
   }
+  changePagination(event) {
+    this.getAllTechnicians(event.value);
+  }
   //  ######################### End display Options For Select #########################
   //  ############################# Start X Reset Inputs #############################
   xResetInputs(key) {
@@ -192,6 +201,8 @@ export class AllTechniciansComponent implements OnInit {
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
         this.dataSource = getTechniciansResponse.data.data;
+        this.current_page = getTechniciansResponse.data.current_page;
+        this.totalPage = getTechniciansResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -212,6 +223,12 @@ export class AllTechniciansComponent implements OnInit {
         );
         //  End Pagination Count
       });
+  }
+  nextPage(pageNum) {
+    this.getAllTechnicians(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllTechnicians(+pageNum - 1);
   }
   //  ######################### End Get All Technicians #########################
   //  ######################### Start Pagination #########################
@@ -284,7 +301,7 @@ export class AllTechniciansComponent implements OnInit {
   }
   //  ######################### End Update Technical #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() { }
+  dataExistance() {}
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {

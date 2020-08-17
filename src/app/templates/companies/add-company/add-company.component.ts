@@ -111,8 +111,8 @@ export class AddCompanyComponent implements OnInit {
     active: new FormControl(true),
     image: new FormControl(''),
     imageInput: new FormControl(''),
-    pinImage:new FormControl(''),
-    pinImageInput:new FormControl(''),
+    pinImage: new FormControl(''),
+    pinImageInput: new FormControl('')
   });
   /* ------------------ Constructor ------------------------ */
   constructor(
@@ -122,7 +122,7 @@ export class AddCompanyComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     // Filter Cities
     this.coreService
       .getMethod('countries/191/cities', {})
@@ -253,7 +253,6 @@ export class AddCompanyComponent implements OnInit {
             this.companyForm.controls.image.setValue('');
             this.companyForm.controls.pinImage.setValue('');
 
-            
             this.city_id = company['city']['id'];
             this.filteredTimeZoneId = company['timezone'];
             this.orderDate = company['end_date'];
@@ -300,17 +299,16 @@ export class AddCompanyComponent implements OnInit {
   }
   /* ----------------------- Filter Time Zone ------------------------ */
   filterTimeZone(value: any) {
-    console.log(value)
-    if (typeof value === 'string' ) {
+    console.log(value);
+    if (typeof value === 'string') {
       this.filteredTimeZoneId = value;
-      console.log(this.filteredTimeZoneId)
+      console.log(this.filteredTimeZoneId);
     }
     if (value === '' && !this.updateMode) {
       this.filteredTimeZoneId = '';
-      console.log(this.filteredTimeZoneId)
-
+      console.log(this.filteredTimeZoneId);
     }
-    console.log(this.timeZoneArray.filter(option => option.includes(value)))
+    console.log(this.timeZoneArray.filter(option => option.includes(value)));
     return this.timeZoneArray.filter(option => option.includes(value));
   }
   /* ------------------------ Display Option ----------------------------- */
@@ -412,8 +410,7 @@ export class AddCompanyComponent implements OnInit {
       (document.getElementById('email') as HTMLInputElement).value = '';
       this.companyForm.patchValue({ email: '' });
     }
-    if(key == 'pinImageInput')
-    {
+    if (key == 'pinImageInput') {
       (document.getElementById('pinImageInput') as HTMLInputElement).value = '';
       this.imagePlaceHolder = ' إرفق صورة';
       this.companyForm.patchValue({ pinImage: '' });
@@ -521,8 +518,7 @@ export class AddCompanyComponent implements OnInit {
     this.companyForm.controls.pinImage.setValue('');
     this.delete_pin = true;
   }
-  
-  
+
   /* ------------------------- Check Mobile Number Validtion ------------------- */
   mobileChanged(str) {
     this.mobileNumber = Number(
@@ -635,33 +631,39 @@ export class AddCompanyComponent implements OnInit {
     });
     this.startLoading();
     this.coreService
-      .superUpdate('owner/company/update/' + this.updatedID + '/' + this.company['super_admin'][0]['id'], {
-        name: this.companyForm.controls.name.value,
-        currency_id: this.filteredCurrencyId,
-        slug: this.companyForm.controls.slug.value,
-        smsName: '',
-        timezone: this.filteredTimeZoneId,
-        phone: +(this.countryPhoneKey + this.mobileNumber),
-        last_receipt_number: '',
-        city_id: this.city_id,
-        address: this.companyForm.controls.address.value,
-        active: this.filteredStatusId,
-        end_date: this.orderDate,
-        classification_id: this.filterServiceID,
-        logo: this.companyForm.controls.image.value,
-      pin: this.companyForm.controls.pinImage.value,
+      .superUpdate(
+        'owner/company/update/' +
+          this.updatedID +
+          '/' +
+          this.company['super_admin'][0]['id'],
+        {
+          name: this.companyForm.controls.name.value,
+          currency_id: this.filteredCurrencyId,
+          slug: this.companyForm.controls.slug.value,
+          smsName: '',
+          timezone: this.filteredTimeZoneId,
+          phone: +(this.countryPhoneKey + this.mobileNumber),
+          last_receipt_number: '',
+          city_id: this.city_id,
+          address: this.companyForm.controls.address.value,
+          active: this.filteredStatusId,
+          end_date: this.orderDate,
+          classification_id: this.filterServiceID,
+          logo: this.companyForm.controls.image.value,
+          pin: this.companyForm.controls.pinImage.value,
 
-        website: this.companyForm.controls.website.value,
-        commercial_register: this.companyForm.controls.commerceNo.value,
-        admin_email: this.companyForm.controls.username.value,
-        email: this.companyForm.controls.email.value,
-        admin_password: this.companyForm.controls.password.value,
-        password_confirmation: this.companyForm.controls.rePassword.value,
-        delete_image: this.delete_image,
-        delete_pin: this.delete_pin,
+          website: this.companyForm.controls.website.value,
+          commercial_register: this.companyForm.controls.commerceNo.value,
+          admin_email: this.companyForm.controls.username.value,
+          email: this.companyForm.controls.email.value,
+          admin_password: this.companyForm.controls.password.value,
+          password_confirmation: this.companyForm.controls.rePassword.value,
+          delete_image: this.delete_image,
+          delete_pin: this.delete_pin,
 
-        admin: this.companyForm.controls.admin.value,
-      })
+          admin: this.companyForm.controls.admin.value
+        }
+      )
       .subscribe(
         () => {
           this.showSuccess('تم تعديل الشركة بنجاح');
@@ -701,18 +703,14 @@ export class AddCompanyComponent implements OnInit {
       image: e[0].base64
     });
     this.delete_image = false;
-
-
   }
 
-  onUploadImagePin(e)
-  {
+  onUploadImagePin(e) {
     this.imagePlaceHolder = e[0].name;
     this.companyForm.patchValue({
       pinImage: e[0].base64
     });
     this.delete_pin = false;
-
   }
   /* ----------------------------- Show Error Messages --------------------- */
   showErrors(errors) {

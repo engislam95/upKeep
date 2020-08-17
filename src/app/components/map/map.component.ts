@@ -124,6 +124,7 @@ export class MapComponent implements OnInit {
   });
   city_id = '';
   citiesFilteredOptions: Observable<any>;
+  url: any = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
@@ -132,20 +133,23 @@ export class MapComponent implements OnInit {
     private router: Router,
     private mapsAPILoader: MapsAPILoader
   ) {
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
+    this.url = this.router.url;
+    console.log(this.url);
+
+    if (!this.clientDetailsPageMode) {
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.cities = cities.data;
+        console.log(this.cities);
+        this.citiesLating = cities.data;
+        // this.citiesFilteredOptions = this.cityForm
+        //   .get('city_id')
+        //   .valueChanges.pipe(
+        //     startWith(''),
+        //     map(value => this.filterCities(value))
+        //   );
       });
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    }
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.companyPin = this.user.companyPin;
     this.ordersModule = this.user.modules.orders;
@@ -168,60 +172,78 @@ export class MapComponent implements OnInit {
       });
     }
   }
-  filterCities(value: any) {
-    if (typeof value === 'object') {
-      this.city_id = value.id;
-      this.coreService.getMethod('cities/' + value.id).subscribe(city => {
-        console.log(city);
-        this.citiesLating = [
-          {
-            lat: city['data'][0].pivot.lat,
-            long: city['data'][0].pivot.long
-          }
-        ];
+  // filterCities(value: any) {
+  //   if (typeof value === 'object') {
+  //     this.city_id = value.id;
+  //     this.coreService.getMethod('cities/' + value.id).subscribe(city => {
+  //       console.log(city);
+  //       this.citiesLating = [
+  //         {
+  //           lat: city['data'][0].pivot.lat,
+  //           long: city['data'][0].pivot.long
+  //         }
+  //       ];
+  //     });
+  //     this.getOrders();
+  //   }
+
+  //   if (this.cities !== null) {
+  //     return this.cities.filter(option => option.name.includes(value));
+  //   }
+  // }
+  // search by city name
+  // getLocationOnMap(cityName) {
+  //   let newLocation = {
+  //     lat: null,
+  //     lng: null,
+  //     address: 'test Address',
+  //     area: 'test Area 1',
+  //     mainLocation: true
+  //   };
+  //   let address: string = '';
+  //   setTimeout(() => {
+  //     this.mapsAPILoader.load().then(() => {
+  //       this.geoCoder = new google.maps.Geocoder();
+  //       this.geoCoder.geocode(
+  //         {
+  //           address: cityName
+  //         },
+  //         function(results, status) {
+  //           newLocation.lat = results[0].geometry.location.lat();
+  //           newLocation.lng = results[0].geometry.location.lng();
+  //           address = results[0].formatted_address;
+  //         }
+  //       );
+  //     });
+  //   }, 500);
+
+  //   setTimeout(() => {
+  //     this.citiesLating.push({
+  //       lat: newLocation.lat,
+  //       long: newLocation.lng
+  //     });
+  //     console.log(this.citiesLating);
+  //   }, 1000);
+  // }
+  selectCity(cityID) {
+    console.log(cityID);
+
+    if (cityID == '') {
+      this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+        this.cities = cities.data;
+        console.log(this.cities);
+        this.citiesLating = cities.data;
       });
+    } else {
+      console.log('City ID -> ', cityID);
+      this.coreService.getMethod('cities/' + cityID).subscribe(city => {
+        console.log(city);
+        this.citiesLating = city['data'];
+      });
+      this.city_id = cityID;
       this.getOrders();
     }
-
-    if (this.cities !== null) {
-      return this.cities.filter(option => option.name.includes(value));
-    }
   }
-  // search by city name
-  getLocationOnMap(cityName) {
-    let newLocation = {
-      lat: null,
-      lng: null,
-      address: 'test Address',
-      area: 'test Area 1',
-      mainLocation: true
-    };
-    let address: string = '';
-    setTimeout(() => {
-      this.mapsAPILoader.load().then(() => {
-        this.geoCoder = new google.maps.Geocoder();
-        this.geoCoder.geocode(
-          {
-            address: cityName
-          },
-          function(results, status) {
-            newLocation.lat = results[0].geometry.location.lat();
-            newLocation.lng = results[0].geometry.location.lng();
-            address = results[0].formatted_address;
-          }
-        );
-      });
-    }, 500);
-
-    setTimeout(() => {
-      this.citiesLating.push({
-        lat: newLocation.lat,
-        long: newLocation.lng
-      });
-      console.log(this.citiesLating);
-    }, 1000);
-  }
-
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
     if (state !== null && state !== undefined) {
@@ -232,35 +254,44 @@ export class MapComponent implements OnInit {
   xResetInputs(key) {
     (document.getElementById(key) as HTMLInputElement).value = '';
     this.cityForm.controls[key].patchValue('');
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
-      });
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
+    // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //   this.cities = cities.data;
+    //   console.log(this.cities);
+    //   this.citiesFilteredOptions = cities.data;
+    //   this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //     this.cities = cities.data;
+    //     console.log(this.cities);
+    //     this.citiesLating = cities.data;
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
   }
   /* ---------------------- Oninit -------------------------- */
   ngOnInit() {
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
-      this.cities = cities.data;
-      console.log(this.cities);
-      this.cities.map(city => {
-        this.getLocationOnMap(city.name);
-      });
-      this.citiesFilteredOptions = this.cityForm
-        .get('city_id')
-        .valueChanges.pipe(
-          startWith(''),
-          map(value => this.filterCities(value))
-        );
-    });
+    // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    //   this.cities = cities.data;
+    //   console.log(this.cities);
+    // this.cities.map(city => {
+    //   this.getLocationOnMap(city.name);
+    // });
+    // this.citiesFilteredOptions = this.cityForm
+    //   .get('city_id')
+    //   .valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => this.filterCities(value))
+    //   );
+    // });
     this.pickUpTodayDate();
     this.clientLocationOnMap();
     if (!this.multiAddressMapPopupSelections) {
@@ -558,22 +589,22 @@ export class MapComponent implements OnInit {
       }
       if (type === 'start') {
         this.startTimeChanged(pmTime);
-        sessionStorage.setItem('startTimeType', splitedTime[1]);
+        localStorage.setItem('startTimeType', splitedTime[1]);
       } else {
         this.endTimeChanged(pmTime);
-        sessionStorage.setItem('endTimeType', splitedTime[1]);
+        localStorage.setItem('endTimeType', splitedTime[1]);
       }
     } else {
       amTime = splitedTime[0];
       console.log(amTime);
       if (type === 'start') {
         const typeOfTime = splitedTime[1];
-        sessionStorage.setItem('startTimeType', typeOfTime);
+        localStorage.setItem('startTimeType', typeOfTime);
         console.log(typeOfTime);
         this.startTimeChanged(amTime);
       } else {
         const typeOfTime = splitedTime[1];
-        sessionStorage.setItem('endTimeType', typeOfTime);
+        localStorage.setItem('endTimeType', typeOfTime);
         console.log(typeOfTime);
         this.endTimeChanged(amTime);
       }

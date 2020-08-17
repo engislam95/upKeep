@@ -138,18 +138,22 @@ export class AddOfferComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.offers = this.user.modules.offers;
     if (this.offers) {
       this.offers.map(ele => {
         switch (ele) {
-          case 'create': this.offer_add = true;
+          case 'create':
+            this.offer_add = true;
             break;
-          case 'show': this.offer_all = true;
+          case 'show':
+            this.offer_all = true;
             break;
-          case 'update': this.offer_update = true;
+          case 'update':
+            this.offer_update = true;
             break;
-          case 'delete': this.offer_delete = true;
+          case 'delete':
+            this.offer_delete = true;
             break;
         }
       });

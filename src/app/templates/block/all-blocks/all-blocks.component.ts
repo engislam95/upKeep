@@ -26,7 +26,14 @@ export class AllBlockComponent implements OnInit {
   hideme: any = [];
   responseState: any = '';
   responseData: any = '';
-  displayedColumns: string[] = ['id', 'name', 'type', 'mobile', 'date_block', 'tax_details'];
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'type',
+    'mobile',
+    'date_block',
+    'tax_details'
+  ];
   dataSource: any = [];
   pagesNumbers: any = [];
   countPerPage: any = [];
@@ -37,9 +44,12 @@ export class AllBlockComponent implements OnInit {
   showDeletePopup: boolean = false;
   deletedUserName: any = '';
   deletedUserID: any = '';
+  current_page: any = '';
+  totalPage: any = '';
+
   blockForm = new FormGroup({
-    client_id: new FormControl('', [Validators.required]),
-  })
+    client_id: new FormControl('', [Validators.required])
+  });
 
   clientsFilteredOptions: Observable<any>;
   clientID: any = '';
@@ -64,7 +74,7 @@ export class AllBlockComponent implements OnInit {
           map(value => this.filterClients(value))
         );
       this.endLoading();
-    })
+    });
   }
 
   ngOnInit() {
@@ -74,22 +84,26 @@ export class AllBlockComponent implements OnInit {
 
   addBlock() {
     this.startLoading();
-    this.coreService.postMethod('ClientInvoice/addban', {
-      client_id: this.clientID
-    }).subscribe(data => {
-      console.log(data);
-      this.clientName = '';
-      document.getElementById('clientIdObj')['value'] = '';
-      this.getAllData(this.pageId);
-      this.endLoading();
-    },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
-        }
+    this.coreService
+      .postMethod('ClientInvoice/addban', {
+        client_id: this.clientID
       })
+      .subscribe(
+        data => {
+          console.log(data);
+          this.clientName = '';
+          document.getElementById('clientIdObj')['value'] = '';
+          this.getAllData(this.pageId);
+          this.endLoading();
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
   }
 
   filterClients(value) {
@@ -119,8 +133,6 @@ export class AllBlockComponent implements OnInit {
     }
   }
 
-
-
   /* ---------------------- Get Count ------------------------------ */
   pageCountOptions() {
     for (let option = 10; option <= 50; option += 10) {
@@ -134,13 +146,15 @@ export class AllBlockComponent implements OnInit {
     this.coreService
       .getMethod('ClientInvoice/allClients?page=' + pageId, {
         per_page: this.per_page,
-        name: this.clientName,
+        name: this.clientName
         // service_id: this.subServiceID,
         // set_type_id: this.serviceID,
       })
       .subscribe((getTechniciansResponse: any) => {
         console.log(getTechniciansResponse);
         this.dataSource = getTechniciansResponse.data['data'];
+        this.current_page = getTechniciansResponse.data.current_page;
+        this.totalPage = getTechniciansResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -155,6 +169,12 @@ export class AllBlockComponent implements OnInit {
           getTechniciansResponse['data'].per_page
         );
       });
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
   }
   /* ----------------------- Pagination ---------------------------- */
   pagination(totalTechniciansNumber, techniciansPerPAge) {
@@ -205,14 +225,20 @@ export class AllBlockComponent implements OnInit {
     this.endLoading();
     this.responseState = 'error';
     this.responseData = errors;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
   /* ----------------------------- Show Success Messages --------------------- */
   showSuccess(successText) {
     this.endLoading();
     this.responseState = 'success';
     this.responseData = successText;
-    this.responseStateService.responseState(this.responseState, this.responseData);
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
   /* ------------------------ Open Delete Popup ---------------------- */
   openDeletePopup(id, name) {
@@ -245,5 +271,8 @@ export class AllBlockComponent implements OnInit {
   /* ----------------------------- Close Popup --------------------------- */
   closePopup() {
     this.showDeletePopup = false;
+  }
+  changePagination(event) {
+    this.getAllData(event.value);
   }
 }

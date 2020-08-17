@@ -107,7 +107,7 @@ export class AddTechnicalComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {

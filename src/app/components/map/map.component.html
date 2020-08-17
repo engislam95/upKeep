@@ -161,38 +161,20 @@
                   <mat-form-field
                     dir="rtl"
                     appearance="outline"
-                    style="display: block;"
+                    style="display: block; text-align: right;"
                   >
-                    <input
-                      type="text"
-                      placeholder="ادخل مدينة العميل"
-                      aria-label="Number"
-                      matInput
+                    <mat-select
                       formControlName="city_id"
-                      [matAutocomplete]="citiesAuto"
-                      id="city_id"
-                      #search
-                    />
-
-                    <button
-                      type="button"
-                      class="resetInput"
-                      (click)="xResetInputs('city_id')"
+                      (selectionChange)="selectCity($event.value)"
+                      placeholder="اختر المدينة"
                     >
-                      <i class="fas fa-times-circle"></i>
-                    </button>
-
-                    <mat-autocomplete
-                      #citiesAuto="matAutocomplete"
-                      [displayWith]="displayOptionsFunction"
-                    >
+                      <mat-option value="">كل المدن</mat-option>
                       <mat-option
-                        *ngFor="let option of citiesFilteredOptions | async"
-                        [value]="option"
+                        *ngFor="let city of cities"
+                        [value]="city.id"
+                        >{{ city.name }}</mat-option
                       >
-                        {{ option.name }}
-                      </mat-option>
-                    </mat-autocomplete>
+                    </mat-select>
                   </mat-form-field>
                 </div>
               </ng-container>
@@ -430,7 +412,7 @@
             [zoom]="zoom"
             (mapClick)="mapClicked($event)"
           >
-            <agm-marker
+            <!-- <agm-marker
               *ngIf="
                 ordersLoaded &&
                 !orderDetailsMode &&
@@ -444,15 +426,18 @@
               [longitude]="vidCoordinates.long"
               iconUrl="./../../../../assets/img/marker_vid.png"
             >
-            </agm-marker>
-            <ng-container *ngIf="citiesLating.length">
+            </agm-marker> -->
+
+            <ng-container
+              *ngIf="citiesLating.length && url !== '/locations-managment'"
+            >
               <agm-marker
                 *ngFor="let city of citiesLating"
                 [agmFitBounds]="true"
-                [latitude]="city.lat"
-                [longitude]="city.long"
+                [latitude]="city.pivot.lat"
+                [longitude]="city.pivot.long"
                 [iconUrl]="{
-                  url: './../../../../assets/img/marker.png',
+                  url: companyPin,
                   scaledSize: { height: 50, width: 50 }
                 }"
               >
@@ -480,8 +465,7 @@
                 [longitude]="order.location.long"
                 class="markerTec"
                 [iconUrl]="{
-                  url: order.technical.imagePin,
-                  scaledSize: { height: 50, width: 50 }
+                  url: order.technical.imagePin
                 }"
                 (mouseOver)="onMouseOver(infoWindow, gm)"
                 (mouseOut)="onMouseOut(infoWindow, gm)"
@@ -540,6 +524,7 @@
               [longitude]="orderDetailsOrgins.lng"
             >
             </agm-marker>
+
             <agm-marker
               *ngIf="clientDetailsPageMode || addOrderMapMode"
               [markerDraggable]="true"

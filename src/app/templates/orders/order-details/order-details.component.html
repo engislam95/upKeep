@@ -323,7 +323,6 @@
                         <button
                           (click)="finishOrder()"
                           type="button"
-                          [disabled]="!active22"
                           class="{{
                             pageLoaded
                               ? orderDetails['status'].id === 22
@@ -340,7 +339,7 @@
                           /></button
                         ><span>إنهاء الطلب</span>
                       </li>
-                      <li *ngIf="orderStatusId == 22">
+                      <li *ngIf="active65">
                         <button
                           id="editOrder"
                           type="button"

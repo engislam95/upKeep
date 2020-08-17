@@ -51,6 +51,8 @@ export class AllModelsComponent implements OnInit {
   showDeletePopup: boolean = false;
   deletedUserName: any = '';
   deletedUserID: any = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   constructor(
     private loaderService: LoaderService,
@@ -82,6 +84,9 @@ export class AllModelsComponent implements OnInit {
     for (let option = 10; option <= 50; option += 10) {
       this.countPerPage.push(option);
     }
+  }
+  changePagination(event) {
+    this.getAllData(event.value);
   }
   /* ----------------- Get ID ----------- */
   getSubService(event) {
@@ -117,6 +122,8 @@ export class AllModelsComponent implements OnInit {
       .subscribe((getTechniciansResponse: any) => {
         console.log(getTechniciansResponse);
         this.dataSource = getTechniciansResponse.data;
+        this.current_page = getTechniciansResponse.current_page;
+        this.totalPage = getTechniciansResponse.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -131,6 +138,12 @@ export class AllModelsComponent implements OnInit {
           getTechniciansResponse.per_page
         );
       });
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
   }
   /* ----------------------- Pagination ---------------------------- */
   pagination(totalTechniciansNumber, techniciansPerPAge) {

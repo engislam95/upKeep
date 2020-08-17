@@ -98,7 +98,7 @@ export class AllCompaniesComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     /*-------------------------- Count ---------------------------- */
     this.coreService.superGet('owner/company/counts').subscribe(counts => {
       console.log(counts);

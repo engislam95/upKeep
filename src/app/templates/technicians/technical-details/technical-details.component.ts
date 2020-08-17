@@ -25,19 +25,23 @@ export class TechnicalDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'add': this.technician_add = true;
+          case 'add':
+            this.technician_add = true;
             break;
-          case 'all': this.technician_all = true;
+          case 'all':
+            this.technician_all = true;
             break;
-          case 'update': this.technician_update = true;
+          case 'update':
+            this.technician_update = true;
             break;
-          case 'delete': this.technician_delete = true;
+          case 'delete':
+            this.technician_delete = true;
             break;
         }
       });

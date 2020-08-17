@@ -105,10 +105,25 @@ export class OrderInvoiceComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    let formatDate = new Date().toLocaleDateString("en-US").split('/');
-    let dateArr = formatDate[2] + '/' + formatDate[0] + '/' + formatDate[1];
-    this.date = dateArr;
-    this.orderInvoiceForm.controls.date.setValue(dateArr);
+    let formatDate = new Date().toLocaleString('en-GB', {
+      timeZone: 'Asia/Riyadh',
+      timeZoneName: 'short'
+    }).split(',')[0]
+      .split('/')
+      .reverse()
+      .join('/');
+    this.orderDateChanged(formatDate, 'init');
+    setTimeout(() => {
+      const orderDateSplit = formatDate.split('/');
+      const OrderDateAfterSwap =
+        orderDateSplit[1] + '/' + orderDateSplit[2] + '/' + orderDateSplit[0];
+      (document.getElementById(
+        'inoviceDate'
+      ) as HTMLInputElement).value = OrderDateAfterSwap;
+    }, 100);
+    // let dateArr = formatDate[2] + '/' + formatDate[0] + '/' + formatDate[1];
+    // this.date = dateArr;
+    // this.clientInvoiceForm.controls.date.setValue(dateArr);
     this.startLoading();
     this.coreService
       .getMethod('lookup/receipt-item-types', {})
@@ -396,10 +411,15 @@ export class OrderInvoiceComponent implements OnInit {
     }
   }
   /* --------------------------- Date ------------------------------- */
+  /* --------------------------- Date ------------------------------- */
   orderDateChanged(event, ...mode) {
+    // console.log(event.targetElement.value);
     let orderDateArray;
     let orderDate;
-    if (mode[0] === 'updateMode') {
+    if (mode[0] === 'init') {
+      orderDate = event;
+    }
+    else if (mode[0] === 'updateMode') {
       orderDateArray = event.split('-');
       orderDate =
         orderDateArray[0] + '/' + orderDateArray[1] + '/' + orderDateArray[2];

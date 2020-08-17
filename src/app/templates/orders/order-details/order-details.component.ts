@@ -23,7 +23,7 @@ export interface Tile {
 })
 export class OrderDetailsComponent implements OnInit {
   //  ######################### Start General Data #########################
-  orderStatusId;
+  orderStatusId: any = '';
   pageLoaded = false;
   responseState;
   responseData;
@@ -50,6 +50,7 @@ export class OrderDetailsComponent implements OnInit {
   active40 = false;
   active41 = false;
   active42 = false;
+  active65 = false;
   // ////////////
   invoideId;
 
@@ -108,7 +109,7 @@ export class OrderDetailsComponent implements OnInit {
     private messagingService: MessagingService,
     private headersService: HeadersService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
@@ -176,6 +177,7 @@ export class OrderDetailsComponent implements OnInit {
         this.orderDetails = order.data;
         this.orderStatusId = order.data.status.id;
         this.orderDetailsHistory = order.data.history;
+        console.log(this.orderDetails['status'].id);
 
         if (this.orderStatusId == 35) {
           this.invoiceDataPdfUrlCode = order.data.receipt.urlcode;
@@ -188,6 +190,15 @@ export class OrderDetailsComponent implements OnInit {
         this.spiltedCreatedDate = this.orderDetails['created_at'].split(' ');
         this.checkActiveButtonsCPanel(this.orderDetails['allowed_controls']);
         console.log('', this.orderDetails['allowed_controls']);
+        if (this.orderDetails['status'].id == 22) {
+          this.active22 = false;
+          this.active65 = true;
+        }
+        if (this.orderDetails['status'].id == 65) {
+          console.log('right');
+          this.active22 = true;
+          this.active65 = false;
+        }
         // this.checkCanEdit();
         // Start END Loading
         this.endLoading();
@@ -214,10 +225,20 @@ export class OrderDetailsComponent implements OnInit {
     );
     this.orderDetails['status'].id = satusResponse.data.current_status.id;
     this.orderDetails['status'].name = satusResponse.data.current_status.name;
+    console.log(this.orderDetails['status'].id);
+    console.log(this.orderDetails['status'].name);
     this.checkActiveButtonsCPanel(satusResponse.data.allowed_controls);
     setTimeout(() => {
       this.showSuccess(sucessText);
     }, 100);
+    if (this.orderDetails['status'].id == 22) {
+      this.active22 = false;
+      this.active65 = true;
+    }
+    if (this.orderDetails['status'].id == 65) {
+      this.active22 = true;
+      this.active65 = false;
+    }
   }
   //  ############################### End Update Current Order Status ###############################
 
@@ -239,6 +260,7 @@ export class OrderDetailsComponent implements OnInit {
             finishOrderResponse,
             'تم إنتهاء الطلب بنجاح'
           );
+          // this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading
@@ -267,6 +289,7 @@ export class OrderDetailsComponent implements OnInit {
             finishOrderResponse,
             'تم إنتهاء الطلب بدون اصدار فاتورة بنجاح'
           );
+          // this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading
@@ -309,6 +332,7 @@ export class OrderDetailsComponent implements OnInit {
             startOrderResponse,
             'تم بدء الطلب بنجاح'
           );
+          this.getOrderDetails();
           // Start END Loading
           this.endLoading();
           // End END Loading
@@ -519,6 +543,9 @@ export class OrderDetailsComponent implements OnInit {
     this.active40 = false;
     this.active41 = false;
     this.active42 = false;
+    this.active65 = false;
+    console.log(allowedControls);
+
     if (allowedControls) {
       allowedControls.forEach(buttonState => {
         if (buttonState === 18) {
@@ -550,6 +577,9 @@ export class OrderDetailsComponent implements OnInit {
         }
         if (buttonState === 42) {
           this.active42 = true;
+        }
+        if (buttonState === 65) {
+          this.active65 = true;
         }
       });
     }
