@@ -60,8 +60,8 @@ export class AddTechnicalComponent implements OnInit {
     service_tech: new FormControl([] , Validators.required),
     city_tech: new FormControl([] , Validators.required ),
 
-    serviceObj: new FormControl('',  Validators.required),
-    cityObj: new FormControl('', Validators.required),
+    serviceObj: new FormControl(''),
+    cityObj: new FormControl(''),
 
     countriesObj: new FormControl('', Validators.required),
     change_password: new FormControl(false),

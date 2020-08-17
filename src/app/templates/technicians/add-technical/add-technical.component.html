@@ -211,7 +211,7 @@
                     (focusout)="checkReservation($event.target.value, 'email')"
                     (focusin)="emailCheckLoaded = false"
                     matInput
-                    placeholder="mail@mail.com"
+                    placeholder="البريد الإلكترونى"
                     autocomplete="off"
                     id="email"
                   />
@@ -228,11 +228,9 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('email').status === 'INVALID' &&
-                      techniciansForm.get('email').touched) ||
-                    (submitted &&
-                      techniciansForm.get('email').status === 'INVALID' &&
-                      techniciansForm.get('email').dirty)
+                   
+                      techniciansForm.get('email').touched && !techniciansForm.get('email').value || techniciansForm.controls.email.errors?.email || techniciansForm.controls.email.errors?.pattern
+                    
                   "
                 >
                   <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
@@ -244,12 +242,22 @@
                   *ngIf="
                     techniciansForm.get('email').touched &&
                     emailReserved &&
-                    emailCheckLoaded
+                    emailCheckLoaded 
+
                   "
                 >
                   <i class="fas fa-times"></i> هذا البريد مستخدم من قبل - برجاء ادخال البريد بشكل صحيح 
 
                 </div>
+                <div
+                [@fade]
+                class="validationState successState"
+                *ngIf="
+                   techniciansForm.get('email').value && !techniciansForm.controls.email.errors?.email && !techniciansForm.controls.email.errors?.pattern
+                "
+              >
+                <i class="fas fa-check"></i> إدخال صحيح
+              </div>
               </div>
 
 
@@ -807,6 +815,7 @@
                   *ngIf="!updateMode"
                   type="submit"
                   class="formSubmit formButton"
+                  [disabled]="techniciansForm.invalid "
                 >
                 إضافة فنى جديد
                 </button>
@@ -815,6 +824,7 @@
                   type="button"
                   (click)="onUpdate()"
                   class="formSubmit formButton"
+                  [disabled]="techniciansForm.invalid "
                  
                 >
                 تعديل بيانات فنى
