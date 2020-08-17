@@ -42,7 +42,7 @@ export class AllOffersComponent implements OnInit {
     'name',
     'sourceName',
     'serviceName',
-    'status',
+    'status'
     // 'email',
     // 'offer_details'
     // "delete_order"
@@ -58,6 +58,8 @@ export class AllOffersComponent implements OnInit {
   offer_update: boolean = false;
   offer_delete: boolean = false;
   user: any = '';
+  current_page: any = '';
+  totalPage: any = '';
 
   // End Table Data
   constructor(
@@ -67,29 +69,33 @@ export class AllOffersComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.offers = this.user.modules.offers;
     if (this.offers) {
       this.offers.map(ele => {
         switch (ele) {
-          case 'create': this.offer_add = true;
+          case 'create':
+            this.offer_add = true;
             break;
-          case 'show': this.offer_all = true;
+          case 'show':
+            this.offer_all = true;
             break;
-          case 'update': this.offer_update = true;
+          case 'update':
+            this.offer_update = true;
             break;
-          case 'delete': this.offer_delete = true;
+          case 'delete':
+            this.offer_delete = true;
             break;
         }
       });
     }
     if (this.user.privilege == 'super-admin' || this.offer_all) {
-      console.log(this.displayedColumns)
+      console.log(this.displayedColumns);
       this.displayedColumns[5] = 'offer_details';
     }
     if (this.user.privilege == 'super-admin' || this.offer_update) {
-      console.log(this.displayedColumns)
+      console.log(this.displayedColumns);
       this.displayedColumns[6] = 'edit_order';
     }
   }
@@ -167,6 +173,8 @@ export class AllOffersComponent implements OnInit {
       .subscribe((getOffersResponse: any) => {
         // Start Assign Data
         this.dataSource = getOffersResponse.data.data;
+        this.current_page = getOffersResponse.data.current_page;
+        this.totalPage = getOffersResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -188,7 +196,12 @@ export class AllOffersComponent implements OnInit {
         //  End Pagination Count
       });
   }
-
+  nextPage(pageNum) {
+    this.getAllOffers(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllOffers(+pageNum - 1);
+  }
   //
   // ──────────────────────────────────────── END GET ALL OFFERS ─────
   //
@@ -295,8 +308,10 @@ export class AllOffersComponent implements OnInit {
   // ─── START CHECK FOR DATA EXISTANCE ──────────────────────────────
   //
 
-  dataExistance() { }
-
+  dataExistance() {}
+  changePagination(event) {
+    this.getAllOffers(event.value);
+  }
   //
   // ────────────────────────────── END CHECK FOR DATA EXISTANCE ─────
   //

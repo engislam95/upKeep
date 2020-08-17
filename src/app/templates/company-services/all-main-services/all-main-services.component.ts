@@ -35,7 +35,7 @@ export class AllMainServicesComponent implements OnInit {
     'name',
     // 'status',
     'sub-services',
-    'actions',
+    'actions'
   ];
   dataSource = [];
   /* -------------------- Pagination ------------------------ */
@@ -46,6 +46,8 @@ export class AllMainServicesComponent implements OnInit {
   lastPage: any = '';
   // tslint:disable-next-line: variable-name
   per_page: any = 10;
+  current_page: any = '';
+  totalPage: any = '';
   /* --------------------------- Form --------------------------------- */
   filterForm = new FormGroup({
     servicesStatus: new FormControl(),
@@ -58,7 +60,7 @@ export class AllMainServicesComponent implements OnInit {
     private responseStateService: ResponseStateService,
     private coreService: CoreService,
     private paginationService: PaginationService
-  ) { }
+  ) {}
   /* ------------------------- Pagination ------------------------ */
   checkPagination(pageId) {
     const [firstPage, lastPage] = this.paginationService.checkPaginationButtons(
@@ -86,7 +88,6 @@ export class AllMainServicesComponent implements OnInit {
         this.filteredServiceData = value;
         this.getAllServices(this.pageId);
       });
-
   }
   /* ------------------ Change Number of Pagination list -------------------- */
   setCountPerPage(option) {
@@ -113,11 +114,13 @@ export class AllMainServicesComponent implements OnInit {
     this.coreService
       .getMethod('services?page=' + pageId, {
         name: this.filteredServiceData,
-        per_page: this.per_page,
+        per_page: this.per_page
       })
       .subscribe((getServicesResponse: any) => {
         console.log(getServicesResponse);
         this.dataSource = getServicesResponse.data.data;
+        this.current_page = getServicesResponse.data.current_page;
+        this.totalPage = getServicesResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {
@@ -131,6 +134,15 @@ export class AllMainServicesComponent implements OnInit {
           getServicesResponse.data.per_page
         );
       });
+  }
+  nextPage(pageNum) {
+    this.getAllServices(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllServices(+pageNum - 1);
+  }
+  changePagination(event) {
+    this.getAllServices(event.value);
   }
   /* --------------------------- Get Pagination ----------------------------- */
   pagination(totalServicesNumber, servicesPerPage) {

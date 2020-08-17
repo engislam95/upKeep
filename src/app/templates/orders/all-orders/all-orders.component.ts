@@ -138,6 +138,8 @@ export class AllOrdersComponent implements OnInit {
   //
   // ── END MULTIPLE SELECT FILTER ─────
   //
+  current_page: any = '';
+  totalPage: any = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -148,19 +150,23 @@ export class AllOrdersComponent implements OnInit {
     private paginationService: PaginationService,
     private messagingService: MessagingService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
       this.orders.map(ele => {
         switch (ele) {
-          case 'create': this.order_add = true;
+          case 'create':
+            this.order_add = true;
             break;
-          case 'show': this.order_all = true;
+          case 'show':
+            this.order_all = true;
             break;
-          case 'update': this.order_update = true;
+          case 'update':
+            this.order_update = true;
             break;
-          case 'delete': this.order_delete = true;
+          case 'delete':
+            this.order_delete = true;
             break;
         }
       });
@@ -420,7 +426,9 @@ export class AllOrdersComponent implements OnInit {
   //
   // ─────────────────────────────────────────────────── END CHECKBOX ON CHANGE ─────
   //
-
+  changePagination(event) {
+    this.getAllOrders(event.value);
+  }
   //
   // ─── START TODAY FILLTER FUNCTION ────────────────────────────────
   //
@@ -473,6 +481,8 @@ export class AllOrdersComponent implements OnInit {
         // Start Assign Data
         this.ordersArray = getOrdersResponse.orders.data;
         this.getOrdersResponseTotal = getOrdersResponse.orders;
+        this.current_page = getOrdersResponse.orders.current_page;
+        this.totalPage = getOrdersResponse.orders.last_page;
 
         this.getOrderNumber = getOrdersResponse.totals;
 
@@ -496,6 +506,14 @@ export class AllOrdersComponent implements OnInit {
         );
         //  End Pagination Count
       });
+  }
+  nextPage(pageNum) {
+    this.pageId = +pageNum + 1;
+    this.getAllOrders();
+  }
+  prevPage(pageNum) {
+    this.pageId = +pageNum - 1;
+    this.getAllOrders();
   }
   //
   // ──────────────────────────────────────── END GET ALL ORDERS ─────

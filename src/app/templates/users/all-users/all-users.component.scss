@@ -185,3 +185,25 @@
 
   // end toolTip in details menu controls
 }
+
+.arrow {
+  background: #f5f5f5;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 31px;
+  height: 31px;
+
+  i {
+    font-size: 21px;
+    color: gray;
+    vertical-align: middle;
+  }
+}
+
+.numberPagination {
+  background: #fff;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 42px;
+  height: 31px
+}

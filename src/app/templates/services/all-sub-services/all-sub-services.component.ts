@@ -75,7 +75,7 @@ export class AllInnerServicesComponent implements OnInit {
     private paginationService: PaginationService,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     /*-------------------------- Count ---------------------------- */
     this.coreService.superGet('owner/services/counts').subscribe(counts => {
       console.log(counts);

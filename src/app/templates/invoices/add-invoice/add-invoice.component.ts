@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-invoice.component.scss']
 })
 export class AddInvoiceComponent implements OnInit {
-
   receipt_all: boolean = false;
   receipt_add: boolean = false;
   receipt_update: boolean = false;
@@ -15,25 +14,27 @@ export class AddInvoiceComponent implements OnInit {
   user: any = '';
 
   constructor() {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.receipts = this.user.modules.receipts;
     if (this.receipts) {
       this.receipts.map(ele => {
         switch (ele) {
-          case 'create': this.receipt_add = true;
+          case 'create':
+            this.receipt_add = true;
             break;
-          case 'all': this.receipt_all = true;
+          case 'all':
+            this.receipt_all = true;
             break;
-          case 'update': this.receipt_update = true;
+          case 'update':
+            this.receipt_update = true;
             break;
-          case 'delete': this.receipt_delete = true;
+          case 'delete':
+            this.receipt_delete = true;
             break;
         }
       });
     }
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

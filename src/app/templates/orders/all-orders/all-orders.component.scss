@@ -1,13 +1,12 @@
 app-multiselect-filter {
   width: 100%;
 }
-.mat-form-field-appearance-outline.mat-form-field-disabled
-  .mat-form-field-outline {
+
+.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
   background: red;
 }
-.mat-form-field-appearance-outline.mat-form-field-disabled
-  .mat-form-field-outline
-  :disabled {
+
+.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline :disabled {
   background: #ddd;
 }
 
@@ -67,6 +66,7 @@ app-multiselect-filter {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
   }
+
   button {
     &:hover .tooltiptext {
       visibility: visible;
@@ -88,6 +88,7 @@ app-multiselect-filter {
 
   // end toolTip in details menu controls
 }
+
 $select-color: #fff;
 $select-background: #c0392b;
 
@@ -98,21 +99,27 @@ $select-background: #c0392b;
   float: left;
   border-radius: 3px;
 }
+
 .badg_color_19 {
   background: #eba823 !important;
 }
+
 .badg_color_22 {
   background: #f66711 !important;
 }
+
 .badg_color_29 {
   background: #ff0000c7 !important;
 }
+
 .badg_color_35 {
   background: #739d3c !important;
 }
+
 .badg_color_40 {
   background: #425a22 !important;
 }
+
 .badg_color_42 {
   background: #939880 !important;
 }
@@ -135,6 +142,7 @@ $select-background: #c0392b;
     margin-top: 0;
     text-align: center;
   }
+
   span {
     background: #4f4e57;
     top: 6px;
@@ -149,22 +157,27 @@ $select-background: #c0392b;
 .showtestOrderControl {
   display: block !important;
 }
+
 .filter_form {
   #nameEmailFillterInputStyle mat-form-field {
     width: calc(320px);
   }
+
   #smallFillterInputStyle {
     width: calc(95% / 6);
     margin-right: 5px;
     margin-left: 5px;
   }
 }
+
 #todaysOrdersContainer {
   width: 100%;
 }
+
 form {
   flex-wrap: wrap;
 }
+
 #CheckBoxTodayFilter {
   display: inline-block;
   width: 100%;
@@ -172,19 +185,23 @@ form {
   margin: 0;
   margin-bottom: 5px;
 }
+
 #CheckBoxTodayFilter mat-slide-toggle {
   width: 30px !important;
   margin-top: 5px;
 }
+
 .todayfilterLabel {
   position: relative;
   top: -10px;
   margin: 0px 0px 0px 11px;
 }
+
 .resetInput {
   color: #95989a;
   margin-top: 2px;
 }
+
 //  Time Table
 #time_container {
   color: #575962;
@@ -194,6 +211,7 @@ form {
   padding-left: 0;
   padding-right: 0;
 }
+
 #time_container table {
   width: 100%;
   max-width: 100%;
@@ -202,10 +220,12 @@ form {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
   border-collapse: collapse;
   border-spacing: 0;
+
   tr {
     border-bottom: 5px solid #ddd;
   }
 }
+
 #time_container table th {
   background: #393e46;
   color: #ffffff;
@@ -213,19 +233,23 @@ form {
   font-size: 15px;
   border: 1px solid #282b2f;
 }
+
 #time_container .table-radio {
   margin-left: 9px;
   position: relative;
   top: 4px;
 }
+
 #time_container .table-name {
   position: relative;
   top: 3px;
 }
+
 #time_container table td {
   padding: 0.75rem 2px;
   vertical-align: top;
   position: relative;
+
   &::after {
     content: '';
     position: absolute;
@@ -239,17 +263,21 @@ form {
     background-repeat: repeat-y;
   }
 }
+
 #time_container table td:last-child {
   border-right: 0;
 }
+
 #time_container table td .table-minute {
   width: calc(100% / 60);
   height: 15px;
   display: inline-block;
 }
+
 #time_container .started {
   background: #064578;
 }
+
 #time_container .finished {
   background: #099341;
 }
@@ -257,24 +285,31 @@ form {
 #time_container .admin_approved {
   background: #eb9f0c;
 }
+
 #time_container .technician_approved {
   background: #f66711;
 }
+
 #time_container .admin_pending {
   background: #eb4d4b;
 }
+
 #time_container .receipt_done {
   background: #023f1b;
 }
+
 #time_container .waiting_admin {
   background: #be2edd;
 }
+
 #time_container .delay {
   background: #ff0000c7;
 }
+
 #time_container .stop {
   background: #75592d;
 }
+
 #time_container .way {
   background: #0c75ca;
 }
@@ -285,6 +320,7 @@ form {
   justify-content: center;
   font-size: 12px;
 }
+
 #time_container table .times-bar {
   position: absolute;
   width: 100%;
@@ -296,6 +332,7 @@ form {
 #time_container table .hour-bar {
   position: relative;
 }
+
 .table-keys .span-bg {
   width: 15px;
   height: 15px;
@@ -303,6 +340,7 @@ form {
   margin-left: 5px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
 }
+
 .table-keys label {
   margin-right: 30px;
   margin-bottom: 0;
@@ -311,6 +349,7 @@ form {
   flex-wrap: wrap;
   float: left;
 }
+
 #timing {
   display: inline-block;
   width: 100%;
@@ -318,25 +357,30 @@ form {
   border-bottom: 1px solid #eee;
   margin-bottom: 10px;
 }
+
 .name-width {
   width: 20px;
   display: inline-block;
 }
+
 .name-Table-Radio {
   text-align: right;
   padding-right: 15px !important;
 }
+
 /* Time Table */
 //Start New Table
 #timeTable {
   text-align: center;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
   border-radius: 6px;
+
   #tableHeader {
     display: flex;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+
     div {
       width: calc(100% / 17);
       text-align: center;
@@ -344,6 +388,7 @@ form {
       color: #fff;
       padding: 12px 0;
       border-right: 1px solid #151515;
+
       &:first-child {
         width: calc((100% / 17) * 3);
         border-right: 0;
@@ -351,38 +396,46 @@ form {
     }
   }
 }
+
 .subOptions {
   padding-right: 30px;
 }
 
 .countPerPage {
+
   // float: left;
   select {
     width: 66px;
     padding-right: 10px;
   }
 }
+
 // #############1 - Start (max-width: 1400px) & (min-width: 992px) ######################
 @media (max-width: 1400px) and (min-width: 992px) {
   table.mat-table {
     overflow-x: scroll;
     display: inline-block;
   }
+
   #nameEmailFillterInputStyle mat-form-field {
     width: 100%;
   }
+
   .filter_form {
     #smallFillterInputStyle {
       margin-right: 0;
     }
+
     #nameEmailFillterInputStyle mat-form-field {
       width: 100%;
     }
+
     #smallFillterInputStyle {
       width: auto;
     }
   }
 }
+
 // ################1 - end (max-width: 1400) & (min-width: 992px) ############
 // ############### 2 - Start (max-width: 991px) and (min-width: 768px) #############
 @media (max-width: 991px) and (min-width: 768px) {
@@ -390,21 +443,26 @@ form {
     overflow-x: scroll;
     display: inline-block;
   }
+
   .main_page .side_page {
     display: none;
   }
+
   .filter_form {
     #smallFillterInputStyle {
       margin-right: 0;
     }
+
     #nameEmailFillterInputStyle mat-form-field {
       width: 100%;
     }
+
     #smallFillterInputStyle {
       width: auto;
     }
   }
 }
+
 // ################ 2 - end (max-width: 991px) and (min-width: 768px) ############
 // ################# 3 - start (max-width: 768px) ##################
 @media (max-width: 767px) {
@@ -412,14 +470,17 @@ form {
     #smallFillterInputStyle {
       margin-right: 0;
     }
+
     #nameEmailFillterInputStyle mat-form-field {
       width: 100%;
     }
+
     #smallFillterInputStyle {
       width: auto;
     }
   }
 }
+
 @media (max-width: 1399px) and (min-width: 700px) {
   .filter_form #smallFillterInputStyle {
     margin-right: 0;
@@ -427,4 +488,26 @@ form {
     display: inline-flex;
     margin-left: 10%;
   }
+}
+
+.arrow {
+  background: #f5f5f5;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 31px;
+  height: 31px;
+
+  i {
+    font-size: 21px;
+    color: gray;
+    vertical-align: middle;
+  }
+}
+
+.numberPagination {
+  background: #fff;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 42px;
+  height: 31px
 }

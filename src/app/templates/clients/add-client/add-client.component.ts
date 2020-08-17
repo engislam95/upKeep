@@ -76,8 +76,8 @@ export class AddClientComponent implements OnInit {
 
   showMapPopup = false;
   overLayShow = false;
-  cityId ;
-  passPopup = true ;
+  cityId;
+  passPopup = true;
   addNewAddressModeStatus = false;
   private geoCoder;
   citiesFetched = ['alexandria', 'cairo', 'makka', 'paris'];
@@ -89,7 +89,7 @@ export class AddClientComponent implements OnInit {
   invalidForm: boolean;
   verified = false;
 
-  cityDetails ;
+  cityDetails;
 
   /* -------------------------------- Clients Form ------------------------- */
   clientsForm = new FormGroup({
@@ -111,10 +111,10 @@ export class AddClientComponent implements OnInit {
       Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
     ]),
     notes: new FormControl('', Validators.required),
-    locations_address: new FormControl('' ,Validators.required),
+    locations_address: new FormControl('', Validators.required),
     locations_notes: new FormControl(''),
     locations_city: new FormControl(''),
-    locations_area: new FormControl('',Validators.required),
+    locations_area: new FormControl('', Validators.required),
 
     zone: new FormControl(),
     address: new FormControl(),
@@ -163,21 +163,15 @@ export class AddClientComponent implements OnInit {
 
   /* ----------------------- Oninit ---------------------------- */
   ngOnInit() {
-    
+    console.log(this.clientsForm.controls.lat.value);
+    console.log(this.clientsForm.controls.long.value);
 
-    console.log(this.clientsForm.controls.lat.value)
-    console.log(this.clientsForm.controls.long.value)
-
-
-  //   $("#Text1").bind('paste', function(e) {
-  //     $(this).attr("maxlength","1000")
-  // });
-  // $("#Text1").on("input",function(){
-  //    $(this).attr("maxlength","0") 
-  // });
-
-
-
+    //   $("#Text1").bind('paste', function(e) {
+    //     $(this).attr("maxlength","1000")
+    // });
+    // $("#Text1").on("input",function(){
+    //    $(this).attr("maxlength","0")
+    // });
 
     //  //load Places Autocomplete
     //  let newLocation = {
@@ -261,7 +255,6 @@ export class AddClientComponent implements OnInit {
         if (this.updateMode) {
           this.getUpdatedClientDetails();
           //  this.getLocationOnMapUpdate();
-
         }
         this.modeTitle = 'تعديل عميل';
       }
@@ -341,15 +334,13 @@ export class AddClientComponent implements OnInit {
       (document.getElementById('genderObj') as HTMLInputElement).value = '';
       this.clientsForm.patchValue({ gender: '' });
     }
-    if (key === 'aboveUrl' && this.clientsForm.controls.aboveUrl.value ) {
+    if (key === 'aboveUrl' && this.clientsForm.controls.aboveUrl.value) {
       this.clientsForm.patchValue({ aboveUrl: '' });
       this.clientsForm.controls.locations_area.setValue('');
       this.clientsForm.controls.locations_address.setValue('');
       this.clientsForm.controls.lat.setValue(28.421864);
       this.clientsForm.controls.long.setValue(34.432869);
       // this.clientsForm.patchValue({ citiesObj: '' });
-    
-
     }
     if (key === 'citiesObj') {
       this.clientsForm.patchValue({ citiesObj: '' });
@@ -360,10 +351,8 @@ export class AddClientComponent implements OnInit {
       (document.getElementById('citiesObj') as HTMLInputElement).value = '';
       this.clientsForm.patchValue({ city_id: '' });
       this.clientsForm.controls.lat.setValue(28.421864);
-          this.clientsForm.controls.long.setValue(34.432869);
+      this.clientsForm.controls.long.setValue(34.432869);
     }
-
-
 
     if (key === 'location') {
       (document.getElementById(key) as HTMLInputElement).value = '';
@@ -388,7 +377,6 @@ export class AddClientComponent implements OnInit {
 
   /* --------------------------------- add location address ----------------------------- */
   getLocationOnMap() {
-
     let newLocation = {
       lat: null,
       lng: null,
@@ -397,39 +385,35 @@ export class AddClientComponent implements OnInit {
       mainLocation: true
     };
 
-
-    let address : string = '' ;
-    console.log(this.updateMode) ; 
-
+    let address: string = '';
+    console.log(this.updateMode);
 
     setTimeout(() => {
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder();
 
-        console.log(this.clientsForm.controls.citiesObj)
+        console.log(this.clientsForm.controls.citiesObj);
 
-        if(this.clientsForm.controls.citiesObj.value) {
-            this.geoCoder.geocode(
-              {
-                // address: this.clientsForm.controls.citiesObj.value.name
-          address: this.cityDetails.name
+        if (this.clientsForm.controls.citiesObj.value) {
+          this.geoCoder.geocode(
+            {
+              // address: this.clientsForm.controls.citiesObj.value.name
+              address: this.cityDetails.name
+            },
+            function(results, status) {
+              console.log(results);
+              newLocation.lat = results[0].geometry.location.lat();
+              newLocation.lng = results[0].geometry.location.lng();
 
-              },
-              function(results, status) {
-                console.log(results);
-                newLocation.lat = results[0].geometry.location.lat();
-                newLocation.lng = results[0].geometry.location.lng();
+              // let bonds = new google.maps.LatLngBounds();
+              // bonds.extend(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
+              // $scope.map.fitBounds(bonds);
+              console.log(newLocation.lng);
 
-                // let bonds = new google.maps.LatLngBounds();
-                // bonds.extend(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
-                // $scope.map.fitBounds(bonds);
-                console.log(newLocation.lng);
-
-                address = results[0].formatted_address
-              }
-            );
-          }
-
+              address = results[0].formatted_address;
+            }
+          );
+        }
       });
     }, 1000);
 
@@ -439,10 +423,7 @@ export class AddClientComponent implements OnInit {
       console.log(this.clientsForm.value);
       // this.location = newLocation ;
     }, 4000);
-
   }
-
-
 
   getLocationOnMapUpdate() {
     let newLocation = {
@@ -453,42 +434,38 @@ export class AddClientComponent implements OnInit {
       mainLocation: true
     };
 
+    let address: string = '';
 
-    let address : string = ''
-
-    console.log(this.updateMode)
-
+    console.log(this.updateMode);
 
     setTimeout(() => {
       this.mapsAPILoader.load().then(() => {
         this.geoCoder = new google.maps.Geocoder();
 
-   
-        console.log(this.clientsForm.controls.citiesObj)
+        console.log(this.clientsForm.controls.citiesObj);
 
-        if(this.clientsForm.controls.citiesObj.value) {
-            this.geoCoder.geocode(
-              {
-                // address: this.clientsForm.controls.citiesObj.value.name
-          address: this.cityDetails.name
+        if (this.clientsForm.controls.citiesObj.value) {
+          this.geoCoder.geocode(
+            {
+              // address: this.clientsForm.controls.citiesObj.value.name
+              address: this.cityDetails.name
+            },
+            function(results, status) {
+              console.log(results);
+              newLocation.lat = results[0].geometry.location.lat();
+              newLocation.lng = results[0].geometry.location.lng();
 
-              },
-              function(results, status) {
-                console.log(results);
-                newLocation.lat = results[0].geometry.location.lat();
-                newLocation.lng = results[0].geometry.location.lng();
+              // let bonds = new google.maps.LatLngBounds();
+              // bonds.extend(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
+              // $scope.map.fitBounds(bonds);
+              console.log(newLocation.lng);
 
-                // let bonds = new google.maps.LatLngBounds();
-                // bonds.extend(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
-                // $scope.map.fitBounds(bonds);
-                console.log(newLocation.lng);
-
-                address = results[0].formatted_address
-              }
-            );
-          }
-          });
-        }, 5000);
+              address = results[0].formatted_address;
+            }
+          );
+        }
+      });
+    }, 5000);
 
     setTimeout(() => {
       this.clientsForm.controls.lat.setValue(newLocation.lat);
@@ -498,192 +475,252 @@ export class AddClientComponent implements OnInit {
     }, 4000);
   }
 
-
   getLocationOnMapSelect(value) {
- 
+    this.mapDone = false;
 
-    this.mapDone = false ;
+    console.log(value);
 
-    console.log(value)
-
-    if(value.pivot.lat && value.pivot.long )
-    {
+    if (value.pivot.lat && value.pivot.long) {
       this.clientsForm.controls.lat.setValue(value.pivot.lat);
       this.clientsForm.controls.long.setValue(value.pivot.long);
       this.clientsForm.controls.locations_area.setValue(value.pivot.area);
       this.clientsForm.controls.locations_address.setValue(value.pivot.address);
       this.clientsForm.controls.locations_notes.setValue(value.pivot.notes);
-
-
-
-    }
-    else if(value.pivot.lat == null  ||  value.pivot.long == null)
-    {
+    } else if (value.pivot.lat == null || value.pivot.long == null) {
       this.clientsForm.controls.lat.setValue(28.421864);
       this.clientsForm.controls.long.setValue(34.432869);
-     
-
     }
 
     console.log(this.clientsForm.value);
-    
   }
 
-
-
   addAdress() {
+    console.log(this.cityDetails);
 
-
-    console.log(this.cityDetails)
-
-    if(this.mapDone == false && !this.updateMode)
-    {
-
-      let city = this.clientsForm.controls.citiesObj.value
+    if (this.mapDone == false && !this.updateMode) {
+      let city = this.clientsForm.controls.citiesObj.value;
 
       this.clientsForm.controls.lat.setValue(city.pivot.lat);
 
-      this.clientsForm.controls.long.setValue((city.pivot.long));
+      this.clientsForm.controls.long.setValue(city.pivot.long);
 
       this.clientsForm.controls.locations_area.setValue(city.pivot.area);
       this.clientsForm.controls.locations_address.setValue(city.pivot.address);
       this.clientsForm.controls.locations_notes.setValue(city.pivot.notes);
 
-      
-    
       this.showMapPopup = true;
       this.overLayShow = true;
       this.addNewAddressModeStatus = true;
-      this.passPopup = true ;
-      
-
-    }
-
-    else
-    {
+      this.passPopup = true;
+    } else {
       this.showMapPopup = true;
       this.overLayShow = true;
       this.addNewAddressModeStatus = true;
-      this.passPopup = true ;
-
+      this.passPopup = true;
     }
-
-  
   }
 
-
-
-
-
-
   setUrl(url) {
-  
     this.startLoading();
 
-    let newCity ;
+    let newCity;
 
-    let fakeUrl =
-      '';
+    let fakeUrl = '';
 
-    let secondFake = "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894"
+    let secondFake =
+      "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894";
 
     console.log(url);
 
-    var re = new RegExp("^(http|https)://", "i");
+    var re = new RegExp('^(http|https)://', 'i');
 
     var match = re.test(url);
 
-    if(match)
-    {
+    if (match) {
+      console.log(url);
 
-      console.log(url)
-
-      if(url.includes('@'))
-      {
-
+      if (url.includes('@')) {
         // var newLating = url.split('@')[1].split(',')
-        var rest = url.substring(0, url.lastIndexOf("3d") + 2);
-        var last = url.substring(url.lastIndexOf("3d") + 2, url.length);
-        console.log(rest)
-        console.log(last.split('!4d'))
-        var newLating = last.split('!4d')
+        var rest = url.substring(0, url.lastIndexOf('3d') + 2);
+        var last = url.substring(url.lastIndexOf('3d') + 2, url.length);
+        console.log(rest);
+        console.log(last.split('!4d'));
+        var newLating = last.split('!4d');
 
-        
         // alert(pieces[pieces.length-1]);
         // console.log(newLating)
-
-      }
-
-      else
-      {
-
+      } else {
         var latLong = url.split('=')[1].split(',');
         console.log(latLong);
-
       }
-   
 
-      
-     
       // var long = url.split('=').split(',')[1]
 
-      if(url.includes('@'))
-      {
+      if (url.includes('@')) {
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
-      }
-      else
-      {
+      } else {
         this.clientsForm.controls.lat.setValue(+latLong[0]);
         this.clientsForm.controls.long.setValue(+latLong[1]);
       }
 
       // /validate-map/4122
 
-      this.coreService.postMethod('clients/validate-map/' + this.clientsForm.controls.citiesObj.value.id , {
-        lat:this.clientsForm.controls.lat.value ,
-        long: this.clientsForm.controls.long.value
-      }).subscribe(
-        (responsee) => {
-          console.log(responsee)
-          newCity= responsee['city']
-          // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
-        
-          this.showSuccess(responsee['message']);
+      this.coreService
+        .postMethod(
+          'clients/validate-map/' +
+            this.clientsForm.controls.citiesObj.value.id,
+          {
+            lat: this.clientsForm.controls.lat.value,
+            long: this.clientsForm.controls.long.value
+          }
+        )
+        .subscribe(
+          responsee => {
+            console.log(responsee);
+            newCity = responsee['city'];
+            // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
 
-          
+            this.showSuccess(responsee['message']);
+
+            var geocoder;
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(
+              this.clientsForm.controls.lat.value,
+              this.clientsForm.controls.long.value
+            );
+
+            let cityName: string = '';
+            let address: string = '';
+
+            geocoder.geocode({ latLng: latlng }, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                  address = results[0].formatted_address;
+                  var value = address.split(',');
+
+                  let count = value.length;
+
+                  let city;
+
+                  if (count > 2) {
+                    city = value[count - 3];
+                  } else {
+                    city = value[count - 1];
+                  }
+
+                  // alert("city name is: " + city);
+                  cityName = city;
+                }
+              } else {
+                alert('Geocoder failed due to: ' + status);
+              }
+            });
+            setTimeout(() => {
+              this.clientsForm.controls.locations_area.setValue(cityName);
+              this.clientsForm.controls.locations_address.setValue(address);
+
+              console.log(cityName);
+
+              this.clientsForm.patchValue({
+                city_id: newCity.id,
+                citiesObj: newCity
+              });
+
+              this.passPopup = true;
+
+              // this.clientsForm.controls.citiesObj.value.id = newCity
+
+              // console.log(this.clientsForm.controls.citiesObj.value.id)
+
+              // this.clientsForm.controls.city_id.setValue(newCity);
+              console.log(this.clientsForm);
+            }, 2000);
+          },
+          error => {
+            if (error.error.errors) {
+              this.showErrors(error.error.errors);
+            } else {
+              this.showErrors(error.error.message);
+            }
+
+            this.clientsForm.patchValue({
+              city_id: '',
+              citiesObj: ''
+            });
+
+            this.clientsForm.controls.lat.setValue(28.421864);
+            this.clientsForm.controls.long.setValue(34.432869);
+            this.clientsForm.controls.aboveUrl.setValue('');
+
+            this.passPopup = false;
+
+            this.showMapPopup = false;
+          }
+        );
+
+      console.log(this.clientsForm.value);
+    }
+
+    this.endLoading();
+  }
+
+  savePopup() {
+    this.mapDone = true;
+    console.log(this.mapDone);
+    this.showMapPopup = false;
+  }
+
+  searchWithLatlng() {
+    this.startLoading();
+    let newCity;
+
+    console.log(this.clientsForm.value);
+
+    // /validate-map/4122
+
+    this.coreService
+      .postMethod(
+        'clients/validate-map/' + this.clientsForm.controls.citiesObj.value.id,
+        {
+          lat: this.clientsForm.controls.lat.value,
+          long: this.clientsForm.controls.long.value
+        }
+      )
+      .subscribe(
+        responsee => {
+          console.log(responsee);
+          newCity = responsee['city'];
+          // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
+
+          this.showSuccess(responsee['message']);
 
           var geocoder;
           geocoder = new google.maps.Geocoder();
           var latlng = new google.maps.LatLng(
-            this.clientsForm.controls.lat.value,
-            this.clientsForm.controls.long.value
+            +this.clientsForm.controls.lat.value,
+            +this.clientsForm.controls.long.value
           );
-      
+
           let cityName: string = '';
-          let address : string = ''
-      
+          let address: string = '';
+
           geocoder.geocode({ latLng: latlng }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
                 var value = address.split(',');
-      
+
                 let count = value.length;
-      
-                let city ;
-      
-                if(count > 2)
-                {
-      
-                city = value[count - 3];
-                }
-                else
-                {
+
+                let city;
+
+                if (count > 2) {
+                  city = value[count - 3];
+                } else {
                   city = value[count - 1];
-      
                 }
-      
+
                 // alert("city name is: " + city);
                 cityName = city;
               }
@@ -692,32 +729,35 @@ export class AddClientComponent implements OnInit {
             }
           });
           setTimeout(() => {
-    
+            console.log(this.clientsForm.controls.citiesObj);
+
+            this.clientsForm.controls.lat.setValue(
+              +this.clientsForm.controls.lat.value
+            );
+            this.clientsForm.controls.long.setValue(
+              +this.clientsForm.controls.long.value
+            );
+
+            var latlng = new google.maps.LatLng(
+              this.clientsForm.controls.lat.value,
+              this.clientsForm.controls.long.value
+            );
+            geocoder.geocode({ latLng: latlng });
+
+            console.log(cityName);
+
             this.clientsForm.controls.locations_area.setValue(cityName);
             this.clientsForm.controls.locations_address.setValue(address);
 
-            
-    
-            console.log(cityName);
-    
             this.clientsForm.patchValue({
               city_id: newCity.id,
-              citiesObj:newCity
+              citiesObj: newCity
             });
 
-            this.passPopup = true ;
-    
-            // this.clientsForm.controls.citiesObj.value.id = newCity
-    
-            // console.log(this.clientsForm.controls.citiesObj.value.id)
-    
-            // this.clientsForm.controls.city_id.setValue(newCity);
-            console.log(this.clientsForm) ;
-    
-            
+            this.passPopup = true;
+
+            console.log(this.clientsForm);
           }, 2000);
-
-        
         },
         error => {
           if (error.error.errors) {
@@ -735,157 +775,15 @@ export class AddClientComponent implements OnInit {
           this.clientsForm.controls.long.setValue(34.432869);
           this.clientsForm.controls.aboveUrl.setValue('');
 
+          this.passPopup = false;
 
-          this.passPopup = false ;
-
-            this.showMapPopup = false;
-
-
+          this.showMapPopup = false;
         }
-      )
-    
-  
-      console.log(this.clientsForm.value);
-  
-  
-
-    }
-
-   
+      );
 
     this.endLoading();
   }
 
-
-  savePopup()
-  {
-    this.mapDone = true ;
-    console.log(this.mapDone)
-    this.showMapPopup = false ;
-  }
-
-  searchWithLatlng() {
-    this.startLoading();
-    let newCity ;
-
-    console.log(this.clientsForm.value);
-
-    
-      // /validate-map/4122
-
-      this.coreService.postMethod('clients/validate-map/' + this.clientsForm.controls.citiesObj.value.id , {
-        lat:this.clientsForm.controls.lat.value ,
-        long: this.clientsForm.controls.long.value
-      }).subscribe(
-        (responsee) => {
-          console.log(responsee)
-          newCity= responsee['city']
-          // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
-        
-             this.showSuccess(responsee['message']);
-
-             var geocoder;
-             geocoder = new google.maps.Geocoder();
-             var latlng = new google.maps.LatLng(
-               +this.clientsForm.controls.lat.value,
-               +this.clientsForm.controls.long.value
-             );
-         
-             let cityName: string = '';
-             let address : string = ''
-         
-             geocoder.geocode({ latLng: latlng }, function(results, status) {
-               if (status == google.maps.GeocoderStatus.OK) {
-                 if (results[0]) {
-                   address = results[0].formatted_address;
-                   var value = address.split(',');
-         
-                   let count = value.length;
-         
-            
-         
-                   let city ;
-         
-                   if(count > 2)
-                   {
-         
-                   city = value[count - 3];
-                   }
-                   else
-                   {
-                     city = value[count - 1];
-         
-                   }
-         
-                   // alert("city name is: " + city);
-                   cityName = city;
-                 }
-               } else {
-                 alert('Geocoder failed due to: ' + status);
-               }
-             });
-             setTimeout(() => {
-               console.log(this.clientsForm.controls.citiesObj);
-              
-               this.clientsForm.controls.lat.setValue(+this.clientsForm.controls.lat.value);
-               this.clientsForm.controls.long.setValue(+this.clientsForm.controls.long.value);
-         
-               var latlng = new google.maps.LatLng(
-                 this.clientsForm.controls.lat.value,
-                 this.clientsForm.controls.long.value
-               );
-               geocoder.geocode({ latLng: latlng })
-         
-               console.log(cityName);
-
-               this.clientsForm.controls.locations_area.setValue(cityName);
-               this.clientsForm.controls.locations_address.setValue(address);
-    
-                this.clientsForm.patchValue({
-                  city_id: newCity.id,
-                  citiesObj:newCity
-                });
-
-                this.passPopup = true ;
-    
-              console.log(this.clientsForm) ;
-             }, 2000);
-
-        
-        },
-        error => {
-          if (error.error.errors) {
-            this.showErrors(error.error.errors);
-          } else {
-            this.showErrors(error.error.message);
-          }
-
-          this.clientsForm.patchValue({
-            city_id: '',
-            citiesObj: ''
-          });
-
-          this.clientsForm.controls.lat.setValue(28.421864);
-          this.clientsForm.controls.long.setValue(34.432869);
-          this.clientsForm.controls.aboveUrl.setValue('');
-
-
-          this.passPopup = false ;
-
-            this.showMapPopup = false;
-
-
-        }
-      )
-
-
-
-    this.endLoading();
-  }
-
-
-
-  
   onSubmitUpdateData() {
     this.showMapPopup = false;
 
@@ -907,83 +805,77 @@ export class AddClientComponent implements OnInit {
     this.clientsForm.controls.lat.setValue(+e.lat);
     this.clientsForm.controls.long.setValue(+e.lng);
 
-    let newCity ;
+    let newCity;
 
-          // /validate-map/4122
+    // /validate-map/4122
 
-      this.coreService.postMethod('clients/validate-map/' + this.clientsForm.controls.citiesObj.value.id , {
-        lat:this.clientsForm.controls.lat.value ,
-        long: this.clientsForm.controls.long.value
-      }).subscribe(
-        (responsee) => {
-          console.log(responsee)
-          newCity= responsee['city']
+    this.coreService
+      .postMethod(
+        'clients/validate-map/' + this.clientsForm.controls.citiesObj.value.id,
+        {
+          lat: this.clientsForm.controls.lat.value,
+          long: this.clientsForm.controls.long.value
+        }
+      )
+      .subscribe(
+        responsee => {
+          console.log(responsee);
+          newCity = responsee['city'];
           // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
-        
-              this.showSuccess(responsee['message']);
 
-              var geocoder;
-              geocoder = new google.maps.Geocoder();
-              var latlng = new google.maps.LatLng(
-                this.clientsForm.controls.lat.value,
-                this.clientsForm.controls.long.value
-              );
-              let cityName: string = '';
-              let address: string = '' ;
-              geocoder.geocode({ latLng: latlng }, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                  if (results[0]) {
-                     address = results[0].formatted_address;
-                    var value = address.split(',');
-          
-                    console.log(value)
-          
-                    let count = value.length;
-                    let city ;
-          
-                    if(count > 2)
-                    {
-          
-                    city = value[count - 3];
-                    }
-                    else
-                    {
-                      city = value[count - 1];
-          
-                    }
-          
-          
-                    // alert("city name is: " + city);
-          
-                    cityName = city;
-                  }
-                  // else  {
-                  //     alert("address not found");
-                  // }
+          this.showSuccess(responsee['message']);
+
+          var geocoder;
+          geocoder = new google.maps.Geocoder();
+          var latlng = new google.maps.LatLng(
+            this.clientsForm.controls.lat.value,
+            this.clientsForm.controls.long.value
+          );
+          let cityName: string = '';
+          let address: string = '';
+          geocoder.geocode({ latLng: latlng }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[0]) {
+                address = results[0].formatted_address;
+                var value = address.split(',');
+
+                console.log(value);
+
+                let count = value.length;
+                let city;
+
+                if (count > 2) {
+                  city = value[count - 3];
                 } else {
-                  alert('Geocoder failed due to: ' + status);
+                  city = value[count - 1];
                 }
-              });
-              setTimeout(() => {
-                this.clientsForm.controls.locations_area.setValue(cityName);
-                this.clientsForm.controls.locations_address.setValue(address);
-    
-                
-        
-                console.log(cityName);
-        
-                this.clientsForm.patchValue({
-                  city_id: newCity.id,
-                  citiesObj:newCity
-                });
-    
-                this.passPopup = true ;
-        
-        
-                console.log(this.clientsForm) 
-              }, 2000);
 
-        
+                // alert("city name is: " + city);
+
+                cityName = city;
+              }
+              // else  {
+              //     alert("address not found");
+              // }
+            } else {
+              alert('Geocoder failed due to: ' + status);
+            }
+          });
+          setTimeout(() => {
+            this.clientsForm.controls.locations_area.setValue(cityName);
+            this.clientsForm.controls.locations_address.setValue(address);
+
+            console.log(cityName);
+
+            this.clientsForm.patchValue({
+              city_id: newCity.id,
+              citiesObj: newCity
+            });
+
+            this.passPopup = true;
+
+            console.log(this.clientsForm);
+          }, 2000);
         },
         error => {
           if (error.error.errors) {
@@ -991,7 +883,7 @@ export class AddClientComponent implements OnInit {
           } else {
             this.showErrors(error.error.message);
           }
-          
+
           this.clientsForm.patchValue({
             city_id: '',
             citiesObj: ''
@@ -1001,14 +893,11 @@ export class AddClientComponent implements OnInit {
           this.clientsForm.controls.long.setValue(34.432869);
           this.clientsForm.controls.aboveUrl.setValue('');
 
+          this.passPopup = false;
 
-          this.passPopup = false ;
-
-            this.showMapPopup = false;
+          this.showMapPopup = false;
         }
-      )
-
-
+      );
   }
 
   /* --------------------------------- clicked New Orgins ----------------------------- */
@@ -1030,7 +919,7 @@ export class AddClientComponent implements OnInit {
         this.updatedClientDataLoaded = true;
         this.updatedClientData = updatedClient.data;
 
-        console.log(updatedClient.data)
+        console.log(updatedClient.data);
         // Start End Loading
         this.endLoading();
         // End End Loading
@@ -1039,18 +928,17 @@ export class AddClientComponent implements OnInit {
   }
 
   changeValue(value) {
-    if(value == true)
-    {
-      this.verified = true ;
+    if (value == true) {
+      this.verified = true;
     } else if (value == false) {
-      this.verified = false
+      this.verified = false;
     }
   }
   /* ------------------------------- Assign Updated Data ------------------------- */
   assignUpdatedData() {
     const data = this.updatedClientData;
 
-    console.log(data.city)
+    console.log(data.city);
 
     this.countryPhoneKey = data.city.country.phone_code;
     this.showCountryPhoneKey = true;
@@ -1307,7 +1195,7 @@ export class AddClientComponent implements OnInit {
   /* ------------------------ Get Cities ----------------------------- */
 
   getCities() {
-    let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     let companySlug = currentUser.company_slug;
     console.log(companySlug);
     this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
@@ -1326,22 +1214,18 @@ export class AddClientComponent implements OnInit {
 
   /* --------------------- Filter Cities ----------------------- */
   filterCities(value: any) {
-
     if (typeof value === 'object') {
       this.clientsForm.patchValue({
-        city_id: value.id,
+        city_id: value.id
         // citiesObj: value
       });
 
-      this.cityDetails = value ;
-
-      
+      this.cityDetails = value;
     }
 
     if (this.citiesArray !== null) {
       return this.citiesArray.filter(option => option.name.includes(value));
     }
-
   }
 
   /* ---------------------------- Create Client ------------------------------ */
@@ -1420,17 +1304,13 @@ export class AddClientComponent implements OnInit {
   }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
-
-
     if (state !== null && state !== undefined) {
       return state.name;
     }
   }
 
-  getCites(value)
-  {
-    this.getLocationOnMapSelect(value) ;
-
+  getCites(value) {
+    this.getLocationOnMapSelect(value);
   }
 
   /* -------------------------- Check Number ----------------------- */

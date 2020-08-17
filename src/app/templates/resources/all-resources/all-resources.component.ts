@@ -43,7 +43,7 @@ export class AllResourcesComponent implements OnInit {
     'ID',
     'name',
     'phone',
-    'status',
+    'status'
     // 'resources_details',
     // 'edit_order',
     // 'add_responsible',
@@ -74,18 +74,22 @@ export class AllResourcesComponent implements OnInit {
     private responseStateService: ResponseStateService,
     private coreService: CoreService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.resoureces = this.user.modules.resources;
     if (this.resoureces) {
       this.resoureces.map(ele => {
         switch (ele) {
-          case 'create': this.resource_add = true;
+          case 'create':
+            this.resource_add = true;
             break;
-          case 'show': this.resources_all = true;
+          case 'show':
+            this.resources_all = true;
             break;
-          case 'delete': this.resources_delete = true;
+          case 'delete':
+            this.resources_delete = true;
             break;
-          case 'update': this.resources_update = true;
+          case 'update':
+            this.resources_update = true;
             break;
         }
       });
@@ -227,7 +231,7 @@ export class AllResourcesComponent implements OnInit {
   }
   //  ######################### End Delete Resource #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() { }
+  dataExistance() {}
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {

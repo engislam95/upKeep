@@ -38,18 +38,13 @@ export class AllTechniciansComponent implements OnInit {
   showUpdatePopup = false;
   //  ######################### End General Data #########################
   // ############################ Table Data ############################
-  showOrdercontrolst = false;
-  hideme = [];
   displayedColumns = [
     'ID',
     'technical_name',
     'phone',
     'main_service',
-    'city_service',
-    'email',
-    'national',
-    'status',
-    'technicians_details',
+    'status'
+    // 'technicians_details',
     // 'edit_technical',
     // 'delete_technical'
   ];
@@ -62,31 +57,19 @@ export class AllTechniciansComponent implements OnInit {
   //  ###################### Start Select Status ######################
   filterForm = new FormGroup({
     techniciansStatusObj: new FormControl(),
-    filterName: new FormControl(),
-    service: new FormControl(),
-    serviceCity: new FormControl(),
+    filterName: new FormControl()
   });
-
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
   statusFilteredOptions: Observable<any>;
   filteredStatusId = '';
-
- ServiceArray = [];
- filteredServiceArray = [];
-
-
-  CityArray = [];
-  filteredCityArray = [];
-
-
-
-
   technician_add: boolean = false;
   technician_all: boolean = false;
   technician_update: boolean = false;
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
+  current_page: any = '';
+  totalPage: any = '';
 
   //  ###################### End Select Status ######################
   constructor(
@@ -96,32 +79,36 @@ export class AllTechniciansComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
       this.technicians.map(ele => {
         switch (ele) {
-          case 'add': this.technician_add = true;
+          case 'add':
+            this.technician_add = true;
             break;
-          case 'show': this.technician_all = true;
+          case 'show':
+            this.technician_all = true;
             break;
-          case 'update': this.technician_update = true;
+          case 'update':
+            this.technician_update = true;
             break;
-          case 'delete': this.technician_delete = true;
+          case 'delete':
+            this.technician_delete = true;
             break;
         }
       });
     }
-    // if (this.technician_all || this.user.privilege == 'super-admin') {
-    //   this.displayedColumns.push('technicians_details');
-    // }
-    // if (this.technician_update || this.user.privilege == 'super-admin') {
-    //   this.displayedColumns.push('edit_technical');
-    // }
-    // if (this.technician_delete || this.user.privilege == 'super-admin') {
-    //   this.displayedColumns.push('delete_technical');
-    // }
+    if (this.technician_all || this.user.privilege == 'super-admin') {
+      this.displayedColumns.push('technicians_details');
+    }
+    if (this.technician_update || this.user.privilege == 'super-admin') {
+      this.displayedColumns.push('edit_technical');
+    }
+    if (this.technician_delete || this.user.privilege == 'super-admin') {
+      this.displayedColumns.push('delete_technical');
+    }
   }
   //  ############################### Start OnInit ###############################
   ngOnInit() {
@@ -130,8 +117,6 @@ export class AllTechniciansComponent implements OnInit {
     // End START Loading
     // Start Get All Technicians
     this.getAllTechnicians(this.pageId);
-    this.getAllServices()
-    this.getAllServicesCities()
     // End Get All Technicians
 
     //  ############################ Start Filters ############################
@@ -160,43 +145,7 @@ export class AllTechniciansComponent implements OnInit {
         map(value => this.filterTechniciansStatus(value))
       );
     // End Select Search For Status Types
-  
-
-
-   
-  
-    // End Select Search For Status Types
-
-
-    // Filter services Cities
-    // const filterServiceCity = document.getElementById('filterCityService');
-    // const filterServiceCityListner = fromEvent(filterServiceCity, 'keyup');
-    // filterServiceCityListner
-    //   .pipe(
-    //     map((event: any) => event.target.value),
-    //     debounceTime(200),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe((value: any) => {
-    //     this.pageId = 1;
-    //     this.filteredTechniciansData = value;
-    //     this.getAllTechnicians(this.pageId);
-    //   });
-    // // End Select Search For Status Types
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
+  }
   //  ############################### End OnInit ###############################
   //  ######################### Start Filter Order Status  #########################
   filterTechniciansStatus(value: any) {
@@ -212,90 +161,15 @@ export class AllTechniciansComponent implements OnInit {
     }
     return this.statusArray.filter(option => option.name.includes(value));
   }
-
-
-  filterTechniciansService(value) {
-    console.log(value)
-    if (value.length > 0) {
-      this.filteredServiceArray = value
-      console.log(this.filteredServiceArray)
-      this.pageId = 1;
-      this.getAllTechnicians(this.pageId);
-    }
-    if (value.length < 1) {
-      this.filteredServiceArray = [];
-      console.log(this.filteredCityArray)
-
-      this.pageId = 1;
-      this.getAllTechnicians(this.pageId);
-    }
-    
-    return this.filteredServiceArray ;
-
-  }
-
-
-  
-  filterTechniciansCity(value) {
-    if (value.length > 0) {
-      this.filteredCityArray = value ;
-      console.log(this.filteredCityArray)
-
-      this.pageId = 1;
-      this.getAllTechnicians(this.pageId);
-    }
-    if (value.length < 1) {
-      this.filteredCityArray = [];
-      console.log(this.filteredCityArray)
-
-      this.pageId = 1;
-      this.getAllTechnicians(this.pageId);
-    }
-
-    return this.filteredCityArray ;
-
-  }
-
-
-
-
-  
-
-
-   //  get technical service
-
-    getAllServices() {
-      this.coreService
-       .getMethod('services/active', {})
-        .subscribe((getServices: any) => {
-          console.log(getServices);
-          this.ServiceArray = getServices.data;
-        });
-    }
-
-
-   
-
-     //  get technical service cities
-
-    getAllServicesCities() {
-      this.coreService
-        .getMethod('cities')
-        .subscribe((getCities: any) => {
-          console.log(getCities);
-          this.CityArray = getCities.data;
-        });
-    }
-
-
-
-
   //  ######################### End Filter Order Status  #########################
   //  ######################### start display Options For Select #########################
   displayOptionsFunction(state) {
     if (state !== null) {
       return state.name;
     }
+  }
+  changePagination(event) {
+    this.getAllTechnicians(event.value);
   }
   //  ######################### End display Options For Select #########################
   //  ############################# Start X Reset Inputs #############################
@@ -319,22 +193,16 @@ export class AllTechniciansComponent implements OnInit {
   //  ######################### Start Get All Technicians #########################
   getAllTechnicians(pageId) {
     this.loaderService.startLoading();
-    console.log(this.filteredServiceArray)
-    console.log(this.filteredCityArray);
-    
-
     this.coreService
       .getMethod('technicians?page=' + pageId, {
         name: this.filteredTechniciansData,
-        active: this.filteredStatusId ,
-        'service[]': this.filteredServiceArray ,
-        'city[]': this.filteredCityArray ,
-
+        active: this.filteredStatusId
       })
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
         this.dataSource = getTechniciansResponse.data.data;
-        console.log( this.dataSource )
+        this.current_page = getTechniciansResponse.data.current_page;
+        this.totalPage = getTechniciansResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -355,6 +223,12 @@ export class AllTechniciansComponent implements OnInit {
         );
         //  End Pagination Count
       });
+  }
+  nextPage(pageNum) {
+    this.getAllTechnicians(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllTechnicians(+pageNum - 1);
   }
   //  ######################### End Get All Technicians #########################
   //  ######################### Start Pagination #########################
@@ -427,7 +301,7 @@ export class AllTechniciansComponent implements OnInit {
   }
   //  ######################### End Update Technical #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() { }
+  dataExistance() {}
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {

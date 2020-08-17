@@ -31,8 +31,8 @@ export class CompanyCitiesComponent implements OnInit {
   IDsArray: any = [];
   responseState: any = '';
   responseData: any = '';
-  passed = false ;
-  companySlug =JSON.parse(sessionStorage.getItem('currentUser')).companySlug
+  passed = false;
+  companySlug = JSON.parse(localStorage.getItem('currentUser')).companySlug;
 
   /*--------------- Form -------------------- */
   companyForm = new FormGroup({
@@ -44,9 +44,9 @@ export class CompanyCitiesComponent implements OnInit {
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private responseStateService: ResponseStateService,
+    private responseStateService: ResponseStateService
   ) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
   /* ------------------ Oninit ----------------------- */
   ngOnInit() {
@@ -60,16 +60,12 @@ export class CompanyCitiesComponent implements OnInit {
         .subscribe((company: any) => {
           console.log(company);
           this.company = company;
-          
+
           // if (company['classification']) {
           //   this.className = company['classification'].name;
           //   this.classID = company['classification'].id;
           // }
-   
-        })
-
-        
-
+        });
 
         this.coreService
         .superGet('company/' + this.companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
@@ -77,18 +73,15 @@ export class CompanyCitiesComponent implements OnInit {
           console.log(data);
           this.services = data['data'];
           this.services.map(ele => {
-            if(ele.checked == true)
-            {
+            if (ele.checked == true) {
               this.IDsArray.push(ele.id);
               console.log(this.IDsArray);
-              
             }
           });
         });
 
-
       /* --------------------- Get Classifications ------------------------- */
-      let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+      let currentUser = JSON.parse(localStorage.getItem('currentUser'));
       let companySlug = currentUser.company_slug;
 
       this.coreService
@@ -102,7 +95,7 @@ export class CompanyCitiesComponent implements OnInit {
             .get('usedService')
             .valueChanges.pipe(
               startWith(''),
-              map(value =>  this.filterService(value))
+              map(value => this.filterService(value))
             );
         });
     });
@@ -121,15 +114,14 @@ export class CompanyCitiesComponent implements OnInit {
   }
   /*----------------------- Service Filter ----------------------- */
   filterService(value: any) {
-    console.log(value)
-    let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-      let companySlug = currentUser.company_slug;
+    console.log(value);
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let companySlug = currentUser.company_slug;
 
-    
     if (typeof value === 'object') {
       this.filterServiceID = value.id;
       this.classID = value.id;
-      console.log(value.id)
+      console.log(value.id);
       this.className = value.name;
       this.coreService
         .superGet('company/' + companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
@@ -137,11 +129,9 @@ export class CompanyCitiesComponent implements OnInit {
           console.log(data);
           this.services = data['data'];
           this.services.map(ele => {
-            if(ele.checked == true)
-            {
+            if (ele.checked == true) {
               this.IDsArray.push(ele.id);
               console.log(this.IDsArray);
-              
             }
           });
         });
@@ -158,30 +148,27 @@ export class CompanyCitiesComponent implements OnInit {
     console.log(event);
     this.services.map(ele => {
       if (event.checked == true) {
-        return ele.checked = true;
+        return (ele.checked = true);
       } else if (event.checked == false) {
-        return ele.checked = false;
+        return (ele.checked = false);
       }
     });
     this.services.map(ele => {
       if (event.checked == true && this.IDsArray.indexOf(ele.id) === -1) {
         return this.IDsArray.push(ele.id);
-      }
-      else if (event.checked == false && this.IDsArray.indexOf(ele.id) != -1) {
+      } else if (
+        event.checked == false &&
+        this.IDsArray.indexOf(ele.id) != -1
+      ) {
         this.IDsArray.splice(this.IDsArray.indexOf(ele.id), 1);
       }
-    })
+    });
     console.log(this.services);
     console.log(this.IDsArray);
-
   }
 
- 
   /* --------------------- Check Item ----------------------- */
   checkItem(event, service, i) {
-
-    
-
     // if(service.checked == true || event.checked == true)
     // {
     //   this.passed = true
@@ -191,43 +178,44 @@ export class CompanyCitiesComponent implements OnInit {
     //   this.passed = false
 
     // }
- 
 
-    console.log(this.services)
+    console.log(this.services);
 
     console.log(event.source.value);
 
     if (event.checked == true && this.IDsArray.indexOf(service.id) === -1) {
       this.IDsArray.push(service.id);
-    }
-    else if (event.checked == false && this.IDsArray.indexOf(service.id) != -1) {
+    } else if (
+      event.checked == false &&
+      this.IDsArray.indexOf(service.id) != -1
+    ) {
       this.IDsArray.splice(this.IDsArray.indexOf(service.id), 1);
-      
     }
     console.log(this.IDsArray);
   }
   /* ------------------ Assign Services -------------------------- */
   assignServices() {
     this.startLoading();
-    this.coreService.superPost('owner/location/create', {
-      company_id: this.company.id,
-      cities: this.IDsArray
-
-    }).subscribe(
-      () => {
-        this.showSuccess('تم اضافة المواقع الى الشركة بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/companies/all-companies']);
-        }, 2500);
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.coreService
+      .superPost('owner/location/create', {
+        company_id: this.company.id,
+        cities: this.IDsArray
+      })
+      .subscribe(
+        () => {
+          this.showSuccess('تم اضافة المواقع الى الشركة بنجاح');
+          setTimeout(() => {
+            this.router.navigate(['/companies/all-companies']);
+          }, 2500);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
   /* --------------- Start Loading ----------------- */
   startLoading() {

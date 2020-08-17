@@ -25,7 +25,7 @@ export class AllClientsComponent implements OnInit {
   responseState;
   responseData;
   countPerPage = [];
-  totalSize ;
+  totalSize;
 
   //
   deletedClientName: string;
@@ -91,6 +91,8 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────────────────────── END TABLE DATA ─────
   //
+  current_page: any = '';
+  totalPage: any = '';
 
   constructor(
     //
@@ -287,8 +289,7 @@ export class AllClientsComponent implements OnInit {
   getAllClients(pageId) {
     // let perPage;
     // console.log(option);
-    
-    
+
     // option.length > 0 ? (perPage = +option[0]) : (perPage = 10);
     this.loaderService.startLoading();
     this.coreService
@@ -300,13 +301,15 @@ export class AllClientsComponent implements OnInit {
         registration_to: this.filteredToDate,
         active: this.clientCondition,
         city_id: this.cityId,
-        per_page: this.per_page,
+        per_page: this.per_page
       })
       .subscribe((getClientsResponse: any) => {
         // Start Assign Data
         this.dataSource = getClientsResponse.data.data;
         console.log(getClientsResponse);
-        this.totalSize = getClientsResponse.data.total
+        this.totalSize = getClientsResponse.data.total;
+        this.current_page = getClientsResponse.data.current_page;
+        this.totalPage = getClientsResponse.data.last_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -328,7 +331,12 @@ export class AllClientsComponent implements OnInit {
         //  End Pagination Count
       });
   }
-
+  nextPage(pageNum) {
+    this.getAllClients(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllClients(+pageNum - 1);
+  }
   //
   // ─────────────────────────────────────── END GET ALL CLIENTS ─────
   //
@@ -405,7 +413,9 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────
   //
-
+  changePagination(event) {
+    this.getAllClients(event.value);
+  }
   //
   // ─── START CHECK FOR PAGINATION BUTTONS ──────────────────────────
   //
@@ -419,16 +429,14 @@ export class AllClientsComponent implements OnInit {
     this.lastPage = lastPage;
   }
 
-/* ------------------ Set Count Per Page -------------------------- */
-setCountPerPage(option) {
-  this.startLoading();
-  this.pageId = 1;
-  this.per_page = option;
-  this.getAllClients(this.pageId);
-  this.endLoading();
-}
-
-  
+  /* ------------------ Set Count Per Page -------------------------- */
+  setCountPerPage(option) {
+    this.startLoading();
+    this.pageId = 1;
+    this.per_page = option;
+    this.getAllClients(this.pageId);
+    this.endLoading();
+  }
 
   pageCountOptions() {
     for (let option = 10; option <= 50; option += 10) {

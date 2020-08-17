@@ -412,7 +412,7 @@
             [zoom]="zoom"
             (mapClick)="mapClicked($event)"
           >
-            <agm-marker
+            <!-- <agm-marker
               *ngIf="
                 ordersLoaded &&
                 !orderDetailsMode &&
@@ -427,14 +427,15 @@
               iconUrl="./../../../../assets/img/marker_vid.png"
             >
             </agm-marker> -->
+
             <ng-container
               *ngIf="citiesLating.length && url !== '/locations-managment'"
             >
               <agm-marker
                 *ngFor="let city of citiesLating"
                 [agmFitBounds]="true"
-                [latitude]="city.lat"
-                [longitude]="city.long"
+                [latitude]="city.pivot.lat"
+                [longitude]="city.pivot.long"
                 [iconUrl]="{
                   url: companyPin,
                   scaledSize: { height: 50, width: 50 }
@@ -464,8 +465,7 @@
                 [longitude]="order.location.long"
                 class="markerTec"
                 [iconUrl]="{
-                  url: order.technical.imagePin,
-                  scaledSize: { height: 50, width: 50 }
+                  url: order.technical.imagePin
                 }"
                 (mouseOver)="onMouseOver(infoWindow, gm)"
                 (mouseOut)="onMouseOut(infoWindow, gm)"

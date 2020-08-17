@@ -475,6 +475,8 @@ agm-map {
           top: 50%;
           transform: translateY(-50%);
           z-index: 99;
+          // animation: animateOrder 1s infinite ease-in-out;
+          transition: .5s all ease-in-out;
         }
 
         .hourCell {
@@ -629,4 +631,14 @@ agm-map {
 app-map {
   width: 90%;
   z-index: 9;
+}
+
+@keyframes animateOrder {
+  from {
+    opacity: .1;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
