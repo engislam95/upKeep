@@ -46,7 +46,7 @@ export class CompanyCitiesComponent implements OnInit {
     private router: Router,
     private responseStateService: ResponseStateService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* ------------------ Oninit ----------------------- */
   ngOnInit() {
@@ -83,7 +83,7 @@ export class CompanyCitiesComponent implements OnInit {
         });
 
       /* --------------------- Get Classifications ------------------------- */
-      let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
       let companySlug = currentUser.company_slug;
 
       this.coreService
@@ -117,7 +117,7 @@ export class CompanyCitiesComponent implements OnInit {
   /*----------------------- Service Filter ----------------------- */
   filterService(value: any) {
     console.log(value);
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     let companySlug = currentUser.company_slug;
 
     if (typeof value === 'object') {
