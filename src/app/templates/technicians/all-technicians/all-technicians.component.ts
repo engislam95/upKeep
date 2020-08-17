@@ -29,6 +29,9 @@ export class AllTechniciansComponent implements OnInit {
   responseState;
   responseData;
   //
+  // current_page ;
+  // totalPage ;
+
   deletedTechnicalName: string;
   deletedTechnicalId: number;
   showDeletePopup = false;
@@ -203,6 +206,7 @@ export class AllTechniciansComponent implements OnInit {
         this.dataSource = getTechniciansResponse.data.data;
         this.current_page = getTechniciansResponse.data.current_page;
         this.totalPage = getTechniciansResponse.data.last_page;
+        console.log( this.dataSource )
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -224,12 +228,12 @@ export class AllTechniciansComponent implements OnInit {
         //  End Pagination Count
       });
   }
-  nextPage(pageNum) {
-    this.getAllTechnicians(+pageNum + 1);
-  }
-  prevPage(pageNum) {
-    this.getAllTechnicians(+pageNum - 1);
-  }
+  // nextPage(pageNum) {
+  //   this.getAllTechnicians(+pageNum + 1);
+  // }
+  // prevPage(pageNum) {
+  //   this.getAllTechnicians(+pageNum - 1);
+  // }
   //  ######################### End Get All Technicians #########################
   //  ######################### Start Pagination #########################
   pagination(totalTechniciansNumber, techniciansPerPAge) {
@@ -240,6 +244,9 @@ export class AllTechniciansComponent implements OnInit {
     }
     this.checkPagination(this.pageId);
   }
+  // changePagination(event) {
+  //   this.getAllTechnicians(event.value);
+  // }
   //  ######################### End Pagination #########################
   //  ################################### Start Go Page ###################################
   goPage(i) {
@@ -332,5 +339,15 @@ export class AllTechniciansComponent implements OnInit {
       this.responseData
     );
   }
+
+
+  nextPage(pageNum) {
+    this.getAllTechnicians(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllTechnicians(+pageNum - 1);
+  }
   //  ######################### End Response Messeges #########################
 }
+
+
