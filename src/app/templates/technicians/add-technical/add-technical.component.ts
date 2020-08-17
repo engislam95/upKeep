@@ -173,6 +173,7 @@ export class AddTechnicalComponent implements OnInit {
     //  Start Get Countries
     this.coreService.getMethod('countries', {}).subscribe((countries: any) => {
       this.countriesArray = countries.data;
+      console.log(countries.data);
       this.countriesLoaded = true;
       // Start End Loading
       this.endLoading();

@@ -286,7 +286,7 @@
                   <input
                     *ngIf="updateMode"
                     formControlName="password"
-                    type="text"
+                    type="password"
                     matInput
                     placeholder="تعديل كلمة السر"
                     autocomplete="off"
@@ -302,7 +302,7 @@
                   <input
                     *ngIf="!updateMode"
                     formControlName="password"
-                    type="text"
+                    type="password"
                     matInput
                     placeholder="كلمة السر الخاصة بدخول الفني التطبيق"
                     autocomplete="off"
@@ -360,8 +360,7 @@
                 <input
                   *ngIf="updateMode"
                   formControlName="confirmPassword"
-                  type="text"
-               
+                  type="password"               
                   matInput
                   placeholder="تعديل كلمة السر"
                   autocomplete="off"
@@ -377,8 +376,7 @@
                 <input
                   *ngIf="!updateMode"
                   formControlName="confirmPassword"
-                  type="text"
-               
+                  type="password"
                   matInput
                   placeholder="إعادة كتابة كلمة السر مرة أخرى"
                   autocomplete="off"
@@ -642,7 +640,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolder }}</span>
+                  <span style="    width: 112px;">{{ imagePlaceHolder }}</span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -742,15 +740,15 @@
                 <img
                   *ngIf="techniciansForm.controls.image.value"
                   src="{{ techniciansForm.controls.image.value }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <img
                   *ngIf=" updatedTechnicalData['image']  && updateMode"
                   src="{{ updatedTechnicalData['image'] }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <button
@@ -772,15 +770,15 @@
                 <img
                   *ngIf="techniciansForm.controls.imagePin.value"
                   src="{{ techniciansForm.controls.imagePin.value }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <img
                   *ngIf="updatedTechnicalData['imagePin'] &&  updateMode"
                   src="{{ updatedTechnicalData['imagePin'] }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <button
