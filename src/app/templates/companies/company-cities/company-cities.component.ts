@@ -67,8 +67,10 @@ export class CompanyCitiesComponent implements OnInit {
           // }
         });
 
-        this.coreService
-        .superGet('company/' + this.companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
+      this.coreService
+        .superGet(
+          'company/' + this.companySlug + '/countries/' + '191' + '/cities'
+        )
         .subscribe(data => {
           console.log(data);
           this.services = data['data'];
@@ -124,7 +126,7 @@ export class CompanyCitiesComponent implements OnInit {
       console.log(value.id);
       this.className = value.name;
       this.coreService
-        .superGet('company/' + companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
+        .superGet('company/' + companySlug + '/countries/' + '191' + '/cities')
         .subscribe(data => {
           console.log(data);
           this.services = data['data'];
