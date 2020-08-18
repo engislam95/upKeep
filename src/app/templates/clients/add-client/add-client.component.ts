@@ -521,6 +521,7 @@ export class AddClientComponent implements OnInit {
   }
 
   setUrl(url) {
+    
     this.startLoading();
 
     let newCity;
