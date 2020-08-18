@@ -44,7 +44,7 @@ export class AddNewMapComponent implements OnInit {
   hideme = [] ;
   urlmap ; 
   showDeletePopup = false;
-   newCityId ;
+  newCityId ;
   lat ;
   long ; 
   showMapPopup = false ;
@@ -376,9 +376,9 @@ export class AddNewMapComponent implements OnInit {
     if(match)
     {
 
-      console.log(url)
-
       this.passPopup = false ;
+
+      console.log(url)
 
       if(url.includes('@'))
       {
@@ -494,7 +494,7 @@ export class AddNewMapComponent implements OnInit {
             console.log(cityName);
     
        
-        
+            // this.passPopup = true ;
     
             // this.clientsForm.controls.citiesObj.value.id = newCity
     
@@ -511,6 +511,7 @@ export class AddNewMapComponent implements OnInit {
             this.passPopup = true ;
 
             }, 3000);
+        
         
         },
         error => {
@@ -554,7 +555,7 @@ export class AddNewMapComponent implements OnInit {
 
     console.log(this.clientsForm.value);
 
-    
+    this.passPopup = false ;
     this.coreService
     .postMethod(
       'clients/validate-map/' +
@@ -635,16 +636,17 @@ export class AddNewMapComponent implements OnInit {
     
          
 
-               
+                // this.passPopup = true ;
     
               console.log(this.clientsForm) ;
              }, 2000);
 
+
              setTimeout(() => {
 
               this.passPopup = true ;
-
-              }, 3000);
+  
+              }, 2000);
 
         
         },
@@ -759,6 +761,8 @@ export class AddNewMapComponent implements OnInit {
   
       this.clientsForm.controls.lat.setValue(+e.lat);
       this.clientsForm.controls.long.setValue(+e.lng);
+
+      this.passPopup = false ;
   
       let newCity ;
       this.coreService
@@ -827,21 +831,28 @@ export class AddNewMapComponent implements OnInit {
                 setTimeout(() => {
                   this.clientsForm.controls.locations_area.setValue(cityName);
                   this.clientsForm.controls.locations_address.setValue(address);
-
-                  console.log(cityName);
-
+      
                   
-       
+          
+                  console.log(cityName);
+          
+             
+      
+                  // this.passPopup = true ;
+          
+          
                   console.log(this.clientsForm) 
                 }, 2000);
 
-
+                      
                 setTimeout(() => {
 
                   this.passPopup = true ;
-    
-                  }, 3000);
+      
+                  },  3000);
   
+
+          
           
           },
           error => {

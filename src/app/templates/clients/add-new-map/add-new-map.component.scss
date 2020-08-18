@@ -615,8 +615,9 @@ agm-map {
 
       font-size: 22px;
     }
+    
     &:disabled {
-      background: #ddd;
+      background: #ddd !important;
     }
     a {
       background: #f6a811;
@@ -754,7 +755,7 @@ agm-map {
 
       margin: 0 auto ;
 
-        background: #f6a811 !important;
+        background: #f6a811 ;
         color: #242a2d  !important;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
         border-radius: 2px;
@@ -861,3 +862,6 @@ i{
 .disabled{
   background: #ddd !important;
 }
+
+button:disabled { background : #DDD !important}
+
