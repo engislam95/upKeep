@@ -645,6 +645,7 @@ export class AddClientComponent implements OnInit {
         long: this.clientsForm.controls.long.value
       }).subscribe(
         (responsee) => {
+          
           console.log(responsee)
           newCity= responsee['city']
           // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);

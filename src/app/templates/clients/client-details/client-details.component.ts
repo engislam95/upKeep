@@ -82,7 +82,7 @@ export class ClientDetailsComponent implements OnInit {
   showMapPopup = false;
   showStopPopup = false ;
 
-  currentUserId = JSON.parse(sessionStorage.getItem('currentUser')).id 
+  currentUserId = JSON.parse(localStorage.getItem('currentUser')).id 
 
   phoneNumbers:[] = []
   mobileReserved: boolean = false;
