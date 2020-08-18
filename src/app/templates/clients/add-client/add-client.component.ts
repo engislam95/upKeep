@@ -529,7 +529,7 @@ export class AddClientComponent implements OnInit {
     let fakeUrl = '';
 
     let secondFake =
-      "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894";
+      "`https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894`";
 
     console.log(url);
 
@@ -539,6 +539,8 @@ export class AddClientComponent implements OnInit {
 
     if (match) {
       console.log(url);
+
+      this.passPopup = false;
 
       if (url.includes('@')) {
         // var newLating = url.split('@')[1].split(',')
@@ -628,7 +630,7 @@ export class AddClientComponent implements OnInit {
                 citiesObj: newCity
               });
 
-              this.passPopup = true;
+              // this.passPopup = true;
 
               // this.clientsForm.controls.citiesObj.value.id = newCity
 
@@ -637,6 +639,12 @@ export class AddClientComponent implements OnInit {
               // this.clientsForm.controls.city_id.setValue(newCity);
               console.log(this.clientsForm);
             }, 2000);
+
+            setTimeout(() => {
+
+              this.passPopup = true ;
+  
+              }, 2000);
           },
           error => {
             if (error.error.errors) {
@@ -675,6 +683,8 @@ export class AddClientComponent implements OnInit {
   searchWithLatlng() {
     this.startLoading();
     let newCity;
+
+    this.passPopup = false ;
 
     console.log(this.clientsForm.value);
 
@@ -755,10 +765,16 @@ export class AddClientComponent implements OnInit {
               citiesObj: newCity
             });
 
-            this.passPopup = true;
+            // this.passPopup = true;
 
             console.log(this.clientsForm);
           }, 2000);
+
+          setTimeout(() => {
+
+            this.passPopup = true ;
+
+            }, 2000);
         },
         error => {
           if (error.error.errors) {
@@ -808,6 +824,7 @@ export class AddClientComponent implements OnInit {
 
     let newCity;
 
+    this.passPopup = false ;
     // /validate-map/4122
 
     this.coreService
@@ -873,10 +890,16 @@ export class AddClientComponent implements OnInit {
               citiesObj: newCity
             });
 
-            this.passPopup = true;
+            // this.passPopup = true;
 
             console.log(this.clientsForm);
           }, 2000);
+
+          setTimeout(() => {
+
+            this.passPopup = true ;
+
+            }, 2000);
         },
         error => {
           if (error.error.errors) {

@@ -6492,3 +6492,9 @@ input[type=number] {
   -moz-appearance: textfield;
   /* Firefox */
 }
+
+button:disabled { background : #DDD !important}
+
+.disabled{
+  background: #ddd !important;
+}
