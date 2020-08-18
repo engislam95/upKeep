@@ -923,7 +923,7 @@ export class AddNewMapComponent implements OnInit {
       this.coreService
       .updateMethod('clients/' + this.clientId  + '/locations/' + this.updatedLocationData.id ,  {
         area : this.clientsForm.controls.locations_area.value,
-        city_id : this.newCityId ,
+        city_id :  this.newCityId ? this.newCityId : this.cityId ,
         special_sign : '' ,
         address : this.clientsForm.controls.locations_address.value, 
         notes : this.clientsForm.controls.locations_notes.value, 
