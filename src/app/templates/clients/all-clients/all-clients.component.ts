@@ -52,7 +52,8 @@ export class AllClientsComponent implements OnInit {
   citiesArray = [];
   cityId = '';
   per_page: any = 10;
-
+  totalPage: any = '';
+  current_page: any = '';
   //  Filter Data
 
   //
@@ -91,8 +92,6 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────────────────────── END TABLE DATA ─────
   //
-  current_page: any = '';
-  totalPage: any = '';
 
   constructor(
     //
@@ -307,9 +306,9 @@ export class AllClientsComponent implements OnInit {
         // Start Assign Data
         this.dataSource = getClientsResponse.data.data;
         console.log(getClientsResponse);
-        this.totalSize = getClientsResponse.data.total;
-        this.current_page = getClientsResponse.data.current_page;
         this.totalPage = getClientsResponse.data.last_page;
+        this.current_page = getClientsResponse.data.current_page;
+        this.totalSize = getClientsResponse.data.total;
         if (this.dataSource.length === 0 && this.pageId === 1) {
           // empty data array
         }
@@ -331,16 +330,19 @@ export class AllClientsComponent implements OnInit {
         //  End Pagination Count
       });
   }
+
+  //
+  // ─────────────────────────────────────── END GET ALL CLIENTS ─────
+  //
+  changePagination(event) {
+    this.getAllClients(event.value);
+  }
   nextPage(pageNum) {
     this.getAllClients(+pageNum + 1);
   }
   prevPage(pageNum) {
     this.getAllClients(+pageNum - 1);
   }
-  //
-  // ─────────────────────────────────────── END GET ALL CLIENTS ─────
-  //
-
   //
   // ─── START DELETE CLIENT ─────────────────────────────────────────
   //
@@ -413,9 +415,7 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────
   //
-  changePagination(event) {
-    this.getAllClients(event.value);
-  }
+
   //
   // ─── START CHECK FOR PAGINATION BUTTONS ──────────────────────────
   //

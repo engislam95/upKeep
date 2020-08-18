@@ -2527,9 +2527,9 @@ button:not(.activeState):disabled {
     top: 6px;
   }
 
-  .mat-form-field {
-    width: calc(100% - 70px) !important;
-  }
+  // .mat-form-field {
+  //   width: calc(100% - 70px) !important;
+  // }
 }
 
 .overlay {
@@ -5743,9 +5743,9 @@ button:not(.activeState):disabled {
     top: 6px;
   }
 
-  .mat-form-field {
-    width: calc(100% - 70px) !important;
-  }
+  // .mat-form-field {
+  //   width: calc(100% - 70px) !important;
+  // }
 }
 
 .overlay {
@@ -6460,6 +6460,19 @@ a.ck.ck-button {
 
   #display_table tr.mat-row:nth-child(even) {
     background: #F1F1F1;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+
+    height: 55px;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1.3em 0 1em 0;
+  }
+
+  .filterInput {
+    padding-top: 2px !important;
   }
 }
 

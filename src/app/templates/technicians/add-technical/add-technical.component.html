@@ -1,4 +1,4 @@
-<div class="main_page" id="formPage">
+<div class="main_page technicaldesignnew" id="formPage">
   <app-alerts></app-alerts>
   <!-- ######################### Start Side Menu ######################### -->
   <app-side-menu></app-side-menu>
@@ -11,8 +11,8 @@
     </div>
     <!-- ################################### End Header ################################### -->
     <div class="page_body_title">
-      <h3><i class="fas fa-plus"></i>{{ modeTitle }}</h3>
-      <div
+      <h3><i class="fas fa-users-cog"></i>{{ modeTitle }}</h3>
+      <!-- <div
         class="page_body_main_buttons"
         *ngIf="technician_all || user.privilege == 'super-admin'"
       >
@@ -20,7 +20,7 @@
           كل الفنيين
           <i class="fas fa-th-list"></i>
         </a>
-      </div>
+      </div> -->
     </div>
     <div
       class="page_body formContainer"
@@ -30,8 +30,10 @@
         <div class="page_block">
           <div id="add_form">
             <form (ngSubmit)="onSubmit()" [formGroup]="techniciansForm">
+
+
               <div class="form_field">
-                <label>إسم الفني <span>*</span></label>
+                <label> <i class="fas fa-user"></i> إسم الفني <span>*</span></label>
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
                     formControlName="name"
@@ -47,7 +49,7 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-user-tie"></i>
+
                 </mat-form-field>
                 <div
                   [@fade]
@@ -69,12 +71,17 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
+
+
+
+
+
               <div class="form_field">
-                <label>الدولة <span>*</span></label>
+                <label> <i class="fas fa-flag"></i> الجنسية <span>*</span></label>
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
                     type="text"
-                    placeholder="إختر الدولة"
+                    placeholder="اخنر دولة الفنى"
                     aria-label="Number"
                     id="countriesObj"
                     matInput
@@ -88,7 +95,7 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-cog"></i>
+
                   <mat-autocomplete
                     #countriesAutoComplete="matAutocomplete"
                     [displayWith]="displayCountries"
@@ -111,7 +118,7 @@
                       techniciansForm.get('countriesObj').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال الدولة
+                  <i class="fas fa-times"></i> برجاء إدخال الجنسية
                 </div>
                 <div
                   [@fade]
@@ -121,68 +128,14 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
-              <div class="form_field">
-                <label>المدينة التابع لها <span>*</span></label>
-                <mat-form-field
-                  dir="rtl"
-                  appearance="outline"
-                  style="display: block;"
-                >
-                  <input
-                    type="text"
-                    placeholder="ادخل مدينة "
-                    aria-label="Number"
-                    matInput
-                    formControlName="city_tech_id"
-                    [matAutocomplete]="cities"
-                    id="city_tech_id"
-                    #search
-                    [value]="
-                      updateMode && updatedTechnicalData['city']
-                        ? updatedTechnicalData['city']['name']
-                        : ''
-                    "
-                  />
 
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('city_tech_id')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <i class="fas fa-cog"></i>
-                  <mat-autocomplete
-                    #cities="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
-                  >
-                    <mat-option
-                      *ngFor="let option of citiesFilteredOptions | async"
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    !city_tech_id && techniciansForm.get('city_tech_id').touched
-                  "
-                >
-                  <i class="fas fa-times"></i> برجاء إدخال المدينة
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="city_tech_id"
-                >
-                  <i class="fas fa-check"></i> إدخال صحيح
-                </div>
-              </div>
+
+
+
+
+
               <div class="form_field">
-                <label>رقم الموبايل <span>*</span></label>
+                <label> <i class="fas fa-mobile"></i> رقم الموبايل <span>*</span></label>
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
                     (keyup)="mobileChanged($event.target.value)"
@@ -204,10 +157,11 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
+
                   <span id="phoneKey" *ngIf="showCountryPhoneKey" [@fade]
-                    >{{ countryPhoneKey }}+</span
+                    >+{{ countryPhoneKey}}</span
                   >
-                  <i class="fas fa-mobile"></i>
+
                 </mat-form-field>
                 <div
                   [@fade]
@@ -219,7 +173,7 @@
                       techniciansForm.get('mobileKey').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال الموبايل بشكل صحيح
+                  <i class="fas fa-times"></i>خطأ في كتابة رقم الموبايل
                 </div>
                 <div
                   [@fade]
@@ -232,7 +186,7 @@
                     techniciansForm.get('mobileKey').status === 'VALID'
                   "
                 >
-                  <i class="fas fa-times"></i> هذا الرقم مسجل من قبل
+                  <i class="fas fa-times"></i> هذا الرقم موجود بالفعل لفنى اخر
                 </div>
                 <div
                   [@fade]
@@ -246,68 +200,80 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
+
+
+
               <div class="form_field">
-                <label>الخدمة <span>*</span></label>
-                <mat-form-field dir="rtl" appearance="outline">
+                <label> <i class="fas fa-envelope"></i> البريد الإلكتروني </label>
+                <mat-form-field appearance="outline" dir="rtl">
                   <input
-                    type="text"
-                    placeholder="إختر الخدمة"
-                    aria-label="Number"
+                    formControlName="email"
+                    (focusout)="checkReservation($event.target.value, 'email')"
+                    (focusin)="emailCheckLoaded = false"
                     matInput
-                    formControlName="serviceObj"
-                    [matAutocomplete]="mainServicesAutoComplete"
-                    id="serviceObj"
+                    placeholder="البريد الإلكترونى"
+                    autocomplete="off"
+                    id="email"
                   />
                   <button
                     type="button"
                     class="resetInput"
-                    (click)="xResetInputs('serviceObj')"
+                    (click)="xResetInputs('email')"
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-cog"></i>
-                  <mat-autocomplete
-                    #mainServicesAutoComplete="matAutocomplete"
-                    [displayWith]="displayMainServices"
-                  >
-                    <mat-option
-                      *ngFor="let option of mainServiceFilteredOptions | async"
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-autocomplete>
+
                 </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('serviceObj').status === 'INVALID' &&
-                      techniciansForm.get('serviceObj').touched) ||
-                    (submitted &&
-                      techniciansForm.get('serviceObj').status === 'INVALID')
+                   
+                      techniciansForm.get('email').touched && !techniciansForm.get('email').value || techniciansForm.controls.email.errors?.email || techniciansForm.controls.email.errors?.pattern
+                    
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال الخدمة
+                  <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
+                  بشكل صحيح
                 </div>
                 <div
                   [@fade]
-                  class="validationState successState"
-                  *ngIf="techniciansForm.get('serviceObj').status === 'VALID'"
+                  class="validationState  errorState"
+                  *ngIf="
+                    techniciansForm.get('email').touched &&
+                    emailReserved &&
+                    emailCheckLoaded 
+
+                  "
                 >
-                  <i class="fas fa-check"></i> إدخال صحيح
+                  <i class="fas fa-times"></i> هذا البريد مستخدم من قبل - برجاء ادخال البريد بشكل صحيح 
+
                 </div>
+                <div
+                [@fade]
+                class="validationState successState"
+                *ngIf="
+                   techniciansForm.get('email').value && !techniciansForm.controls.email.errors?.email && !techniciansForm.controls.email.errors?.pattern
+                "
+              >
+                <i class="fas fa-check"></i> إدخال صحيح
               </div>
+              </div>
+
+
+
+
               <div
                 class="form_field"
                 [ngClass]="{ inputWithToggle: updateMode }"
               >
                 <label
-                  >{{
+                  >           <i class="fas fa-unlock"></i> {{
                     updateMode
-                      ? 'تعديل كلمة السر '
-                      : 'كلمة سر الدخول الي النظام '
-                  }}<span *ngIf="!updateMode">*</span>
+                      ? 
+                      "تعديل كلمة السر "
+                      : "كلمة السر  "
+                  }}<span >*</span>
                 </label>
                 <div *ngIf="updateMode" class="toggleContainer">
                   <mat-slide-toggle
@@ -320,7 +286,7 @@
                   <input
                     *ngIf="updateMode"
                     formControlName="password"
-                    type="text"
+                    type="password"
                     matInput
                     placeholder="تعديل كلمة السر"
                     autocomplete="off"
@@ -336,9 +302,9 @@
                   <input
                     *ngIf="!updateMode"
                     formControlName="password"
-                    type="text"
+                    type="password"
                     matInput
-                    placeholder="كلمة سر الدخول الي النظام"
+                    placeholder="كلمة السر الخاصة بدخول الفني التطبيق"
                     autocomplete="off"
                     id="password"
                   />
@@ -349,7 +315,7 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-unlock"></i>
+
                 </mat-form-field>
                 <div
                   [@fade]
@@ -361,7 +327,7 @@
                       techniciansForm.get('password').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال كلمة السر بشكل صحيح
+                  <i class="fas fa-times"></i> خطا في ادخال كلمة السر
                 </div>
                 <div
                   [@fade]
@@ -370,56 +336,293 @@
                 >
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
+
+                <div class="class-p-vaild"><p>أقل عدد  أحرف او ارقام 8 فقط</p></div>
               </div>
+
+
+
+              <div
+              class="form_field"
+              [ngClass]="{ inputWithToggle: updateMode }"
+            >
+              <label
+                >           <i class="fas fa-unlock"></i> كلمة السر مرة أخرى  <span *ngIf="!updateMode">*</span>
+              </label>
+              <!-- <div *ngIf="updateMode" class="toggleContainer">
+                <mat-slide-toggle
+                  dir="rtl"
+                  (change)="canUpdatePasswordToggle($event)"
+                >
+                </mat-slide-toggle>
+              </div> -->
+              <mat-form-field appearance="outline" dir="rtl">
+                <input
+                  *ngIf="updateMode"
+                  formControlName="confirmPassword"
+                  type="password"               
+                  matInput
+                  placeholder="تعديل كلمة السر"
+                  autocomplete="off"
+                  id="confirmPassword"
+                />
+                <button
+                  type="button"
+                  class="resetInput"
+                  (click)="xResetInputs('confirmPassword')"
+                >
+                  <i class="fas fa-times-circle"></i>
+                </button>
+                <input
+                  *ngIf="!updateMode"
+                  formControlName="confirmPassword"
+                  type="password"
+                  matInput
+                  placeholder="إعادة كتابة كلمة السر مرة أخرى"
+                  autocomplete="off"
+                  id="confirmPassword"
+                />
+                <button
+                  type="button"
+                  class="resetInput"
+                  (click)="xResetInputs('confirmPassword')"
+                >
+                  <i class="fas fa-times-circle"></i>
+                </button>
+
+              </mat-form-field>
+              <div
+                [@fade]
+                class="validationState  errorState"
+                *ngIf="
+                  (techniciansForm.get('confirmPassword').status === 'INVALID' &&
+                    techniciansForm.get('confirmPassword').touched) ||
+                  (submitted &&
+                    techniciansForm.get('confirmPassword').status === 'INVALID' || techniciansForm.get('confirmPassword').value != techniciansForm.get('password').value)
+                "
+              >
+                <i class="fas fa-times"></i> كلمة السر غير متطابقة
+              </div>
+              <div
+                [@fade]
+                class="validationState successState"
+                *ngIf="techniciansForm.get('confirmPassword').status === 'VALID' && techniciansForm.get('confirmPassword').value == techniciansForm.get('password').value"
+              >
+                <i class="fas fa-check"></i> إدخال صحيح
+              </div>
+            </div>
+
+
               <div class="form_field">
-                <label>البريد الإلكتروني </label>
-                <mat-form-field appearance="outline" dir="rtl">
-                  <input
-                    formControlName="email"
-                    (focusout)="checkReservation($event.target.value, 'email')"
-                    (focusin)="emailCheckLoaded = false"
+
+                <label> <i class="fas fa-user-shield"></i> الخدمات التي يقدمها الفنى <span>*</span></label>
+                <div *ngIf="techniciansForm.controls.service_tech.value" class="class-p-vaild"><p style="    margin-top: -26px;     font-family: Roboto;">{{techniciansForm.controls.service_tech.value.length}}/5</p></div>
+                <div *ngIf="!techniciansForm.controls.service_tech.value" class="class-p-vaild"><p style="    margin-top: -26px;     font-family: Roboto;">0/5</p></div>
+
+                <mat-form-field dir="rtl" appearance="outline">
+
+                  <mat-select (selectionChange)="fetchedService()"  class="filterInput" formControlName="service_tech" multiple  placeholder="اختر الخدمات">
+                    <mat-option  *ngFor="let option of mainServiceArray "
+                      [value]="option.id"> {{ option.name  }} 
+                    </mat-option>
+                  </mat-select>
+
+                  <!-- <input
+                    type="text"
+                    placeholder="اختر الخدمات"
+                    aria-label="Number"
                     matInput
-                    placeholder="البريد الإلكتروني"
-                    autocomplete="off"
-                    id="email"
+                    formControlName="serviceObj"
+                    [matAutocomplete]="mainServicesAutoComplete"
+                    id="serviceObj"
                   />
                   <button
                     type="button"
                     class="resetInput"
-                    (click)="xResetInputs('email')"
+                    (click)="xResetInputs('serviceObj')"
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-envelope"></i>
+
+                  <mat-autocomplete
+                    #mainServicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayMainServices"
+                  >
+                    <mat-option
+                      *ngFor="let option of mainServiceFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete> -->
+
                 </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('email').status === 'INVALID' &&
-                      techniciansForm.get('email').touched) ||
+                    (techniciansForm.get('service_tech').status === 'INVALID' &&
+                     techniciansForm.get('service_tech').touched) ||
                     (submitted &&
-                      techniciansForm.get('email').status === 'INVALID' &&
-                      techniciansForm.get('email').dirty)
+                      techniciansForm.get('service_tech').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
-                  بشكل صحيح
+                  <i class="fas fa-times"></i> برجاء إدخال الخدمة
                 </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('service_tech').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+                <div class="class-p-vaild"><p>يمكنك اختيار اكثر من خدمة</p></div>
+
+              </div>
+
+
+
+
+
+              <div class="form_field">
+
+                <label> <i class="fas fa-city"></i> المدن التي يخدمها الفنى <span>*</span></label>
+                <div *ngIf="techniciansForm.controls.city_tech.value" class="class-p-vaild"><p style="    margin-top: -26px;     font-family: Roboto;">{{techniciansForm.controls.city_tech.value.length}}/4</p></div>
+                <div *ngIf="!techniciansForm.controls.city_tech.value" class="class-p-vaild"><p style="    margin-top: -26px;     font-family: Roboto;">0/4</p></div>
+
+                <mat-form-field dir="rtl" appearance="outline">
+                  <mat-select (selectionChange)="fetchedCity()"  class="filterInput" formControlName="city_tech" multiple  placeholder="المدن">
+                    <mat-option  *ngFor="let option of mainCityArray "
+                      [value]="option.id"> {{ option.name  }} 
+                    </mat-option>
+                  </mat-select>
+                  <!-- <input
+                    type="text"
+                    placeholder="المدن"
+                    aria-label="Number"
+                    matInput
+                    formControlName="cityObj"
+                    [matAutocomplete]="mainCitiesAutoComplete"
+                    id="cityObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('cityObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+
+                  <mat-autocomplete
+                    #mainCitiesAutoComplete="matAutocomplete"
+                    [displayWith]="displayMainCities"
+                  >
+                    <mat-option
+                      *ngFor="let option of mainCityFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete> -->
+                </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    techniciansForm.get('email').touched &&
-                    emailReserved &&
-                    emailCheckLoaded
+                    (techniciansForm.get('city_tech').status === 'INVALID' &&
+                      techniciansForm.get('city_tech').touched) ||
+                    (submitted &&
+                      techniciansForm.get('city_tech').status === 'INVALID')
                   "
                 >
-                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+                  <i class="fas fa-times"></i> برجاء إدخال المدينة
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('city_tech').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+                <div class="class-p-vaild"><p>يمكنك اختيار اكثر من مدينة</p></div>
+              </div>
+
+              <!-- <div class="form_field">
+                <label> <i class="far fa-image"></i> صورة الفنى </label>
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImage($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="imageInputObj"
+                    formControlName="imageInputObj"
+                  />
+                  <span>{{ imagePlaceHolder }}</span>
+                  <button
+                    style="left: 15px; top: 72%; z-index: 99;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('imageInputObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+
+
+                </div>
+                <div style="    width: 138px;" class="import-img-tech">
+                  <img src="../../../../assets/img/img-tech.png">
+                  <button
+                  style="left: -15px;
+                  top: 6%; z-index: 99;"
+                  type="button"
+                  class="resetInput"
+                  (click)="xResetInputs('imageInputObj')"
+                >
+                  <i class="fas fa-times-circle"></i>
+                </button>
                 </div>
               </div>
-              <div class="form_field"></div>
+
+
               <div class="form_field">
+                <label> <i class="far fa-image"></i> صورة الفني على الخريطة </label>
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImage($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="imageInputObj"
+                    formControlName="imageInputObj"
+                  />
+                  <span>{{ imagePlaceHolder }}</span>
+                  <button
+                    style="left: 15px; top: 72%; z-index: 99;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('imageInputObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                </div>
+                <div class="import-img-tech">
+                  <img src="../../../../assets/img/map-marker.png">
+                  <button
+                  style="    right: 42px !important;
+                  top: 9px; z-index: 99;"
+                  type="button"
+                  class="resetInput"
+                  (click)="xResetInputs('imageInputObj')"
+                >
+                  <i class="fas fa-times-circle"></i>
+                </button>
+                </div>
+              </div> -->
+
+             <div class="form_field">
                 <label>إرفق صورة </label>
                 <div
                   id="uploadImageContainer"
@@ -437,7 +640,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolder }}</span>
+                  <span style="    width: 112px;">{{ imagePlaceHolder }}</span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -537,15 +740,15 @@
                 <img
                   *ngIf="techniciansForm.controls.image.value"
                   src="{{ techniciansForm.controls.image.value }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <img
-                  *ngIf="updatedTechnicalData['image'] && updateMode"
+                  *ngIf=" updatedTechnicalData['image']  && updateMode"
                   src="{{ updatedTechnicalData['image'] }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <button
@@ -560,33 +763,22 @@
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="updatedTechnicalData['image']"
-                  (click)="deleteIMG()"
-                  (click)="xResetInputs('imageInputObj')"
-                  style="position: relative;
-                left: -30px;
-                top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
+           
               </div>
 
               <div class="form_field">
                 <img
                   *ngIf="techniciansForm.controls.imagePin.value"
                   src="{{ techniciansForm.controls.imagePin.value }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <img
-                  *ngIf="updatedTechnicalData['imagePin'] && updateMode"
+                  *ngIf="updatedTechnicalData['imagePin'] &&  updateMode"
                   src="{{ updatedTechnicalData['imagePin'] }}"
-                  width="100px"
-                  height="100px"
+                  width="124px"
+                  height="162px"
                   alt="user-image"
                 />
                 <button
@@ -601,54 +793,39 @@
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>
-                <button
-                  type="button"
-                  class="resetInput"
-                  *ngIf="updatedTechnicalData['imagePin']"
-                  (click)="deleteIMGPin()"
-                  (click)="xResetInputs('imageInputObjPin')"
-                  style="position: relative;
-                left: -30px;
-                top: -80px;"
-                >
-                  <img src="../../../../assets/img/close.svg" />
-                </button>
+             
+      
               </div>
 
-              <hr />
+              
               <div class="form_field fullWidth toggle">
-                <span>حالة التفعيل : </span>
+                <p> <i class="fas fa-shield-check"></i> حالة تفعيل حساب الفني على النظام  </p>
                 <mat-slide-toggle
                   [checked]="techniciansForm.value.active"
                   dir="rtl"
                   (change)="changeActive($event)"
                 ></mat-slide-toggle>
               </div>
-              <hr />
+              <!-- [disabled]="techniciansForm.invalid " -->
+
               <div class="form_field fullWidth formButtons">
                 <button
                   *ngIf="!updateMode"
                   type="submit"
                   class="formSubmit formButton"
-                  [disabled]="techniciansForm.invalid || submitted"
+                  [disabled]="techniciansForm.invalid "
                 >
-                  حفط
+                إضافة فنى جديد
                 </button>
                 <button
                   *ngIf="updateMode"
                   type="button"
                   (click)="onUpdate()"
                   class="formSubmit formButton"
-                  [disabled]="
-                    !techniciansForm.controls.name.value ||
-                    !techniciansForm.controls.service_id.value ||
-                    !techniciansForm.controls.serviceObj.value ||
-                    !techniciansForm.controls.countriesObj.value ||
-                    !techniciansForm.controls.active.value ||
-                    !techniciansForm.controls.city_tech_id.value
-                  "
+                  [disabled]="techniciansForm.invalid "
+                 
                 >
-                  تعديل
+                تعديل بيانات فنى
                 </button>
               </div>
             </form>

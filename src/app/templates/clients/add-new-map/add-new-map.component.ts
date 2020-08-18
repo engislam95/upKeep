@@ -44,7 +44,7 @@ export class AddNewMapComponent implements OnInit {
   hideme = [] ;
   urlmap ; 
   showDeletePopup = false;
-  newCityId ;
+   newCityId ;
   lat ;
   long ; 
   showMapPopup = false ;
@@ -813,7 +813,8 @@ export class AddNewMapComponent implements OnInit {
                 setTimeout(() => {
                   this.clientsForm.controls.locations_area.setValue(cityName);
                   this.clientsForm.controls.locations_address.setValue(address);
-      
+
+
                   
           
                   console.log(cityName);

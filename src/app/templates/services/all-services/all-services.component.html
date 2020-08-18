@@ -265,7 +265,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
-          <div class="pagination">
+          <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -295,7 +295,57 @@
                 <a (click)="goPage(pagesNumbers.length)">الصفحة الأخيرة</a>
               </li>
             </ul>
+          </div> -->
+
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+               border: 1px solid rgba(112, 112, 112, 0.38);
+               width: 42px;
+               height: 31px;
+               text-align: center;"
+                    type="text"
+                    type="number"
+                    min="1"
+                    [max]="totalPage"
+                    #pageNumber
+                    [value]="current_page"
+                    (keyup.enter)="changePagination(pageNumber)"
+                  />
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
           </div>
+
         </div>
       </div>
     </div>
