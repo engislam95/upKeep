@@ -429,7 +429,7 @@
             </agm-marker> -->
 
             <ng-container
-              *ngIf="citiesLating.length && url !== '/locations-managment'"
+              *ngIf="citiesLating.length && url == '/orders/orders-map'"
             >
               <agm-marker
                 *ngFor="let city of citiesLating"
