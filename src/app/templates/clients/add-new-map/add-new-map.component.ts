@@ -378,6 +378,8 @@ export class AddNewMapComponent implements OnInit {
 
       console.log(url)
 
+      this.passPopup = false ;
+
       if(url.includes('@'))
       {
 
@@ -492,7 +494,7 @@ export class AddNewMapComponent implements OnInit {
             console.log(cityName);
     
        
-            this.passPopup = true ;
+        
     
             // this.clientsForm.controls.citiesObj.value.id = newCity
     
@@ -503,6 +505,12 @@ export class AddNewMapComponent implements OnInit {
     
             
           }, 2000);
+
+          setTimeout(() => {
+
+            this.passPopup = true ;
+
+            }, 3000);
         
         },
         error => {
@@ -627,10 +635,16 @@ export class AddNewMapComponent implements OnInit {
     
          
 
-                this.passPopup = true ;
+               
     
               console.log(this.clientsForm) ;
              }, 2000);
+
+             setTimeout(() => {
+
+              this.passPopup = true ;
+
+              }, 3000);
 
         
         },
@@ -814,18 +828,19 @@ export class AddNewMapComponent implements OnInit {
                   this.clientsForm.controls.locations_area.setValue(cityName);
                   this.clientsForm.controls.locations_address.setValue(address);
 
+                  console.log(cityName);
 
                   
-          
-                  console.log(cityName);
-          
-             
-      
-                  this.passPopup = true ;
-          
-          
+       
                   console.log(this.clientsForm) 
                 }, 2000);
+
+
+                setTimeout(() => {
+
+                  this.passPopup = true ;
+    
+                  }, 3000);
   
           
           },

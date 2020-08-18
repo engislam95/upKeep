@@ -498,6 +498,14 @@
                 *ngIf="isUpdate"
                 class="buttonAddLocation"
                 type="button"
+                [disabled]="
+                !clientsForm.controls.long.value ||
+                !clientsForm.controls.lat.value || 
+                !clientsForm.controls.locations_address.value ||
+                !clientsForm.controls.locations_area.value ||
+                !passPopup
+              "
+
               >
                 تعديل
               </button>

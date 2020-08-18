@@ -615,6 +615,9 @@ agm-map {
 
       font-size: 22px;
     }
+    &:disabled {
+      background: #ddd;
+    }
     a {
       background: #f6a811;
       color: #242a2d;
@@ -853,4 +856,8 @@ i{
   width: 150px;
   font-size: 15px ;
   text-align: center;
+}
+
+.disabled{
+  background: #ddd !important;
 }
