@@ -115,7 +115,8 @@
           },
           "configurations": {
             "production": {
-              "devServerTarget": "uk:serve:production"
+              "devServerTarget": "uk:serve:production",
+              "outputHashing": "all"
             }
           }
         },
