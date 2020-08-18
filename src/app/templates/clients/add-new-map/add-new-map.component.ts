@@ -420,15 +420,26 @@ export class AddNewMapComponent implements OnInit {
 
       // /validate-map/4122
 
-       this.coreService.postMethod('clients/validate-map/' + this.cityId, {
-        lat:this.clientsForm.controls.lat.value ,
-        long: this.clientsForm.controls.long.value
-        }).subscribe(
-          (responsee) => {
-            console.log(responsee)
-            newCity= responsee['city']
-            this.newCityId = responsee['city'].id
-        
+      // /validate-map/4122
+
+      this.coreService
+        .postMethod(
+          'clients/validate-map/' +
+            this.cityId,
+          {
+            lat: this.clientsForm.controls.lat.value,
+            long: this.clientsForm.controls.long.value
+          }
+        )
+        .subscribe(
+          responsee => {
+            console.log(responsee);
+            if(responsee['city'])
+            {
+              newCity = responsee['city'];
+              this.newCityId = responsee['city'].id ;
+            }
+           
           this.showSuccess(responsee['message']);
 
 
@@ -536,16 +547,23 @@ export class AddNewMapComponent implements OnInit {
     console.log(this.clientsForm.value);
 
     
-      // /validate-map/4122
-
-      this.coreService.postMethod('clients/validate-map/' + this.cityId , {
-        lat:this.clientsForm.controls.lat.value ,
+    this.coreService
+    .postMethod(
+      'clients/validate-map/' +
+        this.cityId,
+      {
+        lat: this.clientsForm.controls.lat.value,
         long: this.clientsForm.controls.long.value
-        }).subscribe(
-          (responsee) => {
-            console.log(responsee)
-            newCity= responsee['city']
-            this.newCityId = responsee['city'].id
+      }
+    )
+    .subscribe(
+      responsee => {
+        console.log(responsee);
+        if(responsee['city'])
+        {
+          newCity = responsee['city'];
+          this.newCityId = responsee['city'].id ;
+        }
           // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
         
              this.showSuccess(responsee['message']);
@@ -729,27 +747,23 @@ export class AddNewMapComponent implements OnInit {
       this.clientsForm.controls.long.setValue(+e.lng);
   
       let newCity ;
-  
-            // /validate-map/4122
-
-              // /validate-map/4122
-
-      this.coreService.postMethod('clients/validate-map/' + this.cityId , {
-        lat:this.clientsForm.controls.lat.value ,
-        long: this.clientsForm.controls.long.value
-        }).subscribe(
-          (responsee) => {
-            console.log(responsee)
-            newCity= responsee['city']
-            this.newCityId = responsee['city'].id
-  
-        // this.coreService.postMethod('locations/validate-map/' + this.cityId , {
-        //   lat:this.clientsForm.controls.lat.value ,
-        //   long: this.clientsForm.controls.long.value
-        // }).subscribe(
-        //   (responsee) => {
-        //     console.log(responsee)
-        //     newCity= responsee['city']
+      this.coreService
+      .postMethod(
+        'clients/validate-map/' +
+          this.cityId,
+        {
+          lat: this.clientsForm.controls.lat.value,
+          long: this.clientsForm.controls.long.value
+        }
+      )
+      .subscribe(
+        responsee => {
+          console.log(responsee);
+          if(responsee['city'])
+          {
+            newCity = responsee['city'];
+            this.newCityId = responsee['city'].id ;
+          }
             // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
           
                 this.showSuccess(responsee['message']);
@@ -876,7 +890,7 @@ export class AddNewMapComponent implements OnInit {
       .postMethod('clients/' + this.clientId + '/locations' ,  {
         name: '' ,
         area : this.clientsForm.controls.locations_area.value,
-        city_id : this.clientDetails.locations[0].city_id ,
+        city_id : this.newCityId ? this.newCityId : this.cityId  ,
         special_sign : '' ,
         address : this.clientsForm.controls.locations_address.value, 
         long : this.clientsForm.controls.long.value, 
