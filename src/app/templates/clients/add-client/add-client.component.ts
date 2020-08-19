@@ -159,7 +159,7 @@ export class AddClientComponent implements OnInit {
     private router: Router,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
   /* ----------------------- Oninit ---------------------------- */
   ngOnInit() {
@@ -307,7 +307,7 @@ export class AddClientComponent implements OnInit {
             this.emailCheckLoaded = true;
           }
         }
-      );
+      )
   }
   /* -------------------------- Reset Input ---------------------------- */
   xResetInputs(key) {
@@ -400,7 +400,7 @@ export class AddClientComponent implements OnInit {
               // address: this.clientsForm.controls.citiesObj.value.name
               address: this.cityDetails.name
             },
-            function(results, status) {
+            function (results, status) {
               console.log(results);
               newLocation.lat = results[0].geometry.location.lat();
               newLocation.lng = results[0].geometry.location.lng();
@@ -450,7 +450,7 @@ export class AddClientComponent implements OnInit {
               // address: this.clientsForm.controls.citiesObj.value.name
               address: this.cityDetails.name
             },
-            function(results, status) {
+            function (results, status) {
               console.log(results);
               newLocation.lat = results[0].geometry.location.lat();
               newLocation.lng = results[0].geometry.location.lng();
@@ -521,7 +521,7 @@ export class AddClientComponent implements OnInit {
   }
 
   setUrl(url) {
-    
+
     this.startLoading();
 
     let newCity;
@@ -560,6 +560,15 @@ export class AddClientComponent implements OnInit {
       // var long = url.split('=').split(',')[1]
 
       if (url.includes('@')) {
+        console.log(newLating[1].split('?'));
+        if (newLating[1].includes('?')) {
+          let newLog = newLating[1].split('?')[0];
+          console.log(newLog);
+          newLating[1] = newLog;
+          console.log(newLating[1]);
+
+        }
+
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
       } else {
@@ -572,7 +581,7 @@ export class AddClientComponent implements OnInit {
       this.coreService
         .postMethod(
           'clients/validate-map/' +
-            this.clientsForm.controls.citiesObj.value.id,
+          this.clientsForm.controls.citiesObj.value.id,
           {
             lat: this.clientsForm.controls.lat.value,
             long: this.clientsForm.controls.long.value
@@ -596,7 +605,7 @@ export class AddClientComponent implements OnInit {
             let cityName: string = '';
             let address: string = '';
 
-            geocoder.geocode({ latLng: latlng }, function(results, status) {
+            geocoder.geocode({ latLng: latlng }, function (results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
                   address = results[0].formatted_address;
@@ -642,9 +651,9 @@ export class AddClientComponent implements OnInit {
 
             setTimeout(() => {
 
-              this.passPopup = true ;
-  
-              }, 2000);
+              this.passPopup = true;
+
+            }, 2000);
           },
           error => {
             if (error.error.errors) {
@@ -684,7 +693,7 @@ export class AddClientComponent implements OnInit {
     this.startLoading();
     let newCity;
 
-    this.passPopup = false ;
+    this.passPopup = false;
 
     console.log(this.clientsForm.value);
 
@@ -716,7 +725,7 @@ export class AddClientComponent implements OnInit {
           let cityName: string = '';
           let address: string = '';
 
-          geocoder.geocode({ latLng: latlng }, function(results, status) {
+          geocoder.geocode({ latLng: latlng }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
@@ -772,9 +781,9 @@ export class AddClientComponent implements OnInit {
 
           setTimeout(() => {
 
-            this.passPopup = true ;
+            this.passPopup = true;
 
-            }, 2000);
+          }, 2000);
         },
         error => {
           if (error.error.errors) {
@@ -824,7 +833,7 @@ export class AddClientComponent implements OnInit {
 
     let newCity;
 
-    this.passPopup = false ;
+    this.passPopup = false;
     // /validate-map/4122
 
     this.coreService
@@ -851,7 +860,7 @@ export class AddClientComponent implements OnInit {
           );
           let cityName: string = '';
           let address: string = '';
-          geocoder.geocode({ latLng: latlng }, function(results, status) {
+          geocoder.geocode({ latLng: latlng }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
@@ -897,9 +906,9 @@ export class AddClientComponent implements OnInit {
 
           setTimeout(() => {
 
-            this.passPopup = true ;
+            this.passPopup = true;
 
-            }, 2000);
+          }, 2000);
         },
         error => {
           if (error.error.errors) {

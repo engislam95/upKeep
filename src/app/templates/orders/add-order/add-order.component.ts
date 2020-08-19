@@ -193,7 +193,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     }
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -657,7 +657,9 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
+
         this.selectedClientLocationsArray.forEach(element => {
+          console.log('Location ID ->', element);
           if (element.default) {
             this.selectedLocationId = element.id;
           }
