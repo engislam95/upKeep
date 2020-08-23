@@ -261,11 +261,8 @@
               >
                 <label>
                   <i class="fas fa-unlock"></i>
-                  {{
-                    updateMode
-                      ? 'تعديل كلمة السر '
-                      : 'كلمة سر الدخول الي النظام '
-                  }}<span *ngIf="!updateMode">*</span>
+                  {{ updateMode ? 'تعديل كلمة السر ' : 'كلمة السر  '
+                  }}<span>*</span>
                 </label>
                 <div *ngIf="updateMode" class="toggleContainer">
                   <mat-slide-toggle
@@ -417,13 +414,11 @@
                   <span>*</span></label
                 >
                 <div
-                  *ngIf="techniciansForm['controls'].service_tech.value"
+                  *ngIf="techniciansForm.controls.service_tech.value"
                   class="class-p-vaild"
                 >
                   <p style="    margin-top: -26px;     font-family: Roboto;">
-                    {{
-                      techniciansForm['controls'].service_tech.value.length
-                    }}/5
+                    {{ techniciansForm.controls.service_tech.value.length }}/5
                   </p>
                 </div>
                 <div
@@ -467,7 +462,6 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-
                   <mat-autocomplete
                     #mainServicesAutoComplete="matAutocomplete"
                     [displayWith]="displayMainServices"
@@ -510,11 +504,11 @@
                   <span>*</span></label
                 >
                 <div
-                  *ngIf="techniciansForm['controls'].city_tech.value"
+                  *ngIf="techniciansForm.controls.city_tech.value"
                   class="class-p-vaild"
                 >
                   <p style="    margin-top: -26px;     font-family: Roboto;">
-                    {{ techniciansForm['controls'].city_tech.value.length }}/4
+                    {{ techniciansForm.controls.city_tech.value.length }}/4
                   </p>
                 </div>
                 <div
@@ -557,7 +551,6 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-
                   <mat-autocomplete
                     #mainCitiesAutoComplete="matAutocomplete"
                     [displayWith]="displayMainCities"
@@ -615,8 +608,6 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-
-
                 </div>
                 <div style="    width: 138px;" class="import-img-tech">
                   <img src="../../../../assets/img/img-tech.png">
@@ -631,8 +622,6 @@
                 </button>
                 </div>
               </div>
-
-
               <div class="form_field">
                 <label> <i class="far fa-image"></i> صورة الفني على الخريطة </label>
                 <div id="uploadImageContainer">
@@ -785,8 +774,8 @@
 
               <div class="form_field">
                 <img
-                  *ngIf="techniciansForm['controls'].image.value"
-                  src="{{ techniciansForm['controls'].image.value }}"
+                  *ngIf="techniciansForm.controls.image.value"
+                  src="{{ techniciansForm.controls.image.value }}"
                   width="124px"
                   height="162px"
                   alt="user-image"
@@ -801,7 +790,7 @@
                 <button
                   type="button"
                   class="resetInput"
-                  *ngIf="techniciansForm['controls'].image.value"
+                  *ngIf="techniciansForm.controls.image.value"
                   (click)="xResetInputs('imageInputObj')"
                   (click)="deleteIMG()"
                   style="position: relative;
@@ -814,8 +803,8 @@
 
               <div class="form_field">
                 <img
-                  *ngIf="techniciansForm['controls'].imagePin.value"
-                  src="{{ techniciansForm['controls'].imagePin.value }}"
+                  *ngIf="techniciansForm.controls.imagePin.value"
+                  src="{{ techniciansForm.controls.imagePin.value }}"
                   width="124px"
                   height="162px"
                   alt="user-image"
@@ -830,7 +819,7 @@
                 <button
                   type="button"
                   class="resetInput"
-                  *ngIf="techniciansForm['controls'].imagePin.value"
+                  *ngIf="techniciansForm.controls.imagePin.value"
                   (click)="xResetInputs('imageInputObjPin')"
                   (click)="deleteIMGPin()"
                   style="position: relative;

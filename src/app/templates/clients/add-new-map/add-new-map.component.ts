@@ -15,7 +15,6 @@ import { ResponseStateService } from '../../../tools/shared-services/response-st
   animations: fade
 })
 export class AddNewMapComponent implements OnInit {
-
   clientId: any;
   cityId;
   clientDetails;
@@ -61,25 +60,29 @@ export class AddNewMapComponent implements OnInit {
     long: new FormControl('', Validators.required),
     locations_address: new FormControl('', Validators.required),
     locations_notes: new FormControl('', Validators.required),
-    locations_area: new FormControl('', Validators.required),
-  })
+    locations_area: new FormControl('', Validators.required)
+  });
 
-
-  constructor(private activatedRoute: ActivatedRoute, private coreService: CoreService, private loaderService: LoaderService, private mapsAPILoader: MapsAPILoader, private responseStateService: ResponseStateService,) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private coreService: CoreService,
+    private loaderService: LoaderService,
+    private mapsAPILoader: MapsAPILoader,
+    private responseStateService: ResponseStateService
+  ) {}
 
   ngOnInit() {
-
     // Get Client Id
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.clientId = queryParams.clientId;
       this.getClientDetails(this.clientId);
       // this.getLocationOnMap();
-      this.urlmap = 'http://maps.google.com/maps?q=' + this.clientsForm.controls.lat.value + ',' + this.clientsForm.controls.long.value
-
-
+      this.urlmap =
+        'http://maps.google.com/maps?q=' +
+        this.clientsForm.controls.lat.value +
+        ',' +
+        this.clientsForm.controls.long.value;
     });
-
-
   }
 
   // ─── START GET CLIENT DETAILS ────────────────────────────────────
@@ -92,12 +95,11 @@ export class AddNewMapComponent implements OnInit {
         // Start LOADING Loading
         this.endLoading();
 
-        console.log(clientDetails)
-
+        console.log(clientDetails);
 
         // End LOADING Loading
         this.clientDetails = clientDetails.data;
-        console.log(this.clientDetails.locations.length)
+        console.log(this.clientDetails.locations.length);
 
         this.clientLong = this.clientDetails.long;
         this.clientLat = this.clientDetails.lat;
@@ -111,22 +113,22 @@ export class AddNewMapComponent implements OnInit {
         this.clientStatusActivation = this.clientDetails.active;
         // console.log(this.clientStatusActivation);
         this.locationsArrayLength = clientDetails.data.locations.length;
-        console.log(this.locationsArrayLength)
+        console.log(this.locationsArrayLength);
 
-        this.locations = clientDetails.data.locations
+        this.locations = clientDetails.data.locations;
 
-        this.cityId = clientDetails.data.city.id
+        this.cityId = clientDetails.data.city.id;
 
         this.status = this.clientDetails.status;
-        this.clientType = this.clientDetails.client_type
-        this.created_at = this.clientDetails.created_at
-        this.created_by = this.clientDetails.created_by
+        this.clientType = this.clientDetails.client_type;
+        this.created_at = this.clientDetails.created_at;
+        this.created_by = this.clientDetails.created_by;
         this.cityName = this.clientDetails.city.name;
         this.clientNotes = this.clientDetails.notes;
         // this.lat = clientDetails.lat  ;
         // this.long = clientDetails.long ;
 
-        this.updated_at = this.clientDetails.locations[0].updated_at
+        this.updated_at = this.clientDetails.locations[0].updated_at;
 
         this.clientAddress = this.clientDetails.address;
         // TODO
@@ -134,8 +136,6 @@ export class AddNewMapComponent implements OnInit {
 
         this.lat = this.clientDetails.locations[0].lat;
         this.long = this.clientDetails.locations[0].long;
-
-
 
         this.clientDetails.locations.forEach(element => {
           this.defaultAddress = element.default;
@@ -147,7 +147,6 @@ export class AddNewMapComponent implements OnInit {
 
   /* -------------------------- Reset Input ---------------------------- */
   xResetInputs(key) {
-
     if (key === 'aboveUrl') {
       this.clientsForm.patchValue({ aboveUrl: '' });
     }
@@ -165,8 +164,7 @@ export class AddNewMapComponent implements OnInit {
       mainLocation: true
     };
 
-
-    let address: string = ''
+    let address: string = '';
 
     setTimeout(() => {
       this.mapsAPILoader.load().then(() => {
@@ -176,13 +174,13 @@ export class AddNewMapComponent implements OnInit {
           {
             address: 'الرياض'
           },
-          function (results, status) {
+          function(results, status) {
             console.log(results);
             newLocation.lat = results[0].geometry.location.lat();
             newLocation.lng = results[0].geometry.location.lng();
             console.log(newLocation.lng);
 
-            address = results[0].formatted_address
+            address = results[0].formatted_address;
           }
         );
       });
@@ -194,7 +192,6 @@ export class AddNewMapComponent implements OnInit {
       console.log(this.clientsForm.value);
     }, 4000);
   }
-
 
   // setUrl(url) {
 
@@ -228,7 +225,6 @@ export class AddNewMapComponent implements OnInit {
   //       console.log(last.split('!4d'))
   //       var newLating = last.split('!4d')
 
-
   //       // alert(pieces[pieces.length-1]);
   //       // console.log(newLating)
 
@@ -241,9 +237,6 @@ export class AddNewMapComponent implements OnInit {
   //       console.log(latLong);
 
   //     }
-
-
-
 
   //     // var long = url.split('=').split(',')[1]
 
@@ -270,8 +263,6 @@ export class AddNewMapComponent implements OnInit {
   //         // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
 
   //         this.showSuccess(responsee['message']);
-
-
 
   //         var geocoder;
   //         geocoder = new google.maps.Geocoder();
@@ -316,9 +307,7 @@ export class AddNewMapComponent implements OnInit {
   //           this.clientsForm.controls.locations_area.setValue(cityName);
   //           this.clientsForm.controls.locations_address.setValue(address);
 
-
   //         }, 2000);
-
 
   //       },
   //       error => {
@@ -339,25 +328,17 @@ export class AddNewMapComponent implements OnInit {
 
   //           this.showMapPopup = false;
 
-
   //       }
   //     )
 
-
   //     console.log(this.clientsForm.value);
 
-
-
   //   }
-
-
 
   //   this.endLoading();
   // }
 
-
   setUrl(url) {
-
     this.startLoading();
 
     let newCity;
@@ -365,52 +346,48 @@ export class AddNewMapComponent implements OnInit {
     let fakeUrl =
       'http://maps.google.com/maps?q=21.656038071580785,39.119307696819305';
 
-    let secondFake = "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894"
+    let secondFake =
+      "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894";
 
     console.log(url);
 
-    var re = new RegExp("^(http|https)://", "i");
+    var re = new RegExp('^(http|https)://', 'i');
 
     var match = re.test(url);
 
     if (match) {
-
       this.passPopup = false;
 
-      console.log(url)
+      console.log(url);
 
       if (url.includes('@')) {
-
         // var newLating = url.split('@')[1].split(',')
-        var rest = url.substring(0, url.lastIndexOf("3d") + 2);
-        var last = url.substring(url.lastIndexOf("3d") + 2, url.length);
-        console.log(rest)
-        console.log(last.split('!4d'))
-        var newLating = last.split('!4d')
-
+        var rest = url.substring(0, url.lastIndexOf('3d') + 2);
+        var last = url.substring(url.lastIndexOf('3d') + 2, url.length);
+        console.log(rest);
+        console.log(last.split('!4d'));
+        var newLating = last.split('!4d');
 
         // alert(pieces[pieces.length-1]);
         // console.log(newLating)
-
-      }
-
-      else {
-
+      } else {
         var latLong = url.split('=')[1].split(',');
         console.log(latLong);
-
       }
-
-
-
 
       // var long = url.split('=').split(',')[1]
 
       if (url.includes('@')) {
+        console.log(newLating[1].split('?'));
+        if (newLating[1].includes('?')) {
+          let newLog = newLating[1].split('?')[0];
+          console.log(newLog);
+          newLating[1] = newLog;
+          console.log(newLating[1]);
+        }
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
-      }
-      else {
+      } else {
         this.clientsForm.controls.lat.setValue(+latLong[0]);
         this.clientsForm.controls.long.setValue(+latLong[1]);
       }
@@ -420,14 +397,10 @@ export class AddNewMapComponent implements OnInit {
       // /validate-map/4122
 
       this.coreService
-        .postMethod(
-          'clients/validate-map/' +
-          this.cityId,
-          {
-            lat: this.clientsForm.controls.lat.value,
-            long: this.clientsForm.controls.long.value
-          }
-        )
+        .postMethod('clients/validate-map/' + this.cityId, {
+          lat: this.clientsForm.controls.lat.value,
+          long: this.clientsForm.controls.long.value
+        })
         .subscribe(
           responsee => {
             console.log(responsee);
@@ -438,7 +411,6 @@ export class AddNewMapComponent implements OnInit {
 
             this.showSuccess(responsee['message']);
 
-
             var geocoder;
             geocoder = new google.maps.Geocoder();
             var latlng = new google.maps.LatLng(
@@ -446,11 +418,10 @@ export class AddNewMapComponent implements OnInit {
               this.clientsForm.controls.long.value
             );
 
-
             let cityName: string = '';
-            let address: string = ''
+            let address: string = '';
 
-            geocoder.geocode({ latLng: latlng }, function (results, status) {
+            geocoder.geocode({ latLng: latlng }, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
                   address = results[0].formatted_address;
@@ -461,12 +432,9 @@ export class AddNewMapComponent implements OnInit {
                   let city;
 
                   if (count > 2) {
-
                     city = value[count - 3];
-                  }
-                  else {
+                  } else {
                     city = value[count - 1];
-
                   }
 
                   // alert("city name is: " + city);
@@ -477,14 +445,10 @@ export class AddNewMapComponent implements OnInit {
               }
             });
             setTimeout(() => {
-
               this.clientsForm.controls.locations_area.setValue(cityName);
               this.clientsForm.controls.locations_address.setValue(address);
 
-
-
               console.log(cityName);
-
 
               // this.passPopup = true ;
 
@@ -494,17 +458,11 @@ export class AddNewMapComponent implements OnInit {
 
               // this.clientsForm.controls.city_id.setValue(newCity);
               console.log(this.clientsForm);
-
-
             }, 2000);
 
             setTimeout(() => {
-
               this.passPopup = true;
-
             }, 3000);
-
-
           },
           error => {
             if (error.error.errors) {
@@ -513,7 +471,6 @@ export class AddNewMapComponent implements OnInit {
               this.showErrors(error.error.message);
             }
 
-
             this.clientsForm.controls.lat.setValue(28.421864);
             this.clientsForm.controls.long.setValue(34.432869);
             this.clientsForm.controls.aboveUrl.setValue('');
@@ -521,25 +478,14 @@ export class AddNewMapComponent implements OnInit {
             this.showMapPopup = false;
 
             this.passPopup = false;
-
-
-
           }
-        )
-
+        );
 
       console.log(this.clientsForm.value);
-
-
-
     }
-
-
 
     this.endLoading();
   }
-
-
 
   searchWithLatlng() {
     this.startLoading();
@@ -549,14 +495,10 @@ export class AddNewMapComponent implements OnInit {
 
     this.passPopup = false;
     this.coreService
-      .postMethod(
-        'clients/validate-map/' +
-        this.cityId,
-        {
-          lat: this.clientsForm.controls.lat.value,
-          long: this.clientsForm.controls.long.value
-        }
-      )
+      .postMethod('clients/validate-map/' + this.cityId, {
+        lat: this.clientsForm.controls.lat.value,
+        long: this.clientsForm.controls.long.value
+      })
       .subscribe(
         responsee => {
           console.log(responsee);
@@ -576,9 +518,9 @@ export class AddNewMapComponent implements OnInit {
           );
 
           let cityName: string = '';
-          let address: string = ''
+          let address: string = '';
 
-          geocoder.geocode({ latLng: latlng }, function (results, status) {
+          geocoder.geocode({ latLng: latlng }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
@@ -586,17 +528,12 @@ export class AddNewMapComponent implements OnInit {
 
                 let count = value.length;
 
-
-
                 let city;
 
                 if (count > 2) {
-
                   city = value[count - 3];
-                }
-                else {
+                } else {
                   city = value[count - 1];
-
                 }
 
                 // alert("city name is: " + city);
@@ -609,35 +546,32 @@ export class AddNewMapComponent implements OnInit {
           setTimeout(() => {
             console.log(this.clientsForm.controls.citiesObj);
 
-            this.clientsForm.controls.lat.setValue(+this.clientsForm.controls.lat.value);
-            this.clientsForm.controls.long.setValue(+this.clientsForm.controls.long.value);
+            this.clientsForm.controls.lat.setValue(
+              +this.clientsForm.controls.lat.value
+            );
+            this.clientsForm.controls.long.setValue(
+              +this.clientsForm.controls.long.value
+            );
 
             var latlng = new google.maps.LatLng(
               this.clientsForm.controls.lat.value,
               this.clientsForm.controls.long.value
             );
-            geocoder.geocode({ latLng: latlng })
+            geocoder.geocode({ latLng: latlng });
 
             console.log(cityName);
 
             this.clientsForm.controls.locations_area.setValue(cityName);
             this.clientsForm.controls.locations_address.setValue(address);
 
-
-
             // this.passPopup = true ;
 
             console.log(this.clientsForm);
           }, 2000);
 
-
           setTimeout(() => {
-
             this.passPopup = true;
-
           }, 2000);
-
-
         },
         error => {
           if (error.error.errors) {
@@ -655,43 +589,33 @@ export class AddNewMapComponent implements OnInit {
           this.clientsForm.controls.long.setValue(34.432869);
           this.clientsForm.controls.aboveUrl.setValue('');
 
-
           this.passPopup = false;
 
           this.showMapPopup = false;
-
-
         }
-      )
-
-
+      );
 
     this.endLoading();
   }
 
-
   addAdress() {
-
     this.clientsForm.patchValue({
-
       aboveUrl: '',
       locations_address: '',
       locations_notes: '',
       locations_area: '',
       lat: '',
       long: ''
-    })
+    });
 
     this.showMapPopup = true;
     this.overLayShow = true;
     this.addNewAddressModeStatus = true;
     this.isUpdate = false;
-
-
   }
 
   copyURL(text) {
-    console.log(text)
+    console.log(text);
     const el = document.createElement('textarea');
     el.value = text;
     document.body.appendChild(el);
@@ -699,11 +623,9 @@ export class AddNewMapComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(el);
     this.showSuccess('تم النسخ');
-
-  };
+  }
 
   // clickedNewOrgins(e) {
-
 
   //   this.clientsForm.controls.lat.setValue(+e.lat);
   //   this.clientsForm.controls.long.setValue(+e.lng);
@@ -740,14 +662,11 @@ export class AddNewMapComponent implements OnInit {
   //     console.log(cityName);
   //   }, 1000);
 
-
   // }
 
   /* --------------------------------- clicked New Orgins ----------------------------- */
 
   clickedNewOrgins(e) {
-
-
     this.clientsForm.controls.lat.setValue(+e.lat);
     this.clientsForm.controls.long.setValue(+e.lng);
 
@@ -755,14 +674,10 @@ export class AddNewMapComponent implements OnInit {
 
     let newCity;
     this.coreService
-      .postMethod(
-        'clients/validate-map/' +
-        this.cityId,
-        {
-          lat: this.clientsForm.controls.lat.value,
-          long: this.clientsForm.controls.long.value
-        }
-      )
+      .postMethod('clients/validate-map/' + this.cityId, {
+        lat: this.clientsForm.controls.lat.value,
+        long: this.clientsForm.controls.long.value
+      })
       .subscribe(
         responsee => {
           console.log(responsee);
@@ -770,74 +685,42 @@ export class AddNewMapComponent implements OnInit {
             newCity = responsee['city'];
             this.newCityId = responsee['city'].id;
           }
-            // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
+          // let newCity = this.clientsForm.controls.city_id.setValue(responsee['city']);
 
-                this.showSuccess(responsee['message']);
+          this.showSuccess(responsee['message']);
 
-                var geocoder;
-                geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(
-                  this.clientsForm.controls.lat.value,
-                  this.clientsForm.controls.long.value
-                );
-                let cityName: string = '';
-                let address: string = '' ;
-                geocoder.geocode({ latLng: latlng }, function(results, status) {
-                  if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
-                       address = results[0].formatted_address;
-                      var value = address.split(',');
+          var geocoder;
+          geocoder = new google.maps.Geocoder();
+          var latlng = new google.maps.LatLng(
+            this.clientsForm.controls.lat.value,
+            this.clientsForm.controls.long.value
+          );
+          let cityName: string = '';
+          let address: string = '';
+          geocoder.geocode({ latLng: latlng }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[0]) {
+                address = results[0].formatted_address;
+                var value = address.split(',');
 
-                      console.log(value)
+                console.log(value);
 
-                      let count = value.length;
-                      let city ;
+                let count = value.length;
+                let city;
 
-                      if(count > 2)
-                      {
+                if (count > 2) {
+                  city = value[count - 3];
+                } else {
+                  city = value[count - 1];
+                }
 
-                      city = value[count - 3];
-                      }
-                      else
-                      {
-                        city = value[count - 1];
+                // alert("city name is: " + city);
 
-                      }
-
-
-                      // alert("city name is: " + city);
-
-                      cityName = city;
-                    }
-                    // else  {
-                    //     alert("address not found");
-                    // }
-                  } else {
-                    alert('Geocoder failed due to: ' + status);
-                  }
-                });
-                setTimeout(() => {
-                  this.clientsForm.controls.locations_area.setValue(cityName);
-                  this.clientsForm.controls.locations_address.setValue(address);
-
-
-
-
-                  console.log(cityName);
-
-
-
-                  this.passPopup = true ;
-
-
-                  console.log(this.clientsForm)
-                }, 2000);
-
-
-          },
-          error => {
-            if (error.error.errors) {
-              this.showErrors(error.error.errors);
+                cityName = city;
+              }
+              // else  {
+              //     alert("address not found");
+              // }
             } else {
               alert('Geocoder failed due to: ' + status);
             }
@@ -846,28 +729,16 @@ export class AddNewMapComponent implements OnInit {
             this.clientsForm.controls.locations_area.setValue(cityName);
             this.clientsForm.controls.locations_address.setValue(address);
 
-
-
             console.log(cityName);
-
-
 
             // this.passPopup = true ;
 
-
-            console.log(this.clientsForm)
+            console.log(this.clientsForm);
           }, 2000);
 
-
           setTimeout(() => {
-
             this.passPopup = true;
-
           }, 3000);
-
-
-
-
         },
         error => {
           if (error.error.errors) {
@@ -876,22 +747,16 @@ export class AddNewMapComponent implements OnInit {
             this.showErrors(error.error.message);
           }
 
-
-
           this.clientsForm.controls.lat.setValue(28.421864);
           this.clientsForm.controls.long.setValue(34.432869);
           this.clientsForm.controls.aboveUrl.setValue('');
-
 
           this.passPopup = false;
 
           this.showMapPopup = false;
         }
-      )
-
-
+      );
   }
-
 
   /* ------------------------------- get  Location Data ------------------------- */
 
@@ -905,13 +770,11 @@ export class AddNewMapComponent implements OnInit {
   assignUpdatedLocationData() {
     const data = this.updatedLocationData;
     this.clientsForm.patchValue({
-
       lat: data.lat,
       long: data.long,
       locations_address: data.address,
       locations_notes: data.notes,
-      locations_area: data.area,
-
+      locations_area: data.area
     });
 
     this.showMapPopup = true;
@@ -920,11 +783,9 @@ export class AddNewMapComponent implements OnInit {
     this.isUpdate = true;
 
     console.log(this.clientsForm);
-
   }
 
   addNewLocation() {
-
     this.coreService
       .postMethod('clients/' + this.clientId + '/locations', {
         name: '',
@@ -935,14 +796,13 @@ export class AddNewMapComponent implements OnInit {
         long: this.clientsForm.controls.long.value,
         lat: this.clientsForm.controls.lat.value,
         default: 1,
-        notes: this.clientsForm.controls.locations_notes.value,
+        notes: this.clientsForm.controls.locations_notes.value
       })
 
       .subscribe(
         () => {
           this.showSuccess('تم إضافة الموقع بنجاح');
           this.getClientDetails(this.clientId);
-
         },
         error => {
           if (error.error.errors) {
@@ -956,28 +816,29 @@ export class AddNewMapComponent implements OnInit {
     this.showMapPopup = false;
   }
 
-
-
   updateLocation() {
     this.coreService
-      .updateMethod('clients/' + this.clientId + '/locations/' + this.updatedLocationData.id, {
-        area: this.clientsForm.controls.locations_area.value,
-        city_id: this.newCityId ? this.newCityId : this.cityId,
-        special_sign: '',
-        address: this.clientsForm.controls.locations_address.value,
-        notes: this.clientsForm.controls.locations_notes.value,
-        long: this.clientsForm.controls.long.value,
-        lat: this.clientsForm.controls.lat.value,
-        default: 1
-
-      })
+      .updateMethod(
+        'clients/' +
+          this.clientId +
+          '/locations/' +
+          this.updatedLocationData.id,
+        {
+          area: this.clientsForm.controls.locations_area.value,
+          city_id: this.newCityId ? this.newCityId : this.cityId,
+          special_sign: '',
+          address: this.clientsForm.controls.locations_address.value,
+          notes: this.clientsForm.controls.locations_notes.value,
+          long: this.clientsForm.controls.long.value,
+          lat: this.clientsForm.controls.lat.value,
+          default: 1
+        }
+      )
       .subscribe(
         () => {
           this.showSuccess('تم تعديل الموقع بنجاح');
           this.getClientDetails(this.clientId);
           this.isUpdate = false;
-
-
         },
         error => {
           if (error.error.errors) {
@@ -990,7 +851,6 @@ export class AddNewMapComponent implements OnInit {
 
     this.showMapPopup = false;
   }
-
 
   deleteLocation(locationId) {
     this.coreService
@@ -1000,7 +860,6 @@ export class AddNewMapComponent implements OnInit {
           this.showSuccess('تم إلغاء الموقع بنجاح');
           this.showDeletePopup = false;
           this.getClientDetails(this.clientId);
-
         },
         error => {
           if (error.error.errors) {
@@ -1010,14 +869,11 @@ export class AddNewMapComponent implements OnInit {
           }
         }
       );
-
   }
 
   closePopup() {
     this.showDeletePopup = false;
   }
-
-
 
   startLoading() {
     this.pageLoaded = false;
@@ -1050,5 +906,4 @@ export class AddNewMapComponent implements OnInit {
       this.responseData
     );
   }
-
 }
