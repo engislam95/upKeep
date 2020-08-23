@@ -18,6 +18,7 @@
   position: absolute;
   bottom: 0px;
   color: #f44336;
+
   i {
     color: #f44336 !important;
     position: relative !important;
@@ -30,10 +31,12 @@
     padding-left: 5px;
   }
 }
+
 agm-map {
   height: calc(100vh - 230px);
   display: block;
 }
+
 // start searchingBestTechnicalState
 .searchingBestTechnicalState {
   i {
@@ -46,14 +49,17 @@ agm-map {
     animation: rotate 0.7s infinite linear;
   }
 }
+
 @keyframes rotate {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 // End searchingBestTechnicalState
 .page_block {
   margin-bottom: 0 !important;
@@ -67,29 +73,35 @@ agm-map {
   padding-bottom: 10px;
   min-width: 300px;
 }
+
 #smallFillterInputStyle {
   margin-left: 20px;
 }
+
 #filterForms {
   position: absolute;
   top: 80px;
   // width: 100%;
   z-index: 100;
 }
+
 form {
   padding-right: 10px;
   padding-top: 5px;
   display: flex;
 }
+
 .noData {
   position: absolute;
   z-index: 999;
   padding: 5px 10px;
   top: 25px;
 }
+
 .form_input {
   clear: both;
 }
+
 // filter time
 #filterTime {
   position: relative;
@@ -99,6 +111,7 @@ form {
   width: 70vw;
 
   margin-right: 15%;
+
   i {
     color: #f6a811;
     position: absolute;
@@ -107,12 +120,14 @@ form {
     font-size: 30px;
     cursor: pointer;
   }
+
   h4 {
     color: #ffffff;
     text-align: center;
     font-size: 18px;
     margin-bottom: 20px;
   }
+
   #filterTimeContainer {
     left: calc(((50% - 0.5px) + 1px) * 1);
     width: calc(((50% - 0.5px) * 1) + 0px);
@@ -121,12 +136,15 @@ form {
     display: block;
     position: absolute;
     overflow: hidden;
+
     .mat-form-field-appearance-outline .mat-form-field-outline {
       padding: 10px;
     }
+
     .mat-form-field-infix {
       height: 30px !important;
     }
+
     .form_field {
       .timePickerContainer {
         display: inline-grid;
@@ -136,6 +154,7 @@ form {
           padding-right: 14px;
           margin-bottom: 5px;
         }
+
         mat-form-field {
           width: 280px;
           height: 26px;
@@ -156,6 +175,7 @@ form {
           float: right;
           display: flex;
         }
+
         input {
           box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
           border-radius: 5px;
@@ -185,6 +205,7 @@ form {
         font-size: 17px;
         border: none;
       }
+
       .fa-search {
         font-size: large;
       }
@@ -194,6 +215,7 @@ form {
 
 .buttonPopupMap {
   padding-bottom: 30px;
+
   button {
     background: #f6a811;
     width: 87px;
@@ -211,6 +233,7 @@ form {
     font-size: 19px;
   }
 }
+
 .timeField {
   display: flex;
   margin-top: 10px;
@@ -233,11 +256,13 @@ form {
   border-right: 1px solid rgba(255, 255, 255, 0.4);
   padding-right: 30px;
   margin-right: -78px;
+
   p {
     padding: 10px 15px;
     background: rgba(255, 255, 255, 0.41);
     color: #fff;
   }
+
   span {
     float: left;
   }
@@ -254,6 +279,7 @@ form {
   background: none !important;
   margin-right: 30%;
 }
+
 .bestTechnical {
   display: contents;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
@@ -263,6 +289,7 @@ form {
     background: none !important;
     color: #fff;
   }
+
   span {
     float: left;
   }
@@ -273,4 +300,5 @@ form {
     }
   }
 }
+
 // filter time

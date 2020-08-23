@@ -507,6 +507,50 @@
                   </agm-info-window>
                 </div>
               </agm-marker>
+
+              <agm-marker
+                [agmFitBounds]="true"
+                *ngFor="let order of orders"
+                [latitude]="order.location.lat"
+                [longitude]="order.location.long"
+                class="markerTec"
+                [iconUrl]="{
+                  url: ''
+                }"
+                style="opacity: 0;"
+              >
+                <div class="infoStyle2" id="test2">
+                  <agm-info-window
+                    #infoWindoww
+                    [disableAutoPan]="false"
+                    [isOpen]="true"
+                    class="infoTime"
+                    style="background: #333 !important"
+                  >
+                    <ul style="background: #333; color: #fff;">
+                      <li>
+                        وقت تنفيذ الطلبية :
+                        <ng-container>
+                          <span class="timeTitleSpan">من : </span
+                          >{{
+                            order.fromH > 12
+                              ? order.fromH - 12 + ':' + order.fromM + 'م'
+                              : order.fromH + ':' + order.fromM + 'ص'
+                          }}
+                        </ng-container>
+                        <ng-container>
+                          <span class="timeTitleSpan"> الي : </span
+                          >{{
+                            order.toH > 12
+                              ? order.toH - 12 + ':' + order.toM + 'م'
+                              : order.toH + ':' + order.toM + 'ص'
+                          }}
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </agm-info-window>
+                </div>
+              </agm-marker>
             </ng-container>
             <agm-marker
               *ngIf="ordersLoaded && addOrderMode"

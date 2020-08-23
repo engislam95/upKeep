@@ -276,8 +276,10 @@ export class MapComponent implements OnInit {
     //   );
     // });
   }
+
   /* ---------------------- Oninit -------------------------- */
   ngOnInit() {
+    // this.showTime(this.infoWindow2, AgmMap);
     // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
     //   this.cities = cities.data;
     //   console.log(this.cities);
@@ -637,12 +639,16 @@ export class MapComponent implements OnInit {
   }
   /* ----------------------- Open & Close Information Window -------------------------- */
   onMouseOver(infoWindow, gm) {
+    console.log(infoWindow);
+
     gm.lastOpen = infoWindow;
     infoWindow.open();
   }
   onMouseOut(infoWindow, gm) {
-    gm.lastOpen = infoWindow;
-    infoWindow.close();
+    setTimeout(() => {
+      gm.lastOpen = infoWindow;
+      infoWindow.close();
+    }, 7000);
   }
   /* --------------------- Open Popup of Recommendations --------------------- */
   openRecommendationForm() {
