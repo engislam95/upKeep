@@ -496,7 +496,7 @@ $gray: #95989a;
     }
 
     p span {
-      width: 170px;
+      width: 190px;
       height: 31px;
       display: inline-block;
       position: relative;
@@ -697,7 +697,7 @@ $gray: #95989a;
   padding: 6px 3px;
   margin: 15px 20px;
   border-radius: 4px;
-  width: 165px;
+  width: 170px;
   color: #fff;
   display: inline-block;
   @include down_box_shadow();
@@ -3725,7 +3725,7 @@ $gray: #95989a;
     }
 
     p span {
-      width: 170px;
+      width: 190px;
       height: 31px;
       display: inline-block;
       position: relative;
@@ -3894,6 +3894,10 @@ $gray: #95989a;
   background: #0c75ca !important;
 }
 
+.status_47 {
+  background: #9d0984 !important;
+}
+
 .statusBadge_19 {
   background: #eb9f0c38 !important;
 }
@@ -3922,7 +3926,7 @@ $gray: #95989a;
   padding: 6px 3px;
   margin: 15px 20px;
   border-radius: 4px;
-  width: 165px;
+  width: 170px;
   color: #fff;
   display: inline-block;
   @include down_box_shadow();
@@ -6504,4 +6508,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
   /* Firefox */
+}
+
+button:disabled {
+  background: #DDD !important
+}
+
+.disabled {
+  background: #ddd !important;
 }
