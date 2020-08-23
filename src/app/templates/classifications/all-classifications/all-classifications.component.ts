@@ -38,6 +38,8 @@ export class AllClassificationsComponent implements OnInit {
   pageId: any = 1;
   firstPage: any;
   lastPage: any;
+  totalPage: any = '';
+  current_page: any = '';
   /* ------------------- Filter Form ------------------------ */
   filterForm = new FormGroup({
     filterName: new FormControl()
@@ -107,6 +109,15 @@ export class AllClassificationsComponent implements OnInit {
       this.getAllData(this.pageId);
     }
   }
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
+  }
   /* --------------------- Get All Data -------------------- */
   getAllData(pageId, per_page?) {
     this.loaderService.startLoading();
@@ -118,6 +129,8 @@ export class AllClassificationsComponent implements OnInit {
       .subscribe((classification: any) => {
         console.log(classification);
         this.dataSource = classification.data;
+        this.totalPage = classification.last_page;
+        this.current_page = classification.current_page;
         this.total = classification.total;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }

@@ -2,10 +2,8 @@
   width: calc(350px);
   margin-left: 10px;
 }
-
 #NameFillterInputStyle mat-form-field {
   width: calc(350px);
-
   .mat-form-field-wrapper {
     width: 100%;
   }
@@ -170,18 +168,15 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     }
   }
 }
-
 .resetInput {
   color: #95989a;
   margin-top: 2px;
   background-color: white;
 }
-
 @media (max-width: 1399px) and (min-width: 992px) {
   #NameFillterInputStyle {
     width: 100%;
   }
-
   #NameFillterInputStyle mat-form-field {
     width: 100%;
   }
@@ -196,16 +191,13 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   .filter_form {
     display: flex !important;
   }
-
   .mat-form-field-wrapper {
     width: 75%;
   }
-
   .mat-form-field-appearance-outline .mat-form-field-wrapper {
     width: 428px !important;
   }
 }
-
 @media (max-width: 991px) and (min-width: 768px) {
   #NameFillterInputStyle {
     width: 100%;
@@ -214,7 +206,6 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   mat-form-field-wrapper {
     width: 70%;
   }
-
   .filter_form mat-form-field {
     margin-right: 0;
     width: 100%;
@@ -225,23 +216,20 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   .filter_form {
     display: flex !important;
   }
-
   .filter_form mat-form-field input {
     width: 75%;
   }
 }
-
 @media (max-width: 767px) {
   #NameFillterInputStyle mat-form-field {
     width: 100%;
   }
-
   #NameFillterInputStyle {
     width: 100%;
   }
 }
-
 // ********************
+
 .arrow {
   background: #f5f5f5;
   // padding: 7px 17px;

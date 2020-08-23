@@ -36,6 +36,8 @@ export class AllCompaniesComponent implements OnInit {
   orderDate: any = '';
   orderDate2: any = '';
   updateCompanyID: number;
+  current_page: any = '';
+  totalPage: any = '';
   displayedColumns = [
     'ID',
     'company_name',
@@ -210,6 +212,15 @@ export class AllCompaniesComponent implements OnInit {
       filterName.style.display = 'none';
     }
   }
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
+  }
   /* ----------------------- Oninit -------------------------------- */
   ngOnInit() {
     this.startLoading();
@@ -352,6 +363,8 @@ export class AllCompaniesComponent implements OnInit {
       })
       .subscribe((getTechniciansResponse: any) => {
         console.log(getTechniciansResponse);
+        this.totalPage = getTechniciansResponse.last_page;
+        this.current_page = getTechniciansResponse.current_page;
         this.dataSource = getTechniciansResponse.data;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }

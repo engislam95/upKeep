@@ -46,7 +46,7 @@ export class CompanyCitiesComponent implements OnInit {
     private router: Router,
     private responseStateService: ResponseStateService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   /* ------------------ Oninit ----------------------- */
   ngOnInit() {
@@ -67,8 +67,10 @@ export class CompanyCitiesComponent implements OnInit {
           // }
         });
 
-        this.coreService
-        .superGet('company/' + this.companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
+      this.coreService
+        .superGet(
+          'company/' + this.companySlug + '/countries/' + '191' + '/cities'
+        )
         .subscribe(data => {
           console.log(data);
           this.services = data['data'];
@@ -81,7 +83,7 @@ export class CompanyCitiesComponent implements OnInit {
         });
 
       /* --------------------- Get Classifications ------------------------- */
-      let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
       let companySlug = currentUser.company_slug;
 
       this.coreService
@@ -115,7 +117,7 @@ export class CompanyCitiesComponent implements OnInit {
   /*----------------------- Service Filter ----------------------- */
   filterService(value: any) {
     console.log(value);
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     let companySlug = currentUser.company_slug;
 
     if (typeof value === 'object') {
@@ -124,7 +126,7 @@ export class CompanyCitiesComponent implements OnInit {
       console.log(value.id);
       this.className = value.name;
       this.coreService
-        .superGet('company/' + companySlug + '/countries/' + '191' + '/cities/' + this.companyId)
+        .superGet('company/' + companySlug + '/countries/' + '191' + '/cities')
         .subscribe(data => {
           console.log(data);
           this.services = data['data'];
