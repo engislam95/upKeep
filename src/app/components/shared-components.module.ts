@@ -14,6 +14,9 @@ import { HeaderOwnerComponent } from './header-owner/header-owner.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { MultiselectFilterComponent } from './multiselect-filter/multiselect-filter.component';
 import { MapComponent } from './map/map.component';
+import { SystemManagmentComponent } from './system-managment/system-managment.component'
+import { SystemOffComponent } from './system-off/system-off.component'
+
 /* -------------------- Angular Material ----------------------- */
 import {
   MatProgressBarModule,
@@ -37,7 +40,9 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     HeaderOwnerComponent,
     AlertsComponent,
-    MapComponent
+    MapComponent ,
+    SystemManagmentComponent ,
+    SystemOffComponent
   ],
   exports: [
     ReactiveFormsModule,
@@ -51,6 +56,8 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     AlertsComponent,
     MultiselectFilterComponent,
+    SystemManagmentComponent,
+    SystemOffComponent ,
     MapComponent
   ],
   imports: [

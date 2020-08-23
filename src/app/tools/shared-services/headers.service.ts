@@ -6,8 +6,8 @@ export class HeadersService {
   // companySlug = 'upkeep';
   companySlug;
   // baseAPI = '/upkeep/';
-  // baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
-  baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
+  baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
+  // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '192.168.1.2:8000/api/';
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';

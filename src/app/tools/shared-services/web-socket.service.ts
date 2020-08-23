@@ -8,28 +8,36 @@ export class WebSocketService {
   pusher: any = "";
 
   constructor() {
-    this.pusher = new Pusher("25c1e6831c9ab31ebd27", {
+    this.pusher = new Pusher("2140fece47d1d0c40378", {
       cluster: "eu",
-      auth: {
-        params: { foo: "bar" },
-        headers: { baz: "boo" }
-      }
+      // auth: {
+      //   params: { foo: "bar" },
+      //   headers: { baz: "boo" }
+      // }
     });
   }
 
   // Listen To Channels and Subscribe them
   listenChannel(names) {
+    console.log(names)
+
     // Loop for channels Names
     for (let i = 0; i < names.length; i++) {
       // Subscribe channels
-      this.pusher.subscribe("private-" + names[i]);
+      console.log(names[i]);
+      
+      // "private-" +
+      this.pusher.subscribe( names[i]);
 
-      Pusher.log = msg => {
-        console.log(msg);
-      };
+  
 
       this.pusher.connection.bind("connected", this.connectedExecute());
     }
+    
+    Pusher.log = msg => {
+      console.log(msg);
+    };
+
     this.pusher.allChannels().forEach(channel => {
       console.log("Subscribe: ", channel.name);
     });
@@ -40,6 +48,8 @@ export class WebSocketService {
     /*
       Your Code 
     */
+   console.log("successfully: ");
+
   }
 
   // Unsubscribe channels
@@ -64,4 +74,9 @@ export class WebSocketService {
       Your Code 
       */
   }
+
+
+
+
+
 }
