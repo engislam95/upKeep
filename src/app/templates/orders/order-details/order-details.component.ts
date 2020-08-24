@@ -194,7 +194,7 @@ export class OrderDetailsComponent implements OnInit {
           this.active22 = false;
           this.active65 = true;
         }
-        if (this.orderDetails['status'].id == 65) {
+        if (this.orderDetails['status'].name == 'انتهي بدون اصدار فاتورة') {
           console.log('right');
           this.active22 = true;
           this.active65 = false;
@@ -235,7 +235,7 @@ export class OrderDetailsComponent implements OnInit {
       this.active22 = false;
       this.active65 = true;
     }
-    if (this.orderDetails['status'].id == 65) {
+    if (this.orderDetails['status'].name == 'انتهي بدون اصدار فاتورة') {
       this.active22 = true;
       this.active65 = false;
     }
@@ -578,7 +578,10 @@ export class OrderDetailsComponent implements OnInit {
         if (buttonState === 42) {
           this.active42 = true;
         }
-        if (buttonState === 65) {
+        if (
+          buttonState === 65 ||
+          this.orderDetails['status'].name == 'انتهي بدون اصدار فاتورة'
+        ) {
           this.active65 = true;
         }
       });
