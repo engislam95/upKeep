@@ -603,30 +603,25 @@
                   />
                 </mat-form-field>
                 <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (clientsForm.get('email').status === 'INVALID' &&
-                      clientsForm.get('email').touched) ||
-                    (submitted &&
-                      clientsForm.get('email').status === 'INVALID' &&
-                      clientsForm.get('email').dirty)
-                  "
-                >
-                  <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
-                  بشكل صحيح
-                </div>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    clientsForm.get('email').touched &&
-                    emailReserved &&
-                    emailCheckLoaded
-                  "
-                >
-                  <i class="fas fa-times"></i> هذا البريد مسجل من قبل
-                </div>
+                [@fade]
+                class="validationState  errorState"
+                *ngIf="
+              ( clientsForm['controls'].email.touched   && clientsForm['controls'].email.errors?.required ) || clientsForm.controls.email.errors?.pattern
+                "
+              >
+                <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
+                بشكل صحيح
+              </div>
+              <div
+                [@fade]
+                class="validationState  errorState"
+                *ngIf="
+                  emailReserved &&
+                  emailCheckLoaded && !clientsForm.controls.email.errors?.pattern
+                "
+              >
+                <i class="fas fa-times"></i> هذا البريد مسجل من قبل
+              </div>
                 <div
                   [@fade]
                   class="validationState successState"
