@@ -108,6 +108,8 @@ export class AddClientComponent implements OnInit {
     ]),
     email: new FormControl('', [
       Validators.email,
+      Validators.required,
+
       Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
     ]),
     notes: new FormControl('', Validators.required),
@@ -289,7 +291,9 @@ export class AddClientComponent implements OnInit {
         id: this.updateMode ? this.updatedClientData.id : ''
       })
       .subscribe(
-        () => {
+        (type) => {
+          console.log(type);
+          
           if (type === 'mobile') {
             this.mobileReserved = false;
             this.mobileCheckLoaded = true;
@@ -298,7 +302,9 @@ export class AddClientComponent implements OnInit {
             this.emailCheckLoaded = true;
           }
         },
-        () => {
+        (err) => {
+          console.log(err);
+          
           if (type === 'mobile') {
             this.mobileReserved = true;
             this.mobileCheckLoaded = true;
@@ -543,6 +549,7 @@ export class AddClientComponent implements OnInit {
       this.passPopup = false;
 
       if (url.includes('@')) {
+        
         // var newLating = url.split('@')[1].split(',')
         var rest = url.substring(0, url.lastIndexOf('3d') + 2);
         var last = url.substring(url.lastIndexOf('3d') + 2, url.length);
@@ -560,6 +567,12 @@ export class AddClientComponent implements OnInit {
       // var long = url.split('=').split(',')[1]
 
       if (url.includes('@')) {
+        if (newLating[1].includes('?')) {
+          let newLog = newLating[1].split('?')[0];
+          console.log(newLog);
+          newLating[1] = newLog;
+          console.log(newLating[1]);
+        }
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
       } else {

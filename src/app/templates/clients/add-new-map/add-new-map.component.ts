@@ -411,6 +411,12 @@ export class AddNewMapComponent implements OnInit {
 
       if(url.includes('@'))
       {
+        if (newLating[1].includes('?')) {
+          let newLog = newLating[1].split('?')[0];
+          console.log(newLog);
+          newLating[1] = newLog;
+          console.log(newLating[1]);
+        }
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
       }

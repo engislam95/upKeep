@@ -5,14 +5,14 @@ import { HttpHeaders } from '@angular/common/http';
 export class HeadersService {
   // companySlug = 'upkeep';
   companySlug;
-  baseAPI = '/upkeep/';
+  // baseAPI = '/upkeep/';
   // baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '192.168.1.2:8000/api/';
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://test.upkeep.com.sa/upkeep/';
-  // baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
+  baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
   // baseAPI = 'hhttps://testupkeep.reviews.upkeep.com.sa/upkeep/';
   // tslint:disable-next-line: no-inferrable-types
   token: string = '';
