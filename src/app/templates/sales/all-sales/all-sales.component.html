@@ -1,0 +1,460 @@
+<div class="main_page">
+  <app-alerts></app-alerts>
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <h3><i class="fas fa-sort-shapes-down-alt"></i>طلبات المبيعات</h3>
+      <div class="page_body_main_buttons">
+        <a
+          routerLink="/sales/add-sale"
+          *ngIf="order_add || user.privilege == 'super-admin'"
+        >
+          إضافة طلب مبيعات جديد
+          <i class="fas fa-plus"></i>
+        </a>
+      </div>
+    </div>
+    <div class="page_body">
+      <div class="page_body_main">
+        <div class="page_block">
+          <div class="main_block filterMainBlock">
+            <form class="filter_form" [formGroup]="filterForm">
+              <div id="todaysOrdersContainer">
+                <div id="CheckBoxTodayFilter">
+                  <label class="todayfilterLabel">طلبات اليوم</label>
+                  <mat-slide-toggle
+                    dir="rtl"
+                    (change)="todayDateFillterToggle($event)"
+                    [checked]="todayOrdersToggelChecked"
+                    required
+                  ></mat-slide-toggle>
+                </div>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="اسم العميل /  رقم الموبايل"
+                    autocomplete="off"
+                    id="filterName"
+                    formControlName="filterName"
+                    (keydown)="filterClientName()"
+                  />
+                  <button
+                    style=" background-color: white;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('filterName')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div
+                class="form_input"
+                id="smallFillterInputStyle"
+                [ngClass]="{ backGround: todayFilltered }"
+              >
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    (dateInput)="orderDateChanged($event, 'from')"
+                    matInput
+                    [matDatepicker]="fromFilterDate"
+                    placeholder="تاريخ الاضافة"
+                    autocomplete="off"
+                    formControlName="startDateFilter"
+                    id="filterStartDate"
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('startDateFilter')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="fromFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div
+                class="form_input"
+                id="smallFillterInputStyle"
+                [ngClass]="{ backGround: todayFilltered }"
+              >
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    id="styleDisable"
+                    (dateInput)="orderDateChanged($event, 'to')"
+                    matInput
+                    [matDatepicker]="toFilterDate"
+                    placeholder="تاريخ الطلب"
+                    autocomplete="off"
+                    formControlName="endDateFilter"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('endDateFilter')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-datepicker-toggle
+                    class="dateButton"
+                    [for]="toFilterDate"
+                  >
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="statusArray"
+                  [multiSelectListPlaceholder]="orderStatusFilterPlaceholder"
+                  [componentId]="filterStatusComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="statusArray"
+                  [multiSelectListPlaceholder]="orderStatusFilterPlaceholder"
+                  [componentId]="filterStatusComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="statusArray"
+                  [multiSelectListPlaceholder]="orderStatusFilterPlaceholder"
+                  [componentId]="filterStatusComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    class="filterInput"
+                    matInput
+                    placeholder="رقم الطلب"
+                    autocomplete="off"
+                    id="ordersNumberObj"
+                    formControlName="ordersNumberObj"
+                    (keydown)="filterOrderNumber()"
+                  />
+                  <button
+                    style=" background-color: white;"
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('ordersNumberObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div class="form_input" id="smallFillterInputStyle">
+                <app-multiselect-filter
+                  [multiSelectList]="servicesWithTechniciansList"
+                  [multiSelectListPlaceholder]="techniciansFilterPlaceholder"
+                  [multiSelectListType]="nestedType"
+                  [componentId]="filterTechniciansComponentId"
+                  (search)="search($event)"
+                ></app-multiselect-filter>
+              </div>
+            </form>
+          </div>
+          <div class="totalSearch">
+            <p>
+              <i class="fas fa-search"></i>
+              <span> نتيجة البحث </span>
+              مجموع طلبات المبيعات:
+              <span class="totalNumber ">
+                {{ getOrdersResponseTotal?.total }}
+              </span>
+            </p>
+          </div>
+
+          <div class="countPerPage">
+            <select
+              name=""
+              id=""
+              (change)="setCountPerPage($event.target.value)"
+              class="selectPerpage"
+            >
+              <option *ngFor="let option of countPerPage" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
+          <table
+            width="100%"
+            dir="rtl"
+            mat-table
+            [dataSource]="ordersArray"
+            class="mat-elevation-z8"
+            id="display_table"
+          >
+            <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="styleBold">{{ element.id }} </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="technical_name">
+              <th mat-header-cell *matHeaderCellDef>الحالة</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.technician.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="client_name">
+              <th mat-header-cell *matHeaderCellDef>إسم العميل</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.client.user.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="main_service">
+              <th mat-header-cell *matHeaderCellDef>رقم الموبايل</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.service.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="service_date">
+              <th mat-header-cell *matHeaderCellDef>إضافة بواسطة</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.order_date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="creation_date">
+              <th mat-header-cell *matHeaderCellDef>طريقة الاضافة</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.creation_date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_time">
+              <th mat-header-cell *matHeaderCellDef>الخدمة</th>
+              <td mat-cell *matCellDef="let element">
+                من :
+                <span
+                  class="styleBold"
+                  style="position: relative;
+                right: 5px;"
+                  >{{ element.start }} </span
+                ><br />
+                الي : <span class="styleBold">{{ element.end }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_status">
+              <th mat-header-cell *matHeaderCellDef>تاريخ الاضافة</th>
+              <td style="direction: ltr;" mat-cell *matCellDef="let element">
+                <span class="status_span status_{{ element.status.id }} "
+                  >{{ element.status.name }}
+                </span>
+                <br />
+                <span class="styleBold">
+                  {{
+                    ordersArray
+                      ? element.status.id === 35 && element.receipt
+                        ? element.receipt.total +
+                          ' ' +
+                          element.receipt.currency.symbol
+                        : ''
+                      : ''
+                  }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_resource">
+              <th mat-header-cell *matHeaderCellDef>تاريخ الطلب و الوقت</th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  style="display: block;
+              max-width: 185px;
+              white-space: nowrap;
+              overflow: hidden !important;
+              text-overflow: ellipsis;"
+                >
+                  {{ element.details_text }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_details">
+              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (mouseenter)="hideme[element.id] = !hideme[element.id]"
+                (mouseleave)="hideme[element.id] = !hideme[element.id]"
+              >
+                <div
+                  id="showOrdercontrols"
+                  [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
+                  *ngIf="hideme[element.id]"
+                >
+                  <button
+                    *ngIf="order_delete || user.privilege == 'super-admin'"
+                    (click)="
+                      openDeletePopup(element.id, element.client.user.name)
+                    "
+                    class="basic_button"
+                    type="button"
+                  >
+                    <img src="../../../../assets/img/icons/delete.png" alt="" />
+                    <span class="tooltiptext">حذف</span>
+                  </button>
+
+                  <button
+                    class="basic_button"
+                    type="button"
+                    *ngIf="order_all || user.privilege == 'super-admin'"
+                  >
+                    <a
+                      target="blank"
+                      [routerLink]="['/orders/order-details']"
+                      [queryParams]="{
+                        orderId: element.id
+                      }"
+                    >
+                      <img
+                        src="../../../../assets/img/icons/invoice.png"
+                        alt=""
+                      />
+                    </a>
+                    <span class="tooltiptext">التفاصيل</span>
+                  </button>
+                  <button
+                    (click)="getInvoiceDetails()"
+                    id="invicebutton"
+                    [routerLink]="['/invoices/details-invoice/']"
+                    [queryParams]="{ incoiveID: element.receipt_id }"
+                    class="basic_button"
+                    type="button"
+                    *ngIf="element.status.id === 35"
+                  >
+                    <img
+                      src="../../../../assets/img/icons/invoice (1).png"
+                      alt=""
+                    />
+                    <span class="tooltiptext">الفاتورة</span>
+                  </button>
+                  <button
+                    id="editButton"
+                    [routerLink]="['/orders/update-order']"
+                    [queryParams]="{
+                      updateMode: true,
+                      updatedOrderId: element.id
+                    }"
+                    class="basic_button"
+                    type="button"
+                    *ngIf="
+                      (element.status.id !== 35 &&
+                        element.status.id !== 22 &&
+                        element.receipt_id === null &&
+                        order_update) ||
+                      user.privilege == 'super-admin'
+                    "
+                  >
+                    <img src="../../../../assets/img/icons/edit.png" alt="" />
+                    <span class="tooltiptext">تعديل</span>
+                  </button>
+                </div>
+
+                <div class="basic_button" type="button">
+                  <img src="../../../../assets/img/icons/Menu.svg" alt="" />
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-caret-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+                 border: 1px solid rgba(112, 112, 112, 0.38);
+                 width: 42px;
+                 height: 31px;
+                 text-align: center;"
+                    type="text"
+                    type="number"
+                    min="1"
+                    [max]="totalPage"
+                    #pageNumber
+                    [value]="current_page"
+                    (keyup.enter)="changePagination(pageNumber)"
+                  />
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-caret-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="popup" *ngIf="showDeletePopup" [@parentAnimation]>
+    <div id="backDrop" (click)="closePopup()"></div>
+    <div id="popupData" [@childAnimation]>
+      <div class="headerPopup">
+        <p>
+          <img
+            class="fas fa-times"
+            (click)="closePopup()"
+            src="../../../../assets/img/icons/x.png"
+            alt=""
+          />
+          حذف الطلب
+        </p>
+      </div>
+      <div class="detailsPopup">
+        <P>
+          هل انت متأكد من حذف طلب العميل <br />
+          {{ deletedOrderClientName }}
+        </P>
+
+        <div id="confirmationButtons">
+          <button type="button" (click)="deleteTechnical()">نعم متأكد</button>
+          <button type="button" (click)="closePopup()">إلغاء الحذف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

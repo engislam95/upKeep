@@ -1,0 +1,817 @@
+<div class="main_page" id="formPage">
+  <app-alerts> </app-alerts>
+  <app-side-menu></app-side-menu>
+  <div class="page_main_blocks middle_page">
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <div class="page_body_title">
+      <h3>
+        <i class="fas fa-sort-shapes-down-alt"></i
+        >{{ this.updateMode ? 'تعديل طلب مبيعات ' : 'إضافة طلب مبيعات جديد' }}
+      </h3>
+      <div
+        class="page_body_main_buttons"
+        *ngIf="order_all || user.privilege == 'super-admin'"
+      >
+        <a routerLink="/orders/all-orders">
+          كل طلبات المبيعات
+          <i class="fas fa-th-list"></i>
+        </a>
+      </div>
+    </div>
+    <div
+      class="page_body formContainer"
+      [ngClass]="{ pageNotLoaded: !pageLoaded }"
+    >
+      <div class="page_body_main" style="display:flex">
+        <div class="page_block" style="width: 75%;">
+          <div id="add_form">
+            <form (ngSubmit)="onSubmit()" [formGroup]="ordersForm">
+              <div class="twoButtons" style="width: 49%">
+                <button
+                  type="button"
+                  [disabled]="multiAddressButtondisabled"
+                  (click)="showMapPopup = true; overLayShow = true"
+                  id="button"
+                  class="clientBtn"
+                >
+                  <i class="fas fa-map-marker-alt"></i>
+                </button>
+                <button type="button" (click)="addNewClient()" id="button">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button
+                  type="button"
+                  (click)="viewClientDetailsFunction()"
+                  [disabled]="!viewClientDetails"
+                  id="button"
+                  class="clientBtn"
+                >
+                  <i class="fas fa-search"></i>
+                </button>
+                <button
+                  type="button"
+                  (click)="viewClientDetailsFunction()"
+                  [disabled]="!viewClientDetails"
+                  id="button"
+                  class="clientBtn"
+                >
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <div class="form_field inputWithButton twoButtons">
+                <label
+                  ><i class="fas fa-user" style="margin: 0 10px;"></i> اسم
+                  العميل <span>*</span>
+                  <div
+                    [@fade]
+                    class="progressState"
+                    *ngIf="searchClientStarted"
+                  >
+                    <i class="fas fa-cog"></i>
+                    جاري البحث
+                  </div>
+                </label>
+                <mat-form-field
+                  id=""
+                  dir="rtl"
+                  appearance="outline"
+                  style="width: 100% !important"
+                >
+                  <input
+                    type="text"
+                    placeholder="البحث بالاسم او رقم الموبايل"
+                    aria-label="Number"
+                    matInput
+                    formControlName="clientIdObj"
+                    [matAutocomplete]="clientAutoComplete"
+                    id="clientIdObj"
+                    (keyup.enter)="getClientlocationsArray($event)"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('clientIdObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #clientAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <ng-container *ngIf="clientsArray.length !== 0">
+                      <mat-option
+                        *ngFor="let option of clientsFilteredOptions | async"
+                        [value]="option"
+                      >
+                        <div
+                          style="display: flex; justify-content: space-between;"
+                        >
+                          <span>{{ option.user.name }}</span>
+                          <span>{{ option.user.mobile }}</span>
+                        </div>
+                      </mat-option>
+                    </ng-container>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('clientIdObj').status === 'INVALID' &&
+                      ordersForm.get('clientIdObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('clientIdObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال العميل
+                </div>
+                <div
+                  [@fade]
+                  class="validationState errorState"
+                  *ngIf="ordersForm.hasError('noAddress')"
+                >
+                  <i class="fas fa-check"></i>
+                  هذا العميل ليس له عنوان - قم بتعديل البيانات و اضافة عنوان
+                </div>
+                <div
+                  *ngIf="showMapPopup"
+                  id="multiAdressPopupContainer"
+                  [ngClass]="{
+                    multiAdressPopupContainer:
+                      selectedClientLocationsArray.length <= 3
+                  }"
+                  [ngStyle]="{
+                    'margin-right':
+                      selectedClientLocationsArray.length <= 3 ? '5%' : '43%'
+                  }"
+                >
+                  <span
+                    class="closeMultiAddressPopupIcon"
+                    (click)="showMapPopup = false"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </span>
+
+                  <span>
+                    <div id="multiAdressPopup" [@fade]>
+                      <ul class="multiMapAdressAddOrder container">
+                        <li
+                          *ngFor="
+                            let locations of selectedClientLocationsArray;
+                            let i = index
+                          "
+                          class="cell"
+                        >
+                          <div id="popupData">
+                            <span class="adressTitle">
+                              <h5>
+                                <img
+                                  src="../../../../assets/img/icons/client-icons/placeholder.png"
+                                  alt=""
+                                />
+                                {{ locations.name }}
+                              </h5>
+                              <span
+                                id="checkSign"
+                                *ngIf="locations.default == 1"
+                              >
+                                <img
+                                  src="../../../../assets/img/icons/client-icons/check-mark.png"
+                              /></span>
+                            </span>
+                            <div class="popupMap">
+                              <app-map
+                                [multiAddressMapPopupSelections]="true"
+                                [addOrderMapMode]="true"
+                                [clientDetailsOrgins]="{
+                                  lng: locations.long,
+                                  lat: locations.lat
+                                }"
+                              ></app-map>
+                            </div>
+                            <ul>
+                              <li>
+                                <p>المنطقة</p>
+                                <span>{{
+                                  locations.area
+                                    ? locations.area
+                                    : 'لم يتم ادخال المنققة'
+                                }}</span>
+                              </li>
+                            </ul>
+                          </div>
+                          <button
+                            type="button"
+                            (click)="
+                              onSelectAddress(locations.id, i, locations)
+                            "
+                            class="selectOrderAdress"
+                            *ngIf="locations.default !== 1"
+                          >
+                            اختار هذا العنوان للطلب
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </span>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    ordersForm.get('clientIdObj').status === 'VALID' &&
+                    !ordersForm.hasError('noAddress')
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                  <h5 id="multiLocationWarning">
+                    {{
+                      selectedClientLocationsArray.length > 1 &&
+                      !selectSubLocations
+                        ? 'هذا العميل لديه أكثر من عنوان'
+                        : ''
+                    }}
+                  </h5>
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-user-secret" style="margin: 0 10px;"></i> إسم
+                  المصدر <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إسم المصدر"
+                    aria-label="Number"
+                    matInput
+                    formControlName="sourceObj"
+                    [matAutocomplete]="sourceAutoComplete"
+                    id="sourceObj"
+                  />
+                  <img
+                    src="{{ selectedResourceLogo }}"
+                    *ngIf="selectedResourceLogoShow"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('sourceObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #sourceAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of sourcesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('sourceObj').status === 'INVALID' &&
+                      ordersForm.get('sourceObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('sourceObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال المصدر
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('sourceObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-cog" style="margin: 0 10px;"></i> الخدمة
+                  الرئيسية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الرئيسية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="servicesObj"
+                    [matAutocomplete]="servicesAutoComplete"
+                    id="servicesObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('servicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #servicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of servicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('servicesObj').status === 'INVALID' &&
+                      ordersForm.get('servicesObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('servicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الرئيسية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('servicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-cogs" style="margin: 0 10px;"></i> الخدمة
+                  الفرعية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الفرعية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="subServicesObj"
+                    [matAutocomplete]="subServicesAutoComplete"
+                    id="subServicesObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('subServicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-cogs"></i>
+                  <mat-autocomplete
+                    #subServicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of subServicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('subServicesObj').status === 'INVALID' &&
+                      ordersForm.get('subServicesObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('subServicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الفرعية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('subServicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-calendar-week" style="margin: 0 10px;"></i>
+                  تاريخ الطلب <span>*</span></label
+                >
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="orderDateObj"
+                    [min]="todayDate"
+                    (dateInput)="orderDateChanged($event)"
+                    matInput
+                    [matDatepicker]="startDate"
+                    placeholder="تاريخ الطلب"
+                    autocomplete="off"
+                    id="orderDateObj"
+                  />
+                  <mat-datepicker-toggle class="dateButton" [for]="startDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #startDate> </mat-datepicker>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('orderDateObj').status === 'INVALID' &&
+                      ordersForm.get('orderDateObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('orderDateObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال التاريخ
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('orderDateObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field inputWithButton">
+                <label>
+                  <i class="fas fa-percent" style="margin: 0 10px;"></i> العروض
+                </label>
+                <div
+                  [@fade]
+                  class="progressState"
+                  *ngIf="offersArray.length > 0"
+                >
+                  يوجد عدد : {{ offersArray.length }} عروض
+                </div>
+                <span class="validationState  errorState ">{{ noOffers }}</span>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="العروض"
+                    aria-label="Number"
+                    matInput
+                    formControlName="offersObj"
+                    [matAutocomplete]="offersAutoComplete"
+                    id="offersObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('offersObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #offersAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of offersFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <button
+                  type="button"
+                  (click)="openOfferDetailsPopup()"
+                  [disabled]="!viewOfferDetailsPopupButton"
+                  id="button"
+                >
+                  <i class="fas fa-tags"></i>
+                </button>
+              </div>
+
+              <div class="form_field" id="timePicker">
+                <label>
+                  <i class="fas fa-clock" style="margin: 0 10px;"></i> توقيت
+                  بداية الطلب <span>*</span></label
+                >
+                <div class="timePickerContainer">
+                  <input
+                    formControlName="startObj"
+                    placeholder="توقيت بداية الطلب"
+                    [ngxTimepicker]="startTime"
+                    readonly
+                  />
+                  <ngx-material-timepicker
+                    (timeSet)="timeChanged($event, 'start')"
+                    #startTime
+                    enableKeyboardInput="true"
+                    [ngxMaterialTimepickerTheme]="darkTheme"
+                  ></ngx-material-timepicker>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState errorState"
+                  *ngIf="
+                    (ordersForm.get('startObj').status === 'INVALID' &&
+                      ordersForm.get('startObj').touched &&
+                      ordersForm.get('startObj').dirty) ||
+                    (submitted &&
+                      ordersForm.get('startObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال التوقيت
+                </div>
+                <div
+                  [@fade]
+                  class="validationState errorState"
+                  *ngIf="ordersForm.hasError('endAfterStart')"
+                >
+                  <i class="fas fa-times"></i>
+                  لايمكن أن يكون وقت إنتهاء الطلب قبل وقت بدء الطلب
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    ordersForm.get('startObj').status === 'VALID' &&
+                    !ordersForm.hasError('endAfterStart')
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field" id="timePicker2">
+                <label>
+                  <i class="fas fa-clock" style="margin: 0 10px;"></i>
+                  توقيت إنتهاء الطلب <span>*</span></label
+                >
+                <div class="timePickerContainer">
+                  <input
+                    formControlName="endObj"
+                    placeholder="توقيت إنتهاء الطلب"
+                    [ngxTimepicker]="endTime"
+                    readonly
+                  />
+                  <ngx-material-timepicker
+                    (timeSet)="timeChanged($event, 'end')"
+                    #endTime
+                    enableKeyboardInput="true"
+                    [ngxMaterialTimepickerTheme]="darkTheme"
+                  ></ngx-material-timepicker>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('endObj').status === 'INVALID' &&
+                      ordersForm.get('endObj').touched &&
+                      ordersForm.get('endObj').dirty) ||
+                    (submitted && ordersForm.get('endObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال التوقيت
+                </div>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="ordersForm.hasError('endAfterStart')"
+                >
+                  <i class="fas fa-times"></i>
+                  لايمكن أن يكون وقت إنتهاء الطلب قبل وقت بدء الطلب
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="
+                    ordersForm.get('endObj').status === 'VALID' &&
+                    !ordersForm.hasError('endAfterStart')
+                  "
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-watch" style="margin: 0 10px;"></i> الخدمة
+                  الرئيسية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الرئيسية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="servicesObj"
+                    [matAutocomplete]="servicesAutoComplete"
+                    id="servicesObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('servicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #servicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of servicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('servicesObj').status === 'INVALID' &&
+                      ordersForm.get('servicesObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('servicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الرئيسية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('servicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-signal-alt-3" style="margin: 0 10px;"></i>
+                  الخدمة الفرعية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="إختر الخدمة الفرعية"
+                    aria-label="Number"
+                    matInput
+                    formControlName="subServicesObj"
+                    [matAutocomplete]="subServicesAutoComplete"
+                    id="subServicesObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('subServicesObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <i class="fas fa-cogs"></i>
+                  <mat-autocomplete
+                    #subServicesAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of subServicesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('subServicesObj').status === 'INVALID' &&
+                      ordersForm.get('subServicesObj').touched) ||
+                    (submitted &&
+                      ordersForm.get('subServicesObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الخدمة الفرعية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('subServicesObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field full_width">
+                <label>
+                  <i class="fas fa-info-square" style="margin: 0 10px;"></i>
+                  ملاحظات طلب العميل <span>*</span></label
+                >
+                <ckeditor
+                  formControlName="details"
+                  [config]="config"
+                  [editor]="Editor"
+                  data="<p>تجربة نص</p>"
+                ></ckeditor>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (ordersForm.get('details').status === 'INVALID' &&
+                      ordersForm.get('details').touched) ||
+                    (submitted &&
+                      ordersForm.get('details').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال تفاصيل الطلب
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm.get('details').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <hr />
+              <div class="form_field fullWidth formButtons">
+                <button
+                  [disabled]="ordersForm.invalid"
+                  type="submit"
+                  class="formSubmit formButton"
+                  *ngIf="!updateButton"
+                >
+                  حفط
+                </button>
+                <button
+                  [disabled]="ordersForm.invalid"
+                  type="button"
+                  class="formSubmit formButton"
+                  *ngIf="updateButton"
+                  (click)="onUpdate()"
+                >
+                  تعديل
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="page_block" style="width: 25%; box-shadow: none;">
+          <h1>ewjr</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="popup" *ngIf="viewOfferDetailsPopup" [@parentAnimation]>
+    <div id="backDrop" (click)="closePopup()"></div>
+    <div id="popupData" [@childAnimation]>
+      <i class="fas fa-times" (click)="closePopup()"></i>
+      <h2>تفاصيل العرض <br /></h2>
+      <ul>
+        <li>إسم العرض : {{ currentOffer.name }}</li>
+        <li>وقت بدء العرض : {{ currentOffer.start_date }}</li>
+        <li>وقت إنتهاء العرض : {{ currentOffer.end_date }}</li>
+        <li>
+          تفاصيل العرض : <span [innerHTML]="currentOffer.description"></span>
+        </li>
+      </ul>
+      <div id="confirmationButtons">
+        <button type="button" (click)="closePopup()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+  <div id="popup" *ngIf="viewMapsPopup" [@parentAnimation]>
+    <div id="backDrop" (click)="!(viewMapsPopup = false)"></div>
+    <app-map
+      [orderDate]="orderDate"
+      [addOrderMode]="true"
+      [orderClient]="orderClient"
+      [orderServiceId]="orderServiceId"
+      [@childAnimation]
+      (bestTechnicalSelected)="selectBestTechnical($event)"
+    ></app-map>
+  </div>
+</div>
