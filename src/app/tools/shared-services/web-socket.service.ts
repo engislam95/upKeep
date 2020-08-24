@@ -1,5 +1,7 @@
 import { Injectable, OnInit } from "@angular/core";
 import Pusher from "pusher-js";
+// import Pusher from 'pusher-js/with-encryption';
+
 
 @Injectable()
 export class WebSocketService {
@@ -9,39 +11,60 @@ export class WebSocketService {
 
   constructor() {
     this.pusher = new Pusher("2140fece47d1d0c40378", {
-      cluster: "eu",
-      // auth: {
-      //   params: { foo: "bar" },
-      //   headers: { baz: "boo" }
-      // }
+      // appId: '1059775',
+      // key: '2140fece47d1d0c40378',
+      // secret: 'fb813ed36a6f4c65fd7e',
+      cluster: 'eu',
+      // encrypted: true
     });
+
   }
 
   // Listen To Channels and Subscribe them
-  listenChannel(names) {
-    console.log(names)
+  // listenChannel(names) {
+  //   console.log(names)
 
-    // Loop for channels Names
-    for (let i = 0; i < names.length; i++) {
-      // Subscribe channels
-      console.log(names[i]);
+  //   // Loop for channels Names
+  //   for (let i = 0; i < names.length; i++) {
+  //     // Subscribe channels
+  //     console.log(names[i]);
       
-      // "private-" +
-      this.pusher.subscribe( names[i]);
+  //     // "private-" +
+  //     this.pusher.subscribe( names[i]);
 
   
 
-      this.pusher.connection.bind("connected", this.connectedExecute());
-    }
+  //     this.pusher.connection.bind("connected", this.connectedExecute());
+  //   }
     
+  //   Pusher.log = msg => {
+  //     console.log(msg);
+  //   };
+
+  //   this.pusher.allChannels().forEach(channel => {
+  //     console.log("Subscribe: ", channel.name);
+  //   });
+  // }
+
+
+  listenChannel(name) {
+
+    this.pusher.subscribe(name);
+    this.pusher.connection.bind("connected", this.connectedExecute());
+
     Pusher.log = msg => {
       console.log(msg);
     };
 
-    this.pusher.allChannels().forEach(channel => {
-      console.log("Subscribe: ", channel.name);
-    });
+
+
+
+
   }
+
+
+
+
 
   // Execute Function after connected
   connectedExecute() {

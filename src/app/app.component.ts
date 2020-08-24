@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
 
       console.log('entered')
 
-      this.WebSocketServicee.listenChannel(['company/' + this.currentUser.id ])
+      this.WebSocketServicee.listenChannel('company/' + this.currentUser.id )
 
       // this.router.navigate(['/system-off']);
 
