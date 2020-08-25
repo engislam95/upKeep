@@ -1,4 +1,4 @@
-<div class="main_page" id="formPage">
+<div class="main_page add-sale" id="formPage">
   <app-alerts> </app-alerts>
   <app-side-menu></app-side-menu>
   <div class="page_main_blocks middle_page">
@@ -27,40 +27,62 @@
       <div class="page_body_main" style="display:flex">
         <div class="page_block" style="width: 75%;">
           <div id="add_form">
-            <form (ngSubmit)="onSubmit()" [formGroup]="ordersForm">
+            <form (ngSubmit)="onSubmit()" [formGroup]="salesForm">
               <div class="twoButtons" style="width: 49%">
                 <button
                   type="button"
-                  [disabled]="multiAddressButtondisabled"
-                  (click)="showMapPopup = true; overLayShow = true"
+                  [routerLink]="['/clients/add-client']"
+                  id="button"
+                  class="clientBtn"
+                  [disabled]="salesForm['controls'].client_id.value"
+                >
+                  <i class="fas fa-user-plus"></i>
+                </button>
+
+                <button
+                  type="button"
+                  (click)="viewClientDetailsFunction()"
+                  [disabled]="selectedClientLocationsArray.length == 0"
                   id="button"
                   class="clientBtn"
                 >
                   <i class="fas fa-map-marker-alt"></i>
-                </button>
-                <button type="button" (click)="addNewClient()" id="button">
-                  <i class="fas fa-plus"></i>
-                </button>
-                <button
-                  type="button"
-                  (click)="viewClientDetailsFunction()"
-                  [disabled]="!viewClientDetails"
-                  id="button"
-                  class="clientBtn"
-                >
-                  <i class="fas fa-search"></i>
+                  <div
+                    class="clientLocations"
+                    *ngIf="selectedClientLocationsArray.length > 1"
+                  >
+                    {{ selectedClientLocationsArray.length }}
+                  </div>
                 </button>
                 <button
                   type="button"
                   (click)="viewClientDetailsFunction()"
-                  [disabled]="!viewClientDetails"
                   id="button"
                   class="clientBtn"
+                  [disabled]="selectedClientLocationsArray.length == 0"
                 >
-                  <i class="fas fa-search"></i>
+                  <i class="fas fa-mobile"></i>
+                  <div
+                    class="clientLocations"
+                    *ngIf="selectedClientLocationsArray.length > 1"
+                  >
+                    {{ selectedClientLocationsArray.length }}
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  [disabled]="!salesForm['controls'].client_id.value"
+                  id="button"
+                  class="clientBtn"
+                  [routerLink]="['/clients/client-details']"
+                  [queryParams]="{
+                    clientId: salesForm['controls'].client_id.value
+                  }"
+                >
+                  <i class="fas fa-user"></i>
                 </button>
               </div>
-              <div class="form_field inputWithButton twoButtons">
+              <div class="form_field">
                 <label
                   ><i class="fas fa-user" style="margin: 0 10px;"></i> اسم
                   العميل <span>*</span>
@@ -120,10 +142,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('clientIdObj').status === 'INVALID' &&
-                      ordersForm.get('clientIdObj').touched) ||
+                    (salesForm.get('clientIdObj').status === 'INVALID' &&
+                      salesForm.get('clientIdObj').touched) ||
                     (submitted &&
-                      ordersForm.get('clientIdObj').status === 'INVALID')
+                      salesForm.get('clientIdObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -132,10 +154,18 @@
                 <div
                   [@fade]
                   class="validationState errorState"
-                  *ngIf="ordersForm.hasError('noAddress')"
+                  *ngIf="salesForm.hasError('noAddress')"
                 >
                   <i class="fas fa-check"></i>
-                  هذا العميل ليس له عنوان - قم بتعديل البيانات و اضافة عنوان
+                  هذا العميل ليس له عنوان -
+                  <span
+                    style="cursor: pointer; text-decoration: underline;"
+                    [routerLink]="['/clients/add-new-map']"
+                    [queryParams]="{
+                      clientId: salesForm.controls.client_id.value
+                    }"
+                    >قم بتعديل البيانات واضافة عنوان</span
+                  >
                 </div>
                 <div
                   *ngIf="showMapPopup"
@@ -199,7 +229,7 @@
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : 'لم يتم ادخال المنققة'
+                                    : 'لم يتم ادخال المنطقة'
                                 }}</span>
                               </li>
                             </ul>
@@ -223,17 +253,37 @@
                   [@fade]
                   class="validationState successState"
                   *ngIf="
-                    ordersForm.get('clientIdObj').status === 'VALID' &&
-                    !ordersForm.hasError('noAddress')
+                    salesForm.get('clientIdObj').status === 'VALID' &&
+                    !salesForm.hasError('noAddress')
                   "
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
-                  <h5 id="multiLocationWarning">
+                  <h5
+                    id="multiLocationWarning"
+                    *ngIf="
+                      selectedClientLocationsArray.length == 0 &&
+                      selectSubLocations
+                    "
+                  >
                     {{
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations
-                        ? 'هذا العميل لديه أكثر من عنوان'
+                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
+                        : ''
+                    }}
+                  </h5>
+                  <h5
+                    id="multiLocationWarning"
+                    *ngIf="
+                      selectedClientLocationsArray.length > 1 &&
+                      !selectSubLocations
+                    "
+                  >
+                    {{
+                      selectedClientLocationsArray.length > 1 &&
+                      !selectSubLocations
+                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
                         : ''
                     }}
                   </h5>
@@ -281,10 +331,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('sourceObj').status === 'INVALID' &&
-                      ordersForm.get('sourceObj').touched) ||
+                    (salesForm.get('sourceObj').status === 'INVALID' &&
+                      salesForm.get('sourceObj').touched) ||
                     (submitted &&
-                      ordersForm.get('sourceObj').status === 'INVALID')
+                      salesForm.get('sourceObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -293,7 +343,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('sourceObj').status === 'VALID'"
+                  *ngIf="salesForm.get('sourceObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -337,10 +387,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('servicesObj').status === 'INVALID' &&
-                      ordersForm.get('servicesObj').touched) ||
+                    (salesForm.get('servicesObj').status === 'INVALID' &&
+                      salesForm.get('servicesObj').touched) ||
                     (submitted &&
-                      ordersForm.get('servicesObj').status === 'INVALID')
+                      salesForm.get('servicesObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -349,7 +399,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('servicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('servicesObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -394,10 +444,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('subServicesObj').status === 'INVALID' &&
-                      ordersForm.get('subServicesObj').touched) ||
+                    (salesForm.get('subServicesObj').status === 'INVALID' &&
+                      salesForm.get('subServicesObj').touched) ||
                     (submitted &&
-                      ordersForm.get('subServicesObj').status === 'INVALID')
+                      salesForm.get('subServicesObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -406,7 +456,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('subServicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('subServicesObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -436,10 +486,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('orderDateObj').status === 'INVALID' &&
-                      ordersForm.get('orderDateObj').touched) ||
+                    (salesForm.get('orderDateObj').status === 'INVALID' &&
+                      salesForm.get('orderDateObj').touched) ||
                     (submitted &&
-                      ordersForm.get('orderDateObj').status === 'INVALID')
+                      salesForm.get('orderDateObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -448,7 +498,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('orderDateObj').status === 'VALID'"
+                  *ngIf="salesForm.get('orderDateObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -528,11 +578,11 @@
                   [@fade]
                   class="validationState errorState"
                   *ngIf="
-                    (ordersForm.get('startObj').status === 'INVALID' &&
-                      ordersForm.get('startObj').touched &&
-                      ordersForm.get('startObj').dirty) ||
+                    (salesForm.get('startObj').status === 'INVALID' &&
+                      salesForm.get('startObj').touched &&
+                      salesForm.get('startObj').dirty) ||
                     (submitted &&
-                      ordersForm.get('startObj').status === 'INVALID')
+                      salesForm.get('startObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -541,7 +591,7 @@
                 <div
                   [@fade]
                   class="validationState errorState"
-                  *ngIf="ordersForm.hasError('endAfterStart')"
+                  *ngIf="salesForm.hasError('endAfterStart')"
                 >
                   <i class="fas fa-times"></i>
                   لايمكن أن يكون وقت إنتهاء الطلب قبل وقت بدء الطلب
@@ -550,8 +600,8 @@
                   [@fade]
                   class="validationState successState"
                   *ngIf="
-                    ordersForm.get('startObj').status === 'VALID' &&
-                    !ordersForm.hasError('endAfterStart')
+                    salesForm.get('startObj').status === 'VALID' &&
+                    !salesForm.hasError('endAfterStart')
                   "
                 >
                   <i class="fas fa-check"></i>
@@ -581,10 +631,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('endObj').status === 'INVALID' &&
-                      ordersForm.get('endObj').touched &&
-                      ordersForm.get('endObj').dirty) ||
-                    (submitted && ordersForm.get('endObj').status === 'INVALID')
+                    (salesForm.get('endObj').status === 'INVALID' &&
+                      salesForm.get('endObj').touched &&
+                      salesForm.get('endObj').dirty) ||
+                    (submitted && salesForm.get('endObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -593,7 +643,7 @@
                 <div
                   [@fade]
                   class="validationState  errorState"
-                  *ngIf="ordersForm.hasError('endAfterStart')"
+                  *ngIf="salesForm.hasError('endAfterStart')"
                 >
                   <i class="fas fa-times"></i>
                   لايمكن أن يكون وقت إنتهاء الطلب قبل وقت بدء الطلب
@@ -602,8 +652,8 @@
                   [@fade]
                   class="validationState successState"
                   *ngIf="
-                    ordersForm.get('endObj').status === 'VALID' &&
-                    !ordersForm.hasError('endAfterStart')
+                    salesForm.get('endObj').status === 'VALID' &&
+                    !salesForm.hasError('endAfterStart')
                   "
                 >
                   <i class="fas fa-check"></i>
@@ -648,10 +698,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('servicesObj').status === 'INVALID' &&
-                      ordersForm.get('servicesObj').touched) ||
+                    (salesForm.get('servicesObj').status === 'INVALID' &&
+                      salesForm.get('servicesObj').touched) ||
                     (submitted &&
-                      ordersForm.get('servicesObj').status === 'INVALID')
+                      salesForm.get('servicesObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -660,7 +710,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('servicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('servicesObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -705,10 +755,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('subServicesObj').status === 'INVALID' &&
-                      ordersForm.get('subServicesObj').touched) ||
+                    (salesForm.get('subServicesObj').status === 'INVALID' &&
+                      salesForm.get('subServicesObj').touched) ||
                     (submitted &&
-                      ordersForm.get('subServicesObj').status === 'INVALID')
+                      salesForm.get('subServicesObj').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -717,7 +767,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('subServicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('subServicesObj').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -738,10 +788,9 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (ordersForm.get('details').status === 'INVALID' &&
-                      ordersForm.get('details').touched) ||
-                    (submitted &&
-                      ordersForm.get('details').status === 'INVALID')
+                    (salesForm.get('details').status === 'INVALID' &&
+                      salesForm.get('details').touched) ||
+                    (submitted && salesForm.get('details').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -750,16 +799,235 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm.get('details').status === 'VALID'"
+                  *ngIf="salesForm.get('details').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
                 </div>
               </div>
-              <hr />
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="safetyOrder"
+                  (change)="changeSafetyOrder($event.checked)"
+                  >الطلب عودة للضمان
+                </mat-checkbox>
+              </div>
+              <div class="form_field" *ngIf="safetyOrder">
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="رقم الطلب"
+                    aria-label="Number"
+                    matInput
+                    formControlName="sourceObj"
+                    [matAutocomplete]="sourceAutoComplete"
+                    id="sourceObj"
+                  />
+                  <img
+                    src="{{ selectedResourceLogo }}"
+                    *ngIf="selectedResourceLogoShow"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('sourceObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #sourceAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of sourcesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (salesForm.get('sourceObj').status === 'INVALID' &&
+                      salesForm.get('sourceObj').touched) ||
+                    (submitted &&
+                      salesForm.get('sourceObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال المصدر
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="salesForm.get('sourceObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  formControlName="clientContact"
+                  (change)="
+                    salesForm['controls'].clientContact.setValue($event.checked)
+                  "
+                >
+                  تم الاتصال بالعميل
+                </mat-checkbox>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="addNumber"
+                  (change)="changePhone($event.checked)"
+                >
+                  رقم اضافى للعميل فى حالة عدم الرد
+                </mat-checkbox>
+              </div>
+              <div class="form_field inputWithButton" *ngIf="addNumber">
+                <div
+                  [@fade]
+                  class="progressState"
+                  *ngIf="offersArray.length > 0"
+                >
+                  يوجد عدد : {{ offersArray.length }} عروض
+                </div>
+                <span class="validationState  errorState ">{{ noOffers }}</span>
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="العروض"
+                    aria-label="Number"
+                    matInput
+                    formControlName="offersObj"
+                    [matAutocomplete]="offersAutoComplete"
+                    id="offersObj"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('offersObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #offersAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of offersFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <button
+                  type="button"
+                  (click)="openOfferDetailsPopup()"
+                  id="button"
+                  class="clientBtn"
+                >
+                  <i class="fas fa-mobile"></i>
+                </button>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="addColor"
+                  (change)="changeColorStatus($event.checked)"
+                >
+                  تحديد لون
+                </mat-checkbox>
+              </div>
+              <div class="form_field" *ngIf="addColor">
+                <mat-form-field
+                  style="width: 58%;"
+                  appearance="outline"
+                  dir="rtl"
+                >
+                  <input
+                    matInput
+                    placeholder=""
+                    [value]="color"
+                    autocomplete="off"
+                    id="name"
+                    (keyup)="changeColor($event.target.value)"
+                  />
+                </mat-form-field>
+                <p-colorPicker
+                  class="color-system"
+                  [(ngModel)]="color"
+                  formControlName="color"
+                ></p-colorPicker>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="techFlage"
+                  (change)="chooseTechnical($event.checked)"
+                  >تحويل الطلب الى التنفيذ
+                </mat-checkbox>
+              </div>
+              <div class="form_field" *ngIf="techFlage">
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="رقم الطلب"
+                    aria-label="Number"
+                    matInput
+                    formControlName="sourceObj"
+                    [matAutocomplete]="sourceAutoComplete"
+                    id="sourceObj"
+                  />
+                  <img
+                    src="{{ selectedResourceLogo }}"
+                    *ngIf="selectedResourceLogoShow"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('sourceObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #sourceAutoComplete="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of sourcesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (salesForm.get('sourceObj').status === 'INVALID' &&
+                      salesForm.get('sourceObj').touched) ||
+                    (submitted &&
+                      salesForm.get('sourceObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال المصدر
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="salesForm.get('sourceObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
               <div class="form_field fullWidth formButtons">
                 <button
-                  [disabled]="ordersForm.invalid"
+                  [disabled]="salesForm.invalid"
                   type="submit"
                   class="formSubmit formButton"
                   *ngIf="!updateButton"
@@ -767,7 +1035,7 @@
                   حفط
                 </button>
                 <button
-                  [disabled]="ordersForm.invalid"
+                  [disabled]="salesForm.invalid"
                   type="button"
                   class="formSubmit formButton"
                   *ngIf="updateButton"
@@ -780,7 +1048,103 @@
           </div>
         </div>
         <div class="page_block" style="width: 25%; box-shadow: none;">
-          <h1>ewjr</h1>
+          <div class="additionClientDetails">
+            <header *ngIf="!showNote" (click)="showNote = true">
+              <div style="display: flex; justify-content: space-between;">
+                <h4>
+                  <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
+                  <span>بيانات إضافية عن العميل</span>
+                </h4>
+                <h4>
+                  <span style="font-weight: 900;">2541</span>
+                  <i class="fas fa-smile" style="margin-right: 10px;"></i>
+                </h4>
+              </div>
+            </header>
+            <header *ngIf="showNote" (click)="showNote = false">
+              <div style="display: flex; justify-content: space-between;">
+                <h4>
+                  <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
+                  <span>بيانات إضافية عن العميل</span>
+                </h4>
+                <h4>
+                  <span style="font-weight: 900;">2541</span>
+                  <i class="fas fa-smile" style="margin-right: 10px;"></i>
+                </h4>
+              </div>
+            </header>
+            <div *ngIf="showNote">
+              <section
+                class="prevoiusOrdersNumber"
+                style="display:flex; justify-content: space-between;"
+              >
+                <h4>
+                  <span>عدد الطلبات السابقة لهذا العميل</span>
+                </h4>
+                <span>1</span>
+              </section>
+              <section class="clientDetailsSection">
+                <ul>
+                  <li>
+                    <i class="fas fa-calendar-week"></i>
+                    <span style="margin-right: 10px;">تاريخ اخر طلب </span>
+                    <p style="margin-right: 22px;">25/5/2020</p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-cog"></i>
+                    <span style="margin-right: 10px;"
+                      >الخدمة الرئيسية لأخر طلب
+                    </span>
+                    <p style="margin-right: 22px;">تكييفات</p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-cogs"></i>
+                    <span style="margin-right: 10px;"
+                      >الخدمة الفرعية لأخر طلب
+                    </span>
+                    <p style="margin-right: 22px;">سبليت تركيب و شحن فريون</p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-user-cog"></i>
+                    <span style="margin-right: 10px;"
+                      >اسم الفني لاخر الطلب
+                    </span>
+                    <p style="margin-right: 22px;">محمد جابر</p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-ellipsis-v"></i>
+                    <span style="margin-right: 10px;">رقم الطلب </span>
+                    <p style="margin-right: 22px; text-decoration: underline;">
+                      2050
+                    </p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-receipt"></i>
+                    <span style="margin-right: 10px;">حالة الطلب </span>
+                    <p style="margin-right: 22px; text-decoration: underline;">
+                      <span>تم اصدار فاتورة</span>
+                      <span style="margin-right: 20px;">201145</span>
+                    </p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                  <li>
+                    <i class="fas fa-info"></i>
+                    <span style="margin-right: 10px;">ملاحظات عن العميل </span>
+                    <p style="margin-right: 22px;">
+                      العميل لا يرغب في اى جنسية أجنبية و يفضل فقط الجنسية
+                      السعودية
+                    </p>
+                  </li>
+                  <hr style="width:399px; opacity: .29; margin-top: 10px;" />
+                </ul>
+              </section>
+            </div>
+          </div>
         </div>
       </div>
     </div>

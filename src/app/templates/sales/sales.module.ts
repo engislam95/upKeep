@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { CommonModule } from '@angular/common';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 import { AgmCoreModule } from '@agm/core';
 
@@ -29,6 +30,7 @@ import {
     //
     CommonModule,
     SalesRoutingModule,
+    ColorPickerModule,
     SharedComponentsModule,
     MatInputModule,
     MatTableModule,

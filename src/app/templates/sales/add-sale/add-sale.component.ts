@@ -51,6 +51,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   order_all: boolean = false;
   order_update: boolean = false;
   orders: any = [];
+  showNote = false;
   user: any = '';
   todayDate: Date = new Date();
   // Clients
@@ -135,8 +136,14 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   hours: any = [];
   technicians: any = [];
   client_city_id: any = '';
+  color = '#FF0000';
+  safetyOrder: any = false;
+  addNumber: any = false;
+  addColor: any = false;
+  techFlage: any = false;
+
   /* -------------------- Order Form ------------------------ */
-  ordersForm = new FormGroup(
+  salesForm = new FormGroup(
     {
       client_id: new FormControl('', Validators.required),
       clientIdObj: new FormControl('', [emptyValidator, Validators.required]),
@@ -159,6 +166,8 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       sourceObj: new FormControl('', [emptyValidator, Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
       order_date: new FormControl(''),
+      color: new FormControl(this.color),
+      clientContact: new FormControl(false),
       orderDateObj: new FormControl('', [Validators.required])
     },
     [noAddressValidator, startEndTimeValidator]
@@ -227,16 +236,37 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  // Change Color
+  changeColor(value) {
+    this.color = value;
+  }
+  // Change Safety
+  changeSafetyOrder(event) {
+    this.safetyOrder = event;
+  }
+  // Change Number
+  changePhone(event) {
+    this.addNumber = event;
+  }
+  // Change Number
+  changeColorStatus(event) {
+    this.addColor = event;
+  }
+  // Change Technical
+  chooseTechnical(event) {
+    this.techFlage = event;
+  }
   /* ------------------------- Reset Values ------------------------ */
   xResetInputs(key) {
     if (key === 'orderDateObj') {
       this.resetInputs('date');
     }
     (document.getElementById(key) as HTMLInputElement).value = '';
-    this.ordersForm.controls[key].patchValue('');
+    this.salesForm.controls[key].patchValue('');
     if (key === 'clientIdObj') {
       this.multiAddressButtondisabled = true;
       this.selectedClientLocationsArray = [];
+      this.salesForm.controls.client_id.setValue('');
     }
   }
   resetInputs(inputRole) {
@@ -288,10 +318,10 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* ----------------- Get Offers -------------------------- */
   getOffers() {
-    const serviceId = this.ordersForm.value.service_id;
-    const subServiceStatus = this.ordersForm.get('subServicesObj').status;
-    const orderDate = this.ordersForm.value.order_date;
-    const orderDateStatus = this.ordersForm.get('orderDateObj').status;
+    const serviceId = this.salesForm.value.service_id;
+    const subServiceStatus = this.salesForm.get('subServicesObj').status;
+    const orderDate = this.salesForm.value.order_date;
+    const orderDateStatus = this.salesForm.get('orderDateObj').status;
     if (subServiceStatus === 'VALID' && orderDateStatus === 'VALID') {
       this.startLoading();
       this.coreService
@@ -304,11 +334,11 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           this.endLoading();
           this.updateMode ? null : this.listenInputChanges('', 'offer');
           if (this.offersArray.length === 0) {
-            this.ordersForm.controls.offersObj.disable();
+            this.salesForm.controls.offersObj.disable();
             this.patchForm({ offersObj: '' });
             this.noOffers = 'لا يوجد عروض فى هذا اليوم';
           } else {
-            this.ordersForm.controls.offersObj.enable();
+            this.salesForm.controls.offersObj.enable();
             this.noOffers = '';
           }
         });
@@ -431,7 +461,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   listenInputChanges(value, input) {
     switch (input) {
       case 'client':
-        this.clientsFilteredOptions = this.ordersForm
+        this.clientsFilteredOptions = this.salesForm
           .get('clientIdObj')
           .valueChanges.pipe(
             startWith(value),
@@ -439,7 +469,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'resource':
-        this.sourcesFilteredOptions = this.ordersForm
+        this.sourcesFilteredOptions = this.salesForm
           .get('sourceObj')
           .valueChanges.pipe(
             startWith(value),
@@ -447,7 +477,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'mainService':
-        this.servicesFilteredOptions = this.ordersForm
+        this.servicesFilteredOptions = this.salesForm
           .get('servicesObj')
           .valueChanges.pipe(
             startWith(value),
@@ -455,7 +485,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'subService':
-        this.subServicesFilteredOptions = this.ordersForm
+        this.subServicesFilteredOptions = this.salesForm
           .get('subServicesObj')
           .valueChanges.pipe(
             startWith(value),
@@ -463,7 +493,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'offer':
-        this.offersFilteredOptions = this.ordersForm
+        this.offersFilteredOptions = this.salesForm
           .get('offersObj')
           .valueChanges.pipe(
             startWith(value),
@@ -474,7 +504,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* ------------------- Patch Form --------------------- */
   patchForm(data) {
-    this.ordersForm.patchValue({ ...data });
+    this.salesForm.patchValue({ ...data });
   }
   /* ----------------------- Display Options ------------------------ */
   displayOptionsFunction = state => {
@@ -581,7 +611,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       orderDateArray = event.split('-');
       orderDate =
         orderDateArray[0] + '/' + orderDateArray[1] + '/' + orderDateArray[2];
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         order_date: orderDate,
         orderDateObj: this.updatedOrderData.order_date
       });
@@ -589,7 +619,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       orderDateArray = event.targetElement.value.split('/');
       orderDate =
         orderDateArray[2] + '/' + orderDateArray[0] + '/' + orderDateArray[1];
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         order_date: orderDate
       });
     }
@@ -599,10 +629,10 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* --------------------------- Get Order Technicians -------------------- */
   getOrderTechnicians() {
-    const mainServiceId = this.ordersForm.value.main_service_id;
-    const MainServiceStatus = this.ordersForm.get('servicesObj').status;
-    const orderDate = this.ordersForm.value.order_date;
-    const orderDateStatus = this.ordersForm.get('orderDateObj').status;
+    const mainServiceId = this.salesForm.value.main_service_id;
+    const MainServiceStatus = this.salesForm.get('servicesObj').status;
+    const orderDate = this.salesForm.value.order_date;
+    const orderDateStatus = this.salesForm.get('orderDateObj').status;
     if (
       MainServiceStatus === 'VALID' &&
       orderDateStatus === 'VALID' &&
@@ -648,7 +678,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* ------------------ Client Detals --------------------- */
   viewClientDetailsFunction() {
-    const clientId = this.ordersForm.value.client_id;
+    const clientId = this.salesForm.value.client_id;
     window.open('/clients/client-details?clientId=' + clientId, '_blank');
   }
   /* ------------------------ Filter Clients --------------------- */
@@ -674,7 +704,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         this.multiAddressButtondisabled = false;
       }
       this.orderClient = value;
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         client_id: value.id,
         location_id: value.locations.length > 0 ? value.locations[0].id : null
       });
@@ -746,13 +776,13 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* ---------------------- Start Time -------------------------- */
   startTimeChanged(time) {
-    this.ordersForm.patchValue({
+    this.salesForm.patchValue({
       start: time
     });
   }
   /* ---------------------- End Time -------------------------- */
   endTimeChanged(time) {
-    this.ordersForm.patchValue({
+    this.salesForm.patchValue({
       end: time
     });
   }
@@ -760,14 +790,14 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   onUpdate() {
     this.startLoading();
     this.submitted = true;
-    this.ordersForm.patchValue({
-      technician_id: +this.ordersForm.value.technician_id
+    this.salesForm.patchValue({
+      technician_id: +this.salesForm.value.technician_id
     });
     if (this.selectedClientLocationsArray.length > 1) {
-      this.ordersForm.value.location_id = this.selectedLocationId;
+      this.salesForm.value.location_id = this.selectedLocationId;
     }
     this.coreService
-      .updateMethod('orders/' + this.updatedOrderId, this.ordersForm.value)
+      .updateMethod('orders/' + this.updatedOrderId, this.salesForm.value)
       .subscribe(
         () => {
           this.endLoading();
@@ -801,27 +831,27 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   /* ------------------------------ Create Order ------------------------- */
   onSubmit() {
     this.startLoading();
-    console.log(this.ordersForm.value);
-    console.log(this.ordersForm.value.start);
-    let am = this.ordersForm.value.startObj.split(' ')[1];
+    console.log(this.salesForm.value);
+    console.log(this.salesForm.value.start);
+    let am = this.salesForm.value.startObj.split(' ')[1];
     if (am == 'am') {
-      let startHour = this.ordersForm.value.start.split(':')[0];
-      const startMin = this.ordersForm.value.start.split(':')[1];
+      let startHour = this.salesForm.value.start.split(':')[0];
+      const startMin = this.salesForm.value.start.split(':')[1];
       if (startHour == 12 && localStorage.getItem('startTimeType') == 'am') {
         startHour = 0;
-        this.ordersForm.value.start = startHour + '0' + ':' + startMin;
+        this.salesForm.value.start = startHour + '0' + ':' + startMin;
       }
-      let endHour = this.ordersForm.value.end.split(':')[0];
-      const endMin = this.ordersForm.value.end.split(':')[1];
+      let endHour = this.salesForm.value.end.split(':')[0];
+      const endMin = this.salesForm.value.end.split(':')[1];
       if (endHour == 12 && localStorage.getItem('endTimeType') == 'am') {
         endHour = 0;
-        this.ordersForm.value.end = endHour + '0' + ':' + endMin;
+        this.salesForm.value.end = endHour + '0' + ':' + endMin;
       }
     }
-    console.log(this.ordersForm.value.end);
+    console.log(this.salesForm.value.end);
     this.submitted = true;
-    this.ordersForm.value.location_id = this.selectedLocationId;
-    this.coreService.postMethod('orders', this.ordersForm.value).subscribe(
+    this.salesForm.value.location_id = this.selectedLocationId;
+    this.coreService.postMethod('orders', this.salesForm.value).subscribe(
       () => {
         this.endLoading();
         this.showSuccess('تم تسجيل الطلب بنجاح');

@@ -291,9 +291,9 @@ export class AddClientComponent implements OnInit {
         id: this.updateMode ? this.updatedClientData.id : ''
       })
       .subscribe(
-        (type) => {
+        type => {
           console.log(type);
-          
+
           if (type === 'mobile') {
             this.mobileReserved = false;
             this.mobileCheckLoaded = true;
@@ -302,9 +302,9 @@ export class AddClientComponent implements OnInit {
             this.emailCheckLoaded = true;
           }
         },
-        (err) => {
+        err => {
           console.log(err);
-          
+
           if (type === 'mobile') {
             this.mobileReserved = true;
             this.mobileCheckLoaded = true;
@@ -548,7 +548,6 @@ export class AddClientComponent implements OnInit {
       this.passPopup = false;
 
       if (url.includes('@')) {
-        
         // var newLating = url.split('@')[1].split(',')
         var rest = url.substring(0, url.lastIndexOf('3d') + 2);
         var last = url.substring(url.lastIndexOf('3d') + 2, url.length);
@@ -977,43 +976,47 @@ export class AddClientComponent implements OnInit {
     this.airConditionerDisplayArray = data.air_conditioner;
     this.mobileNumber = data.mobile;
     this.clientsForm.patchValue({
-      name: data.name,
-      gender: data.gender,
+      name: data.name ? data.name : '',
+      gender: data.gender ? data.gender : '',
       genderObj: data.gender_object ? data.gender_object : '',
-      countriesObj: data.city.country,
-      citiesObj: data.city,
-      city_id: data.city_id,
-      mobile: +(this.countryPhoneKey + data.mobile),
-      mobileKey: data.mobile,
+      countriesObj: data.city ? data.city.country : '',
+      citiesObj: data.city ? data.city : '',
+      city_id: data.city_id ? data.city_id : '',
+      mobile: +(this.countryPhoneKey + data.mobile ? data.mobile : ''),
+      mobileKey: data.mobile ? data.mobile : '',
       email: data.email ? data.email : '',
-      zone: data.zone,
-      address: data.address,
+      zone: data.zone ? data.zone : '',
+      address: data.address ? data.address : '',
 
-      notes: data.notes,
-      locations_address: data.locations[0].address,
-      locations_notes: data.locations[0].notes,
-      locations_city: data.locations[0].city,
-      locations_area: data.locations[0].area,
+      notes: data.notes ? data.notes : '',
+      locations_address: data.locations[0] ? data.locations[0].address : '',
+      locations_notes: data.locations[0] ? data.locations[0].notes : '',
+      locations_city: data.locations[0] ? data.locations[0].city : '',
+      locations_area: data.locations[0] ? data.locations[0].area : '',
 
-      client_type: data.client_type,
-      clientTypesObj: data.client_type_object,
-      lat: data.lat,
-      long: data.long,
-      latObj: data.lat,
-      longObj: data.long,
-      home_type: data.home_type,
-      homeTypesObj: data.home_type_object,
-      home_contract_type: data.home_contract_type,
-      homeContractTypesObj: data.home_contract_type_object,
-      camera_number: data.camera_number,
-      kitchen_number: data.kitchen_number,
-      bathroom_number: data.bathroom_number,
-      room_number: data.room_number,
-      floor_number: data.floor_number,
-      area: data.area,
-      air_conditioner: data.air_conditioner,
-      airConditionerTypesObj: data.air_conditioner,
-      active: data.active
+      client_type: data.client_type ? data.client_type : '',
+      clientTypesObj: data.client_type_object ? data.client_type_object : '',
+      lat: data.lat ? data.lat : 0,
+      long: data.long ? data.long : 0,
+      latObj: data.lat ? data.lat : 0,
+      longObj: data.long ? data.long : 0,
+      home_type: data.home_type ? data.home_type : '',
+      homeTypesObj: data.home_type_object ? data.home_type_object : '',
+      home_contract_type: data.home_contract_type
+        ? data.home_contract_type
+        : '',
+      homeContractTypesObj: data.home_contract_type_object
+        ? data.home_contract_type_object
+        : '',
+      camera_number: data.camera_number ? data.camera_number : '',
+      kitchen_number: data.kitchen_number ? data.kitchen_number : '',
+      bathroom_number: data.bathroom_number ? data.bathroom_number : '',
+      room_number: data.room_number ? data.room_number : '',
+      floor_number: data.floor_number ? data.floor_number : '',
+      area: data.area ? data.area : '',
+      air_conditioner: data.air_conditioner ? data.air_conditioner : '',
+      airConditionerTypesObj: data.air_conditioner ? data.air_conditioner : '',
+      active: data.active ? data.active : ''
     });
 
     console.log(this.clientsForm);

@@ -6540,3 +6540,37 @@ button:disabled {
 .gm-style .gm-style-iw-d {
   overflow: auto !important;
 }
+
+.add-sale {
+  .ck.ck-label {
+    display: none !important;
+  }
+
+  .mat-checkbox label {
+    border: 0 !important;
+  }
+
+  .inputWithButton #button {
+    position: relative;
+    width: 44px;
+    height: 48px;
+    border-radius: 5px;
+    background: #13984D;
+    color: #fff;
+    margin-right: 10px;
+    border: 1px solid rgba(112, 112, 112, 0.27);
+    top: 15px;
+
+    i {
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+
+  .ui-colorpicker-preview {
+    width: 11em;
+    height: 43px;
+    cursor: pointer;
+    margin-right: 20px !important;
+  }
+}

@@ -101,41 +101,73 @@ export class AddNewMapComponent implements OnInit {
         this.clientDetails = clientDetails.data;
         console.log(this.clientDetails.locations.length);
 
-        this.clientLong = this.clientDetails.long;
-        this.clientLat = this.clientDetails.lat;
+        this.clientLong = this.clientDetails.long ? this.clientDetails.long : 0;
+        this.clientLat = this.clientDetails.lat ? this.clientDetails.lat : 0;
         // TODO
-        this.clientName = this.clientDetails.name;
+        this.clientName = this.clientDetails.name
+          ? this.clientDetails.name
+          : '';
         // console.log(this.clientName);
-        this.clientMobileNumber = this.clientDetails.mobile;
+        this.clientMobileNumber = this.clientDetails.mobile
+          ? this.clientDetails.mobile
+          : '';
         // console.log(this.clientMobileNumber);
-        this.clientCityId = this.clientDetails.city.id;
+        this.clientCityId = this.clientDetails.city
+          ? this.clientDetails.city.id
+          : '';
         // console.log(this.clientCityId);
-        this.clientStatusActivation = this.clientDetails.active;
+        this.clientStatusActivation = this.clientDetails.active
+          ? this.clientDetails.active
+          : '';
         // console.log(this.clientStatusActivation);
         this.locationsArrayLength = clientDetails.data.locations.length;
         console.log(this.locationsArrayLength);
 
-        this.locations = clientDetails.data.locations;
+        this.locations = clientDetails.data.locations
+          ? clientDetails.data.locations
+          : '';
 
-        this.cityId = clientDetails.data.city.id;
+        this.cityId = clientDetails.data.city ? clientDetails.data.city.id : '';
 
-        this.status = this.clientDetails.status;
-        this.clientType = this.clientDetails.client_type;
-        this.created_at = this.clientDetails.created_at;
-        this.created_by = this.clientDetails.created_by;
-        this.cityName = this.clientDetails.city.name;
-        this.clientNotes = this.clientDetails.notes;
+        this.status = this.clientDetails.status
+          ? this.clientDetails.status
+          : '';
+        this.clientType = this.clientDetails.client_type
+          ? this.clientDetails.client_type
+          : '';
+        this.created_at = this.clientDetails.created_at
+          ? this.clientDetails.created_at
+          : '';
+        this.created_by = this.clientDetails.created_by
+          ? this.clientDetails.created_by
+          : '';
+        this.cityName = this.clientDetails.city
+          ? this.clientDetails.city.name
+          : '';
+        this.clientNotes = this.clientDetails.notes
+          ? this.clientDetails.notes
+          : '';
         // this.lat = clientDetails.lat  ;
         // this.long = clientDetails.long ;
 
-        this.updated_at = this.clientDetails.locations[0].updated_at;
+        this.updated_at = this.clientDetails.locations[0]
+          ? this.clientDetails.locations[0].updated_at
+          : '';
 
-        this.clientAddress = this.clientDetails.address;
+        this.clientAddress = this.clientDetails.address
+          ? this.clientDetails.address
+          : '';
         // TODO
-        this.clientName = this.clientDetails.name;
+        this.clientName = this.clientDetails.name
+          ? this.clientDetails.name
+          : '';
 
-        this.lat = this.clientDetails.locations[0].lat;
-        this.long = this.clientDetails.locations[0].long;
+        this.lat = this.clientDetails.locations[0]
+          ? this.clientDetails.locations[0].lat
+          : 0;
+        this.long = this.clientDetails.locations[0]
+          ? this.clientDetails.locations[0].long
+          : 0;
 
         this.clientDetails.locations.forEach(element => {
           this.defaultAddress = element.default;

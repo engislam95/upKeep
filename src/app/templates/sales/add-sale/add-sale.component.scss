@@ -16,7 +16,7 @@
   img {
     padding: 0 !important;
     position: absolute;
-    right: 80% !important;
+    right: 525px !important;
     width: 30px;
     height: 30px;
     top: 3px;
@@ -114,9 +114,9 @@ agm-map {
 #multiLocationWarning {
   float: left;
   margin-top: 3px;
-  color: #c70e00;
-  left: 0;
-  padding-right: 300px;
+  color: #FF6F00;
+  position: relative;
+  left: -238px;
 }
 
 .closeMultiAddressPopupIcon {
@@ -599,7 +599,7 @@ agm-map {
   color: #393d46;
   position: absolute;
   font-size: 14px;
-  right: 60px;
+  right: 135px;
   top: 0;
 
   i {
@@ -649,8 +649,98 @@ app-map {
 }
 
 .twoButtons {
+  position: relative;
+  z-index: 99999;
+
   .clientBtn {
     position: relative;
-    left: -97%;
+    left: -65%;
+    width: 44px;
+    height: 48px;
+    border-radius: 5px;
+    background: #13984D;
+    color: #fff;
+    margin-right: 10px;
+    border: 1px solid rgba(112, 112, 112, 0.27);
+    top: 27px;
+
+    i {
+      font-size: 20px;
+    }
+
   }
+}
+
+.clientLocations {
+  width: 29px;
+  height: 29px;
+  background: #e68a12;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  line-height: 29px;
+  position: absolute;
+  top: -21px;
+  left: 22px;
+
+}
+
+button:disabled {
+  cursor: not-allowed;
+
+  i {
+    color: #6B6B6B;
+    opacity: .55;
+  }
+}
+
+.additionClientDetails {
+  header {
+    width: 370px;
+    height: 48px;
+    background: #242a2d;
+    border: 1px solid #242a2d;
+    line-height: 48px;
+    color: #fff;
+    padding: 0 15px;
+    cursor: pointer;
+
+    h4 {
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #fff;
+
+    }
+  }
+
+  .prevoiusOrdersNumber {
+    width: 370px;
+    height: 52px;
+    background: #ebebeb;
+    line-height: 52px;
+    padding: 0 16px;
+
+
+    h4 {
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #1d1d1d;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    }
+  }
+
+  .clientDetailsSection {
+    ul {
+      li {
+        margin-top: 15px;
+        padding: 0 16px;
+
+      }
+    }
+  }
+}
+
+.ck.ck-label {
+  display: none !important;
 }
