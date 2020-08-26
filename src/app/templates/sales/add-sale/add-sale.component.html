@@ -8,7 +8,7 @@
     <div class="page_body_title">
       <h3>
         <i class="fas fa-sort-shapes-down-alt"></i
-        >{{ this.updateMode ? 'تعديل طلب مبيعات ' : 'إضافة طلب مبيعات جديد' }}
+        >{{ this.updateMode ? "تعديل طلب مبيعات " : "إضافة طلب مبيعات جديد" }}
       </h3>
       <div
         class="page_body_main_buttons"
@@ -42,7 +42,7 @@
                 <button
                   type="button"
                   (click)="viewClientDetailsFunction()"
-                  [disabled]="selectedClientLocationsArray.length == 0"
+                  [disabled]="selectedClientLocationsArray.length <= 1"
                   id="button"
                   class="clientBtn"
                 >
@@ -59,14 +59,11 @@
                   (click)="viewClientDetailsFunction()"
                   id="button"
                   class="clientBtn"
-                  [disabled]="selectedClientLocationsArray.length == 0"
+                  [disabled]="clientMobiles.length <= 1"
                 >
                   <i class="fas fa-mobile"></i>
-                  <div
-                    class="clientLocations"
-                    *ngIf="selectedClientLocationsArray.length > 1"
-                  >
-                    {{ selectedClientLocationsArray.length }}
+                  <div class="clientLocations" *ngIf="clientMobiles.length > 1">
+                    {{ clientMobiles.length }}
                   </div>
                 </button>
                 <button
@@ -103,13 +100,13 @@
                 >
                   <input
                     type="text"
-                    placeholder="البحث بالاسم او رقم الموبايل"
+                    placeholder=" البحث بالاسم او رقم الموبايل او البريد الالكترونى"
                     aria-label="Number"
                     matInput
                     formControlName="clientIdObj"
                     [matAutocomplete]="clientAutoComplete"
                     id="clientIdObj"
-                    (keyup.enter)="getClientlocationsArray($event)"
+                    (keyup.enter)="filterationClient($event.target.value)"
                   />
                   <button
                     type="button"
@@ -229,7 +226,7 @@
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : 'لم يتم ادخال المنطقة'
+                                    : "لم يتم ادخال المنطقة"
                                 }}</span>
                               </li>
                             </ul>
@@ -263,28 +260,60 @@
                     id="multiLocationWarning"
                     *ngIf="
                       selectedClientLocationsArray.length == 0 &&
-                      selectSubLocations
+                      selectSubLocations &&
+                      clientMobiles.length == 0
                     "
                   >
                     {{
                       selectedClientLocationsArray.length > 1 &&
-                      !selectSubLocations
-                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
-                        : ''
+                      !selectSubLocations &&
+                      clientMobiles.length > 1
+                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
+                        : ""
                     }}
                   </h5>
                   <h5
                     id="multiLocationWarning"
                     *ngIf="
                       selectedClientLocationsArray.length > 1 &&
-                      !selectSubLocations
+                      !selectSubLocations &&
+                      clientMobiles.length > 1
                     "
                   >
                     {{
                       selectedClientLocationsArray.length > 1 &&
-                      !selectSubLocations
-                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
-                        : ''
+                      !selectSubLocations &&
+                      clientMobiles.length > 1
+                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
+                        : ""
+                    }}
+                  </h5>
+                  <h5
+                    id="multiLocationWarning"
+                    *ngIf="
+                      selectedClientLocationsArray.length > 1 &&
+                      clientMobiles.length == 0
+                    "
+                  >
+                    {{
+                      selectedClientLocationsArray.length > 1 &&
+                      clientMobiles.length == 0
+                        ? "هذا العميل موجود و لديه أكثر من عنوان"
+                        : ""
+                    }}
+                  </h5>
+                  <h5
+                    id="multiLocationWarning"
+                    *ngIf="
+                      selectedClientLocationsArray.length == 0 &&
+                      clientMobiles.length > 1
+                    "
+                  >
+                    {{
+                      selectedClientLocationsArray.length == 0 &&
+                      clientMobiles.length > 1
+                        ? "هذا العميل موجود و لديه أكثر من هاتف"
+                        : ""
                     }}
                   </h5>
                 </div>
@@ -557,8 +586,8 @@
 
               <div class="form_field" id="timePicker">
                 <label>
-                  <i class="fas fa-clock" style="margin: 0 10px;"></i> توقيت
-                  بداية الطلب <span>*</span></label
+                  <i class="fas fa-clock" style="margin: 0 10px;"></i> وقت الطلب
+                  الذى يرغب فيه العميل <span>*</span></label
                 >
                 <div class="timePickerContainer">
                   <input
@@ -662,55 +691,38 @@
               </div>
               <div class="form_field">
                 <label>
-                  <i class="fas fa-watch" style="margin: 0 10px;"></i> الخدمة
-                  الرئيسية <span>*</span></label
+                  <i class="fas fa-watch" style="margin: 0 10px;"></i> الفترات
+                  المفضلة للعميل <span>*</span></label
                 >
                 <mat-form-field dir="rtl" appearance="outline">
-                  <input
-                    type="text"
-                    placeholder="إختر الخدمة الرئيسية"
-                    aria-label="Number"
-                    matInput
-                    formControlName="servicesObj"
-                    [matAutocomplete]="servicesAutoComplete"
-                    id="servicesObj"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('servicesObj')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <mat-autocomplete
-                    #servicesAutoComplete="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
+                  <mat-select
+                    formControlName="period_id"
+                    placeholder="الفترات
+                المفضلة للعميل"
                   >
                     <mat-option
-                      *ngFor="let option of servicesFilteredOptions | async"
-                      [value]="option"
+                      *ngFor="let period of periodsArray"
+                      [value]="period.id"
                     >
-                      {{ option.name }}
+                      {{ period.name }}
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-select>
                 </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (salesForm.get('servicesObj').status === 'INVALID' &&
-                      salesForm.get('servicesObj').touched) ||
-                    (submitted &&
-                      salesForm.get('servicesObj').status === 'INVALID')
+                    !salesForm.get('period_id').value &&
+                    salesForm.get('period_id').touched
                   "
                 >
                   <i class="fas fa-times"></i>
-                  برجاء إدخال الخدمة الرئيسية
+                  برجاء إدخال الفترة المفضلة
                 </div>
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="salesForm.get('servicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('period_id').value"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -719,55 +731,36 @@
               <div class="form_field">
                 <label>
                   <i class="fas fa-signal-alt-3" style="margin: 0 10px;"></i>
-                  الخدمة الفرعية <span>*</span></label
+                  حالة الطلب <span>*</span></label
                 >
                 <mat-form-field dir="rtl" appearance="outline">
-                  <input
-                    type="text"
-                    placeholder="إختر الخدمة الفرعية"
-                    aria-label="Number"
-                    matInput
-                    formControlName="subServicesObj"
-                    [matAutocomplete]="subServicesAutoComplete"
-                    id="subServicesObj"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('subServicesObj')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <i class="fas fa-cogs"></i>
-                  <mat-autocomplete
-                    #subServicesAutoComplete="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
+                  <mat-select
+                    formControlName="status_id"
+                    placeholder="حالة الطلب"
                   >
                     <mat-option
-                      *ngFor="let option of subServicesFilteredOptions | async"
-                      [value]="option"
+                      *ngFor="let status of orderStatusArray"
+                      [value]="status.id"
                     >
-                      {{ option.name }}
+                      {{ status.name }}
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-select>
                 </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (salesForm.get('subServicesObj').status === 'INVALID' &&
-                      salesForm.get('subServicesObj').touched) ||
-                    (submitted &&
-                      salesForm.get('subServicesObj').status === 'INVALID')
+                    !salesForm.get('status_id').value &&
+                    salesForm.get('status_id').touched
                   "
                 >
                   <i class="fas fa-times"></i>
-                  برجاء إدخال الخدمة الفرعية
+                  برجاء إدخال حالة الطلب
                 </div>
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="salesForm.get('subServicesObj').status === 'VALID'"
+                  *ngIf="salesForm.get('status_id').value"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -1049,31 +1042,91 @@
         </div>
         <div class="page_block" style="width: 25%; box-shadow: none;">
           <div class="additionClientDetails">
-            <header *ngIf="!showNote" (click)="showNote = true">
+            <header
+              *ngIf="!showNote"
+              (click)="showNote = true"
+              [ngClass]="
+                orderClient.status == 'vip'
+                  ? 'vip'
+                  : orderClient.status == 'سئ'
+                  ? 'blocked'
+                  : 'normal'
+              "
+            >
               <div style="display: flex; justify-content: space-between;">
                 <h4>
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
-                  <span>بيانات إضافية عن العميل</span>
+                  <span>{{
+                    orderClient
+                      ? "بيانات إضافية عن العميل"
+                      : "لم يتم اختيار عميل"
+                  }}</span>
                 </h4>
                 <h4>
-                  <span style="font-weight: 900;">2541</span>
-                  <i class="fas fa-smile" style="margin-right: 10px;"></i>
+                  <span style="font-weight: 900;">{{
+                    orderClient ? orderClient.id : ""
+                  }}</span>
+                  <i
+                    class="fas fa-smile"
+                    *ngIf="orderClient.status == 'مميز'"
+                    style="margin-right: 10px;"
+                  ></i>
+                  <i
+                    class="fas fa-crown"
+                    *ngIf="orderClient.status == 'vip'"
+                    style="margin-right: 10px;"
+                  ></i>
+                  <i
+                    class="fas fa-ban"
+                    *ngIf="orderClient.status == 'سئ'"
+                    style="margin-right: 10px;"
+                  ></i>
                 </h4>
               </div>
             </header>
-            <header *ngIf="showNote" (click)="showNote = false">
+            <header
+              *ngIf="showNote"
+              (click)="showNote = false"
+              [ngClass]="
+                orderClient.status == 'vip'
+                  ? 'vip'
+                  : orderClient.status == 'سئ'
+                  ? 'blocked'
+                  : 'normal'
+              "
+            >
               <div style="display: flex; justify-content: space-between;">
                 <h4>
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
-                  <span>بيانات إضافية عن العميل</span>
+                  <span>{{
+                    orderClient
+                      ? "بيانات إضافية عن العميل"
+                      : "لم يتم اختيار عميل"
+                  }}</span>
                 </h4>
                 <h4>
-                  <span style="font-weight: 900;">2541</span>
-                  <i class="fas fa-smile" style="margin-right: 10px;"></i>
+                  <span style="font-weight: 900;">{{
+                    orderClient ? orderClient.id : ""
+                  }}</span>
+                  <i
+                    class="fas fa-smile"
+                    *ngIf="orderClient.status == 'مميز'"
+                    style="margin-right: 10px;"
+                  ></i>
+                  <i
+                    class="fas fa-crown"
+                    *ngIf="orderClient.status == 'vip'"
+                    style="margin-right: 10px;"
+                  ></i>
+                  <i
+                    class="fas fa-ban"
+                    *ngIf="orderClient.status == 'سئ'"
+                    style="margin-right: 10px;"
+                  ></i>
                 </h4>
               </div>
             </header>
-            <div *ngIf="showNote">
+            <div *ngIf="showNote && lastOrderClient.LastOrder">
               <section
                 class="prevoiusOrdersNumber"
                 style="display:flex; justify-content: space-between;"
@@ -1081,14 +1134,22 @@
                 <h4>
                   <span>عدد الطلبات السابقة لهذا العميل</span>
                 </h4>
-                <span>1</span>
+                <span>{{
+                  lastOrderClient.OrdersCount ? lastOrderClient.OrdersCount : 0
+                }}</span>
               </section>
               <section class="clientDetailsSection">
                 <ul>
                   <li>
                     <i class="fas fa-calendar-week"></i>
                     <span style="margin-right: 10px;">تاريخ اخر طلب </span>
-                    <p style="margin-right: 22px;">25/5/2020</p>
+                    <p style="margin-right: 22px;">
+                      {{
+                        lastOrderClient.LastOrder
+                          ? lastOrderClient.LastOrder.order_date
+                          : ""
+                      }}
+                    </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
@@ -1096,7 +1157,13 @@
                     <span style="margin-right: 10px;"
                       >الخدمة الرئيسية لأخر طلب
                     </span>
-                    <p style="margin-right: 22px;">تكييفات</p>
+                    <p style="margin-right: 22px;">
+                      {{
+                        lastOrderClient.LastOrder
+                          ? lastOrderClient.LastOrder.service.name
+                          : ""
+                      }}
+                    </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
@@ -1104,7 +1171,13 @@
                     <span style="margin-right: 10px;"
                       >الخدمة الفرعية لأخر طلب
                     </span>
-                    <p style="margin-right: 22px;">سبليت تركيب و شحن فريون</p>
+                    <p style="margin-right: 22px;">
+                      {{
+                        lastOrderClient.LastOrder
+                          ? lastOrderClient.LastOrder.service.name
+                          : ""
+                      }}
+                    </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
@@ -1112,37 +1185,97 @@
                     <span style="margin-right: 10px;"
                       >اسم الفني لاخر الطلب
                     </span>
-                    <p style="margin-right: 22px;">محمد جابر</p>
+                    <p style="margin-right: 22px;">
+                      {{
+                        lastOrderClient.LastOrder
+                          ? lastOrderClient.LastOrder.technician.name
+                          : ""
+                      }}
+                    </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
                     <i class="fas fa-ellipsis-v"></i>
                     <span style="margin-right: 10px;">رقم الطلب </span>
-                    <p style="margin-right: 22px; text-decoration: underline;">
-                      2050
+                    <p
+                      *ngIf="lastOrderClient.LastOrder"
+                      style="margin-right: 22px; text-decoration: underline; cursor: pointer;"
+                      [routerLink]="['/orders/order-details']"
+                      [queryParams]="{
+                        orderId: lastOrderClient.LastOrder.id
+                      }"
+                    >
+                      {{
+                        lastOrderClient.LastOrder
+                          ? lastOrderClient.LastOrder.id
+                          : ""
+                      }}
                     </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
                     <i class="fas fa-receipt"></i>
                     <span style="margin-right: 10px;">حالة الطلب </span>
-                    <p style="margin-right: 22px; text-decoration: underline;">
-                      <span>تم اصدار فاتورة</span>
-                      <span style="margin-right: 20px;">201145</span>
+                    <p
+                      style="margin-right: 22px; text-decoration: underline; cursor: pointer;"
+                    >
+                      <span
+                        *ngIf="lastOrderClient.LastOrder"
+                        [routerLink]="['/orders/order-details']"
+                        [queryParams]="{
+                          orderId: lastOrderClient.LastOrder.id
+                        }"
+                        >{{
+                          lastOrderClient.LastOrder
+                            ? lastOrderClient.LastOrder.status.name
+                            : ""
+                        }}</span
+                      >
+                      <span
+                        *ngIf="
+                          lastOrderClient.LastOrder &&
+                          lastOrderClient.LastOrder.receipt
+                        "
+                        [routerLink]="['/invoices/details-invoice']"
+                        [queryParams]="{
+                          incoiveID: lastOrderClient.LastOrder.receipt.id
+                        }"
+                        style="margin-right: 20px;"
+                        >{{
+                          lastOrderClient.LastOrder
+                            ? lastOrderClient.LastOrder.receipt.receipt_number
+                            : ""
+                        }}</span
+                      >
                     </p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                   <li>
                     <i class="fas fa-info"></i>
                     <span style="margin-right: 10px;">ملاحظات عن العميل </span>
-                    <p style="margin-right: 22px;">
-                      العميل لا يرغب في اى جنسية أجنبية و يفضل فقط الجنسية
-                      السعودية
-                    </p>
+                    <p
+                      style="margin-right: 22px;"
+                      [innerHTML]="
+                        lastOrderClient.LastOrder &&
+                        lastOrderClient.LastOrder.details
+                          ? lastOrderClient.LastOrder.details
+                          : ''
+                      "
+                    ></p>
                   </li>
                   <hr style="width:399px; opacity: .29; margin-top: 10px;" />
                 </ul>
               </section>
+            </div>
+            <div *ngIf="showNote && orderClient && !lastOrderClient.LastOrder">
+              <h4
+                style="font-weight: 300;
+              font-size: 15px;
+              text-align: center;
+              margin-top:10px;"
+              >
+                <span>لا يوجد طلبات سابقة لهذا العميل</span>
+              </h4>
             </div>
           </div>
         </div>

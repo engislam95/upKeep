@@ -13,10 +13,10 @@ export class HeadersService {
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://test.upkeep.com.sa/upkeep/';
   // baseAPI = '/upkeep/';
-  baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
+  baseAPI = 'https://develop.reviews.upkeep.com.sa/upkeep/'
+  // baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://testupkeep.reviews.upkeep.com.sa/upkeep/';
-
-  // baseAPI = 'https://develop.frontreviews.upkeep.com.sa'
+  // baseAPI = 'https://develop.frontreviews.upkeep.com.sa/';
 
   // tslint:disable-next-line: no-inferrable-types
   token: string = '';

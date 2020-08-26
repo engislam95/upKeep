@@ -103,6 +103,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   multiAddressButtondisabled: boolean = true;
   selectSubLocations: boolean = false;
   selectedLocationIndexInUpdateMode: any = '';
+  lastOrderClient: any = '';
   /* ---------------Editor --------------- */
   public Editor = ClassicEditor;
   public config = {
@@ -141,6 +142,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   addNumber: any = false;
   addColor: any = false;
   techFlage: any = false;
+  clientMobiles: any = [];
+  periodsArray: any = [];
+  orderStatusArray: any = [];
 
   /* -------------------- Order Form ------------------------ */
   salesForm = new FormGroup(
@@ -154,6 +158,8 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       endObj: new FormControl('', [Validators.required]),
       details: new FormControl('', [detailsValidator, Validators.required]),
       location_id: new FormControl(''),
+      period_id: new FormControl(''),
+      status_id: new FormControl(''),
       main_service_id: new FormControl(),
       subServicesObj: new FormControl('', [
         emptyValidator,
@@ -201,9 +207,27 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
       });
     }
+    // Periods
+    this.startLoading();
+    this.coreService.getMethod('lookup/periods').subscribe(data => {
+      console.log(data);
+      this.periodsArray = data['data'];
+      this.endLoading();
+    });
+    // status
+    this.startLoading();
+    this.coreService.getMethod('lookup/sales-order-status').subscribe(data => {
+      console.log(data);
+      this.orderStatusArray = data['data'];
+      this.endLoading();
+    });
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
+  filterationClient(value) {
+    console.log(value);
+    this.getClients(value);
+  }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -212,17 +236,17 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     this.getSources();
     this.initTechniciansTableHours();
     // Client Filter
-    const clientIdObj = document.getElementById('clientIdObj');
-    const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
-    clientIdObjEvent
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(500),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) =>
-        this.selectClient ? null : this.getClients(value)
-      );
+    // const clientIdObj = document.getElementById('clientIdObj');
+    // const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
+    // clientIdObjEvent
+    //   .pipe(
+    //     map((event: any) => event.target.value),
+    //     debounceTime(500),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((value: any) =>
+    //     this.selectClient ? null : this.getClients(value)
+    //   );
     /* --------------------- Update Mode ------------------- */
     this.actvatdRoute.queryParams.subscribe(params => {
       this.updateMode = params.updateMode === 'true';
@@ -266,7 +290,25 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     if (key === 'clientIdObj') {
       this.multiAddressButtondisabled = true;
       this.selectedClientLocationsArray = [];
+      this.clientMobiles = [];
       this.salesForm.controls.client_id.setValue('');
+      this.lastOrderClient = '';
+      this.orderClient = '';
+      this.clientsArray = [];
+      // Client Filter
+      const clientIdObj = document.getElementById('clientIdObj');
+      const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
+      clientIdObjEvent
+        .pipe(
+          map((event: any) => event.target.value),
+          debounceTime(500),
+          distinctUntilChanged()
+        )
+        .subscribe((value: any) => {
+          console.log(value);
+          this.selectClient ? null : this.getClients(value);
+        }
+        );
     }
   }
   resetInputs(inputRole) {
@@ -649,7 +691,6 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           this.technicians = orderTechnicians.data;
           this.endLoading();
           setTimeout(() => {
-            this.loopCellWidth = this.loopContainer.nativeElement.offsetWidth;
             this.cdr.detectChanges();
           }, 500);
         });
@@ -687,6 +728,19 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
+      //Get Client Mobile 
+      this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
+        console.log(mobiles['data']['mobiles']);
+        this.clientMobiles = mobiles['data']['mobiles'];
+      });
+      // Get Client Details and Last Order Details
+      this.startLoading();
+      this.coreService.getMethod('clients/lastorder?client_id=' + value.id).subscribe(client => {
+        console.log(client['data']);
+        this.lastOrderClient = client['data'];
+        this.showNote = true;
+        this.endLoading();
+      })
 
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
@@ -710,15 +764,19 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       });
       this.viewClientDetails = true;
       this.selectClient = true;
-    } else {
+      if (this.clientsArray !== null) {
+        return this.clientsArray.filter(option =>
+          option.user.name.includes(value)
+        );
+      }
+    } else if (typeof value == 'string') {
       this.viewClientDetails = false;
       // this.selectClient = false;
-    }
-    if (this.clientsArray !== null) {
       return this.clientsArray.filter(option =>
-        option.user.name.includes(value)
+        option.user.name.includes(value) || option.user.mobile.includes(value)
       );
     }
+
   }
   /* ---------------------- Technicians Table Hours --------------------------- */
   initTechniciansTableHours() {

@@ -693,11 +693,22 @@ button:disabled {
   }
 }
 
+.normal {
+  background: #242a2d;
+}
+
+.vip {
+  background: #2E700E
+}
+
+.blocked {
+  background: #D20808;
+}
+
 .additionClientDetails {
   header {
     width: 370px;
     height: 48px;
-    background: #242a2d;
     border: 1px solid #242a2d;
     line-height: 48px;
     color: #fff;
