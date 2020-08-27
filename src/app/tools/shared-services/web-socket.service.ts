@@ -49,16 +49,19 @@ export class WebSocketService {
 
   listenChannel(name) {
 
-    this.pusher.subscribe(name);
+    var channel = this.pusher.subscribe(name);
     this.pusher.connection.bind("connected", this.connectedExecute());
+
+
+    channel.bind('ActiveEvent', function (data, metadata) {
+      console.log(
+        "I received", data,
+      );
+    });
 
     Pusher.log = msg => {
       console.log(msg);
     };
-
-
-
-
 
   }
 
