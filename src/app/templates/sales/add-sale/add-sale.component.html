@@ -8,7 +8,7 @@
     <div class="page_body_title">
       <h3>
         <i class="fas fa-sort-shapes-down-alt"></i
-        >{{ this.updateMode ? "تعديل طلب مبيعات " : "إضافة طلب مبيعات جديد" }}
+        >{{ this.updateMode ? 'تعديل طلب مبيعات ' : 'إضافة طلب مبيعات جديد' }}
       </h3>
       <div
         class="page_body_main_buttons"
@@ -41,7 +41,7 @@
 
                 <button
                   type="button"
-                  (click)="viewClientDetailsFunction()"
+                  (click)="openClientLocations()"
                   [disabled]="selectedClientLocationsArray.length <= 1"
                   id="button"
                   class="clientBtn"
@@ -56,7 +56,7 @@
                 </button>
                 <button
                   type="button"
-                  (click)="viewClientDetailsFunction()"
+                  (click)="openMobilePopup()"
                   id="button"
                   class="clientBtn"
                   [disabled]="clientMobiles.length <= 1"
@@ -176,8 +176,18 @@
                       selectedClientLocationsArray.length <= 3 ? '5%' : '43%'
                   }"
                 >
+                  <div
+                    style="display: flex; background: #242A2D;
+                height: 43px;
+                border: 1px solid #707070; line-height: 43px;
+                "
+                  >
+                    <h4 style="color: #FFF; padding: 0 10px;">
+                      العناوين الخاصة بالعميل
+                    </h4>
+                  </div>
                   <span
-                    class="closeMultiAddressPopupIcon"
+                    class="closeMultiMobilePopupIcon"
                     (click)="showMapPopup = false"
                   >
                     <i class="fas fa-times-circle"></i>
@@ -194,23 +204,28 @@
                           class="cell"
                         >
                           <div id="popupData">
-                            <span class="adressTitle">
-                              <h5>
-                                <img
-                                  src="../../../../assets/img/icons/client-icons/placeholder.png"
-                                  alt=""
-                                />
-                                {{ locations.name }}
-                              </h5>
-                              <span
-                                id="checkSign"
-                                *ngIf="locations.default == 1"
-                              >
-                                <img
-                                  src="../../../../assets/img/icons/client-icons/check-mark.png"
-                              /></span>
-                            </span>
-                            <div class="popupMap">
+                            <h5
+                              *ngIf="locations.default == 1"
+                              style="color: #0D8E49"
+                            >
+                              العنوان الرئيسى
+                              <span>
+                                <i
+                                  class="fas fa-check-circle"
+                                  style="color: #0D8E49; float: left; font-size: 20px;"
+                                ></i>
+                              </span>
+                            </h5>
+                            <h5
+                              *ngIf="locations.default !== 1"
+                              style="color: #FF0000"
+                            >
+                              العنوان الفرعى
+                            </h5>
+                            <div
+                              class="popupMap"
+                              style="border: 1px solid #707070"
+                            >
                               <app-map
                                 [multiAddressMapPopupSelections]="true"
                                 [addOrderMapMode]="true"
@@ -220,13 +235,41 @@
                                 }"
                               ></app-map>
                             </div>
-                            <ul>
-                              <li>
-                                <p>المنطقة</p>
+                            <ul style="margin-top: 10px;">
+                              <li style="margin: 0;">
+                                <i
+                                  class="fas fa-map-marker-check"
+                                  style="color: #000;"
+                                ></i>
+                                <span>المدينة</span>
+                                <span>{{
+                                  locations.city
+                                    ? locations.city
+                                    : 'لم يتم ادخال المدينة'
+                                }}</span>
+                              </li>
+                              <li style="margin: 0;">
+                                <i
+                                  class="fas fa-map-marker-check"
+                                  style="color: #000;"
+                                ></i>
+                                <span>المنطقة</span>
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : "لم يتم ادخال المنطقة"
+                                    : 'لم يتم ادخال المنطقة'
+                                }}</span>
+                              </li>
+                              <li style="margin: 0;">
+                                <i
+                                  class="fas fa-map-marker-check"
+                                  style="color: #000;"
+                                ></i>
+                                <span>العنوان</span>
+                                <span>{{
+                                  locations.address
+                                    ? locations.address
+                                    : 'لم يتم ادخال العنوان'
                                 }}</span>
                               </li>
                             </ul>
@@ -239,10 +282,68 @@
                             class="selectOrderAdress"
                             *ngIf="locations.default !== 1"
                           >
-                            اختار هذا العنوان للطلب
+                            تفعيله موقع للطلب
                           </button>
                         </li>
                       </ul>
+                    </div>
+                  </span>
+                </div>
+                <div
+                  *ngIf="showMobilePopup"
+                  id="multiMobilePopup"
+                  class="multiMobilePopup"
+                >
+                  <div
+                    style="display: flex; background: #242A2D;
+                height: 43px;
+                border: 1px solid #707070; line-height: 43px;
+                "
+                  >
+                    <h4 style="color: #FFF; padding: 0 10px;">
+                      ارقام الموبايل الخاصة بالعميل
+                    </h4>
+                  </div>
+                  <span
+                    class="closeMultiAddressPopupIcon"
+                    (click)="showMobilePopup = false"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </span>
+
+                  <span>
+                    <div
+                      id="multiMobilePopup"
+                      [@fade]
+                      style="padding: 15px; border: 1px solid #707070;"
+                    >
+                      <table style="width: 100%;">
+                        <tbody>
+                          <tr
+                            style="margin-top: 20px;"
+                            *ngFor="let mobile of clientMobiles; let i = index"
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ mobile.name ? mobile.name : '' }}</td>
+                            <td>{{ mobile.mobile ? mobile.mobile : '' }}</td>
+                            <td *ngIf="mobile.default != 1">
+                              <button
+                                type="button"
+                                (click)="onSelectAddress(mobile.id, i)"
+                                class="selectMobile"
+                              >
+                                تفعيل رقم العميل
+                              </button>
+                            </td>
+                            <td *ngIf="mobile.default == 1">
+                              <i
+                                class="fas fa-check-circle"
+                                style="color: #0D8E49; float: left; font-size: 20px;"
+                              ></i>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </span>
                 </div>
@@ -268,8 +369,8 @@
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations &&
                       clientMobiles.length > 1
-                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
-                        : ""
+                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
+                        : ''
                     }}
                   </h5>
                   <h5
@@ -284,8 +385,8 @@
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations &&
                       clientMobiles.length > 1
-                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
-                        : ""
+                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
+                        : ''
                     }}
                   </h5>
                   <h5
@@ -298,8 +399,8 @@
                     {{
                       selectedClientLocationsArray.length > 1 &&
                       clientMobiles.length == 0
-                        ? "هذا العميل موجود و لديه أكثر من عنوان"
-                        : ""
+                        ? 'هذا العميل موجود و لديه أكثر من عنوان'
+                        : ''
                     }}
                   </h5>
                   <h5
@@ -312,8 +413,8 @@
                     {{
                       selectedClientLocationsArray.length == 0 &&
                       clientMobiles.length > 1
-                        ? "هذا العميل موجود و لديه أكثر من هاتف"
-                        : ""
+                        ? 'هذا العميل موجود و لديه أكثر من هاتف'
+                        : ''
                     }}
                   </h5>
                 </div>
@@ -1058,13 +1159,13 @@
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
                   <span>{{
                     orderClient
-                      ? "بيانات إضافية عن العميل"
-                      : "لم يتم اختيار عميل"
+                      ? 'بيانات إضافية عن العميل'
+                      : 'لم يتم اختيار عميل'
                   }}</span>
                 </h4>
                 <h4>
                   <span style="font-weight: 900;">{{
-                    orderClient ? orderClient.id : ""
+                    orderClient ? orderClient.id : ''
                   }}</span>
                   <i
                     class="fas fa-smile"
@@ -1100,13 +1201,13 @@
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
                   <span>{{
                     orderClient
-                      ? "بيانات إضافية عن العميل"
-                      : "لم يتم اختيار عميل"
+                      ? 'بيانات إضافية عن العميل'
+                      : 'لم يتم اختيار عميل'
                   }}</span>
                 </h4>
                 <h4>
                   <span style="font-weight: 900;">{{
-                    orderClient ? orderClient.id : ""
+                    orderClient ? orderClient.id : ''
                   }}</span>
                   <i
                     class="fas fa-smile"
@@ -1147,7 +1248,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.order_date
-                          : ""
+                          : ''
                       }}
                     </p>
                   </li>
@@ -1161,7 +1262,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.service.name
-                          : ""
+                          : ''
                       }}
                     </p>
                   </li>
@@ -1175,7 +1276,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.service.name
-                          : ""
+                          : ''
                       }}
                     </p>
                   </li>
@@ -1189,7 +1290,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.technician.name
-                          : ""
+                          : ''
                       }}
                     </p>
                   </li>
@@ -1208,7 +1309,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.id
-                          : ""
+                          : ''
                       }}
                     </p>
                   </li>
@@ -1228,7 +1329,7 @@
                         >{{
                           lastOrderClient.LastOrder
                             ? lastOrderClient.LastOrder.status.name
-                            : ""
+                            : ''
                         }}</span
                       >
                       <span
@@ -1244,7 +1345,7 @@
                         >{{
                           lastOrderClient.LastOrder
                             ? lastOrderClient.LastOrder.receipt.receipt_number
-                            : ""
+                            : ''
                         }}</span
                       >
                     </p>

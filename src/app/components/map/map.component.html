@@ -570,16 +570,13 @@
             </agm-marker>
 
             <agm-marker
-              *ngIf="clientDetailsPageMode || addOrderMapMode"
+              *ngIf="citiesLating.length && url == '/sales/add-sale'"
               [markerDraggable]="true"
               (dragEnd)="markerDragEnd($event)"
               [agmFitBounds]="true"
               [latitude]="clientDetailsOrgins.lat"
               [longitude]="clientDetailsOrgins.lng"
-              [iconUrl]="{
-                url: companyPin,
-                scaledSize: { height: 50, width: 50 }
-              }"
+              iconUrl="./../../../../assets/img/map-marker-check.png"
             >
             </agm-marker>
           </agm-map>

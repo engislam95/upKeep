@@ -39,6 +39,7 @@ export class MapComponent implements OnInit {
   @Input() orderServiceId = '';
   @Input() addOrderMode = false;
   @Input() addOrderMapMode = false;
+  @Input() addSales = false;
   @Input() orderDetailsMode = false;
   @Input() addOrderPageMode = false;
   @Input() addNewAddressMode = false;

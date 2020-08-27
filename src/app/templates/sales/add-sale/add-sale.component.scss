@@ -7,7 +7,6 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   padding-bottom: 25px;
-  border: 1px solid #ccc;
   padding: 15px;
   margin: 5px;
 }
@@ -23,7 +22,9 @@
   }
 }
 
+
 agm-map {
+
   #formPage .formContainer .page_block {
     background: none !important;
   }
@@ -50,10 +51,23 @@ agm-map {
 .selectOrderAdress {
   border: none;
   padding: 8px 15px;
-  background: #606060;
+  background: #0D8E49;
   color: #ffff;
   font-size: 12px;
   border-radius: 2px;
+  position: relative;
+  top: -384px;
+  left: -171px;
+}
+
+.selectMobile {
+  border: none;
+  padding: 8px 15px;
+  background: #0D8E49;
+  color: #ffff;
+  font-size: 12px;
+  border-radius: 2px;
+  position: relative;
 }
 
 #popupData ul li p,
@@ -116,16 +130,33 @@ agm-map {
   margin-top: 3px;
   color: #FF6F00;
   position: relative;
-  left: -238px;
+  margin-right: 145px;
 }
 
 .closeMultiAddressPopupIcon {
   margin-top: -37px;
-  margin-left: -15px;
+  margin-left: 15px;
   float: left;
   font-size: 20px;
   cursor: pointer;
   z-index: 9999;
+
+  i {
+    color: #fff;
+  }
+}
+
+.closeMultiMobilePopupIcon {
+  margin-top: -37px;
+  margin-left: 15px;
+  float: left;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 9999;
+
+  i {
+    color: #fff;
+  }
 }
 
 .overlay {
@@ -148,13 +179,12 @@ agm-map {
   background: #ffff;
   position: absolute;
   z-index: 999999;
-  padding: 50px 25px 25px 47px;
   border: 1px solid #000;
   box-shadow: 2px 1px 6px rgba(0, 0, 0, 0.19);
   top: 10px;
   margin-right: 5%;
   align-items: center;
-  z-index: 999;
+  z-index: 9999999;
 }
 
 #popupData>div.popupMap>app-map>div>div>div>div>div {
@@ -654,7 +684,7 @@ app-map {
 
   .clientBtn {
     position: relative;
-    left: -65%;
+    float: left;
     width: 44px;
     height: 48px;
     border-radius: 5px;

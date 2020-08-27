@@ -145,6 +145,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   clientMobiles: any = [];
   periodsArray: any = [];
   orderStatusArray: any = [];
+  showMobilePopup:any = false;
 
   /* -------------------- Order Form ------------------------ */
   salesForm = new FormGroup(
@@ -223,10 +224,13 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     });
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
   filterationClient(value) {
     console.log(value);
     this.getClients(value);
+  }
+  openMobilePopup() {
+    this.showMobilePopup = true;
   }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
@@ -307,8 +311,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         .subscribe((value: any) => {
           console.log(value);
           this.selectClient ? null : this.getClients(value);
-        }
-        );
+        });
     }
   }
   resetInputs(inputRole) {
@@ -722,25 +725,30 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     const clientId = this.salesForm.value.client_id;
     window.open('/clients/client-details?clientId=' + clientId, '_blank');
   }
+  openClientLocations() {
+    this.showMapPopup = true;
+  }
   /* ------------------------ Filter Clients --------------------- */
   filterClients(value: any) {
     if (typeof value === 'object') {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
-      //Get Client Mobile 
+      //Get Client Mobile
       this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
         console.log(mobiles['data']['mobiles']);
         this.clientMobiles = mobiles['data']['mobiles'];
       });
       // Get Client Details and Last Order Details
       this.startLoading();
-      this.coreService.getMethod('clients/lastorder?client_id=' + value.id).subscribe(client => {
-        console.log(client['data']);
-        this.lastOrderClient = client['data'];
-        this.showNote = true;
-        this.endLoading();
-      })
+      this.coreService
+        .getMethod('clients/lastorder?client_id=' + value.id)
+        .subscribe(client => {
+          console.log(client['data']);
+          this.lastOrderClient = client['data'];
+          this.showNote = true;
+          this.endLoading();
+        });
 
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
@@ -772,11 +780,11 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     } else if (typeof value == 'string') {
       this.viewClientDetails = false;
       // this.selectClient = false;
-      return this.clientsArray.filter(option =>
-        option.user.name.includes(value) || option.user.mobile.includes(value)
+      return this.clientsArray.filter(
+        option =>
+          option.user.name.includes(value) || option.user.mobile.includes(value)
       );
     }
-
   }
   /* ---------------------- Technicians Table Hours --------------------------- */
   initTechniciansTableHours() {
