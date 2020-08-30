@@ -144,22 +144,17 @@
               <div class="form_input" id="smallFillterInputStyle">
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
-                    class="filterInput"
-                    matInput
-                    placeholder="رقم الطلب"
-                    autocomplete="off"
-                    id="ordersNumberObj"
-                    formControlName="ordersNumberObj"
-                    (keydown)="filterOrderNumber()"
+                    formControlName="startObj"
+                    placeholder="توقيت بداية الطلب"
+                    [ngxTimepicker]="startTime"
+                    readonly
                   />
-                  <button
-                    style=" background-color: white;"
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('ordersNumberObj')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
+                  <ngx-material-timepicker
+                    (timeSet)="timeChanged($event, 'start')"
+                    #startTime
+                    enableKeyboardInput="true"
+                    [ngxMaterialTimepickerTheme]="darkTheme"
+                  ></ngx-material-timepicker>
                 </mat-form-field>
               </div>
               <div class="form_input" id="smallFillterInputStyle">

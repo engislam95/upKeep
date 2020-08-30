@@ -52,6 +52,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   order_update: boolean = false;
   orders: any = [];
   showNote = false;
+  updatePhone = false;
   user: any = '';
   todayDate: Date = new Date();
   // Clients
@@ -60,7 +61,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   clientsArrayLoaded: boolean = false;
   // Resourecs
   sourcesArray: any = [];
+  orderNumbersArray: any = [];
   sourcesFilteredOptions: Observable<any>;
+  orderNumbersFilteredOptions: Observable<any>;
   sourcesArrayLoaded: boolean = false;
   // Services
   servicesArray: any = [];
@@ -69,6 +72,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   // Sub-Services
   subServicesArray: any = [];
   subServicesFilteredOptions: Observable<any>;
+  technicalArray: any = [];
+  technicalFilteredOptions: Observable<any>;
+  orderNumberControl = new FormControl();
   // Offers
   noOffers: any = '';
   currentOffer: any = '';
@@ -104,6 +110,10 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   selectSubLocations: boolean = false;
   selectedLocationIndexInUpdateMode: any = '';
   lastOrderClient: any = '';
+  technical_id: any = '';
+  resouceObject: any = '';
+  serviceObject: any = '';
+  subServiceObject: any = '';
   /* ---------------Editor --------------- */
   public Editor = ClassicEditor;
   public config = {
@@ -145,7 +155,21 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   clientMobiles: any = [];
   periodsArray: any = [];
   orderStatusArray: any = [];
-  showMobilePopup:any = false;
+  showMobilePopup: any = false;
+  clientMobile_id: any = '';
+  numberOrder: any = '';
+  showAddNumberPopup = false;
+  phonesForm = new FormGroup({
+    mobile: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[0-9]* || [٠-٩]*'),
+      Validators.minLength(9),
+      Validators.maxLength(9)
+    ]),
+    name: new FormControl('')
+  });
+  setError = false;
+  errorMessage: string = 'هذا الرقم غير صحيح او موجود بالفعل ';
 
   /* -------------------- Order Form ------------------------ */
   salesForm = new FormGroup(
@@ -160,6 +184,8 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       details: new FormControl('', [detailsValidator, Validators.required]),
       location_id: new FormControl(''),
       period_id: new FormControl(''),
+      clientAddMobile: new FormControl(''),
+      technical_id: new FormControl('', [emptyValidator, Validators.required]),
       status_id: new FormControl(''),
       main_service_id: new FormControl(),
       subServicesObj: new FormControl('', [
@@ -169,7 +195,8 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       service_id: new FormControl(),
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
-      source_id: new FormControl(),
+      urgent: new FormControl(false),
+      source_id: new FormControl(''),
       sourceObj: new FormControl('', [emptyValidator, Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
       order_date: new FormControl(''),
@@ -232,6 +259,42 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   openMobilePopup() {
     this.showMobilePopup = true;
   }
+  // add phone number
+  addPhoneNumber() {
+    console.log(this.orderClient);
+
+    this.coreService
+      .postMethod('clients/mobile/' + this.orderClient.id, {
+        name: this.phonesForm.controls.name.value,
+        mobile: +(966 + this.phonesForm.controls.mobile.value)
+      })
+      .subscribe(
+        (clientDetails: any) => {
+          console.log(clientDetails);
+          this.setError = false;
+          this.phonesForm.controls.name.setValue('');
+          this.phonesForm.controls.mobile.setValue('');
+          this.coreService
+            .getMethod('clients/' + this.orderClient.id)
+            .subscribe(mobiles => {
+              console.log(mobiles['data']['mobiles']);
+              this.clientMobiles = mobiles['data']['mobiles'];
+            });
+          this.updatePhone = false;
+          this.endLoading();
+          this.showSuccess('تم إضافة  رقم التليفون بنجاح');
+          this.showAddNumberPopup = false;
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+            this.setError = true;
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
+  }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -290,7 +353,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       this.resetInputs('date');
     }
     (document.getElementById(key) as HTMLInputElement).value = '';
-    this.salesForm.controls[key].patchValue('');
+    if (this.salesForm.controls[key]) {
+      this.salesForm.controls[key].patchValue('');
+    }
     if (key === 'clientIdObj') {
       this.multiAddressButtondisabled = true;
       this.selectedClientLocationsArray = [];
@@ -351,6 +416,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   /* ----------------------- Filter Sub-Services ----------------------- */
   filterSubServices(value: any) {
     if (typeof value === 'object') {
+      this.subServiceObject = value;
       this.patchForm({ service_id: value.id });
       this.getOffers();
     } else {
@@ -448,6 +514,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   filterSources(value: any) {
     if (typeof value === 'object') {
       this.getResourceServices(value.id);
+      this.resouceObject = value;
       this.selectedResourceLogo = value.logo;
       setTimeout(() => {
         this.selectedResourceLogoShow = true;
@@ -460,6 +527,20 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       return this.selectSearchService.filterOptions(value, this.sourcesArray);
     }
   }
+  /* ---------------------- Filter Resources ---------------------- */
+  filterOrderNumber(value: any) {
+    console.log(value);
+    this.numberOrder = value;
+    console.log(this.orderNumbersArray);
+    return this.orderNumbersArray.filter(option =>
+      option.toString().includes(value)
+    );
+  }
+  displayOrderNumberFunction = state => {
+    console.log(state);
+    return state;
+  };
+
   /* ------------------- Get Services By Resources ------------------*/
   getResourceServices(resourceId) {
     if (!this.updateMode) {
@@ -488,6 +569,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   /* --------------------- Filter Services -------------------------- */
   filterServices(value: any) {
     if (typeof value === 'object') {
+      this.serviceObject = value;
       this.subServicesArray = value.children;
       if (!this.updateMode) {
         this.patchForm({ main_service_id: value.id });
@@ -692,12 +774,26 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         })
         .subscribe((orderTechnicians: any) => {
           this.technicians = orderTechnicians.data;
+          console.log(this.technicians);
+
+          this.technicalFilteredOptions = this.salesForm
+            .get('technical_id')
+            .valueChanges.pipe(
+              startWith(''),
+              map(filterValue => this.filterTechnical(filterValue))
+            );
           this.endLoading();
           setTimeout(() => {
             this.cdr.detectChanges();
           }, 500);
         });
     }
+  }
+  filterTechnical(value: any) {
+    if (typeof value === 'object') {
+      this.technical_id = value.id;
+    }
+    return this.technicians.filter(option => option.name.includes(value));
   }
   /* ---------------------------- Get All Clients -------------------- */
   getClients(value) {
@@ -728,6 +824,49 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   openClientLocations() {
     this.showMapPopup = true;
   }
+  changeMobile(id, i) {
+    this.clientMobile_id = id;
+    this.showMobilePopup = false;
+    this.showSuccess('تم اختيار الرقم البديل');
+    this.clientMobiles.forEach(ele => {
+      ele.default = 0;
+    });
+    this.clientMobiles[i].default = 1;
+  }
+  // edit phone number
+  editPhoneNumber(element) {
+    console.log(element);
+
+    this.phonesForm.controls.name.setValue(element.name);
+    this.phonesForm.controls.mobile.setValue(
+      element.mobile
+        .split('')
+        .slice(3)
+        .join('')
+    );
+    console.log(this.phonesForm.controls.mobile.value);
+
+    this.updatePhone = true;
+    // this.fetchedPhone = element;
+  }
+
+  // delte phone number
+  deletePhoneNumber(phoneId) {
+    this.coreService.deleteMethod('clients/mobile/' + phoneId).subscribe(
+      (clientDetails: any) => {
+        console.log(clientDetails);
+        this.endLoading();
+        this.showSuccess('تم إزالة  رقم التليفون بنجاح');
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
+        }
+      }
+    );
+  }
   /* ------------------------ Filter Clients --------------------- */
   filterClients(value: any) {
     if (typeof value === 'object') {
@@ -746,6 +885,12 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         .subscribe(client => {
           console.log(client['data']);
           this.lastOrderClient = client['data'];
+          this.orderNumbersArray = client['data']['OrdersNumbers'];
+          console.log(this.orderNumbersArray);
+          this.orderNumbersFilteredOptions = this.orderNumberControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterOrderNumber(value))
+          );
           this.showNote = true;
           this.endLoading();
         });
@@ -917,22 +1062,41 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     console.log(this.salesForm.value.end);
     this.submitted = true;
     this.salesForm.value.location_id = this.selectedLocationId;
-    this.coreService.postMethod('orders', this.salesForm.value).subscribe(
-      () => {
-        this.endLoading();
-        this.showSuccess('تم تسجيل الطلب بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/orders/all-orders']);
-        }, 2500);
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.coreService
+      .postMethod('sales/orders/create', {
+        client_id: this.orderClient.id,
+        service_id: this.serviceObject.id,
+        source_id: this.resouceObject.id,
+        offer_id: this.salesForm.value.offer_id,
+        technician_id: this.technical_id,
+        order_date: this.salesForm.value.order_date,
+        start: this.salesForm.value.start,
+        end: this.salesForm.value.end,
+        details: this.salesForm.value.details,
+        location_id: this.client_city_id,
+        status: this.salesForm.value.status_id,
+        period_id: this.salesForm.value.period_id,
+        order_related: this.numberOrder.id,
+        contacted: this.salesForm.value.clientContact,
+        urgent: this.salesForm.value.urgent,
+        'label-color': this.color
+      })
+      .subscribe(
+        () => {
+          this.endLoading();
+          this.showSuccess('تم تسجيل الطلب بنجاح');
+          setTimeout(() => {
+            this.router.navigate(['/sales/all-sales']);
+          }, 2500);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
   /* ------------------- Generate Time ------------------------- */
   generateTime() {

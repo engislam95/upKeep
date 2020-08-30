@@ -38,7 +38,18 @@
                 >
                   <i class="fas fa-user-plus"></i>
                 </button>
-
+                <button
+                  type="button"
+                  (click)="openMobilePopup()"
+                  id="button"
+                  class="clientBtn"
+                  [disabled]="clientMobiles.length <= 1"
+                >
+                  <i class="fas fa-mobile"></i>
+                  <div class="clientLocations" *ngIf="clientMobiles.length > 1">
+                    {{ clientMobiles.length }}
+                  </div>
+                </button>
                 <button
                   type="button"
                   (click)="openClientLocations()"
@@ -52,18 +63,6 @@
                     *ngIf="selectedClientLocationsArray.length > 1"
                   >
                     {{ selectedClientLocationsArray.length }}
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  (click)="openMobilePopup()"
-                  id="button"
-                  class="clientBtn"
-                  [disabled]="clientMobiles.length <= 1"
-                >
-                  <i class="fas fa-mobile"></i>
-                  <div class="clientLocations" *ngIf="clientMobiles.length > 1">
-                    {{ clientMobiles.length }}
                   </div>
                 </button>
                 <button
@@ -293,6 +292,11 @@
                   *ngIf="showMobilePopup"
                   id="multiMobilePopup"
                   class="multiMobilePopup"
+                  style="position: absolute;
+    z-index: 9999999999999999999;
+    width: 100%;
+    background: #fff; left: -169px;
+    top: 32px"
                 >
                   <div
                     style="display: flex; background: #242A2D;
@@ -317,7 +321,7 @@
                       [@fade]
                       style="padding: 15px; border: 1px solid #707070;"
                     >
-                      <table style="width: 100%;">
+                      <table style="width: 100%; text-align: center;">
                         <tbody>
                           <tr
                             style="margin-top: 20px;"
@@ -329,16 +333,19 @@
                             <td *ngIf="mobile.default != 1">
                               <button
                                 type="button"
-                                (click)="onSelectAddress(mobile.id, i)"
+                                (click)="changeMobile(mobile.id, i)"
                                 class="selectMobile"
                               >
                                 تفعيل رقم العميل
                               </button>
                             </td>
-                            <td *ngIf="mobile.default == 1">
+                            <td
+                              *ngIf="mobile.default == 1"
+                              style="text-align: center;"
+                            >
                               <i
                                 class="fas fa-check-circle"
-                                style="color: #0D8E49; float: left; font-size: 20px;"
+                                style="color: #0D8E49; font-size: 20px;"
                               ></i>
                             </td>
                           </tr>
@@ -393,12 +400,12 @@
                     id="multiLocationWarning"
                     *ngIf="
                       selectedClientLocationsArray.length > 1 &&
-                      clientMobiles.length == 0
+                      clientMobiles.length <= 1
                     "
                   >
                     {{
                       selectedClientLocationsArray.length > 1 &&
-                      clientMobiles.length == 0
+                      clientMobiles.length <= 1
                         ? 'هذا العميل موجود و لديه أكثر من عنوان'
                         : ''
                     }}
@@ -406,12 +413,12 @@
                   <h5
                     id="multiLocationWarning"
                     *ngIf="
-                      selectedClientLocationsArray.length == 0 &&
+                      selectedClientLocationsArray.length <= 1 &&
                       clientMobiles.length > 1
                     "
                   >
                     {{
-                      selectedClientLocationsArray.length == 0 &&
+                      selectedClientLocationsArray.length <= 1 &&
                       clientMobiles.length > 1
                         ? 'هذا العميل موجود و لديه أكثر من هاتف'
                         : ''
@@ -557,7 +564,6 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-cogs"></i>
                   <mat-autocomplete
                     #subServicesAutoComplete="matAutocomplete"
                     [displayWith]="displayOptionsFunction"
@@ -913,50 +919,41 @@
                     placeholder="رقم الطلب"
                     aria-label="Number"
                     matInput
-                    formControlName="sourceObj"
-                    [matAutocomplete]="sourceAutoComplete"
-                    id="sourceObj"
-                  />
-                  <img
-                    src="{{ selectedResourceLogo }}"
-                    *ngIf="selectedResourceLogoShow"
+                    [formControl]="orderNumberControl"
+                    [matAutocomplete]="orderNumberAutoComplete"
+                    id="orderNumber"
                   />
                   <button
                     type="button"
                     class="resetInput"
-                    (click)="xResetInputs('sourceObj')"
+                    (click)="xResetInputs('orderNumber')"
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
                   <mat-autocomplete
-                    #sourceAutoComplete="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
+                    #orderNumberAutoComplete="matAutocomplete"
+                    [displayWith]="displayOrderNumberFunction"
                   >
                     <mat-option
-                      *ngFor="let option of sourcesFilteredOptions | async"
+                      *ngFor="let option of orderNumbersFilteredOptions | async"
                       [value]="option"
                     >
-                      {{ option.name }}
+                      {{ option }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
                 <div
                   [@fade]
                   class="validationState  errorState"
-                  *ngIf="
-                    (salesForm.get('sourceObj').status === 'INVALID' &&
-                      salesForm.get('sourceObj').touched) ||
-                    (submitted &&
-                      salesForm.get('sourceObj').status === 'INVALID')
-                  "
+                  *ngIf="orderNumberControl.touched && !numberOrder"
                 >
                   <i class="fas fa-times"></i>
-                  برجاء إدخال المصدر
+                  برجاء إدخال رقم الطلب
                 </div>
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="salesForm.get('sourceObj').status === 'VALID'"
+                  *ngIf="numberOrder"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -981,51 +978,51 @@
                 </mat-checkbox>
               </div>
               <div class="form_field inputWithButton" *ngIf="addNumber">
-                <div
-                  [@fade]
-                  class="progressState"
-                  *ngIf="offersArray.length > 0"
-                >
-                  يوجد عدد : {{ offersArray.length }} عروض
-                </div>
-                <span class="validationState  errorState ">{{ noOffers }}</span>
                 <mat-form-field dir="rtl" appearance="outline">
-                  <input
-                    type="text"
-                    placeholder="العروض"
-                    aria-label="Number"
-                    matInput
-                    formControlName="offersObj"
-                    [matAutocomplete]="offersAutoComplete"
-                    id="offersObj"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('offersObj')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <mat-autocomplete
-                    #offersAutoComplete="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
+                  <mat-select
+                    formControlName="clientAddMobile"
+                    placeholder="رقم اضافى للعميل فى حالة عدم الرد"
                   >
                     <mat-option
-                      *ngFor="let option of offersFilteredOptions | async"
-                      [value]="option"
+                      *ngFor="let mobile of clientMobiles; let i = index"
+                      [value]="mobile.id"
                     >
-                      {{ option.name }}
+                      <div
+                        style="display: flex; justify-content: space-between;"
+                      >
+                        <span>{{ mobile.name }} </span>
+                        <span> {{ mobile.mobile }}</span>
+                      </div>
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-select>
                 </mat-form-field>
                 <button
                   type="button"
-                  (click)="openOfferDetailsPopup()"
+                  (click)="showAddNumberPopup = true"
                   id="button"
                   class="clientBtn"
                 >
                   <i class="fas fa-mobile"></i>
                 </button>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    salesForm['controls'].clientAddMobile.touched &&
+                    !salesForm['controls'].clientAddMobile.value
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال رقم اضافى
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="salesForm['controls'].clientAddMobile.value"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
               </div>
               <div class="form_field full_width" style="margin-bottom: 0;">
                 <mat-checkbox
@@ -1058,6 +1055,16 @@
               </div>
               <div class="form_field full_width" style="margin-bottom: 0;">
                 <mat-checkbox
+                  formControlName="urgent"
+                  (change)="
+                    salesForm['controls'].urgent.setValue($event.checked)
+                  "
+                >
+                  طلب عاجل
+                </mat-checkbox>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
                   [checked]="techFlage"
                   (change)="chooseTechnical($event.checked)"
                   >تحويل الطلب الى التنفيذ
@@ -1067,30 +1074,27 @@
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
                     type="text"
-                    placeholder="رقم الطلب"
+                    placeholder="اختر الفنى"
                     aria-label="Number"
                     matInput
-                    formControlName="sourceObj"
-                    [matAutocomplete]="sourceAutoComplete"
-                    id="sourceObj"
+                    formControlName="technical_id"
+                    [matAutocomplete]="technicalAutoComplete"
+                    id="technical_id"
                   />
-                  <img
-                    src="{{ selectedResourceLogo }}"
-                    *ngIf="selectedResourceLogoShow"
-                  />
+
                   <button
                     type="button"
                     class="resetInput"
-                    (click)="xResetInputs('sourceObj')"
+                    (click)="xResetInputs('technical_id')"
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
                   <mat-autocomplete
-                    #sourceAutoComplete="matAutocomplete"
+                    #technicalAutoComplete="matAutocomplete"
                     [displayWith]="displayOptionsFunction"
                   >
                     <mat-option
-                      *ngFor="let option of sourcesFilteredOptions | async"
+                      *ngFor="let option of technicalFilteredOptions | async"
                       [value]="option"
                     >
                       {{ option.name }}
@@ -1101,19 +1105,19 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (salesForm.get('sourceObj').status === 'INVALID' &&
-                      salesForm.get('sourceObj').touched) ||
+                    (salesForm.get('technical_id').status === 'INVALID' &&
+                      salesForm.get('technical_id').touched) ||
                     (submitted &&
-                      salesForm.get('sourceObj').status === 'INVALID')
+                      salesForm.get('technical_id').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i>
-                  برجاء إدخال المصدر
+                  برجاء إدخال الفنى
                 </div>
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="salesForm.get('sourceObj').status === 'VALID'"
+                  *ngIf="salesForm.get('technical_id').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -1121,7 +1125,17 @@
               </div>
               <div class="form_field fullWidth formButtons">
                 <button
-                  [disabled]="salesForm.invalid"
+                  [disabled]="
+                    !orderClient ||
+                    !resouceObject ||
+                    !serviceObject ||
+                    !subServiceObject ||
+                    !salesForm['controls'].order_date.value ||
+                    !salesForm['controls'].start.value ||
+                    !salesForm['controls'].end.value ||
+                    !salesForm['controls'].period_id.value ||
+                    !salesForm['controls'].status_id.value
+                  "
                   type="submit"
                   class="formSubmit formButton"
                   *ngIf="!updateButton"
@@ -1129,7 +1143,17 @@
                   حفط
                 </button>
                 <button
-                  [disabled]="salesForm.invalid"
+                  [disabled]="
+                    !orderClient ||
+                    !resouceObject ||
+                    !serviceObject ||
+                    !subServiceObject ||
+                    !salesForm['controls'].order_date.value ||
+                    !salesForm['controls'].start.value ||
+                    !salesForm['controls'].end.value ||
+                    !salesForm['controls'].period_id.value ||
+                    !salesForm['controls'].status_id.value
+                  "
                   type="button"
                   class="formSubmit formButton"
                   *ngIf="updateButton"
@@ -1383,11 +1407,16 @@
       </div>
     </div>
   </div>
-  <div id="popup" *ngIf="viewOfferDetailsPopup" [@parentAnimation]>
+  <div
+    id="popup"
+    *ngIf="viewOfferDetailsPopup"
+    [@parentAnimation]
+    style="z-index: 9999999;"
+  >
     <div id="backDrop" (click)="closePopup()"></div>
     <div id="popupData" [@childAnimation]>
       <i class="fas fa-times" (click)="closePopup()"></i>
-      <h2>تفاصيل العرض <br /></h2>
+      <h2 style="color: #000;">تفاصيل العرض <br /></h2>
       <ul>
         <li>إسم العرض : {{ currentOffer.name }}</li>
         <li>وقت بدء العرض : {{ currentOffer.start_date }}</li>
@@ -1411,5 +1440,76 @@
       [@childAnimation]
       (bestTechnicalSelected)="selectBestTechnical($event)"
     ></app-map>
+  </div>
+</div>
+<div class="popup_form_client " id="popup" *ngIf="showAddNumberPopup">
+  <div id="backDrop"></div>
+  <div id="popupData">
+    <a (click)="showAddNumberPopup = false"
+      ><i class="fas fa-times-circle"></i>
+    </a>
+    <div class="border-popup">
+      <h4><i class="far fa-mobile-android-alt"></i> ارقام اضافية</h4>
+      <h5>حد أقصى <span>5</span> أرقام</h5>
+      <div id="add_form">
+        <form #form="ngForm" [formGroup]="phonesForm">
+          <div class="page_block registerForm">
+            <!-- Start Form field -->
+            <div class="form_field">
+              <label> <i class="fas fa-phone-alt"></i> الرقم </label>
+              <mat-form-field appearance="outline" dir="rtl">
+                <input
+                  appOnlyNumbers="true"
+                  maxlength="9"
+                  matInput
+                  formControlName="mobile"
+                  autocomplete="off"
+                  id="mobileKey"
+                />
+                <span id="phoneKey" [@fade]>966+</span>
+              </mat-form-field>
+              <div [@fade] class="validationState  errorState" *ngIf="setError">
+                <i class="fas fa-times"></i> {{ errorMessage }}
+              </div>
+            </div>
+            <!-- end Form field -->
+
+            <!-- Start Form field -->
+            <div class="form_field">
+              <label> <i class="fas fa-user"></i> الاسم الخاص بالرقم </label>
+              <mat-form-field
+                style="width: 64%;"
+                appearance="outline"
+                dir="rtl"
+              >
+                <input
+                  matInput
+                  autocomplete="off"
+                  id="name"
+                  formControlName="name"
+                />
+              </mat-form-field>
+              <button
+                *ngIf="!updatePhone"
+                class="add-button-number"
+                (click)="addPhoneNumber()"
+                [disabled]="clientMobiles.length == 5"
+              >
+                اضافة
+              </button>
+              <button
+                *ngIf="updatePhone"
+                class="add-button-number"
+                (click)="addPhoneNumber()"
+                [disabled]="clientMobiles.length == 5"
+              >
+                تعديل
+              </button>
+            </div>
+            <!-- End Form field -->
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

@@ -49,7 +49,20 @@ export class AllSalesComponent implements OnInit {
   order_delete: boolean = false;
   orders: any = [];
   user: any = '';
-
+  darkTheme: any = {
+    container: {
+      bodyBackgroundColor: '#424242',
+      buttonColor: '#fff'
+    },
+    dial: {
+      dialBackgroundColor: '#555'
+    },
+    clockFace: {
+      clockFaceBackgroundColor: '#555',
+      clockHandColor: '#f6a811',
+      clockFaceTimeInactiveColor: '#fff'
+    }
+  };
   //
   // ────────────────────────────────────────── END GENERAL DATA ─────
   //
@@ -103,7 +116,9 @@ export class AllSalesComponent implements OnInit {
     startDateFilter: new FormControl(),
     endDateFilter: new FormControl(),
     filterName: new FormControl(),
-    ordersNumberObj: new FormControl()
+    ordersNumberObj: new FormControl(),
+    start: new FormControl(''),
+    end: new FormControl('')
   });
 
   statusArray = [];
@@ -564,7 +579,58 @@ export class AllSalesComponent implements OnInit {
   //
   // ─── START DISPLAY OPTIONS FOR SELECT ───────────────────────────────────────────
   //
-
+  /* ------------------- Time Change ---------------------- */
+  timeChanged(time, type) {
+    let pmTime;
+    let amTime;
+    let splitPMTimeHours;
+    let splitPMTimeMinutes;
+    const splitedTime = time.split(' ');
+    console.log(type);
+    splitPMTimeHours = splitedTime[0].split(':')[0];
+    if (splitedTime[1] === 'pm') {
+      splitPMTimeHours = splitedTime[0].split(':')[0];
+      splitPMTimeMinutes = splitedTime[0].split(':')[1];
+      if (splitedTime[0].split(':')[0] === '12') {
+        pmTime = +splitPMTimeHours + ':' + splitPMTimeMinutes;
+      } else {
+        pmTime = +splitPMTimeHours + 12 + ':' + splitPMTimeMinutes;
+      }
+      if (type === 'start') {
+        this.startTimeChanged(pmTime);
+        localStorage.setItem('startTimeType', splitedTime[1]);
+      } else {
+        this.endTimeChanged(pmTime);
+        localStorage.setItem('endTimeType', splitedTime[1]);
+      }
+    } else {
+      amTime = splitedTime[0];
+      console.log(amTime);
+      if (type === 'start') {
+        const typeOfTime = splitedTime[1];
+        localStorage.setItem('startTimeType', typeOfTime);
+        console.log(typeOfTime);
+        this.startTimeChanged(amTime);
+      } else {
+        const typeOfTime = splitedTime[1];
+        localStorage.setItem('endTimeType', typeOfTime);
+        console.log(typeOfTime);
+        this.endTimeChanged(amTime);
+      }
+    }
+  }
+  /* ---------------------- Start Time -------------------------- */
+  startTimeChanged(time) {
+    this.filterForm.patchValue({
+      start: time
+    });
+  }
+  /* ---------------------- End Time -------------------------- */
+  endTimeChanged(time) {
+    this.filterForm.patchValue({
+      end: time
+    });
+  }
   displayOptionsFunction(state) {
     if (state !== null) {
       return state.name;
