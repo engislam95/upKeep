@@ -417,6 +417,7 @@ export class AddNewMapComponent implements OnInit {
         this.clientsForm.controls.long.setValue(+newLating[1]);
       }
       else {
+
         this.clientsForm.controls.lat.setValue(+latLong[0]);
         this.clientsForm.controls.long.setValue(+latLong[1]);
       }

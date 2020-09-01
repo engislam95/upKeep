@@ -1,18 +1,18 @@
-import { OwnerComponent } from './owner/owner.component';
+import { SystemOffComponent } from './system-off/system-off.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatBadgeModule } from '@angular/material';
 
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { OwnerRoutingModule } from './owner-routing.module';
+import { SystemOffRoutingModule } from './system-off-routing.module';
 
 @NgModule({
-  declarations: [OwnerComponent ],
+  declarations: [SystemOffComponent ],
   imports: [
     CommonModule,
-    OwnerRoutingModule,
+    SystemOffRoutingModule,
     SharedComponentsModule,
     MatBadgeModule
   ]
 })
-export class OwnerModule { }
+export class SystemOffModule { }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { fadeAnimation } from './animations';
 import { MessagingService } from './tools/shared-services/messaging.service';
 import { CoreService } from './tools/shared-services/core.service';
+// import { WebSocketService } from './tools/shared-services/web-socket.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +13,17 @@ import { CoreService } from './tools/shared-services/core.service';
 })
 export class AppComponent implements OnInit {
   showSideMenu = false;
+  currentUser ;
   // message: any = '';
   constructor(
     private messagingService: MessagingService,
-    private coreService: CoreService
+    private coreService: CoreService ,
+    // private WebSocketService : WebSocketService ,
+    private router: Router
   ) {
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
     window.addEventListener('beforeunload', function(e) {
       // e.preventDefault();
       // console.log(localStorage.getItem('notificationToken') )
@@ -42,5 +50,24 @@ export class AppComponent implements OnInit {
 
     this.messagingService.requestPermission(userId);
     this.messagingService.receiveMessage();
+
+    // if(JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner' )
+    // {
+
+    //   console.log('entered')
+
+    //   this.WebSocketService.listenChannel('company.' + this.currentUser.id )
+
+    //   // this.router.navigate(['/system-off']);
+
+
+    // }
+
+
+
+
+
+
+
   }
 }

@@ -243,17 +243,17 @@
 
 
 .main_page .page_body_main .page_block {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  background: #fff;
+  box-shadow:none !important;
+  // background: #fff;
   margin-bottom: 50px;
   padding: 15px 20px;
 
   width: 686px;
   height: 260px;
-  border-radius: 10px;
-  background: #fff;
-  border: 2px dotted #707070a8;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  // border-radius: 10px;
+  background: transparent !important;
+  // border: 2px dotted #707070a8;
+  // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   margin-top: 130px;
 
 }
@@ -268,13 +268,13 @@
     width: 106px;
     height: 106px;
     border-radius: 10px;
-    background: #fff;
-    border: 1px solid rgba(112, 112, 112, 0.28);
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    // background: transparent !important;
+    // border: 1px solid rgba(112, 112, 112, 0.28);
+    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     padding: 0;
 
     i {
-      color: #333333;
+      color: #fff;
       font-size: 36px;
       margin-top: 35px;
 
@@ -288,7 +288,7 @@
 .main_page .page_body_main .page_block .controlers .controller {
   margin-left: 12px;
   margin-top: 32px;
-  margin-right: 42px;
+  // margin-right: 42px;
 }
 
 .main_page .page_body_main .page_block h4 {
