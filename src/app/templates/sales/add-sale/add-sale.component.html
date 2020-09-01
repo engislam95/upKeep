@@ -14,7 +14,7 @@
         class="page_body_main_buttons"
         *ngIf="order_all || user.privilege == 'super-admin'"
       >
-        <a routerLink="/orders/all-orders">
+        <a routerLink="/sales/all-sales">
           كل طلبات المبيعات
           <i class="fas fa-th-list"></i>
         </a>
@@ -661,6 +661,7 @@
                     formControlName="offersObj"
                     [matAutocomplete]="offersAutoComplete"
                     id="offersObj"
+                    [value]="choosenOffer"
                   />
                   <button
                     type="button"
@@ -684,7 +685,7 @@
                 <button
                   type="button"
                   (click)="openOfferDetailsPopup()"
-                  [disabled]="!viewOfferDetailsPopupButton"
+                  [disabled]="!offersArray.length"
                   id="button"
                 >
                   <i class="fas fa-tags"></i>
@@ -1414,19 +1415,69 @@
     style="z-index: 9999999;"
   >
     <div id="backDrop" (click)="closePopup()"></div>
-    <div id="popupData" [@childAnimation]>
-      <i class="fas fa-times" (click)="closePopup()"></i>
-      <h2 style="color: #000;">تفاصيل العرض <br /></h2>
-      <ul>
-        <li>إسم العرض : {{ currentOffer.name }}</li>
-        <li>وقت بدء العرض : {{ currentOffer.start_date }}</li>
-        <li>وقت إنتهاء العرض : {{ currentOffer.end_date }}</li>
-        <li>
-          تفاصيل العرض : <span [innerHTML]="currentOffer.description"></span>
-        </li>
-      </ul>
-      <div id="confirmationButtons">
-        <button type="button" (click)="closePopup()">إغلاق</button>
+    <div id="popupData" [@childAnimation] style="padding: 0 0 10px 0;">
+      <header
+        style="display: flex; background:#000000;color: #fff; justify-content: space-between; align-items: flex-end; padding: 10px;"
+      >
+        <h3>العروض المسموحة لهذا الطلب</h3>
+        <i
+          class="fas fa-times-circle"
+          style="cursor: pointer;"
+          (click)="closePopup()"
+        ></i>
+      </header>
+      <div
+        *ngFor="let offer of offersArray; let i = index"
+        class="offerDetails"
+        style="padding: 25px; border-bottom: 1px solid #707070;"
+      >
+        <div style="display: flex; align-items:flex-start;">
+          <div style="border-left: 2px dotted #707070; padding-left: 22px">
+            <img
+              *ngIf="!offer.image"
+              src="../../../../assets/img/offerEmpty.svg"
+              style="width: 236px;
+          height: 184px;
+          "
+              alt=""
+              srcset=""
+            />
+            <img
+              *ngIf="offer.image"
+              [src]="offer.image"
+              style="width: 236px;
+          height: 184px;
+          "
+              alt=""
+              srcset=""
+            />
+          </div>
+          <ul id="offerCurrentDetails">
+            <li>
+              <span>اسم العرض</span>
+              <span>{{ offer.name }}</span>
+            </li>
+            <hr />
+            <li>
+              <span>تفاصيل العرض</span>
+              <span [innerHTML]="offer.description"></span>
+            </li>
+            <hr />
+            <li>
+              <span>تاريخ انتهاء العرض</span>
+              <span>{{ offer.end_date }}</span>
+            </li>
+            <hr />
+            <li id="offerBtn" *ngIf="!offer.choosen">
+              <button type="button" (click)="chooseOffer(offer, i)">
+                اختيار العرض
+              </button>
+            </li>
+            <li id="offerBtn" *ngIf="offer.choosen">
+              <i class="fas fa-check-circle"></i>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

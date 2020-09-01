@@ -50,6 +50,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   order_add: boolean = false;
   order_all: boolean = false;
   order_update: boolean = false;
+  choosenOffer: any = '';
   orders: any = [];
   showNote = false;
   updatePhone = false;
@@ -427,6 +428,18 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       );
     }
   }
+  chooseOffer(offer, i) {
+    console.log(offer);
+    this.filterOffers(offer);
+    this.choosenOffer = offer.name;
+    console.log(this.salesForm.controls.offer_id.value);
+    this.viewOfferDetailsPopup = false;
+    this.offersArray.map(ele => {
+      ele.choosen = 0;
+    });
+    this.offersArray[i].choosen = 1;
+    console.log(this.offersArray);
+  }
   /* ----------------- Get Offers -------------------------- */
   getOffers() {
     const serviceId = this.salesForm.value.service_id;
@@ -441,6 +454,8 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           order_date: orderDate
         })
         .subscribe((offersResponse: any) => {
+          console.log(offersResponse);
+
           this.offersArray = offersResponse.data;
           this.endLoading();
           this.updateMode ? null : this.listenInputChanges('', 'offer');

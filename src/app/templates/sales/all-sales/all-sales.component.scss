@@ -2,6 +2,10 @@ app-multiselect-filter {
   width: 100%;
 }
 
+@mixin down_box_shadow {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
 .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
   background: red;
 }
@@ -510,4 +514,38 @@ form {
   border: 1px solid rgba(112, 112, 112, 0.38);
   width: 42px;
   height: 31px
+}
+
+.timePickerContainer {
+  width: 100%;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+  @include down_box_shadow();
+  position: relative;
+
+  >input {
+    text-indent: 37px;
+    padding: 10px 0;
+    width: 100%;
+    font: inherit;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    color: #95989a;
+
+    &::placeholder {
+      color: #949494;
+      font-weight: 100;
+      font-size: 15px;
+    }
+  }
+
+  i {
+    position: absolute;
+    color: #95989a;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }

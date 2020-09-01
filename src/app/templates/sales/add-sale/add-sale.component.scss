@@ -15,7 +15,7 @@
   img {
     padding: 0 !important;
     position: absolute;
-    right: 525px !important;
+    right: 86% !important;
     width: 30px;
     height: 30px;
     top: 3px;
@@ -939,5 +939,38 @@ button:disabled {
       border: none;
       border-bottom: 1px dotted #707070;
     }
+  }
+}
+
+#offerCurrentDetails {
+  li {
+    margin: 10px;
+
+    span {
+      display: inline-block;
+      font-size: 20px !important;
+      word-break: break-all;
+    }
+  }
+}
+
+#offerBtn {
+  float: left;
+  margin: 20px;
+
+  button {
+    width: 151px;
+    height: 37px;
+    background: #0d8e49;
+    border: 1px solid #707070;
+    color: #fff;
+    position: absolute;
+    left: 20px;
+  }
+
+  i {
+    position: absolute;
+    left: 20px;
+    color: #0d8e49;
   }
 }

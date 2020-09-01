@@ -13,7 +13,9 @@ import {
   distinctUntilChanged,
   startWith
 } from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { noAddressValidator } from 'src/app/tools/shared_validators/NoAddress.validator';
+import { startEndTimeValidator } from 'src/app/tools/shared_validators/StartEndTime.validator';
 
 @Component({
   selector: 'app-all-sales',
@@ -73,8 +75,8 @@ export class AllSalesComponent implements OnInit {
 
   displayedColumns = [
     'ID',
-    'client_name',
     'technical_name',
+    'client_name',
     'main_service',
     'service_date',
     'order_time',
@@ -112,14 +114,21 @@ export class AllSalesComponent implements OnInit {
   // ─── START SELECT STATUS ─────────────────────────────────────────
   //
 
-  filterForm = new FormGroup({
-    startDateFilter: new FormControl(),
-    endDateFilter: new FormControl(),
-    filterName: new FormControl(),
-    ordersNumberObj: new FormControl(),
-    start: new FormControl(''),
-    end: new FormControl('')
-  });
+  filterForm = new FormGroup(
+    {
+      startDateFilter: new FormControl(''),
+      endDateFilter: new FormControl(''),
+      filterName: new FormControl(''),
+      ordersNumberObj: new FormControl(''),
+      start: new FormControl(''),
+      end: new FormControl(''),
+      startObj: new FormControl('', [Validators.required]),
+      endObj: new FormControl('', [Validators.required]),
+      services: new FormControl([]),
+      statuses: new FormControl([])
+    },
+    [noAddressValidator, startEndTimeValidator]
+  );
 
   statusArray = [];
   // todayFilltered = 0;
@@ -135,26 +144,14 @@ export class AllSalesComponent implements OnInit {
 
   //
   // ───────────────────────────────────────── END SELECT STATUS ─────
-  //
-
-  //
-  // ─── START MULTIPLE SELECT FILTER ─────────────────
-  //
-
-  servicesWithTechniciansList = [];
-  techniciansFilterPlaceholder = 'إسم الفني او الخدمة';
-  orderStatusFilterPlaceholder = 'حالة الطلب';
-  nestedType = 'nested';
-  filterTechniciansComponentId = 'filterTechnicians';
-  filterTechnicians = []; // filtered ids
-  filterStatusComponentId = 'filterStatus';
-  filterStatus = []; // filtered ids
 
   //
   // ── END MULTIPLE SELECT FILTER ─────
   //
   current_page: any = '';
   totalPage: any = '';
+  orderStatusArray = [];
+  servicesArray: any = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -186,6 +183,29 @@ export class AllSalesComponent implements OnInit {
         }
       });
     }
+    // status
+    this.startLoading();
+    this.coreService.getMethod('lookup/sales-order-status').subscribe(data => {
+      console.log(data);
+      this.orderStatusArray = data['data'];
+      this.endLoading();
+    });
+    this.startLoading();
+    this.coreService.getMethod('services').subscribe(data => {
+      console.log(data);
+      this.servicesArray = data['data'];
+      this.endLoading();
+    });
+  }
+  orderStatusChange(event) {
+    console.log(event);
+    this.filterForm['controls'].statuses.setValue(event);
+    this.getAllOrders();
+  }
+  servicesChange(event) {
+    console.log(event);
+    this.filterForm['controls'].services.setValue(event);
+    this.getAllOrders();
   }
 
   //
@@ -195,7 +215,6 @@ export class AllSalesComponent implements OnInit {
   ngOnInit() {
     this.startLoading();
     this.getOrderStatusTypes();
-    this.getServicesWithTechnicians();
     this.todayOrdersPage();
     this.pageCountOptions();
     this.listenOrdersUpdates();
@@ -289,110 +308,9 @@ export class AllSalesComponent implements OnInit {
         this.getAllOrders();
       });
   }
-  //
-  // ─────────────────────────────────────────────── FILTER NAME ─────
-  //
-
-  //
-  // ─── START FILTER ORDER NUMBER ────────────────────────────────────────────────────────
-  //
-
-  filterOrderNumber() {
-    const filterOrdernumber = document.getElementById('ordersNumberObj');
-    const filterOrdernumberListner = fromEvent(filterOrdernumber, 'keyup');
-    filterOrdernumberListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filtersOrderNumberData = value;
-        this.getAllOrders();
-      });
-  }
-
-  //
-  // ────────────────────────────────────────────────── END FILTER ORDER NUMBER ─────
-  //
-
-  //
-  // ─── STRAT MULTIFILTER SEARCH ───────────────────────────────────────────────────
-  //
-
-  search(selectedData) {
-    if (selectedData.type === this.filterStatusComponentId) {
-      this.filterStatus = selectedData.data;
-    } else if (selectedData.type === this.filterTechniciansComponentId) {
-      this.filterTechnicians = selectedData.data;
-    }
-    this.getAllOrders();
-  }
-
-  //
-  // ───────────────────────────────────────────── END STRAT MULTIFILTER SEARCH ─────
-  //
-
-  //
-  // ─── START GET SERVICES WITH TECHNICIANS ────────────────────────────────────────
-  //
-
-  getServicesWithTechnicians() {
-    let servicesWithTechnicians = [];
-    this.coreService
-      .getMethod('services/active', { with_technicians: 1 })
-      .subscribe((servicesWithTechniciansResponse: any) => {
-        servicesWithTechnicians = servicesWithTechniciansResponse.data;
-        servicesWithTechnicians = servicesWithTechnicians.map(service => {
-          return (service = {
-            ...service,
-            checked: false,
-            technicians: service.technicians.map(technical => {
-              return (technical = {
-                ...technical,
-                parentId: service.id,
-                checked: false
-              });
-            })
-          });
-        });
-        this.servicesWithTechniciansList = servicesWithTechnicians;
-      });
-  }
 
   //
   // ──────────────────────────────────────── END GET SERVICES WITH TECHNICIANS ─────
-  //
-
-  //
-  // ──────────────────────────────────────────────────────────────── I ──────────
-  //   :::::: D O N E   S E C T I O N : :  :   :    :     :        :          :
-  // ──────────────────────────────────────────────────────────────────────────
-  //
-
-  //
-  // ─── START PAGINATION OPTION ────────────────────────────────────────────────────
-  //
-
-  setCountPerPage(option) {
-    // Start START Loading
-    this.startLoading();
-    // End START Loading
-    this.pageId = 1;
-    this.getAllOrders(option);
-    // End Select
-    this.endLoading();
-    // End END Loading
-  }
-
-  //
-  // ──────────────────────────────────────────────────── END PAGINATION OPTION ─────
-  //
-
-  //
-  // ─────────────────────────────────────────────────────────────── END ONINIT ─────
   //
 
   //
@@ -479,26 +397,43 @@ export class AllSalesComponent implements OnInit {
   //
 
   getAllOrders(...option) {
+    let am = this.filterForm.value.startObj.split(' ')[1];
+    if (am == 'am') {
+      let startHour = this.filterForm.value.start.split(':')[0];
+      const startMin = this.filterForm.value.start.split(':')[1];
+      if (startHour == 12 && localStorage.getItem('startTimeType') == 'am') {
+        startHour = 0;
+        this.filterForm.value.start = startHour + '0' + ':' + startMin;
+      }
+      let endHour = this.filterForm.value.end.split(':')[0];
+      const endMin = this.filterForm.value.end.split(':')[1];
+      if (endHour == 12 && localStorage.getItem('endTimeType') == 'am') {
+        endHour = 0;
+        this.filterForm.value.end = endHour + '0' + ':' + endMin;
+      }
+    }
     let perPage;
     option.length > 0 ? (perPage = +option[0]) : (perPage = 10);
     this.loaderService.startLoading();
     this.coreService
-      .getMethod('orders?page=' + this.pageId, {
+      .getMethod('sales/orders?page=' + this.pageId, {
+        'statuses[]': this.filterForm['controls'].statuses.value,
+        created_at: this.filteredFromDate,
+        order_date: this.filteredToDate,
         client: this.filteredClientData,
-        from: this.filteredFromDate,
-        to: this.filteredToDate,
+        'service_ids[]': this.filterForm['controls'].services.value,
+        start: this.filterForm.value.start,
+        end: this.filterForm.value.end,
         today: this.todayFilltered,
-        'technician_ids[]': this.filterTechnicians,
-        'statuses[]': this.filterStatus,
-        order_id: this.filtersOrderNumberData,
         per_page: perPage
       })
       .subscribe((getOrdersResponse: any) => {
+        console.log(getOrdersResponse);
+
         // Start Assign Data
-        this.ordersArray = getOrdersResponse.orders.data;
-        this.getOrdersResponseTotal = getOrdersResponse.orders;
-        this.current_page = getOrdersResponse.orders.current_page;
-        this.totalPage = getOrdersResponse.orders.last_page;
+        this.ordersArray = getOrdersResponse.data;
+        this.current_page = getOrdersResponse.current_page;
+        this.totalPage = getOrdersResponse.last_page;
 
         this.getOrderNumber = getOrdersResponse.totals;
 
@@ -516,10 +451,7 @@ export class AllSalesComponent implements OnInit {
         this.endLoading();
         // End END Loading
         //  Start Pagination Count
-        this.pagination(
-          getOrdersResponse.orders.total,
-          getOrdersResponse.orders.per_page
-        );
+        this.pagination(getOrdersResponse.total, getOrdersResponse.per_page);
         //  End Pagination Count
       });
   }
