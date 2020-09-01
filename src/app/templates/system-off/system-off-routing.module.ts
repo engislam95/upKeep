@@ -1,6 +1,6 @@
-import { SystemOffComponent } from './system-off/system-off.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SystemOffComponent } from './system-off/system-off.component';
 
 const routes: Routes = [{ path: '', component: SystemOffComponent }];
 
