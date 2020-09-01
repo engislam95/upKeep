@@ -56,9 +56,10 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     AlertsComponent,
     MultiselectFilterComponent,
-    SystemManagmentComponent,
     SystemOffComponent ,
-    MapComponent
+    MapComponent,
+    SystemManagmentComponent ,
+    SystemOffComponent
   ],
   imports: [
     CommonModule,
