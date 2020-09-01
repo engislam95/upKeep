@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /* ----------------------- Services ----------------------- */
 import { AuthGuard } from './guards/auth.guard';
@@ -20,9 +20,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { MessagingService } from './tools/shared-services/messaging.service';
 import { environment } from '../environments/environment';
-import { AsyncPipe } from '../../node_modules/@angular/common';
 import { SharedComponentsModule } from './components/shared-components.module';
 import { WebSocketService } from './tools/shared-services/web-socket.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -34,7 +34,8 @@ import { WebSocketService } from './tools/shared-services/web-socket.service';
     AngularFireAuthModule,
     SharedComponentsModule,
     AngularFireMessagingModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    
   ],
   providers: [
     HeadersService,
@@ -45,7 +46,8 @@ import { WebSocketService } from './tools/shared-services/web-socket.service';
     SidebarTriggerService,
     MessagingService,
     WebSocketService ,
-    AsyncPipe
+   
+  
   ],
   bootstrap: [AppComponent]
 })
