@@ -550,6 +550,7 @@ export class AllSalesComponent implements OnInit {
         this.endTimeChanged(amTime);
       }
     }
+    this.getAllOrders();
   }
   /* ---------------------- Start Time -------------------------- */
   startTimeChanged(time) {
