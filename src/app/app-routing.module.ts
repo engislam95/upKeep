@@ -11,12 +11,21 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
+      // {
+      //   path: 'system-managment', component: SystemManagmentComponent, canActivate: [AuthGuard]
+      // },
       {
-        path: 'system-managment', component: SystemManagmentComponent, canActivate: [AuthGuard]
+        path: 'system-managment',
+        loadChildren: './templates/system-managment/system-managment.module#SystemManagmentModule'
       },
       {
-        path: 'system-off', component: SystemOffComponent, canActivate: [AuthGuard]
+        path: 'system-off',
+        loadChildren: './templates/system-off/system-off.module#SystemOffModule'
       },
+
+      // {
+      //   path: 'system-off', component: SystemOffComponent, canActivate: [AuthGuard]
+      // },
       
       // { path: 'access', loadChildren: './templates/access/access.module#AccessModule' },
       {
