@@ -31,7 +31,6 @@
     "@ckeditor/ckeditor5-build-classic": "^11.2.0",
     "@fortawesome/angular-fontawesome": "^0.5.0",
     "alife-file-to-base64": "0.0.4",
-    "angular-laravel-echo": "^2.1.0",
     "chart.js": "^2.9.3",
     "core-js": "^2.5.4",
     "firebase": "^5.9.2",
