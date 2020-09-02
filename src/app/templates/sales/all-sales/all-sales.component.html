@@ -223,7 +223,7 @@
                 "
                   *ngIf="element.status.name == 'محول'"
                 >
-                  <i class="fas fa-random"></i>
+                  <i class="fas fa-random" style="margin-left: 5px;"></i>
                   <span> {{ element.status ? element.status.name : '' }}</span>
                 </div>
                 <div
@@ -232,7 +232,7 @@
                 "
                   *ngIf="element.status.name == 'جديد'"
                 >
-                  <i class="fas fa-pennant"></i>
+                  <i class="fas fa-pennant" style="margin-left: 5px;"></i>
                   <span> {{ element.status ? element.status.name : '' }}</span>
                 </div>
                 <div
@@ -241,7 +241,7 @@
                 "
                   *ngIf="element.status.name == 'تم'"
                 >
-                  <i class="fas fa-check"></i>
+                  <i class="fas fa-check" style="margin-left: 5px;"></i>
                   <span> {{ element.status ? element.status.name : '' }}</span>
                 </div>
                 <div
@@ -250,7 +250,7 @@
               "
                   *ngIf="element.status.name == 'انتظار'"
                 >
-                  <i class="fas fa-pause"></i>
+                  <i class="fas fa-pause" style="margin-left: 5px;"></i>
                   <span> {{ element.status ? element.status.name : '' }}</span>
                 </div>
               </td>
@@ -258,14 +258,14 @@
             <ng-container matColumnDef="client_name">
               <th mat-header-cell *matHeaderCellDef>إسم العميل</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.client.user.name }}
+                {{ element.client ? element.client.user.name : '' }}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="main_service">
               <th mat-header-cell *matHeaderCellDef>رقم الموبايل</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.service.name }}
+                {{ element.client ? element.client.user.mobile : '' }}
               </td>
             </ng-container>
             <ng-container matColumnDef="service_date">
@@ -323,57 +323,16 @@
                     <img src="../../../../assets/img/icons/delete.png" alt="" />
                     <span class="tooltiptext">حذف</span>
                   </button>
-
-                  <button
-                    class="basic_button"
-                    type="button"
-                    *ngIf="order_all || user.privilege == 'super-admin'"
-                  >
-                    <a
-                      target="blank"
-                      [routerLink]="['/orders/order-details']"
-                      [queryParams]="{
-                        orderId: element.id
-                      }"
-                    >
-                      <img
-                        src="../../../../assets/img/icons/invoice.png"
-                        alt=""
-                      />
-                    </a>
-                    <span class="tooltiptext">التفاصيل</span>
-                  </button>
-                  <button
-                    (click)="getInvoiceDetails()"
-                    id="invicebutton"
-                    [routerLink]="['/invoices/details-invoice/']"
-                    [queryParams]="{ incoiveID: element.receipt_id }"
-                    class="basic_button"
-                    type="button"
-                    *ngIf="element.status.id === 35"
-                  >
-                    <img
-                      src="../../../../assets/img/icons/invoice (1).png"
-                      alt=""
-                    />
-                    <span class="tooltiptext">الفاتورة</span>
-                  </button>
                   <button
                     id="editButton"
-                    [routerLink]="['/orders/update-order']"
+                    [routerLink]="['/sales/update-sale']"
                     [queryParams]="{
                       updateMode: true,
                       updatedOrderId: element.id
                     }"
                     class="basic_button"
                     type="button"
-                    *ngIf="
-                      (element.status.id !== 35 &&
-                        element.status.id !== 22 &&
-                        element.receipt_id === null &&
-                        order_update) ||
-                      user.privilege == 'super-admin'
-                    "
+                    *ngIf="user.privilege == 'super-admin'"
                   >
                     <img src="../../../../assets/img/icons/edit.png" alt="" />
                     <span class="tooltiptext">تعديل</span>
@@ -381,7 +340,7 @@
                 </div>
 
                 <div class="basic_button" type="button">
-                  <img src="../../../../assets/img/icons/Menu.svg" alt="" />
+                  <i class="fas fa-bars"></i>
                 </div>
               </td>
             </ng-container>

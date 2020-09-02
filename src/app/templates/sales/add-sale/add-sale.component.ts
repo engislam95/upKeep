@@ -196,19 +196,19 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       service_id: new FormControl(),
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
-      urgent: new FormControl(false),
       source_id: new FormControl(''),
       sourceObj: new FormControl('', [emptyValidator, Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
       order_date: new FormControl(''),
+      urgent: new FormControl(false),
       color: new FormControl(this.color),
       clientContact: new FormControl(false),
       orderDateObj: new FormControl('', [Validators.required])
     },
     [noAddressValidator, startEndTimeValidator]
   );
-
-  /* ---------------------- Constructor -------------------------- */
+  numberOrder_id: any = '';
+  /* -------------------;--- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
     private responseStateService: ResponseStateService,
@@ -317,6 +317,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     //   );
     /* --------------------- Update Mode ------------------- */
     this.actvatdRoute.queryParams.subscribe(params => {
+      console.log(params);
       this.updateMode = params.updateMode === 'true';
       this.updateButton = params.updateMode === 'true';
       this.updatedOrderId = +params.updatedOrderId;
@@ -546,6 +547,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   filterOrderNumber(value: any) {
     console.log(value);
     this.numberOrder = value;
+    this.numberOrder_id = value.id;
     console.log(this.orderNumbersArray);
     return this.orderNumbersArray.filter(option =>
       option.toString().includes(value)
@@ -655,13 +657,15 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   /* ------------------------- Get Update Data ----------------------- */
   getUpdatedOrderDetails() {
     this.coreService
-      .getMethod('orders/' + this.updatedOrderId + '/details', {})
+      .getMethod('sales/orders/' + this.updatedOrderId)
       .subscribe((updatedOrder: any) => {
+        console.log(updatedOrder);
+
         this.endLoading();
         this.updatedOrderDataLoaded = true;
         this.updatedOrderData = updatedOrder.data;
-        this.selectedLocationId = this.updatedOrderData.location.id;
-        this.selectedClientLocationsArray = this.updatedOrderData.client.locations;
+        // this.selectedLocationId = this.updatedOrderData.location.id;
+        // this.selectedClientLocationsArray = this.updatedOrderData.client.locations;
         if (this.selectedClientLocationsArray.length > 0) {
           this.multiAddressButtondisabled = false;
           this.selectedClientLocationsArray.forEach(element => {
@@ -701,28 +705,6 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     } else {
       endObj = this.updatedOrderData.toH + ':' + this.updatedOrderData.toM;
     }
-    this.patchForm({
-      client_id: this.updatedOrderData.client_id,
-      clientIdObj: this.updatedOrderData.client,
-      sourceObj: this.updatedOrderData.source,
-      source_id: this.updatedOrderData.id,
-      servicesObj: this.updatedOrderData.service.parent_service,
-      main_service_id: this.updatedOrderData.service.parent,
-      subServicesObj: this.updatedOrderData.service,
-      service_id: this.updatedOrderData.service.id,
-      offer_id:
-        this.updatedOrderData.offer === null
-          ? null
-          : this.updatedOrderData.offer.id,
-      offersObj: this.updatedOrderData.offer,
-      technician_id: this.updatedOrderData.technician_id.toString(),
-      startObj,
-      start: start[0] + ':' + start[1],
-      endObj,
-      end: end[0] + ':' + end[1],
-      details: this.updatedOrderData.details,
-      location_id: this.updatedOrderData.location_id
-    });
     this.listenInputChanges(this.updatedOrderData.source, 'resource');
     this.listenInputChanges(
       this.updatedOrderData.service.parent_service,
@@ -737,6 +719,60 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       this.currentOffer = this.updatedOrderData.offer;
       this.viewOfferDetailsPopupButton = true;
     }
+    this.addColor = true;
+    if (this.updatedOrderData.offer_id == null) {
+      this.salesForm.controls.offersObj.disable();
+    }
+    this.color = this.updatedOrderData['label-color'];
+    this.patchForm({
+      period_id: this.updatedOrderData.period_id,
+      status_id: this.updatedOrderData.status
+        ? this.updatedOrderData.status.id
+        : '',
+      clientContact: this.updatedOrderData.contacted,
+      urgent: this.updatedOrderData.urgent,
+      color: this.updatedOrderData['label-color'],
+      client_id: this.updatedOrderData.client_id
+        ? this.updatedOrderData.client_id
+        : '',
+      clientIdObj: this.updatedOrderData.client
+        ? this.updatedOrderData.client
+        : '',
+      details: this.updatedOrderData.details,
+      technical_id: this.updatedOrderData.technician_id,
+      startObj,
+      start: start[0] + ':' + start[1],
+      endObj,
+      end: end[0] + ':' + end[1],
+
+      sourceObj: this.updatedOrderData.source
+        ? this.updatedOrderData.source
+        : '',
+      source_id: this.updatedOrderData.id ? this.updatedOrderData.id : '',
+
+      offer_id:
+        this.updatedOrderData.offer === null
+          ? null
+          : this.updatedOrderData.offer.id,
+      offersObj: this.updatedOrderData.offer,
+      servicesObj: this.updatedOrderData.service
+        ? this.updatedOrderData.service.parent_service
+        : '',
+      main_service_id: this.updatedOrderData.service
+        ? this.updatedOrderData.service.parent
+        : '',
+      subServicesObj: this.updatedOrderData.service
+        ? this.updatedOrderData.service
+        : '',
+      service_id: this.updatedOrderData.service
+        ? this.updatedOrderData.service.id
+        : ''
+    });
+    if (this.updatedOrderData.order_related) {
+      this.safetyOrder = true;
+    }
+    this.numberOrder_id = this.updatedOrderData.order_related;
+
     this.selectClient = true;
     this.selectMainService = true;
     this.selectDate = true;

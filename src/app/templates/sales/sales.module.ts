@@ -1,5 +1,4 @@
 import { SalesRoutingModule } from './sales-routing.module';
-import { SaleDetailsComponent } from './sale-details/sale-details.component';
 import { AddSaleComponent } from './add-sale/add-sale.component';
 import { AllSalesComponent } from './all-sales/all-sales.component';
 import { NgModule } from '@angular/core';
@@ -25,7 +24,7 @@ import {
 } from '@angular/material';
 
 @NgModule({
-  declarations: [AllSalesComponent, AddSaleComponent, SaleDetailsComponent],
+  declarations: [AllSalesComponent, AddSaleComponent],
   imports: [
     //
     CommonModule,

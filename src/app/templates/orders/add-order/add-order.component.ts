@@ -194,7 +194,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     }
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });

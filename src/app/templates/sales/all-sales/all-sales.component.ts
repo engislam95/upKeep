@@ -658,19 +658,21 @@ export class AllSalesComponent implements OnInit {
   deleteTechnical() {
     this.closePopup();
     this.startLoading();
-    this.coreService.deleteMethod('orders/' + this.deletedOrderId).subscribe(
-      () => {
-        this.showSuccess();
-        this.getAllOrders();
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.coreService
+      .deleteMethod('sales/orders/' + this.deletedOrderId)
+      .subscribe(
+        () => {
+          this.showSuccess();
+          this.getAllOrders();
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
   closePopup() {
     this.showDeletePopup = false;
