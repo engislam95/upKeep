@@ -197,7 +197,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
       source_id: new FormControl(''),
-      sourceObj: new FormControl('', [emptyValidator, Validators.required]),
+      sourceObj: new FormControl('', [Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
       order_date: new FormControl(''),
       urgent: new FormControl(false),
@@ -547,7 +547,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   filterOrderNumber(value: any) {
     console.log(value);
     this.numberOrder = value;
-    this.numberOrder_id = value.id;
+    this.numberOrder_id = value;
     console.log(this.orderNumbersArray);
     return this.orderNumbersArray.filter(option =>
       option.toString().includes(value)
@@ -748,7 +748,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       sourceObj: this.updatedOrderData.source
         ? this.updatedOrderData.source
         : '',
-      source_id: this.updatedOrderData.id ? this.updatedOrderData.id : '',
+      source_id: this.updatedOrderData.source.id
+        ? this.updatedOrderData.source.id
+        : '',
 
       offer_id:
         this.updatedOrderData.offer === null
@@ -772,7 +774,16 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       this.safetyOrder = true;
     }
     this.numberOrder_id = this.updatedOrderData.order_related;
-
+    this.orderNumberControl.setValue(this.updatedOrderData.order_related);
+    this.patchForm({
+      technical_id: this.updatedOrderData.technician_id
+    });
+    this.numberOrder = this.updatedOrderData.order_related;
+    if (this.updatedOrderData.technician_id) {
+      this.techFlage = true;
+    }
+    this.filterClients(this.updatedOrderData.client);
+    this.technical_id = this.updatedOrderData.technician_id;
     this.selectClient = true;
     this.selectMainService = true;
     this.selectDate = true;
@@ -945,7 +956,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
           this.showNote = true;
           this.endLoading();
         });
-
+      this.searchClientStarted = false;
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
@@ -1113,10 +1124,12 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     console.log(this.salesForm.value.end);
     this.submitted = true;
     this.salesForm.value.location_id = this.selectedLocationId;
+    console.log(this.numberOrder);
+
     this.coreService
       .postMethod('sales/orders/create', {
         client_id: this.orderClient.id,
-        service_id: this.serviceObject.id,
+        service_id: this.subServiceObject.id,
         source_id: this.resouceObject.id,
         offer_id: this.salesForm.value.offer_id,
         technician_id: this.technical_id,
@@ -1127,7 +1140,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         location_id: this.client_city_id,
         status: this.salesForm.value.status_id,
         period_id: this.salesForm.value.period_id,
-        order_related: this.numberOrder.id,
+        order_related: this.numberOrder,
         contacted: this.salesForm.value.clientContact,
         urgent: this.salesForm.value.urgent,
         'label-color': this.color
