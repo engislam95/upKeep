@@ -8,7 +8,7 @@
     <div class="page_body_title">
       <h3>
         <i class="fas fa-sort-shapes-down-alt"></i
-        >{{ this.updateMode ? 'تعديل طلب مبيعات ' : 'إضافة طلب مبيعات جديد' }}
+        >{{ this.updateMode ? "تعديل طلب مبيعات " : "إضافة طلب مبيعات جديد" }}
       </h3>
       <div
         class="page_body_main_buttons"
@@ -244,7 +244,7 @@
                                 <span>{{
                                   locations.city
                                     ? locations.city
-                                    : 'لم يتم ادخال المدينة'
+                                    : "لم يتم ادخال المدينة"
                                 }}</span>
                               </li>
                               <li style="margin: 0;">
@@ -256,7 +256,7 @@
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : 'لم يتم ادخال المنطقة'
+                                    : "لم يتم ادخال المنطقة"
                                 }}</span>
                               </li>
                               <li style="margin: 0;">
@@ -268,7 +268,7 @@
                                 <span>{{
                                   locations.address
                                     ? locations.address
-                                    : 'لم يتم ادخال العنوان'
+                                    : "لم يتم ادخال العنوان"
                                 }}</span>
                               </li>
                             </ul>
@@ -328,8 +328,8 @@
                             *ngFor="let mobile of clientMobiles; let i = index"
                           >
                             <td>{{ i + 1 }}</td>
-                            <td>{{ mobile.name ? mobile.name : '' }}</td>
-                            <td>{{ mobile.mobile ? mobile.mobile : '' }}</td>
+                            <td>{{ mobile.name ? mobile.name : "" }}</td>
+                            <td>{{ mobile.mobile ? mobile.mobile : "" }}</td>
                             <td *ngIf="mobile.default != 1">
                               <button
                                 type="button"
@@ -376,8 +376,8 @@
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations &&
                       clientMobiles.length > 1
-                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
-                        : ''
+                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
+                        : ""
                     }}
                   </h5>
                   <h5
@@ -392,8 +392,8 @@
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations &&
                       clientMobiles.length > 1
-                        ? 'هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف'
-                        : ''
+                        ? "هذا العميل موجود و لديه أكثر من عنوان و اكثر من هاتف"
+                        : ""
                     }}
                   </h5>
                   <h5
@@ -406,8 +406,8 @@
                     {{
                       selectedClientLocationsArray.length > 1 &&
                       clientMobiles.length <= 1
-                        ? 'هذا العميل موجود و لديه أكثر من عنوان'
-                        : ''
+                        ? "هذا العميل موجود و لديه أكثر من عنوان"
+                        : ""
                     }}
                   </h5>
                   <h5
@@ -420,8 +420,8 @@
                     {{
                       selectedClientLocationsArray.length <= 1 &&
                       clientMobiles.length > 1
-                        ? 'هذا العميل موجود و لديه أكثر من هاتف'
-                        : ''
+                        ? "هذا العميل موجود و لديه أكثر من هاتف"
+                        : ""
                     }}
                   </h5>
                 </div>
@@ -1066,12 +1066,19 @@
               </div>
               <div class="form_field full_width" style="margin-bottom: 0;">
                 <mat-checkbox
+                  *ngIf="!updateMode"
                   [checked]="techFlage"
                   (change)="chooseTechnical($event.checked)"
                   >تحويل الطلب الى التنفيذ
                 </mat-checkbox>
+                <mat-checkbox
+                  *ngIf="updateMode && updatedOrderData.technician"
+                  [checked]="changeTech"
+                  (change)="changeTechnical($event.checked)"
+                  >تغيير الفنى
+                </mat-checkbox>
               </div>
-              <div class="form_field" *ngIf="techFlage">
+              <div class="form_field" *ngIf="techFlage || changeTech">
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
                     type="text"
@@ -1081,7 +1088,6 @@
                     formControlName="technical_id"
                     [matAutocomplete]="technicalAutoComplete"
                     id="technical_id"
-                    [value]="updatedOrderData.technician.name"
                   />
 
                   <button
@@ -1124,6 +1130,15 @@
                   <i class="fas fa-check"></i>
                   إدخال صحيح
                 </div>
+              </div>
+              <div class="form_field" *ngIf="updateMode">
+                <h4 *ngIf="updateMode && !changeTech">
+                  {{
+                    updatedOrderData.technician
+                      ? updatedOrderData.technician.name
+                      : ""
+                  }}
+                </h4>
               </div>
               <div class="form_field fullWidth formButtons">
                 <button
@@ -1185,13 +1200,13 @@
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
                   <span>{{
                     orderClient
-                      ? 'بيانات إضافية عن العميل'
-                      : 'لم يتم اختيار عميل'
+                      ? "بيانات إضافية عن العميل"
+                      : "لم يتم اختيار عميل"
                   }}</span>
                 </h4>
                 <h4>
                   <span style="font-weight: 900;">{{
-                    orderClient ? orderClient.id : ''
+                    orderClient ? orderClient.id : ""
                   }}</span>
                   <i
                     class="fas fa-smile"
@@ -1227,13 +1242,13 @@
                   <i class="fas fa-info-circle" style="margin-left: 10px;"></i>
                   <span>{{
                     orderClient
-                      ? 'بيانات إضافية عن العميل'
-                      : 'لم يتم اختيار عميل'
+                      ? "بيانات إضافية عن العميل"
+                      : "لم يتم اختيار عميل"
                   }}</span>
                 </h4>
                 <h4>
                   <span style="font-weight: 900;">{{
-                    orderClient ? orderClient.id : ''
+                    orderClient ? orderClient.id : ""
                   }}</span>
                   <i
                     class="fas fa-smile"
@@ -1274,7 +1289,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.order_date
-                          : ''
+                          : ""
                       }}
                     </p>
                   </li>
@@ -1288,7 +1303,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.service.name
-                          : ''
+                          : ""
                       }}
                     </p>
                   </li>
@@ -1302,7 +1317,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.service.name
-                          : ''
+                          : ""
                       }}
                     </p>
                   </li>
@@ -1316,7 +1331,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.technician.name
-                          : ''
+                          : ""
                       }}
                     </p>
                   </li>
@@ -1335,7 +1350,7 @@
                       {{
                         lastOrderClient.LastOrder
                           ? lastOrderClient.LastOrder.id
-                          : ''
+                          : ""
                       }}
                     </p>
                   </li>
@@ -1355,7 +1370,7 @@
                         >{{
                           lastOrderClient.LastOrder
                             ? lastOrderClient.LastOrder.status.name
-                            : ''
+                            : ""
                         }}</span
                       >
                       <span
@@ -1371,7 +1386,7 @@
                         >{{
                           lastOrderClient.LastOrder
                             ? lastOrderClient.LastOrder.receipt.receipt_number
-                            : ''
+                            : ""
                         }}</span
                       >
                     </p>

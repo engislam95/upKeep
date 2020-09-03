@@ -208,6 +208,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     [noAddressValidator, startEndTimeValidator]
   );
   numberOrder_id: any = '';
+  changeTech = false;
   /* -------------------;--- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
@@ -252,7 +253,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     });
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   filterationClient(value) {
     console.log(value);
     this.getClients(value);
@@ -348,6 +349,9 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   // Change Technical
   chooseTechnical(event) {
     this.techFlage = event;
+  }
+  changeTechnical(event) {
+    this.changeTech = event;
   }
   /* ------------------------- Reset Values ------------------------ */
   xResetInputs(key) {
@@ -739,12 +743,11 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         ? this.updatedOrderData.client
         : '',
       details: this.updatedOrderData.details,
-      technical_id: this.updatedOrderData.technician_id,
+      technical_id: this.updatedOrderData.technician_id ? this.updatedOrderData.technician_id : '',
       startObj,
       start: start[0] + ':' + start[1],
       endObj,
       end: end[0] + ':' + end[1],
-
       sourceObj: this.updatedOrderData.source
         ? this.updatedOrderData.source
         : '',
@@ -775,15 +778,35 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     }
     this.numberOrder_id = this.updatedOrderData.order_related;
     this.orderNumberControl.setValue(this.updatedOrderData.order_related);
-    this.patchForm({
-      technical_id: this.updatedOrderData.technician_id
-    });
+
     this.numberOrder = this.updatedOrderData.order_related;
     if (this.updatedOrderData.technician_id) {
-      this.techFlage = true;
+      // this.techFlage = true;
     }
-    this.filterClients(this.updatedOrderData.client);
+    this.coreService
+      .getMethod('orders/technicians', {
+        service_id: this.updatedOrderData.service.parent,
+        order_date: this.salesForm.controls.order_date.value,
+        city_id: this.client_city_id
+      })
+      .subscribe((orderTechnicians: any) => {
+        this.technicians = orderTechnicians.data;
+        console.log(this.technicians);
+        console.log(this.salesForm.controls.technical_id.value);
+
+        this.technicalFilteredOptions = this.salesForm
+          .get('technical_id')
+          .valueChanges.pipe(
+            startWith(''),
+            map(filterValue => this.filterTechnical(filterValue))
+          );
+        this.endLoading();
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        }, 500);
+      });
     this.technical_id = this.updatedOrderData.technician_id;
+    this.filterClients(this.updatedOrderData.client);
     this.selectClient = true;
     this.selectMainService = true;
     this.selectDate = true;
