@@ -1066,7 +1066,7 @@
               </div>
               <div class="form_field full_width" style="margin-bottom: 0;">
                 <mat-checkbox
-                  *ngIf="!updateMode"
+                  *ngIf="!updateMode || !updatedOrderData.technician"
                   [checked]="techFlage"
                   (change)="chooseTechnical($event.checked)"
                   >تحويل الطلب الى التنفيذ

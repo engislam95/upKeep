@@ -668,7 +668,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         this.endLoading();
         this.updatedOrderDataLoaded = true;
         this.updatedOrderData = updatedOrder.data;
-        // this.selectedLocationId = this.updatedOrderData.location.id;
+        this.selectedLocationId = this.updatedOrderData.location_id;
         // this.selectedClientLocationsArray = this.updatedOrderData.client.locations;
         if (this.selectedClientLocationsArray.length > 0) {
           this.multiAddressButtondisabled = false;
@@ -983,7 +983,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
-
+        console.log(this.selectedClientLocationsArray);
         this.selectedClientLocationsArray.forEach(element => {
           console.log('Location ID ->', element);
           if (element.default) {
@@ -1084,32 +1084,45 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   /* ---------------------------- Update Order ------------------------- */
   onUpdate() {
-    this.startLoading();
     this.submitted = true;
-    this.salesForm.patchValue({
-      technician_id: +this.salesForm.value.technician_id
-    });
-    if (this.selectedClientLocationsArray.length > 1) {
-      this.salesForm.value.location_id = this.selectedLocationId;
-    }
+    this.startLoading();
     this.coreService
-      .updateMethod('orders/' + this.updatedOrderId, this.salesForm.value)
-      .subscribe(
-        () => {
-          this.endLoading();
-          this.showSuccess('تم تعديل الطلب بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/orders/all-orders']);
-          }, 2500);
-        },
+      .updateMethod('sales/orders/' + this.updatedOrderId, {
+        client_id: this.orderClient.id,
+        service_id: this.subServiceObject.id,
+        source_id: this.resouceObject.id,
+        offer_id: this.salesForm.value.offer_id,
+        technician_id: this.technical_id,
+        order_date: this.salesForm.value.order_date,
+        start: this.salesForm.value.start,
+        end: this.salesForm.value.end,
+        details: this.salesForm.value.details,
+        location_id: this.selectedLocationId,
+        status: this.salesForm.value.status_id,
+        period_id: this.salesForm.value.period_id,
+        order_related: this.numberOrder,
+        contacted: this.salesForm.value.clientContact,
+        urgent: this.salesForm.value.urgent,
+        'label-color': this.color
+      })
+      .subscribe((updatedOrder: any) => {
+        console.log(updatedOrder);
+        if (this.selectedClientLocationsArray.length > 1) {
+          this.salesForm.value.location_id = this.selectedLocationId;
+        }
+        this.endLoading();
+        this.showSuccess('تم تعديل الطلب بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/sales/all-sales']);
+        }, 2500);
+      },
         error => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
             this.showErrors(error.error.message);
           }
-        }
-      );
+        });
   }
   /* ------------------- Update Address ------------------- */
   onSelectAddress(locationId, i, locations) {
@@ -1160,7 +1173,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         start: this.salesForm.value.start,
         end: this.salesForm.value.end,
         details: this.salesForm.value.details,
-        location_id: this.client_city_id,
+        location_id: this.selectedLocationId,
         status: this.salesForm.value.status_id,
         period_id: this.salesForm.value.period_id,
         order_related: this.numberOrder,
