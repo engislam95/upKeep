@@ -18,6 +18,7 @@ import { MessagingService } from 'src/app/tools/shared-services/messaging.servic
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
+import { ResponseStateService } from 'src/app/tools/shared-services/response-state.service';
 
 declare var google: any;
 @Component({
@@ -51,6 +52,8 @@ export class MapComponent implements OnInit {
   /* ----------------------- Variables ------------------------------- */
   sortedArray: any = [];
   technicians: any = [];
+  responseState;
+  responseData;
   companyPin;
   private geoCoder;
   citiesLating = [];
@@ -126,13 +129,23 @@ export class MapComponent implements OnInit {
   city_id = '';
   citiesFilteredOptions: Observable<any>;
   url: any = '';
+  salesOrders = [];
+  showSale = false;
+  salesForm = new FormGroup({
+    color: new FormControl('')
+  });
+  color: any = '#000';
+  confirmSales = false;
+  updateSaleOrder = {};
+  updateSaleOrder_id = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
     private messagingService: MessagingService,
     private router: Router,
-    private mapsAPILoader: MapsAPILoader
+    private mapsAPILoader: MapsAPILoader,
+    private responseStateService: ResponseStateService
   ) {
     this.url = this.router.url;
     console.log(this.url);
@@ -172,6 +185,104 @@ export class MapComponent implements OnInit {
         }
       });
     }
+    this.orderDate = '';
+    this.coreService
+      .getMethod('sales/map/orders', {
+        order_date: this.orderDate
+      })
+      .subscribe(orders => {
+        console.log(orders);
+        this.salesOrders = orders['data']['sales'];
+        console.log(this.salesOrders);
+      });
+  }
+  routerToEdit(event) {
+    if (event.tab.textLabel == 'تعديل الطلب') {
+      this.router.navigate(['/sales/update-sale'], {
+        queryParams: {
+          updateMode: true,
+          updatedOrderId: this.updateSaleOrder_id
+        }
+      });
+    }
+  }
+  // Change Color
+  changeColor(value) {
+    this.color = value;
+  }
+  showSalesPopup(sale) {
+    console.log(sale);
+    this.updateSaleOrder = sale;
+    this.updateSaleOrder_id = sale.id;
+    this.showSale = true;
+    this.salesForm.controls.color.setValue(sale['label-color']);
+    this.color = sale['label-color'];
+  }
+  confrimSale(event) {
+    this.confirmSales = event;
+    if (event == true) {
+      this.updateSaleOrder['start'] =
+        this.updateSaleOrder['start'].split(':')[0] +
+        ':' +
+        this.updateSaleOrder['start'].split(':')[1];
+      this.updateSaleOrder['end'] =
+        this.updateSaleOrder['end'].split(':')[0] +
+        ':' +
+        this.updateSaleOrder['end'].split(':')[1];
+      console.log(this.updateSaleOrder);
+      this.coreService
+        .postMethod(
+          'sales/orders/transform/' + this.updateSaleOrder_id,
+          this.updateSaleOrder
+        )
+        .subscribe(
+          (updatedOrder: any) => {
+            console.log(updatedOrder);
+            this.showSale = false;
+            this.showSuccess('تم تحويل الطلب الى التنفيذ بنجاح');
+            this.getOrders();
+          },
+          error => {
+            if (error.error.errors) {
+              this.showErrors(error.error.errors);
+            } else {
+              this.showErrors(error.error.message);
+            }
+          }
+        );
+    }
+  }
+  updateColor() {
+    this.updateSaleOrder['label-color'] = this.color;
+    console.log(this.updateSaleOrder['start'].split(':'));
+    this.updateSaleOrder['start'] =
+      this.updateSaleOrder['start'].split(':')[0] +
+      ':' +
+      this.updateSaleOrder['start'].split(':')[1];
+    this.updateSaleOrder['end'] =
+      this.updateSaleOrder['end'].split(':')[0] +
+      ':' +
+      this.updateSaleOrder['end'].split(':')[1];
+    console.log(this.updateSaleOrder);
+    this.coreService
+      .updateMethod(
+        'sales/orders/' + this.updateSaleOrder_id,
+        this.updateSaleOrder
+      )
+      .subscribe(
+        (updatedOrder: any) => {
+          console.log(updatedOrder);
+          this.showSale = false;
+          this.showSuccess('تم تغيير اللون بنجاح');
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
   }
   // filterCities(value: any) {
   //   if (typeof value === 'object') {
@@ -637,6 +748,15 @@ export class MapComponent implements OnInit {
     }
     this.orderDate = orderDate;
     this.getOrders();
+    this.coreService
+      .getMethod('sales/map/orders', {
+        order_date: this.orderDate
+      })
+      .subscribe(orders => {
+        console.log(orders);
+        this.salesOrders = orders['data']['sales'];
+        console.log(this.salesOrders);
+      });
   }
   /* ----------------------- Open & Close Information Window -------------------------- */
   onMouseOver(infoWindow, gm) {
@@ -715,5 +835,21 @@ export class MapComponent implements OnInit {
     this.router.navigate(['/orders/order-details'], {
       queryParams: { orderId: order.id }
     });
+  }
+  showErrors(errors) {
+    this.responseState = 'error';
+    this.responseData = errors;
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
+  }
+  showSuccess(text) {
+    this.responseState = 'success';
+    this.responseData = text;
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
 }

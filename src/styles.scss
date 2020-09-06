@@ -6573,5 +6573,16 @@ button:disabled {
     cursor: pointer;
     margin-right: 20px !important;
   }
+}
+
+#map {
+  .ui-colorpicker-preview {
+    margin-right: 10px !important;
+    width: 120px !important;
+  }
+
+  .mat-checkbox-label {
+    margin-right: 11px;
+  }
 
 }
