@@ -1,5 +1,7 @@
 import { Injectable, OnInit } from "@angular/core";
 import Pusher from "pusher-js";
+// import Pusher from 'pusher-js/with-encryption';
+
 
 @Injectable()
 export class WebSocketService {
@@ -15,6 +17,7 @@ export class WebSocketService {
       //   headers: { baz: "boo" }
       // }
     });
+
   }
 
   // Listen To Channels and Subscribe them
@@ -36,11 +39,17 @@ export class WebSocketService {
 
   }
 
+
+
+
+
   // Execute Function after connected
   connectedExecute() {
     /*
       Your Code 
     */
+   console.log("successfully: ");
+
   }
 
   // Unsubscribe channels
@@ -65,4 +74,9 @@ export class WebSocketService {
       Your Code 
       */
   }
+
+
+
+
+
 }

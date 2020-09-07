@@ -1,18 +1,18 @@
-import { OwnerComponent } from './owner/owner.component';
+import { SystemManagmentComponent } from './system-managment/system-managment.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatBadgeModule } from '@angular/material';
 
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { OwnerRoutingModule } from './owner-routing.module';
+import { SystemManagmentRoutingModule } from './system-managment-routing.module';
 
 @NgModule({
-  declarations: [OwnerComponent ],
+  declarations: [SystemManagmentComponent ],
   imports: [
     CommonModule,
-    OwnerRoutingModule,
+    SystemManagmentRoutingModule,
     SharedComponentsModule,
     MatBadgeModule
   ]
 })
-export class OwnerModule { }
+export class SystemManagmentModule { }

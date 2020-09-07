@@ -606,11 +606,7 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (clientsForm.get('email').status === 'INVALID' &&
-                      clientsForm.get('email').touched) ||
-                    (submitted &&
-                      clientsForm.get('email').status === 'INVALID' &&
-                      clientsForm.get('email').dirty)
+                ( clientsForm['controls'].email.touched   && clientsForm['controls'].email.errors?.required ) || clientsForm.controls.email.errors?.pattern
                   "
                 >
                   <i class="fas fa-times"></i> برجاء إدخال البريد الإلكتروني
@@ -620,9 +616,8 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    clientsForm.get('email').touched &&
                     emailReserved &&
-                    emailCheckLoaded
+                    emailCheckLoaded && !clientsForm.controls.email.errors?.pattern
                   "
                 >
                   <i class="fas fa-times"></i> هذا البريد مسجل من قبل
