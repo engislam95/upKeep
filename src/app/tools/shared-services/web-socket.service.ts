@@ -10,29 +10,30 @@ export class WebSocketService {
   constructor() {
     this.pusher = new Pusher("25c1e6831c9ab31ebd27", {
       cluster: "eu",
-      auth: {
-        params: { foo: "bar" },
-        headers: { baz: "boo" }
-      }
+      // auth: {
+      //   params: { foo: "bar" },
+      //   headers: { baz: "boo" }
+      // }
     });
   }
 
   // Listen To Channels and Subscribe them
-  listenChannel(names) {
-    // Loop for channels Names
-    for (let i = 0; i < names.length; i++) {
-      // Subscribe channels
-      this.pusher.subscribe("private-" + names[i]);
+  listenChannel(name) {
 
-      Pusher.log = msg => {
-        console.log(msg);
-      };
+    var channel = this.pusher.subscribe(name);
+    this.pusher.connection.bind("connected", this.connectedExecute());
 
-      this.pusher.connection.bind("connected", this.connectedExecute());
-    }
-    this.pusher.allChannels().forEach(channel => {
-      console.log("Subscribe: ", channel.name);
+
+    channel.bind('ActiveEvent', function (data, metadata) {
+      console.log(
+        "I received", data,
+      );
     });
+
+    Pusher.log = msg => {
+      console.log(msg);
+    };
+
   }
 
   // Execute Function after connected
