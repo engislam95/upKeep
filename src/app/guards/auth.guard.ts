@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 
-// import { WebSocketService } from '../tools/shared-services/web-socket.service'
+import { WebSocketService } from '../tools/shared-services/web-socket.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
    currentUser ;
   /* --------------- Constructor -------------------- */
-  constructor(private router: Router ) {
+  constructor(private router: Router ,  private WebSocketService : WebSocketService ) {
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
@@ -21,6 +21,12 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if (localStorage.getItem('currentUser')) {
+
+     console.log(this.WebSocketService.listenChannel("name")) 
+
+
+
+
       return true;
     }
     else if(!localStorage.getItem('currentUser'))

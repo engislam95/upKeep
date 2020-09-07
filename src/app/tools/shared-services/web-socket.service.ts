@@ -31,6 +31,8 @@ export class WebSocketService {
       console.log(
         "I received", data,
       );
+
+      return data ;
     });
 
     Pusher.log = msg => {
