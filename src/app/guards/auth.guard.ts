@@ -16,31 +16,42 @@ export class AuthGuard implements CanActivate {
   }
 
 
-
-
-
-  canActivate() {
-    if ( (localStorage.getItem('currentUser') && localStorage.getItem('active') == '1') || localStorage.getItem('active') == '1') {
-
-        return true ;
-      
+  canActivate()
+  {
+    if ( localStorage.getItem('currentUser'))
+    {
+      // this.router.navigate(['/']);
+      return true
     }
+
     else if(!localStorage.getItem('currentUser')  )
-    {
-      this.router.navigate(['access/login']);
-      return false;
-    }
+      {
+        this.router.navigate(['access/login']);
+        return false;
 
-    else if(localStorage.getItem('currentUser') && localStorage.getItem('active') == '0')
-    {
+      }
 
-      this.router.navigate(['/system-off']);
-      return false;
-    }
-
- 
-   
-
-  
   }
+
+
+  // canActivate() {
+  //   if ( (localStorage.getItem('currentUser') && localStorage.getItem('active') == '1') || localStorage.getItem('active') == '1') {
+
+  //       return true ;
+      
+  //   }
+  //   else if(!localStorage.getItem('currentUser')  )
+  //   {
+  //     this.router.navigate(['access/login']);
+  //     return false;
+  //   }
+
+  //   else if(localStorage.getItem('currentUser') && localStorage.getItem('active') == '0')
+  //   {
+
+  //     this.router.navigate(['/system-off']);
+  //     return false;
+  //   }
+
+  // }
 }
