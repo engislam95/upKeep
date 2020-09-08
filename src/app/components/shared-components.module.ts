@@ -55,7 +55,6 @@ import { AgmCoreModule } from '@agm/core';
     AlertsComponent,
     MultiselectFilterComponent,
     MapComponent,
-
   ],
   imports: [
     CommonModule,

@@ -11,9 +11,7 @@ export class HeadersService {
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '192.168.1.2:8000/api/';
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';
-  // baseAPI = 'https://test.upkeep.com.sa/upkeep/';
-  // baseAPI = 'https://testupkeep.reviews.upkeep.com.sa/upkeep/';
-
+    // baseAPI = 'https://testupkeep.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '/upkeep/';
   // baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
   // tslint:disable-next-line: no-inferrable-types

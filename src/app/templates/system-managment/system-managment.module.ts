@@ -14,4 +14,4 @@ import { SystemManagmentComponent } from './system-managment/system-managment.co
     MatBadgeModule
   ]
 })
-export class SystemManagmentModule { }
+export class SystemManagmentModule {}

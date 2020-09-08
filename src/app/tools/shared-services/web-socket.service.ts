@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from "@angular/core";
 import Pusher from "pusher-js";
 // import Pusher from 'pusher-js/with-encryption';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -9,45 +10,21 @@ export class WebSocketService {
 
   pusher: any = "";
 
-  constructor() {
+  constructor( private router: Router) {
     this.pusher = new Pusher("2140fece47d1d0c40378", {
-      // appId: '1059775',
-      // key: '2140fece47d1d0c40378',
-      // secret: 'fb813ed36a6f4c65fd7e',
-      cluster: 'eu',
-      // encrypted: true
+      cluster: "eu",
+      // auth: {
+      //   params: { foo: "bar" },
+      //   headers: { baz: "boo" }
+      // }
     });
 
   }
 
   // Listen To Channels and Subscribe them
-  // listenChannel(names) {
-  //   console.log(names)
-
-  //   // Loop for channels Names
-  //   for (let i = 0; i < names.length; i++) {
-  //     // Subscribe channels
-  //     console.log(names[i]);
-      
-  //     // "private-" +
-  //     this.pusher.subscribe( names[i]);
-
-  
-
-  //     this.pusher.connection.bind("connected", this.connectedExecute());
-  //   }
-    
-  //   Pusher.log = msg => {
-  //     console.log(msg);
-  //   };
-
-  //   this.pusher.allChannels().forEach(channel => {
-  //     console.log("Subscribe: ", channel.name);
-  //   });
-  // }
-
-
   listenChannel(name) {
+
+    let newRouter = this.router ;
 
     var channel = this.pusher.subscribe(name);
     this.pusher.connection.bind("connected", this.connectedExecute());
@@ -57,11 +34,29 @@ export class WebSocketService {
       console.log(
         "I received", data,
       );
+
+      if(data.active == 1)
+      {
+        localStorage.setItem('active', '1')
+        newRouter.navigate(['/']);
+
+      }
+      else if(data.active == 0)
+      {
+        localStorage.setItem('active', '0')
+        newRouter.navigate(['/system-off'])
+
+
+      }
+
+    
     });
 
     Pusher.log = msg => {
       console.log(msg);
     };
+
+
 
   }
 

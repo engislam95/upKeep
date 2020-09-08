@@ -1,4 +1,5 @@
 <div>
+  <app-alerts></app-alerts>
 
 </div><div class="main_page">
   <app-side-menu-owner></app-side-menu-owner>
@@ -35,12 +36,12 @@
               <i class="fal fa-plug" style="margin-left: 10px; font-size: 32px;"></i> إدارة النظام
             </h2>
             <div class="controlers">
-              <div class="controller" routerLink="/system-off">
-                <a  style="background: #E63030;"> <i class="fas fa-power-off"></i></a>
+              <div class="controller" >
+                <a  (click)="systemOFF()"  style="background: #E63030;"> <i class="fas fa-power-off"></i></a>
                 <p> إيقاف النظام</p>
               </div>
-              <div class="controller" routerLink="/services/all-services" style="margin-right: 30px;">
-                <a style="background: #5CA40A;" routerLink="/"> <i class="far fa-check-circle"></i></a>
+              <div class="controller"  style="margin-right: 30px;">
+                <a  (click)="systemON()" style="background: #5CA40A;" > <i class="far fa-check-circle"></i></a>
                 <p> تشغيل النظام</p>
               </div>
             
