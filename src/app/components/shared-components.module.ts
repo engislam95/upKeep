@@ -77,11 +77,12 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     AgmCoreModule,
     AgmOverlays,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
+      // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
       // apiKey: 'AIzaSyChTEPD15j3gS_5Z7ABhWkghruAxH0mmh0',
+      apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
       libraries: ['geometry', 'places']
     })
   ],
   providers: [LoaderService, ResponseStateService]
 })
-export class SharedComponentsModule {}
+export class SharedComponentsModule { }
