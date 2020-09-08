@@ -47,7 +47,8 @@ import { ClassificationDetailsComponent } from './classification-details/classif
     MatSelectModule,
     MatGridListModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
+      // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
+      apiKey : 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs' ,
       libraries: ['geometry']
     })
   ]
