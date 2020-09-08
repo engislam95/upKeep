@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatBadgeModule } from '@angular/material';
 
-import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { SharedComponentsModule } from '../../components/shared-components.module';
+
 import { SystemManagmentRoutingModule } from './system-managment-routing.module';
 
 @NgModule({
@@ -15,4 +16,4 @@ import { SystemManagmentRoutingModule } from './system-managment-routing.module'
     MatBadgeModule
   ]
 })
-export class SystemManagmentModule { }
+export class SystemManagmentModule {}

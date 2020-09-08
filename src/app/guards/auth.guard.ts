@@ -20,18 +20,21 @@ export class AuthGuard implements CanActivate {
 
 
   canActivate() {
-    if (localStorage.getItem('currentUser')) {
+    if ( (localStorage.getItem('currentUser') && localStorage.getItem('active') == '1') || localStorage.getItem('active') == '1') {
 
-     console.log(this.WebSocketService.listenChannel("name")) 
-
-
-
-
-      return true;
+        return true ;
+      
     }
-    else if(!localStorage.getItem('currentUser'))
+    else if(!localStorage.getItem('currentUser')  )
     {
       this.router.navigate(['access/login']);
+      return false;
+    }
+
+    else if(localStorage.getItem('currentUser') && localStorage.getItem('active') == '0')
+    {
+
+      this.router.navigate(['/system-off']);
       return false;
     }
 
