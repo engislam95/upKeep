@@ -28,12 +28,12 @@ import { popup } from '../../../tools/shared_animations/popup';
 import { fade } from '../../../tools/shared_animations/fade';
 import { noAddressValidator } from './../../../tools/shared_validators/NoAddress.validator';
 @Component({
-  selector: 'app-add-order',
-  templateUrl: './add-order.component.html',
-  styleUrls: ['./add-order.component.scss'],
+  selector: 'app-add-sale',
+  templateUrl: './add-sale.component.html',
+  styleUrls: ['./add-sale.component.scss'],
   animations: [popup, fade]
 })
-export class AddOrderComponent implements OnInit, AfterViewInit {
+export class AddSaleComponent implements OnInit, AfterViewInit {
   /* ---------------------- Variables -------------------------- */
   selectedResourceLogo: any = '';
   responseState: any = '';
@@ -50,7 +50,10 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   order_add: boolean = false;
   order_all: boolean = false;
   order_update: boolean = false;
+  choosenOffer: any = '';
   orders: any = [];
+  showNote = false;
+  updatePhone = false;
   user: any = '';
   todayDate: Date = new Date();
   // Clients
@@ -59,7 +62,9 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   clientsArrayLoaded: boolean = false;
   // Resourecs
   sourcesArray: any = [];
+  orderNumbersArray: any = [];
   sourcesFilteredOptions: Observable<any>;
+  orderNumbersFilteredOptions: Observable<any>;
   sourcesArrayLoaded: boolean = false;
   // Services
   servicesArray: any = [];
@@ -68,6 +73,9 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   // Sub-Services
   subServicesArray: any = [];
   subServicesFilteredOptions: Observable<any>;
+  technicalArray: any = [];
+  technicalFilteredOptions: Observable<any>;
+  orderNumberControl = new FormControl();
   // Offers
   noOffers: any = '';
   currentOffer: any = '';
@@ -102,6 +110,11 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   multiAddressButtondisabled: boolean = true;
   selectSubLocations: boolean = false;
   selectedLocationIndexInUpdateMode: any = '';
+  lastOrderClient: any = '';
+  technical_id: any = '';
+  resouceObject: any = '';
+  serviceObject: any = '';
+  subServiceObject: any = '';
   /* ---------------Editor --------------- */
   public Editor = ClassicEditor;
   public config = {
@@ -135,8 +148,32 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   hours: any = [];
   technicians: any = [];
   client_city_id: any = '';
+  color = '#FF0000';
+  safetyOrder: any = false;
+  addNumber: any = false;
+  addColor: any = false;
+  techFlage: any = false;
+  clientMobiles: any = [];
+  periodsArray: any = [];
+  orderStatusArray: any = [];
+  showMobilePopup: any = false;
+  clientMobile_id: any = '';
+  numberOrder: any = '';
+  showAddNumberPopup = false;
+  phonesForm = new FormGroup({
+    mobile: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[0-9]* || [٠-٩]*'),
+      Validators.minLength(9),
+      Validators.maxLength(9)
+    ]),
+    name: new FormControl('')
+  });
+  setError = false;
+  errorMessage: string = 'هذا الرقم غير صحيح او موجود بالفعل ';
+
   /* -------------------- Order Form ------------------------ */
-  ordersForm = new FormGroup(
+  salesForm = new FormGroup(
     {
       client_id: new FormControl('', Validators.required),
       clientIdObj: new FormControl('', [emptyValidator, Validators.required]),
@@ -147,6 +184,10 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       endObj: new FormControl('', [Validators.required]),
       details: new FormControl('', [detailsValidator, Validators.required]),
       location_id: new FormControl(''),
+      period_id: new FormControl(''),
+      clientAddMobile: new FormControl(''),
+      technical_id: new FormControl('', [emptyValidator, Validators.required]),
+      status_id: new FormControl(''),
       main_service_id: new FormControl(),
       subServicesObj: new FormControl('', [
         emptyValidator,
@@ -155,16 +196,20 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       service_id: new FormControl(),
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
-      source_id: new FormControl(),
-      sourceObj: new FormControl('', [emptyValidator, Validators.required]),
+      source_id: new FormControl(''),
+      sourceObj: new FormControl('', [Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
       order_date: new FormControl(''),
+      urgent: new FormControl(false),
+      color: new FormControl(this.color),
+      clientContact: new FormControl(false),
       orderDateObj: new FormControl('', [Validators.required])
     },
     [noAddressValidator, startEndTimeValidator]
   );
-
-  /* ---------------------- Constructor -------------------------- */
+  numberOrder_id: any = '';
+  changeTech = false;
+  /* -------------------;--- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
     private responseStateService: ResponseStateService,
@@ -192,9 +237,66 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
         }
       });
     }
+    // Periods
+    this.startLoading();
+    this.coreService.getMethod('lookup/periods').subscribe(data => {
+      console.log(data);
+      this.periodsArray = data['data'];
+      this.endLoading();
+    });
+    // status
+    this.startLoading();
+    this.coreService.getMethod('lookup/sales-order-status').subscribe(data => {
+      console.log(data);
+      this.orderStatusArray = data['data'];
+      this.endLoading();
+    });
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
+  filterationClient(value) {
+    console.log(value);
+    this.getClients(value);
+  }
+  openMobilePopup() {
+    this.showMobilePopup = true;
+  }
+  // add phone number
+  addPhoneNumber() {
+    console.log(this.orderClient);
+
+    this.coreService
+      .postMethod('clients/mobile/' + this.orderClient.id, {
+        name: this.phonesForm.controls.name.value,
+        mobile: +(966 + this.phonesForm.controls.mobile.value)
+      })
+      .subscribe(
+        (clientDetails: any) => {
+          console.log(clientDetails);
+          this.setError = false;
+          this.phonesForm.controls.name.setValue('');
+          this.phonesForm.controls.mobile.setValue('');
+          this.coreService
+            .getMethod('clients/' + this.orderClient.id)
+            .subscribe(mobiles => {
+              console.log(mobiles['data']['mobiles']);
+              this.clientMobiles = mobiles['data']['mobiles'];
+            });
+          this.updatePhone = false;
+          this.endLoading();
+          this.showSuccess('تم إضافة  رقم التليفون بنجاح');
+          this.showAddNumberPopup = false;
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+            this.setError = true;
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
+  }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -203,19 +305,20 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     this.getSources();
     this.initTechniciansTableHours();
     // Client Filter
-    const clientIdObj = document.getElementById('clientIdObj');
-    const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
-    clientIdObjEvent
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(500),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) =>
-        this.selectClient ? null : this.getClients(value)
-      );
+    // const clientIdObj = document.getElementById('clientIdObj');
+    // const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
+    // clientIdObjEvent
+    //   .pipe(
+    //     map((event: any) => event.target.value),
+    //     debounceTime(500),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((value: any) =>
+    //     this.selectClient ? null : this.getClients(value)
+    //   );
     /* --------------------- Update Mode ------------------- */
     this.actvatdRoute.queryParams.subscribe(params => {
+      console.log(params);
       this.updateMode = params.updateMode === 'true';
       this.updateButton = params.updateMode === 'true';
       this.updatedOrderId = +params.updatedOrderId;
@@ -227,16 +330,59 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  // Change Color
+  changeColor(value) {
+    this.color = value;
+  }
+  // Change Safety
+  changeSafetyOrder(event) {
+    this.safetyOrder = event;
+  }
+  // Change Number
+  changePhone(event) {
+    this.addNumber = event;
+  }
+  // Change Number
+  changeColorStatus(event) {
+    this.addColor = event;
+  }
+  // Change Technical
+  chooseTechnical(event) {
+    this.techFlage = event;
+  }
+  changeTechnical(event) {
+    this.changeTech = event;
+  }
   /* ------------------------- Reset Values ------------------------ */
   xResetInputs(key) {
     if (key === 'orderDateObj') {
       this.resetInputs('date');
     }
     (document.getElementById(key) as HTMLInputElement).value = '';
-    this.ordersForm.controls[key].patchValue('');
+    if (this.salesForm.controls[key]) {
+      this.salesForm.controls[key].patchValue('');
+    }
     if (key === 'clientIdObj') {
       this.multiAddressButtondisabled = true;
       this.selectedClientLocationsArray = [];
+      this.clientMobiles = [];
+      this.salesForm.controls.client_id.setValue('');
+      this.lastOrderClient = '';
+      this.orderClient = '';
+      this.clientsArray = [];
+      // Client Filter
+      const clientIdObj = document.getElementById('clientIdObj');
+      const clientIdObjEvent = fromEvent(clientIdObj, 'keyup');
+      clientIdObjEvent
+        .pipe(
+          map((event: any) => event.target.value),
+          debounceTime(500),
+          distinctUntilChanged()
+        )
+        .subscribe((value: any) => {
+          console.log(value);
+          this.selectClient ? null : this.getClients(value);
+        });
     }
   }
   resetInputs(inputRole) {
@@ -276,6 +422,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* ----------------------- Filter Sub-Services ----------------------- */
   filterSubServices(value: any) {
     if (typeof value === 'object') {
+      this.subServiceObject = value;
       this.patchForm({ service_id: value.id });
       this.getOffers();
     } else {
@@ -286,12 +433,24 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       );
     }
   }
+  chooseOffer(offer, i) {
+    console.log(offer);
+    this.filterOffers(offer);
+    this.choosenOffer = offer.name;
+    console.log(this.salesForm.controls.offer_id.value);
+    this.viewOfferDetailsPopup = false;
+    this.offersArray.map(ele => {
+      ele.choosen = 0;
+    });
+    this.offersArray[i].choosen = 1;
+    console.log(this.offersArray);
+  }
   /* ----------------- Get Offers -------------------------- */
   getOffers() {
-    const serviceId = this.ordersForm.value.service_id;
-    const subServiceStatus = this.ordersForm.get('subServicesObj').status;
-    const orderDate = this.ordersForm.value.order_date;
-    const orderDateStatus = this.ordersForm.get('orderDateObj').status;
+    const serviceId = this.salesForm.value.service_id;
+    const subServiceStatus = this.salesForm.get('subServicesObj').status;
+    const orderDate = this.salesForm.value.order_date;
+    const orderDateStatus = this.salesForm.get('orderDateObj').status;
     if (subServiceStatus === 'VALID' && orderDateStatus === 'VALID') {
       this.startLoading();
       this.coreService
@@ -300,15 +459,17 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
           order_date: orderDate
         })
         .subscribe((offersResponse: any) => {
+          console.log(offersResponse);
+
           this.offersArray = offersResponse.data;
           this.endLoading();
           this.updateMode ? null : this.listenInputChanges('', 'offer');
           if (this.offersArray.length === 0) {
-            this.ordersForm.controls.offersObj.disable();
+            this.salesForm.controls.offersObj.disable();
             this.patchForm({ offersObj: '' });
             this.noOffers = 'لا يوجد عروض فى هذا اليوم';
           } else {
-            this.ordersForm.controls.offersObj.enable();
+            this.salesForm.controls.offersObj.enable();
             this.noOffers = '';
           }
         });
@@ -373,6 +534,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   filterSources(value: any) {
     if (typeof value === 'object') {
       this.getResourceServices(value.id);
+      this.resouceObject = value;
       this.selectedResourceLogo = value.logo;
       setTimeout(() => {
         this.selectedResourceLogoShow = true;
@@ -385,6 +547,21 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       return this.selectSearchService.filterOptions(value, this.sourcesArray);
     }
   }
+  /* ---------------------- Filter Resources ---------------------- */
+  filterOrderNumber(value: any) {
+    console.log(value);
+    this.numberOrder = value;
+    this.numberOrder_id = value;
+    console.log(this.orderNumbersArray);
+    return this.orderNumbersArray.filter(option =>
+      option.toString().includes(value)
+    );
+  }
+  displayOrderNumberFunction = state => {
+    console.log(state);
+    return state;
+  };
+
   /* ------------------- Get Services By Resources ------------------*/
   getResourceServices(resourceId) {
     if (!this.updateMode) {
@@ -413,6 +590,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* --------------------- Filter Services -------------------------- */
   filterServices(value: any) {
     if (typeof value === 'object') {
+      this.serviceObject = value;
       this.subServicesArray = value.children;
       if (!this.updateMode) {
         this.patchForm({ main_service_id: value.id });
@@ -431,7 +609,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   listenInputChanges(value, input) {
     switch (input) {
       case 'client':
-        this.clientsFilteredOptions = this.ordersForm
+        this.clientsFilteredOptions = this.salesForm
           .get('clientIdObj')
           .valueChanges.pipe(
             startWith(value),
@@ -439,7 +617,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'resource':
-        this.sourcesFilteredOptions = this.ordersForm
+        this.sourcesFilteredOptions = this.salesForm
           .get('sourceObj')
           .valueChanges.pipe(
             startWith(value),
@@ -447,7 +625,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'mainService':
-        this.servicesFilteredOptions = this.ordersForm
+        this.servicesFilteredOptions = this.salesForm
           .get('servicesObj')
           .valueChanges.pipe(
             startWith(value),
@@ -455,7 +633,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'subService':
-        this.subServicesFilteredOptions = this.ordersForm
+        this.subServicesFilteredOptions = this.salesForm
           .get('subServicesObj')
           .valueChanges.pipe(
             startWith(value),
@@ -463,7 +641,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
           );
         break;
       case 'offer':
-        this.offersFilteredOptions = this.ordersForm
+        this.offersFilteredOptions = this.salesForm
           .get('offersObj')
           .valueChanges.pipe(
             startWith(value),
@@ -474,7 +652,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   }
   /* ------------------- Patch Form --------------------- */
   patchForm(data) {
-    this.ordersForm.patchValue({ ...data });
+    this.salesForm.patchValue({ ...data });
   }
   /* ----------------------- Display Options ------------------------ */
   displayOptionsFunction = state => {
@@ -483,13 +661,15 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* ------------------------- Get Update Data ----------------------- */
   getUpdatedOrderDetails() {
     this.coreService
-      .getMethod('orders/' + this.updatedOrderId + '/details', {})
+      .getMethod('sales/orders/' + this.updatedOrderId)
       .subscribe((updatedOrder: any) => {
+        console.log(updatedOrder);
+
         this.endLoading();
         this.updatedOrderDataLoaded = true;
         this.updatedOrderData = updatedOrder.data;
-        this.selectedLocationId = this.updatedOrderData.location.id;
-        this.selectedClientLocationsArray = this.updatedOrderData.client.locations;
+        this.selectedLocationId = this.updatedOrderData.location_id;
+        // this.selectedClientLocationsArray = this.updatedOrderData.client.locations;
         if (this.selectedClientLocationsArray.length > 0) {
           this.multiAddressButtondisabled = false;
           this.selectedClientLocationsArray.forEach(element => {
@@ -529,28 +709,6 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     } else {
       endObj = this.updatedOrderData.toH + ':' + this.updatedOrderData.toM;
     }
-    this.patchForm({
-      client_id: this.updatedOrderData.client_id,
-      clientIdObj: this.updatedOrderData.client,
-      sourceObj: this.updatedOrderData.source,
-      source_id: this.updatedOrderData.id,
-      servicesObj: this.updatedOrderData.service.parent_service,
-      main_service_id: this.updatedOrderData.service.parent,
-      subServicesObj: this.updatedOrderData.service,
-      service_id: this.updatedOrderData.service.id,
-      offer_id:
-        this.updatedOrderData.offer === null
-          ? null
-          : this.updatedOrderData.offer.id,
-      offersObj: this.updatedOrderData.offer,
-      technician_id: this.updatedOrderData.technician_id.toString(),
-      startObj,
-      start: start[0] + ':' + start[1],
-      endObj,
-      end: end[0] + ':' + end[1],
-      details: this.updatedOrderData.details,
-      location_id: this.updatedOrderData.location_id
-    });
     this.listenInputChanges(this.updatedOrderData.source, 'resource');
     this.listenInputChanges(
       this.updatedOrderData.service.parent_service,
@@ -565,6 +723,90 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       this.currentOffer = this.updatedOrderData.offer;
       this.viewOfferDetailsPopupButton = true;
     }
+    this.addColor = true;
+    if (this.updatedOrderData.offer_id == null) {
+      this.salesForm.controls.offersObj.disable();
+    }
+    this.color = this.updatedOrderData['label-color'];
+    this.patchForm({
+      period_id: this.updatedOrderData.period_id,
+      status_id: this.updatedOrderData.status
+        ? this.updatedOrderData.status.id
+        : '',
+      clientContact: this.updatedOrderData.contacted,
+      urgent: this.updatedOrderData.urgent,
+      color: this.updatedOrderData['label-color'],
+      client_id: this.updatedOrderData.client_id
+        ? this.updatedOrderData.client_id
+        : '',
+      clientIdObj: this.updatedOrderData.client
+        ? this.updatedOrderData.client
+        : '',
+      details: this.updatedOrderData.details,
+      technical_id: this.updatedOrderData.technician_id ? this.updatedOrderData.technician_id : '',
+      startObj,
+      start: start[0] + ':' + start[1],
+      endObj,
+      end: end[0] + ':' + end[1],
+      sourceObj: this.updatedOrderData.source
+        ? this.updatedOrderData.source
+        : '',
+      source_id: this.updatedOrderData.source.id
+        ? this.updatedOrderData.source.id
+        : '',
+
+      offer_id:
+        this.updatedOrderData.offer === null
+          ? null
+          : this.updatedOrderData.offer.id,
+      offersObj: this.updatedOrderData.offer,
+      servicesObj: this.updatedOrderData.service
+        ? this.updatedOrderData.service.parent_service
+        : '',
+      main_service_id: this.updatedOrderData.service
+        ? this.updatedOrderData.service.parent
+        : '',
+      subServicesObj: this.updatedOrderData.service
+        ? this.updatedOrderData.service
+        : '',
+      service_id: this.updatedOrderData.service
+        ? this.updatedOrderData.service.id
+        : ''
+    });
+    if (this.updatedOrderData.order_related) {
+      this.safetyOrder = true;
+    }
+    this.numberOrder_id = this.updatedOrderData.order_related;
+    this.orderNumberControl.setValue(this.updatedOrderData.order_related);
+
+    this.numberOrder = this.updatedOrderData.order_related;
+    if (this.updatedOrderData.technician_id) {
+      // this.techFlage = true;
+    }
+    this.coreService
+      .getMethod('orders/technicians', {
+        service_id: this.updatedOrderData.service.parent,
+        order_date: this.salesForm.controls.order_date.value,
+        city_id: this.client_city_id
+      })
+      .subscribe((orderTechnicians: any) => {
+        this.technicians = orderTechnicians.data;
+        console.log(this.technicians);
+        console.log(this.salesForm.controls.technical_id.value);
+
+        this.technicalFilteredOptions = this.salesForm
+          .get('technical_id')
+          .valueChanges.pipe(
+            startWith(''),
+            map(filterValue => this.filterTechnical(filterValue))
+          );
+        this.endLoading();
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        }, 500);
+      });
+    this.technical_id = this.updatedOrderData.technician_id;
+    this.filterClients(this.updatedOrderData.client);
     this.selectClient = true;
     this.selectMainService = true;
     this.selectDate = true;
@@ -581,7 +823,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       orderDateArray = event.split('-');
       orderDate =
         orderDateArray[0] + '/' + orderDateArray[1] + '/' + orderDateArray[2];
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         order_date: orderDate,
         orderDateObj: this.updatedOrderData.order_date
       });
@@ -589,7 +831,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       orderDateArray = event.targetElement.value.split('/');
       orderDate =
         orderDateArray[2] + '/' + orderDateArray[0] + '/' + orderDateArray[1];
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         order_date: orderDate
       });
     }
@@ -599,10 +841,10 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   }
   /* --------------------------- Get Order Technicians -------------------- */
   getOrderTechnicians() {
-    const mainServiceId = this.ordersForm.value.main_service_id;
-    const MainServiceStatus = this.ordersForm.get('servicesObj').status;
-    const orderDate = this.ordersForm.value.order_date;
-    const orderDateStatus = this.ordersForm.get('orderDateObj').status;
+    const mainServiceId = this.salesForm.value.main_service_id;
+    const MainServiceStatus = this.salesForm.get('servicesObj').status;
+    const orderDate = this.salesForm.value.order_date;
+    const orderDateStatus = this.salesForm.get('orderDateObj').status;
     if (
       MainServiceStatus === 'VALID' &&
       orderDateStatus === 'VALID' &&
@@ -617,13 +859,26 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
         })
         .subscribe((orderTechnicians: any) => {
           this.technicians = orderTechnicians.data;
+          console.log(this.technicians);
+
+          this.technicalFilteredOptions = this.salesForm
+            .get('technical_id')
+            .valueChanges.pipe(
+              startWith(''),
+              map(filterValue => this.filterTechnical(filterValue))
+            );
           this.endLoading();
           setTimeout(() => {
-            this.loopCellWidth = this.loopContainer.nativeElement.offsetWidth;
             this.cdr.detectChanges();
           }, 500);
         });
     }
+  }
+  filterTechnical(value: any) {
+    if (typeof value === 'object') {
+      this.technical_id = value.id;
+    }
+    return this.technicians.filter(option => option.name.includes(value));
   }
   /* ---------------------------- Get All Clients -------------------- */
   getClients(value) {
@@ -648,8 +903,54 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   }
   /* ------------------ Client Detals --------------------- */
   viewClientDetailsFunction() {
-    const clientId = this.ordersForm.value.client_id;
+    const clientId = this.salesForm.value.client_id;
     window.open('/clients/client-details?clientId=' + clientId, '_blank');
+  }
+  openClientLocations() {
+    this.showMapPopup = true;
+  }
+  changeMobile(id, i) {
+    this.clientMobile_id = id;
+    this.showMobilePopup = false;
+    this.showSuccess('تم اختيار الرقم البديل');
+    this.clientMobiles.forEach(ele => {
+      ele.default = 0;
+    });
+    this.clientMobiles[i].default = 1;
+  }
+  // edit phone number
+  editPhoneNumber(element) {
+    console.log(element);
+
+    this.phonesForm.controls.name.setValue(element.name);
+    this.phonesForm.controls.mobile.setValue(
+      element.mobile
+        .split('')
+        .slice(3)
+        .join('')
+    );
+    console.log(this.phonesForm.controls.mobile.value);
+
+    this.updatePhone = true;
+    // this.fetchedPhone = element;
+  }
+
+  // delte phone number
+  deletePhoneNumber(phoneId) {
+    this.coreService.deleteMethod('clients/mobile/' + phoneId).subscribe(
+      (clientDetails: any) => {
+        console.log(clientDetails);
+        this.endLoading();
+        this.showSuccess('تم إزالة  رقم التليفون بنجاح');
+      },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
+        }
+      }
+    );
   }
   /* ------------------------ Filter Clients --------------------- */
   filterClients(value: any) {
@@ -657,11 +958,32 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
-
+      //Get Client Mobile
+      this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
+        console.log(mobiles['data']['mobiles']);
+        this.clientMobiles = mobiles['data']['mobiles'];
+      });
+      // Get Client Details and Last Order Details
+      this.startLoading();
+      this.coreService
+        .getMethod('clients/lastorder?client_id=' + value.id)
+        .subscribe(client => {
+          console.log(client['data']);
+          this.lastOrderClient = client['data'];
+          this.orderNumbersArray = client['data']['OrdersNumbers'];
+          console.log(this.orderNumbersArray);
+          this.orderNumbersFilteredOptions = this.orderNumberControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterOrderNumber(value))
+          );
+          this.showNote = true;
+          this.endLoading();
+        });
+      this.searchClientStarted = false;
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
-
+        console.log(this.selectedClientLocationsArray);
         this.selectedClientLocationsArray.forEach(element => {
           console.log('Location ID ->', element);
           if (element.default) {
@@ -674,19 +996,23 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
         this.multiAddressButtondisabled = false;
       }
       this.orderClient = value;
-      this.ordersForm.patchValue({
+      this.salesForm.patchValue({
         client_id: value.id,
         location_id: value.locations.length > 0 ? value.locations[0].id : null
       });
       this.viewClientDetails = true;
       this.selectClient = true;
-    } else {
+      if (this.clientsArray !== null) {
+        return this.clientsArray.filter(option =>
+          option.user.name.includes(value)
+        );
+      }
+    } else if (typeof value == 'string') {
       this.viewClientDetails = false;
       // this.selectClient = false;
-    }
-    if (this.clientsArray !== null) {
-      return this.clientsArray.filter(option =>
-        option.user.name.includes(value)
+      return this.clientsArray.filter(
+        option =>
+          option.user.name.includes(value) || option.user.mobile.includes(value)
       );
     }
   }
@@ -746,44 +1072,57 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   }
   /* ---------------------- Start Time -------------------------- */
   startTimeChanged(time) {
-    this.ordersForm.patchValue({
+    this.salesForm.patchValue({
       start: time
     });
   }
   /* ---------------------- End Time -------------------------- */
   endTimeChanged(time) {
-    this.ordersForm.patchValue({
+    this.salesForm.patchValue({
       end: time
     });
   }
   /* ---------------------------- Update Order ------------------------- */
   onUpdate() {
-    this.startLoading();
     this.submitted = true;
-    this.ordersForm.patchValue({
-      technician_id: +this.ordersForm.value.technician_id
-    });
-    if (this.selectedClientLocationsArray.length > 1) {
-      this.ordersForm.value.location_id = this.selectedLocationId;
-    }
+    this.startLoading();
     this.coreService
-      .updateMethod('orders/' + this.updatedOrderId, this.ordersForm.value)
-      .subscribe(
-        () => {
-          this.endLoading();
-          this.showSuccess('تم تعديل الطلب بنجاح');
-          setTimeout(() => {
-            this.router.navigate(['/orders/all-orders']);
-          }, 2500);
-        },
+      .updateMethod('sales/orders/' + this.updatedOrderId, {
+        client_id: this.orderClient.id,
+        service_id: this.subServiceObject.id,
+        source_id: this.resouceObject.id,
+        offer_id: this.salesForm.value.offer_id,
+        technician_id: this.technical_id,
+        order_date: this.salesForm.value.order_date,
+        start: this.salesForm.value.start,
+        end: this.salesForm.value.end,
+        details: this.salesForm.value.details,
+        location_id: this.selectedLocationId,
+        status: this.salesForm.value.status_id,
+        period_id: this.salesForm.value.period_id,
+        order_related: this.numberOrder,
+        contacted: this.salesForm.value.clientContact,
+        urgent: this.salesForm.value.urgent,
+        'label-color': this.color
+      })
+      .subscribe((updatedOrder: any) => {
+        console.log(updatedOrder);
+        if (this.selectedClientLocationsArray.length > 1) {
+          this.salesForm.value.location_id = this.selectedLocationId;
+        }
+        this.endLoading();
+        this.showSuccess('تم تعديل الطلب بنجاح');
+        setTimeout(() => {
+          this.router.navigate(['/sales/all-sales']);
+        }, 2500);
+      },
         error => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
             this.showErrors(error.error.message);
           }
-        }
-      );
+        });
   }
   /* ------------------- Update Address ------------------- */
   onSelectAddress(locationId, i, locations) {
@@ -801,42 +1140,63 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* ------------------------------ Create Order ------------------------- */
   onSubmit() {
     this.startLoading();
-    console.log(this.ordersForm.value);
-    console.log(this.ordersForm.value.start);
-    let am = this.ordersForm.value.startObj.split(' ')[1];
+    console.log(this.salesForm.value);
+    console.log(this.salesForm.value.start);
+    let am = this.salesForm.value.startObj.split(' ')[1];
     if (am == 'am') {
-      let startHour = this.ordersForm.value.start.split(':')[0];
-      const startMin = this.ordersForm.value.start.split(':')[1];
+      let startHour = this.salesForm.value.start.split(':')[0];
+      const startMin = this.salesForm.value.start.split(':')[1];
       if (startHour == 12 && localStorage.getItem('startTimeType') == 'am') {
         startHour = 0;
-        this.ordersForm.value.start = startHour + '0' + ':' + startMin;
+        this.salesForm.value.start = startHour + '0' + ':' + startMin;
       }
-      let endHour = this.ordersForm.value.end.split(':')[0];
-      const endMin = this.ordersForm.value.end.split(':')[1];
+      let endHour = this.salesForm.value.end.split(':')[0];
+      const endMin = this.salesForm.value.end.split(':')[1];
       if (endHour == 12 && localStorage.getItem('endTimeType') == 'am') {
         endHour = 0;
-        this.ordersForm.value.end = endHour + '0' + ':' + endMin;
+        this.salesForm.value.end = endHour + '0' + ':' + endMin;
       }
     }
-    console.log(this.ordersForm.value.end);
+    console.log(this.salesForm.value.end);
     this.submitted = true;
-    this.ordersForm.value.location_id = this.selectedLocationId;
-    this.coreService.postMethod('orders', this.ordersForm.value).subscribe(
-      () => {
-        this.endLoading();
-        this.showSuccess('تم تسجيل الطلب بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/orders/all-orders']);
-        }, 2500);
-      },
-      error => {
-        if (error.error.errors) {
-          this.showErrors(error.error.errors);
-        } else {
-          this.showErrors(error.error.message);
+    this.salesForm.value.location_id = this.selectedLocationId;
+    console.log(this.numberOrder);
+
+    this.coreService
+      .postMethod('sales/orders/create', {
+        client_id: this.orderClient.id,
+        service_id: this.subServiceObject.id,
+        source_id: this.resouceObject.id,
+        offer_id: this.salesForm.value.offer_id,
+        technician_id: this.technical_id,
+        order_date: this.salesForm.value.order_date,
+        start: this.salesForm.value.start,
+        end: this.salesForm.value.end,
+        details: this.salesForm.value.details,
+        location_id: this.selectedLocationId,
+        status: this.salesForm.value.status_id,
+        period_id: this.salesForm.value.period_id,
+        order_related: this.numberOrder,
+        contacted: this.salesForm.value.clientContact,
+        urgent: this.salesForm.value.urgent,
+        'label-color': this.color
+      })
+      .subscribe(
+        () => {
+          this.endLoading();
+          this.showSuccess('تم تسجيل الطلب بنجاح');
+          setTimeout(() => {
+            this.router.navigate(['/sales/all-sales']);
+          }, 2500);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
         }
-      }
-    );
+      );
   }
   /* ------------------- Generate Time ------------------------- */
   generateTime() {

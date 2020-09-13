@@ -6,6 +6,7 @@ export function startEndTimeValidator(control: AbstractControl) {
   const endMinute = +control.value.end.split(':')[1];
   const startTimeType = localStorage.getItem('startTimeType');
   const endtimeType = localStorage.getItem('endTimeType');
+
   if (startHour !== (0 && NaN) && endHour !== (0 && NaN)) {
     if (endHour === 24) {
       endHour -= 12;
@@ -18,8 +19,11 @@ export function startEndTimeValidator(control: AbstractControl) {
     ) {
       return { endAfterStart: true };
     }
-    if (endHour < startHour && (startTimeType == 'am' && endtimeType == 'am')) {
+    if (endHour != 12 && endHour > startHour && (startTimeType == 'am' && endtimeType == 'am')) {
       return null;
+    }
+    if (endHour == 12 && endHour > startHour && (startTimeType == 'am' && endtimeType == 'am')) {
+      return { endAfterStart: true };
     }
     if (endHour < startHour) {
       return { endAfterStart: true };

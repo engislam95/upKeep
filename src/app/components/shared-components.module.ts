@@ -14,8 +14,6 @@ import { HeaderOwnerComponent } from './header-owner/header-owner.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { MultiselectFilterComponent } from './multiselect-filter/multiselect-filter.component';
 import { MapComponent } from './map/map.component';
-
-
 /* -------------------- Angular Material ----------------------- */
 import {
   MatProgressBarModule,
@@ -39,8 +37,7 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     HeaderOwnerComponent,
     AlertsComponent,
-    MapComponent ,
- 
+    MapComponent
   ],
   exports: [
     ReactiveFormsModule,
@@ -54,7 +51,7 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     AlertsComponent,
     MultiselectFilterComponent,
-    MapComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -71,12 +68,11 @@ import { AgmCoreModule } from '@agm/core';
     NgxMaterialTimepickerModule,
     AgmCoreModule,
     AgmCoreModule.forRoot({
-      // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
-      apiKey : 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs' ,
+      apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
       // apiKey: 'AIzaSyChTEPD15j3gS_5Z7ABhWkghruAxH0mmh0',
       libraries: ['geometry', 'places']
     })
   ],
   providers: [LoaderService, ResponseStateService]
 })
-export class SharedComponentsModule { }
+export class SharedComponentsModule {}

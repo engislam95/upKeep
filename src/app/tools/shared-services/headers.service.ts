@@ -4,16 +4,17 @@ import { HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class HeadersService {
   // companySlug = 'upkeep';
-  companySlug;
+  companySlug: any = '';
   // baseAPI = '/upkeep/';
-  baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
-  // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
+  // baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://development.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = '192.168.1.2:8000/api/';
   // baseAPI = 'https://testing.reviews.upkeep.com.sa/upkeep/';
-    // baseAPI = 'https://testupkeep.reviews.upkeep.com.sa/upkeep/';
-  // baseAPI = '/upkeep/';
+  baseAPI = 'https://develop.reviews.upkeep.com.sa/upkeep/';
   // baseAPI = 'https://staging.upkeep.com.sa/upkeep/';
+  // baseAPI = 'https://testupkeep.reviews.upkeep.com.sa/upkeep/';
+  // baseAPI = 'https://develop.frontreviews.upkeep.com.sa/';
+
   // tslint:disable-next-line: no-inferrable-types
   token: string = '';
   // tslint:disable-next-line: no-inferrable-types
@@ -40,7 +41,4 @@ export class HeadersService {
     });
     return header;
   }
-
 }
-
-

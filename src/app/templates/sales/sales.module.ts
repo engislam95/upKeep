@@ -1,13 +1,16 @@
-import { ClassificationsRoutingModule } from './classifications-routing.module';
-import { AddClassificationComponent } from './add-classification/add-classification.component';
+import { SalesRoutingModule } from './sales-routing.module';
+import { AddSaleComponent } from './add-sale/add-sale.component';
+import { AllSalesComponent } from './all-sales/all-sales.component';
 import { NgModule } from '@angular/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { CommonModule } from '@angular/common';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 import { AgmCoreModule } from '@agm/core';
 
 import { ToolsModule } from './../../tools/tools.module';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 import {
   MatInputModule,
   MatTableModule,
@@ -19,20 +22,14 @@ import {
   MatCheckboxModule,
   MatGridListModule
 } from '@angular/material';
-import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-import { AllClassificationsComponent } from './all-classifications/all-classifications.component';
-import { ClassificationDetailsComponent } from './classification-details/classification-details.component';
 
 @NgModule({
-  declarations: [
-    AllClassificationsComponent,
-    AddClassificationComponent,
-    ClassificationDetailsComponent
-  ],
+  declarations: [AllSalesComponent, AddSaleComponent],
   imports: [
     //
     CommonModule,
-    ClassificationsRoutingModule,
+    SalesRoutingModule,
+    ColorPickerModule,
     SharedComponentsModule,
     MatInputModule,
     MatTableModule,
@@ -52,4 +49,4 @@ import { ClassificationDetailsComponent } from './classification-details/classif
     })
   ]
 })
-export class ClassificationsModule {}
+export class SalesModule { }

@@ -32,6 +32,10 @@ const routes: Routes = [
         loadChildren: './templates/orders/orders.module#OrdersModule'
       },
       {
+        path: 'sales',
+        loadChildren: './templates/sales/sales.module#SalesModule'
+      },
+      {
         path: 'clients',
         loadChildren: './templates/clients/clients.module#ClientsModule'
       },
