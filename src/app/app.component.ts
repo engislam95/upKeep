@@ -43,6 +43,22 @@ export class AppComponent implements OnInit {
         );
       // e.returnValue = "Hello! I am an alert box!!";
     });
+
+
+    if(localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner' )
+    {
+
+     this.WebSocketService.listenChannel('company.' + this.currentUser.id)
+
+    //   // this.router.navigate(['/system-off']);
+
+
+    }
+
+
+
+
+
   }
 
   ngOnInit() {
@@ -53,15 +69,7 @@ export class AppComponent implements OnInit {
 
     // console.log(this.WebSocketService.listenChannel("name")) 
 
-    // if(JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner' )
-    // {
-
-    //  this.WebSocketService.listenChannel('company.' + this.currentUser.id)
-
-    // //   // this.router.navigate(['/system-off']);
-
-
-    // }
+  
 
 
   }

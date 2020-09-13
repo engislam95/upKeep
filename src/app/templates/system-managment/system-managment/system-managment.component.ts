@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
 import { LoaderService } from '../../../tools/shared-services/loader.service';
 import { CoreService } from '../../../tools/shared-services/core.service';
+import { HeadersService } from 'src/app/tools/shared-services/headers.service';
 
 @Component({
   selector: 'app-system-managment',
@@ -22,7 +23,7 @@ export class SystemManagmentComponent implements OnInit {
   /* ----------------------- Constructor ------------------------ */
     
    
-    constructor( private responseStateService: ResponseStateService ,private loaderService: LoaderService,  private coreService: CoreService,  )  {
+    constructor( private responseStateService: ResponseStateService ,private loaderService: LoaderService,  private coreService: CoreService, private header: HeadersService )  {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
   /* --------------------- Oninit ------------------------------- */
@@ -59,6 +60,11 @@ export class SystemManagmentComponent implements OnInit {
 
   systemON()
   {
+    setTimeout(() => {
+      
+      console.log(this.header.superURL);
+    }, 2000);
+
     
 
     this.coreService.superPost('owner/setting/active', { "active" : 1 } ).subscribe(

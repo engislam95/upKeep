@@ -19,6 +19,7 @@ export class HeadersService {
   // tslint:disable-next-line: no-inferrable-types
   baseUrl: string = '';
   superURL: string = '';
+
   constructor() {
     if (localStorage.getItem('currentUser')) {
       this.companySlug = JSON.parse(localStorage.getItem('currentUser'))[
@@ -28,8 +29,8 @@ export class HeadersService {
       this.token = currentUser.access_token;
       // this.companySlug = currentUser.company_slug;
       this.baseUrl = this.baseAPI + 'api/company/' + this.companySlug + '/';
-      this.superURL = this.baseAPI + 'api/';
     }
+    this.superURL = this.baseAPI + 'api/';
   }
   getHttpHeader(): HttpHeaders {
     const header = new HttpHeaders({

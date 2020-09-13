@@ -43,7 +43,7 @@ import { WebSocketService } from './tools/shared-services/web-socket.service';
     SidebarTriggerService,
     MessagingService,
     AsyncPipe ,
-    WebSocketService
+    WebSocketService 
   ],
   bootstrap: [AppComponent]
 })
