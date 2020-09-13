@@ -26,8 +26,12 @@ import {
 import { MatSelectModule } from '@angular/material/select';
 /* -------------------- Ngx TimePicker ---------------------- */
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatTabsModule } from '@angular/material/tabs';
 /* --------------- Map ----------------- */
 import { AgmCoreModule } from '@agm/core';
+import { AgmOverlays } from 'agm-overlays';
+import { ColorPickerModule } from 'primeng/colorpicker';
+
 @NgModule({
   declarations: [
     SideMenuComponent,
@@ -41,6 +45,7 @@ import { AgmCoreModule } from '@agm/core';
   ],
   exports: [
     ReactiveFormsModule,
+    MatTabsModule,
     SideMenuMgtComponent,
     SideMenuOwnerComponent,
     HeaderOwnerComponent,
@@ -51,13 +56,16 @@ import { AgmCoreModule } from '@agm/core';
     HeaderComponent,
     AlertsComponent,
     MultiselectFilterComponent,
-    MapComponent
+    MapComponent,
+    ColorPickerModule
   ],
   imports: [
     CommonModule,
     RouterModule,
+    ColorPickerModule,
     ReactiveFormsModule,
     FormsModule,
+    MatTabsModule,
     MatSelectModule,
     MatProgressBarModule,
     MatCheckboxModule,
@@ -67,9 +75,11 @@ import { AgmCoreModule } from '@agm/core';
     MatAutocompleteModule,
     NgxMaterialTimepickerModule,
     AgmCoreModule,
+    AgmOverlays,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
+      // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
       // apiKey: 'AIzaSyChTEPD15j3gS_5Z7ABhWkghruAxH0mmh0',
+      apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
       libraries: ['geometry', 'places']
     })
   ],
