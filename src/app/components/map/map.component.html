@@ -298,10 +298,10 @@
                             class="selectTechnical"
                             value="{{ sortedArray[0].technical.id }}"
                           />
-                          {{ searchingLoaderCog ? bestTechnicalName : '' }}
+                          {{ searchingLoaderCog ? bestTechnicalName : "" }}
                           <span
                             >{{
-                              searchingLoaderCog ? bestTechnicalArriveTime : ''
+                              searchingLoaderCog ? bestTechnicalArriveTime : ""
                             }}
                             د
                           </span>
@@ -484,16 +484,16 @@
                           <span class="timeTitleSpan">من : </span
                           >{{
                             order.fromH > 12
-                              ? order.fromH - 12 + ':' + order.fromM + 'م'
-                              : order.fromH + ':' + order.fromM + 'ص'
+                              ? order.fromH - 12 + ":" + order.fromM + "م"
+                              : order.fromH + ":" + order.fromM + "ص"
                           }}
                         </ng-container>
                         <ng-container>
                           <span class="timeTitleSpan"> الي : </span
                           >{{
                             order.toH > 12
-                              ? order.toH - 12 + ':' + order.toM + 'م'
-                              : order.toH + ':' + order.toM + 'ص'
+                              ? order.toH - 12 + ":" + order.toM + "م"
+                              : order.toH + ":" + order.toM + "ص"
                           }}
                         </ng-container>
                       </li>
@@ -534,16 +534,16 @@
                           <span class="timeTitleSpan">من : </span
                           >{{
                             order.fromH > 12
-                              ? order.fromH - 12 + ':' + order.fromM + 'م'
-                              : order.fromH + ':' + order.fromM + 'ص'
+                              ? order.fromH - 12 + ":" + order.fromM + "م"
+                              : order.fromH + ":" + order.fromM + "ص"
                           }}
                         </ng-container>
                         <ng-container>
                           <span class="timeTitleSpan"> الي : </span
                           >{{
                             order.toH > 12
-                              ? order.toH - 12 + ':' + order.toM + 'م'
-                              : order.toH + ':' + order.toM + 'ص'
+                              ? order.toH - 12 + ":" + order.toM + "م"
+                              : order.toH + ":" + order.toM + "ص"
                           }}
                         </ng-container>
                       </li>
@@ -620,7 +620,7 @@
     >
       <h3>
         تفاصيل الطلب الخاص بالعميل
-        {{ updateSaleOrder.client ? updateSaleOrder.client.user.name : '' }}
+        {{ updateSaleOrder.client ? updateSaleOrder.client.user.name : "" }}
       </h3>
       <i class="fas fa-times-circle" (click)="showSale = false"></i>
     </header>
@@ -670,7 +670,7 @@
               تغيير اللون
             </button>
           </mat-tab>
-          <mat-tab label="تحويل الطلب">
+          <mat-tab label="تحويل الطلب" *ngIf="updateSaleOrder.technician_id">
             <div
               class="form_field full_width"
               style="margin: 20px 0; padding: 15px;"
