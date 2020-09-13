@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreService } from './../../../tools/shared-services/core.service';
+import { WebSocketService } from '../../../tools/shared-services/web-socket.service' ;
 
 @Component({
   selector: 'app-home-page',
@@ -22,7 +23,7 @@ export class HomePageComponent implements OnInit {
   resoureces: any = [];
   receipts: any = [];
   services: any = [];
-  order_add: boolean = false;
+  order_add: boolean = false; 
   order_all: boolean = false;
   client_add: boolean = false;
   client_all: boolean = false;
@@ -36,9 +37,10 @@ export class HomePageComponent implements OnInit {
   receipt_all: boolean = false;
   service_all: boolean = false;
   /* ------------------ Constructor ----------------------- */
-  constructor(private coreService: CoreService) {
+  constructor(private coreService: CoreService , private WebSocketService : WebSocketService) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
+    if(this.user) {
     this.orders = this.user.modules.orders;
     if (this.orders) {
       this.orders.map(ele => {
@@ -127,6 +129,17 @@ export class HomePageComponent implements OnInit {
         }
       });
     }
+  }
+
+
+    if(localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner' )
+    {
+
+     this.WebSocketService.listenChannel('company.' + this.user.id)
+
+
+    }
+
   }
   /* ------------------------- Oninit ------------------------- */
   ngOnInit() {

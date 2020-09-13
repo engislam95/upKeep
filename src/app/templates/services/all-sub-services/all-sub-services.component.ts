@@ -61,6 +61,8 @@ export class AllInnerServicesComponent implements OnInit {
   detailsID: any = '';
   detailsMode: boolean = false;
   counts: any = '';
+  totalPage: any = '';
+  current_page: any = '';
   /* ---------------------- Filter Form ------------------------ */
   filterForm = new FormGroup({
     filterName: new FormControl(),
@@ -278,6 +280,15 @@ export class AllInnerServicesComponent implements OnInit {
     this.pageId = 1;
     this.getAllData(this.pageId);
   }
+  changePagination(event) {
+    this.getAllData(event.value);
+  }
+  nextPage(pageNum) {
+    this.getAllData(+pageNum + 1);
+  }
+  prevPage(pageNum) {
+    this.getAllData(+pageNum - 1);
+  }
   /* ----------------------------- Get All Data --------------------- */
   getAllData(pageId) {
     this.loaderService.startLoading();
@@ -291,6 +302,8 @@ export class AllInnerServicesComponent implements OnInit {
       .subscribe((getTechniciansResponse: any) => {
         console.log(getTechniciansResponse);
         this.dataSource = getTechniciansResponse.data.data;
+        this.totalPage = getTechniciansResponse.data.last_page;
+        this.current_page = getTechniciansResponse.data.current_page;
         if (this.dataSource.length === 0 && this.pageId === 1) {
         }
         if (this.dataSource.length === 0 && this.pageId > 1) {

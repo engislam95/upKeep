@@ -7,7 +7,7 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
 import { OwnerRoutingModule } from './owner-routing.module';
 
 @NgModule({
-  declarations: [OwnerComponent],
+  declarations: [OwnerComponent ],
   imports: [
     CommonModule,
     OwnerRoutingModule,

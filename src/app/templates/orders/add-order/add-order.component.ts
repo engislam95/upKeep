@@ -134,6 +134,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   minutes: any = [];
   hours: any = [];
   technicians: any = [];
+  client_city_id: any = '';
   /* -------------------- Order Form ------------------------ */
   ordersForm = new FormGroup(
     {
@@ -611,7 +612,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       this.coreService
         .getMethod('orders/technicians', {
           service_id: mainServiceId,
-          order_date: orderDate
+          order_date: orderDate,
+          city_id: this.client_city_id
         })
         .subscribe((orderTechnicians: any) => {
           this.technicians = orderTechnicians.data;
@@ -654,12 +656,17 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     if (typeof value === 'object') {
       console.log('Client');
       this.selectClient = true;
+      console.log(value);
+
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
+
         this.selectedClientLocationsArray.forEach(element => {
+          console.log('Location ID ->', element);
           if (element.default) {
             this.selectedLocationId = element.id;
+            this.client_city_id = element.city_id;
           }
         });
       }
@@ -779,7 +786,9 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       );
   }
   /* ------------------- Update Address ------------------- */
-  onSelectAddress(locationId, i) {
+  onSelectAddress(locationId, i, locations) {
+    console.log(locations);
+    this.client_city_id = locations.city_id;
     this.selectedLocationId = locationId;
     this.showMapPopup = false;
     this.selectSubLocations = true;

@@ -1,5 +1,8 @@
 import { Injectable, OnInit } from "@angular/core";
 import Pusher from "pusher-js";
+// import Pusher from 'pusher-js/with-encryption';
+import { Router } from '@angular/router';
+
 
 @Injectable()
 export class WebSocketService {
@@ -7,39 +10,68 @@ export class WebSocketService {
 
   pusher: any = "";
 
-  constructor() {
-    this.pusher = new Pusher("25c1e6831c9ab31ebd27", {
+  constructor( private router: Router) {
+    this.pusher = new Pusher("2140fece47d1d0c40378", {
       cluster: "eu",
-      auth: {
-        params: { foo: "bar" },
-        headers: { baz: "boo" }
-      }
+      // auth: {
+      //   params: { foo: "bar" },
+      //   headers: { baz: "boo" }
+      // }
     });
+
   }
 
   // Listen To Channels and Subscribe them
-  listenChannel(names) {
-    // Loop for channels Names
-    for (let i = 0; i < names.length; i++) {
-      // Subscribe channels
-      this.pusher.subscribe("private-" + names[i]);
+  listenChannel(name) {
 
-      Pusher.log = msg => {
-        console.log(msg);
-      };
+    let newRouter = this.router ;
 
-      this.pusher.connection.bind("connected", this.connectedExecute());
-    }
-    this.pusher.allChannels().forEach(channel => {
-      console.log("Subscribe: ", channel.name);
+    var channel = this.pusher.subscribe(name);
+    this.pusher.connection.bind("connected", this.connectedExecute());
+
+
+    channel.bind('ActiveEvent', function (data, metadata) {
+      console.log(
+        "I received", data,
+      );
+
+      if(data.active == 1)
+      {
+        localStorage.setItem('active', '1')
+        newRouter.navigate(['/']);
+
+      }
+      else if(data.active == 0)
+      {
+        localStorage.setItem('active', '0')
+        newRouter.navigate(['/system-off'])
+        localStorage.removeItem('currentUser')
+
+
+      }
+
+    
     });
+
+    Pusher.log = msg => {
+      console.log(msg);
+    };
+
+
+
   }
+
+
+
+
 
   // Execute Function after connected
   connectedExecute() {
     /*
       Your Code 
     */
+   console.log("successfully: ");
+
   }
 
   // Unsubscribe channels
@@ -64,4 +96,9 @@ export class WebSocketService {
       Your Code 
       */
   }
+
+
+
+
+
 }

@@ -496,7 +496,7 @@ $gray: #95989a;
     }
 
     p span {
-      width: 170px;
+      width: 190px;
       height: 31px;
       display: inline-block;
       position: relative;
@@ -697,7 +697,7 @@ $gray: #95989a;
   padding: 6px 3px;
   margin: 15px 20px;
   border-radius: 4px;
-  width: 165px;
+  width: 170px;
   color: #fff;
   display: inline-block;
   @include down_box_shadow();
@@ -1157,7 +1157,7 @@ $gray: #95989a;
 .detailsContainer {
   background: #fbfbff !important;
   padding-top: 0 !important;
-  margin-top: 111px;
+  // margin-top: 111px;
 
   h3 {
     text-align: center;
@@ -2527,9 +2527,9 @@ button:not(.activeState):disabled {
     top: 6px;
   }
 
-  .mat-form-field {
-    width: calc(100% - 70px) !important;
-  }
+  // .mat-form-field {
+  //   width: calc(100% - 70px) !important;
+  // }
 }
 
 .overlay {
@@ -3725,7 +3725,7 @@ $gray: #95989a;
     }
 
     p span {
-      width: 170px;
+      width: 190px;
       height: 31px;
       display: inline-block;
       position: relative;
@@ -3894,6 +3894,10 @@ $gray: #95989a;
   background: #0c75ca !important;
 }
 
+.status_47 {
+  background: #9d0984 !important;
+}
+
 .statusBadge_19 {
   background: #eb9f0c38 !important;
 }
@@ -3922,7 +3926,7 @@ $gray: #95989a;
   padding: 6px 3px;
   margin: 15px 20px;
   border-radius: 4px;
-  width: 165px;
+  width: 170px;
   color: #fff;
   display: inline-block;
   @include down_box_shadow();
@@ -4382,7 +4386,7 @@ $gray: #95989a;
 .detailsContainer {
   background: #fbfbff !important;
   padding-top: 0 !important;
-  margin-top: 111px;
+  // margin-top: 111px;
 
   h3 {
     text-align: center;
@@ -5743,9 +5747,9 @@ button:not(.activeState):disabled {
     top: 6px;
   }
 
-  .mat-form-field {
-    width: calc(100% - 70px) !important;
-  }
+  // .mat-form-field {
+  //   width: calc(100% - 70px) !important;
+  // }
 }
 
 .overlay {
@@ -6461,6 +6465,19 @@ a.ck.ck-button {
   #display_table tr.mat-row:nth-child(even) {
     background: #F1F1F1;
   }
+
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+
+    height: 55px;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1.3em 0 1em 0;
+  }
+
+  .filterInput {
+    padding-top: 2px !important;
+  }
 }
 
 
@@ -6478,4 +6495,94 @@ a.ck.ck-button {
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
   background-color: #FFCC00;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
+button:disabled {
+  background: #DDD !important
+}
+
+.disabled {
+  background: #ddd !important;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: 0;
+  color: #000;
+  top: -66px;
+
+}
+
+.gm-style .gm-style-iw-t::after {
+  background: #333;
+  box-shadow: -2px 2px 2px 0 rgba(178, 178, 178, .4);
+  content: "";
+  height: 15px;
+  left: 0;
+  position: absolute;
+  top: -70px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  width: 15px;
+}
+
+.gm-style .gm-style-iw-d {
+  overflow: auto !important;
+}
+
+.add-sale {
+  .ck.ck-label {
+    display: none !important;
+  }
+
+  .mat-checkbox label {
+    border: 0 !important;
+  }
+
+  .inputWithButton #button {
+    position: relative;
+    width: 44px;
+    height: 48px;
+    border-radius: 5px;
+    background: #13984D;
+    color: #fff;
+    margin-right: 10px;
+    border: 1px solid rgba(112, 112, 112, 0.27);
+    top: 15px;
+
+    i {
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+
+  .ui-colorpicker-preview {
+    width: 11em;
+    height: 43px;
+    cursor: pointer;
+    margin-right: 20px !important;
+  }
+}
+
+#map {
+  .ui-colorpicker-preview {
+    margin-right: 10px !important;
+    width: 120px !important;
+  }
+
+  .mat-checkbox-label {
+    margin-right: 11px;
+  }
+
 }

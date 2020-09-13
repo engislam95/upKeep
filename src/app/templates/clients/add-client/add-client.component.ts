@@ -108,6 +108,8 @@ export class AddClientComponent implements OnInit {
     ]),
     email: new FormControl('', [
       Validators.email,
+      Validators.required,
+
       Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
     ]),
     notes: new FormControl('', Validators.required),
@@ -289,7 +291,9 @@ export class AddClientComponent implements OnInit {
         id: this.updateMode ? this.updatedClientData.id : ''
       })
       .subscribe(
-        () => {
+        type => {
+          console.log(type);
+
           if (type === 'mobile') {
             this.mobileReserved = false;
             this.mobileCheckLoaded = true;
@@ -298,7 +302,9 @@ export class AddClientComponent implements OnInit {
             this.emailCheckLoaded = true;
           }
         },
-        () => {
+        err => {
+          console.log(err);
+
           if (type === 'mobile') {
             this.mobileReserved = true;
             this.mobileCheckLoaded = true;
@@ -528,7 +534,7 @@ export class AddClientComponent implements OnInit {
     let fakeUrl = '';
 
     let secondFake =
-      "https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894";
+      "`https://www.google.com/maps/place/24%C2%B040'45.1%22N+46%C2%B042'03.2%22E/@24.6792014,46.6987053,17z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d24.6792014!4d46.700894`";
 
     console.log(url);
 
@@ -538,6 +544,8 @@ export class AddClientComponent implements OnInit {
 
     if (match) {
       console.log(url);
+
+      this.passPopup = false;
 
       if (url.includes('@')) {
         // var newLating = url.split('@')[1].split(',')
@@ -557,6 +565,14 @@ export class AddClientComponent implements OnInit {
       // var long = url.split('=').split(',')[1]
 
       if (url.includes('@')) {
+        console.log(newLating[1].split('?'));
+        if (newLating[1].includes('?')) {
+          let newLog = newLating[1].split('?')[0];
+          console.log(newLog);
+          newLating[1] = newLog;
+          console.log(newLating[1]);
+        }
+
         this.clientsForm.controls.lat.setValue(+newLating[0]);
         this.clientsForm.controls.long.setValue(+newLating[1]);
       } else {
@@ -627,7 +643,7 @@ export class AddClientComponent implements OnInit {
                 citiesObj: newCity
               });
 
-              this.passPopup = true;
+              // this.passPopup = true;
 
               // this.clientsForm.controls.citiesObj.value.id = newCity
 
@@ -635,6 +651,10 @@ export class AddClientComponent implements OnInit {
 
               // this.clientsForm.controls.city_id.setValue(newCity);
               console.log(this.clientsForm);
+            }, 2000);
+
+            setTimeout(() => {
+              this.passPopup = true;
             }, 2000);
           },
           error => {
@@ -674,6 +694,8 @@ export class AddClientComponent implements OnInit {
   searchWithLatlng() {
     this.startLoading();
     let newCity;
+
+    this.passPopup = false;
 
     console.log(this.clientsForm.value);
 
@@ -754,9 +776,13 @@ export class AddClientComponent implements OnInit {
               citiesObj: newCity
             });
 
-            this.passPopup = true;
+            // this.passPopup = true;
 
             console.log(this.clientsForm);
+          }, 2000);
+
+          setTimeout(() => {
+            this.passPopup = true;
           }, 2000);
         },
         error => {
@@ -807,6 +833,7 @@ export class AddClientComponent implements OnInit {
 
     let newCity;
 
+    this.passPopup = false;
     // /validate-map/4122
 
     this.coreService
@@ -872,9 +899,13 @@ export class AddClientComponent implements OnInit {
               citiesObj: newCity
             });
 
-            this.passPopup = true;
+            // this.passPopup = true;
 
             console.log(this.clientsForm);
+          }, 2000);
+
+          setTimeout(() => {
+            this.passPopup = true;
           }, 2000);
         },
         error => {
@@ -945,43 +976,47 @@ export class AddClientComponent implements OnInit {
     this.airConditionerDisplayArray = data.air_conditioner;
     this.mobileNumber = data.mobile;
     this.clientsForm.patchValue({
-      name: data.name,
-      gender: data.gender,
+      name: data.name ? data.name : '',
+      gender: data.gender ? data.gender : '',
       genderObj: data.gender_object ? data.gender_object : '',
-      countriesObj: data.city.country,
-      citiesObj: data.city,
-      city_id: data.city_id,
-      mobile: +(this.countryPhoneKey + data.mobile),
-      mobileKey: data.mobile,
+      countriesObj: data.city ? data.city.country : '',
+      citiesObj: data.city ? data.city : '',
+      city_id: data.city_id ? data.city_id : '',
+      mobile: +(this.countryPhoneKey + data.mobile ? data.mobile : ''),
+      mobileKey: data.mobile ? data.mobile : '',
       email: data.email ? data.email : '',
-      zone: data.zone,
-      address: data.address,
+      zone: data.zone ? data.zone : '',
+      address: data.address ? data.address : '',
 
-      notes: data.notes,
-      locations_address: data.locations[0].address,
-      locations_notes: data.locations[0].notes,
-      locations_city: data.locations[0].city,
-      locations_area: data.locations[0].area,
+      notes: data.notes ? data.notes : '',
+      locations_address: data.locations[0] ? data.locations[0].address : '',
+      locations_notes: data.locations[0] ? data.locations[0].notes : '',
+      locations_city: data.locations[0] ? data.locations[0].city : '',
+      locations_area: data.locations[0] ? data.locations[0].area : '',
 
-      client_type: data.client_type,
-      clientTypesObj: data.client_type_object,
-      lat: data.lat,
-      long: data.long,
-      latObj: data.lat,
-      longObj: data.long,
-      home_type: data.home_type,
-      homeTypesObj: data.home_type_object,
-      home_contract_type: data.home_contract_type,
-      homeContractTypesObj: data.home_contract_type_object,
-      camera_number: data.camera_number,
-      kitchen_number: data.kitchen_number,
-      bathroom_number: data.bathroom_number,
-      room_number: data.room_number,
-      floor_number: data.floor_number,
-      area: data.area,
-      air_conditioner: data.air_conditioner,
-      airConditionerTypesObj: data.air_conditioner,
-      active: data.active
+      client_type: data.client_type ? data.client_type : '',
+      clientTypesObj: data.client_type_object ? data.client_type_object : '',
+      lat: data.lat ? data.lat : 0,
+      long: data.long ? data.long : 0,
+      latObj: data.lat ? data.lat : 0,
+      longObj: data.long ? data.long : 0,
+      home_type: data.home_type ? data.home_type : '',
+      homeTypesObj: data.home_type_object ? data.home_type_object : '',
+      home_contract_type: data.home_contract_type
+        ? data.home_contract_type
+        : '',
+      homeContractTypesObj: data.home_contract_type_object
+        ? data.home_contract_type_object
+        : '',
+      camera_number: data.camera_number ? data.camera_number : '',
+      kitchen_number: data.kitchen_number ? data.kitchen_number : '',
+      bathroom_number: data.bathroom_number ? data.bathroom_number : '',
+      room_number: data.room_number ? data.room_number : '',
+      floor_number: data.floor_number ? data.floor_number : '',
+      area: data.area ? data.area : '',
+      air_conditioner: data.air_conditioner ? data.air_conditioner : '',
+      airConditionerTypesObj: data.air_conditioner ? data.air_conditioner : '',
+      active: data.active ? data.active : ''
     });
 
     console.log(this.clientsForm);

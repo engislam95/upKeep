@@ -1,4 +1,5 @@
-<div class="main_page">
+<div class="main_page" id="map">
+  <app-alerts></app-alerts>
   <app-side-menu
     *ngIf="
       (!addOrderMode &&
@@ -429,7 +430,7 @@
             </agm-marker> -->
 
             <ng-container
-              *ngIf="citiesLating.length && url !== '/locations-managment'"
+              *ngIf="citiesLating.length && url == '/orders/orders-map'"
             >
               <agm-marker
                 *ngFor="let city of citiesLating"
@@ -507,6 +508,49 @@
                   </agm-info-window>
                 </div>
               </agm-marker>
+              <agm-marker
+                [agmFitBounds]="true"
+                *ngFor="let order of orders"
+                [latitude]="order.location.lat"
+                [longitude]="order.location.long"
+                class="markerTec"
+                [iconUrl]="{
+                  url: ''
+                }"
+                style="opacity: 0;"
+              >
+                <div class="infoStyle2" id="test2">
+                  <agm-info-window
+                    #infoWindoww
+                    [disableAutoPan]="false"
+                    [isOpen]="true"
+                    class="infoTime"
+                    style="background: #333 !important"
+                  >
+                    <ul style="background: #333; color: #fff;">
+                      <li>
+                        وقت تنفيذ الطلبية :
+                        <ng-container>
+                          <span class="timeTitleSpan">من : </span
+                          >{{
+                            order.fromH > 12
+                              ? order.fromH - 12 + ':' + order.fromM + 'م'
+                              : order.fromH + ':' + order.fromM + 'ص'
+                          }}
+                        </ng-container>
+                        <ng-container>
+                          <span class="timeTitleSpan"> الي : </span
+                          >{{
+                            order.toH > 12
+                              ? order.toH - 12 + ':' + order.toM + 'م'
+                              : order.toH + ':' + order.toM + 'ص'
+                          }}
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </agm-info-window>
+                </div>
+              </agm-marker>
             </ng-container>
             <agm-marker
               *ngIf="ordersLoaded && addOrderMode"
@@ -524,23 +568,121 @@
               [longitude]="orderDetailsOrgins.lng"
             >
             </agm-marker>
-
             <agm-marker
-              *ngIf="clientDetailsPageMode || addOrderMapMode"
+              *ngIf="citiesLating.length && url == '/sales/add-sale'"
               [markerDraggable]="true"
               (dragEnd)="markerDragEnd($event)"
               [agmFitBounds]="true"
               [latitude]="clientDetailsOrgins.lat"
               [longitude]="clientDetailsOrgins.lng"
-              [iconUrl]="{
-                url: companyPin,
-                scaledSize: { height: 50, width: 50 }
-              }"
+              iconUrl="./../../../../assets/img/map-marker-check.png"
             >
+            </agm-marker>
+            <agm-marker
+              [agmFitBounds]="true"
+              *ngFor="let sale of salesOrders"
+              [latitude]="sale.location.lat"
+              [longitude]="sale.location.long"
+              (markerClick)="showSalesPopup(sale)"
+              class="markerTec"
+              [iconUrl]="{
+                url: ''
+              }"
+              style="opacity: 0;"
+            >
+            </agm-marker>
+            <agm-marker
+              *ngFor="let sale of salesOrders"
+              [latitude]="sale.location.lat"
+              (markerClick)="showSalesPopup(sale)"
+              [longitude]="sale.location.long"
+            >
+              <agm-overlay
+                *ngFor="let sale of salesOrders"
+                [latitude]="sale.location.lat"
+                [longitude]="sale.location.long"
+              >
+                <div
+                  class="pin"
+                  [ngStyle]="{ background: sale['label-color'] }"
+                ></div>
+                <div class="pulse"></div>
+              </agm-overlay>
             </agm-marker>
           </agm-map>
         </div>
       </div>
+    </div>
+  </div>
+  <div *ngIf="showSale" class="salePopup">
+    <header
+      style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #333; color: #fff;"
+    >
+      <h3>
+        تفاصيل الطلب الخاص بالعميل
+        {{ updateSaleOrder.client ? updateSaleOrder.client.user.name : '' }}
+      </h3>
+      <i class="fas fa-times-circle" (click)="showSale = false"></i>
+    </header>
+    <div class="sale-details">
+      <form [formGroup]="salesForm">
+        <mat-tab-group
+          mat-align-tabs="start"
+          (selectedTabChange)="routerToEdit($event)"
+        >
+          <mat-tab label="تغيير اللون">
+            <div
+              class="form_field"
+              style="margin: 20px 0; padding: 20px 0; height: 130px;"
+            >
+              <mat-form-field
+                style="width: 58%;"
+                appearance="outline"
+                dir="rtl"
+              >
+                <input
+                  matInput
+                  placeholder=""
+                  [value]="color"
+                  autocomplete="off"
+                  id="name"
+                  (keyup)="changeColor($event.target.value)"
+                />
+              </mat-form-field>
+              <p-colorPicker
+                class="color-system"
+                [(ngModel)]="color"
+                formControlName="color"
+              ></p-colorPicker>
+            </div>
+            <button
+              type="button"
+              (click)="updateColor()"
+              style="display: block; background: #f6a811;
+            color: #242a2d;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+            border-radius: 2px;
+            padding: 8px 30px;
+            margin-bottom: 15px;
+            position: relative;
+            font-family: Arabic gess Bold;"
+            >
+              تغيير اللون
+            </button>
+          </mat-tab>
+          <mat-tab label="تحويل الطلب">
+            <div
+              class="form_field full_width"
+              style="margin: 20px 0; padding: 15px;"
+            >
+              <mat-checkbox (change)="confrimSale($event.checked)"
+                >تحويل الطلب الى التنفيذ
+              </mat-checkbox>
+            </div>
+          </mat-tab>
+          <mat-tab label="تعديل الطلب"></mat-tab>
+        </mat-tab-group>
+      </form>
     </div>
   </div>
 </div>

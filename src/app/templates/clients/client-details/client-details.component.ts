@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoreService } from './../../../tools/shared-services/core.service';
 import { LoaderService } from './../../../tools/shared-services/loader.service';
 import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl , Validators } from '@angular/forms';
 import { fade } from './../../../tools/shared_animations/fade';
 import { element } from '@angular/core/src/render3';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
@@ -12,15 +12,19 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 // import { MatGridListModule } from '@angular/material/grid-list';
 // NOTE
 export interface PeriodicElement {
+
   mobile: string;
   id: number;
   name: string;
-  number_details: string;
+  number_details:string;
+
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, mobile: ' +966562636435 ', name: 'خالو', number_details: '' },
-  { id: 2, mobile: ' +966562636435 ', name: 'Ramy Zoheir', number_details: '' }
+  { id: 1, mobile: ' +966562636435 ', name: 'خالو', number_details:''},
+  { id: 2, mobile: ' +966562636435 ', name: 'Ramy Zoheir', number_details:''}
+
+
 ];
 @Component({
   selector: 'app-client-details',
@@ -29,12 +33,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
   animations: [fade]
 })
 export class ClientDetailsComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'number',
-    'number_private_name',
-    'number_details'
-  ];
+
+  displayedColumns: string[] = ['id', 'number', 'number_private_name','number_details'];
   dataSource = ELEMENT_DATA;
   //
   // ─── START UPDATED MAP ──────────────────────────────────────────────────────────
@@ -48,14 +48,15 @@ export class ClientDetailsComponent implements OnInit {
   });
 
   phonesForm = new FormGroup({
-    mobile: new FormControl('', [
+    mobile: new FormControl('',[
       Validators.required,
       Validators.pattern('[0-9]* || [٠-٩]*'),
       Validators.minLength(9),
       Validators.maxLength(9)
     ]),
-    name: new FormControl('')
-  });
+    name : new FormControl(''),
+  })
+
 
   deleteClicked = false;
 
@@ -63,8 +64,8 @@ export class ClientDetailsComponent implements OnInit {
   // ────────────────────────────────────────────────────────── END UPDATED MAP ─────
   //
   addNewAddressModeStatus = false;
-  errorMessage: string = 'هذا الرقم غير صحيح او موجود بالفعل ';
-  setError = false;
+  errorMessage  : string = 'هذا الرقم غير صحيح او موجود بالفعل ' ; 
+  setError  = false ;
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
@@ -79,11 +80,11 @@ export class ClientDetailsComponent implements OnInit {
 
   // End Client Location
   showMapPopup = false;
-  showStopPopup = false;
+  showStopPopup = false ;
 
-  currentUserId = JSON.parse(localStorage.getItem('currentUser')).id;
+  currentUserId = JSON.parse(localStorage.getItem('currentUser')).id 
 
-  phoneNumbers: [] = [];
+  phoneNumbers:[] = []
   mobileReserved: boolean = false;
 
   // locations = [
@@ -111,49 +112,50 @@ export class ClientDetailsComponent implements OnInit {
   // ];
 
   newOrginsArray;
-  locationIndex = 0;
+  locationIndex = 0;  
   updatedLocationData;
 
-  updatePhone = false;
+  updatePhone = false ;
 
   //  TODO
   clientName;
-  status;
-  active;
-  reports;
+  status ;
+  active ;
+  reports ;
 
-  orders_count;
-  total_payments;
-  total_services;
-  total_spare;
-  order_date;
-  not_completed;
+  orders_count ;
+  total_payments ;
+  total_services ;
+  total_spare ;
+  order_date ; 
+  not_completed ;
 
-  clientType;
-  created_at;
-  created_by;
-  cityName;
-  updated_at;
+  clientType ;
+  created_at ;
+  created_by ;
+  cityName ; 
+  updated_at ;
   showDeletePopup = false;
   deletedClientName: string;
 
-  lat;
-  long;
+
+  lat ; 
+  long ;
   deletedClientId: number;
 
-  clientAddress;
-  clientNotes;
+  clientAddress; 
+  clientNotes  ;
   clientMobileNumber;
   clientCityId;
   locations = [];
   updateAdressMode = false;
   latX;
-  locations_count;
+  locations_count ;
   longX;
   editedAdress;
   clientStatusActivation = 0;
-  fetchedPhone;
-  defaultPhones;
+  fetchedPhone ;
+  defaultPhones ;
   // NOTE
   submitted;
   responseState;
@@ -182,7 +184,7 @@ export class ClientDetailsComponent implements OnInit {
   changeByCopePast;
 
   toggle = true;
-  above_url;
+  above_url ;
   updateedLocationsId;
   // NOTE
   //
@@ -197,18 +199,24 @@ export class ClientDetailsComponent implements OnInit {
     private router: Router,
 
     private coreService: CoreService
-  ) {}
+    
+  ) {
+
+    
+  }
 
   //
   // ─── START ONINIT ────────────────────────────────────────────────
   //
+
+
 
   ngOnInit() {
     // Get Client Id
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.clientId = queryParams.clientId;
       this.getClientDetails(this.clientId);
-      console.log(this.phoneNumbers);
+      console.log(this.phoneNumbers)
     });
 
     // Get Client Id
@@ -233,7 +241,9 @@ export class ClientDetailsComponent implements OnInit {
     this.coreService
       .getMethod('clients/' + clientId, {})
       .subscribe((clientDetails: any) => {
-        console.log(clientDetails);
+
+
+        console.log(clientDetails )
         // Start LOADING Loading
         this.endLoading();
         // End LOADING Loading
@@ -241,52 +251,56 @@ export class ClientDetailsComponent implements OnInit {
         this.clientLong = this.clientDetails.long;
         this.clientLat = this.clientDetails.lat;
 
-        this.active = this.clientDetails.active;
+        this.active = this.clientDetails.active ;
 
-        this.orders_count = this.clientDetails.reports.orders_count;
+        this.orders_count = this.clientDetails.reports.orders_count ;
 
-        this.total_payments = this.clientDetails.reports.total_payments;
+        this.total_payments = this.clientDetails.reports.total_payments ;
+        
+        this.total_services = this.clientDetails.reports.total_services ;
+        this.locations_count = this.clientDetails.reports.locations_count ;
+        this.total_spare = this.clientDetails.reports.total_spare ;
 
-        this.total_services = this.clientDetails.reports.total_services;
-        this.locations_count = this.clientDetails.reports.locations_count;
-        this.total_spare = this.clientDetails.reports.total_spare;
+        this.order_date = this.clientDetails.orders.order_date ;
 
-        this.order_date = this.clientDetails.orders.order_date;
+        this.not_completed = this.clientDetails.reports.not_completed ;
 
-        this.not_completed = this.clientDetails.reports.not_completed;
+        this.phoneNumbers = this.clientDetails.mobiles
 
-        this.phoneNumbers = this.clientDetails.mobiles;
-
-        this.status = this.clientDetails.status;
-        this.clientType = this.clientDetails.client_type;
-        this.created_at = this.clientDetails.created_at;
-        this.created_by = this.clientDetails.created_by;
-        this.cityName = this.clientDetails.city.name;
-        this.clientNotes = this.clientDetails.notes;
+        this.status = this.clientDetails.status ; 
+        this.clientType = this.clientDetails.client_type
+        this.created_at = this.clientDetails.created_at
+        this.created_by = this.clientDetails.created_by 
+        this.cityName = this.clientDetails.city.name ;
+        this.clientNotes = this.clientDetails.notes ;
         // this.lat = clientDetails.lat  ;
         // this.long = clientDetails.long ;
 
-        this.updated_at = this.clientDetails.locations[0].updated_at;
+        this.updated_at = this.clientDetails.locations[0].updated_at
 
-        if (this.clientDetails.locations[0].address != null) {
-          this.clientAddress = this.clientDetails.locations[0].address.slice(
-            0,
-            20
-          );
+        if(this.clientDetails.locations[0].address != null )
+        {
+
+          this.clientAddress = this.clientDetails.locations[0].address.slice(0,20) ; 
         }
         // TODO
         this.clientName = this.clientDetails.name;
 
-        console.log(this.clientDetails.name);
-        console.log(this.clientName);
 
-        this.lat = this.clientDetails.locations[0].lat;
-        this.long = this.clientDetails.locations[0].long;
+        console.log(this.clientDetails.name)
+        console.log(this.clientName)
 
-        console.log(this.lat);
-        console.log(this.long);
 
-        this.above_url = this.clientDetails.locations[0].aboveUrl;
+        this.lat = this.clientDetails.locations[0].lat  ;
+        this.long = this.clientDetails.locations[0].long  ;
+
+        console.log(this.lat)
+        console.log(this.long)
+
+
+        this.above_url = this.clientDetails.locations[0].aboveUrl ; 
+
+
 
         // console.log(this.clientName);
         this.clientMobileNumber = this.clientDetails.mobile;
@@ -308,6 +322,8 @@ export class ClientDetailsComponent implements OnInit {
   //
   // ──────────────────────────────────── END GET CLIENT DETAILS ─────
   //
+
+  
 
   updateLocation(location, index) {
     this.updatedLocationData = this.clientDetails;
@@ -406,102 +422,125 @@ export class ClientDetailsComponent implements OnInit {
     });
   }
 
-  // add phone number
-  addPhoneNumber() {
-    if (this.updatePhone) {
-      console.log(this.fetchedPhone);
-      this.coreService
-        .updateMethod('clients/mobile/' + this.fetchedPhone.id, {
-          name: this.phonesForm.controls.name.value,
-          mobile: +(966 + this.phonesForm.controls.mobile.value)
-        })
-        .subscribe(
-          (clientDetails: any) => {
-            console.log(clientDetails);
-            this.setError = false;
+// add phone number 
+  addPhoneNumber()
+  {
+    if(this.updatePhone)
+    {
 
-            this.phonesForm.controls.name.setValue('');
-            this.phonesForm.controls.mobile.setValue('');
+       console.log(this.fetchedPhone)
+       this.coreService
+      .updateMethod('clients/mobile/' + this.fetchedPhone.id, {
+        name : this.phonesForm.controls.name.value ,
+        mobile :  +(966 + this.phonesForm.controls.mobile.value)
+      })
+      .subscribe((clientDetails: any) => {
+        console.log(clientDetails )
+        this.setError = false ;      
 
-            this.updatePhone = false;
 
-            this.endLoading();
+        this.phonesForm.controls.name.setValue('')
+        this.phonesForm.controls.mobile.setValue('')
 
-            this.getClientDetails(this.clientId);
+        this.updatePhone = false  ;
 
-            this.showSuccess('تم تعديل  رقم التليفون بنجاح');
-          },
-          error => {
-            if (error.error.errors) {
-              this.showErrors(error.error.errors);
-              this.setError = true;
-            } else {
-              this.showErrors(error.error.message);
-            }
-          }
-        );
-    } else {
+
+        this.endLoading();
+
+        this.getClientDetails(this.clientId);
+
+        this.showSuccess('تم تعديل  رقم التليفون بنجاح');
+
+
+
+
+
+      }, error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+          this.setError = true ; 
+        } else {
+          this.showErrors(error.error.message);
+        }
+      }
+      )
+      
+    }
+    else
+    {
       // this.phonesForm.patchValue({
       //   mobile: +(966 + this.phonesForm.controls.mobile.value)
       // });
       this.coreService
-        .postMethod('clients/mobile/' + this.clientId, {
-          name: this.phonesForm.controls.name.value,
-          mobile: +(966 + this.phonesForm.controls.mobile.value)
-        })
-        .subscribe(
-          (clientDetails: any) => {
-            console.log(clientDetails);
+      .postMethod('clients/mobile/' + this.clientId, {
+        name : this.phonesForm.controls.name.value ,
+        mobile :  +(966 + this.phonesForm.controls.mobile.value)
+      })
+      .subscribe((clientDetails: any) => {
+        console.log(clientDetails )
 
-            this.setError = false;
+        this.setError = false ; 
 
-            this.phonesForm.controls.name.setValue('');
-            this.phonesForm.controls.mobile.setValue('');
 
-            this.updatePhone = false;
-            this.endLoading();
-            this.getClientDetails(this.clientId);
+        this.phonesForm.controls.name.setValue('')
+        this.phonesForm.controls.mobile.setValue('')
 
-            this.showSuccess('تم إضافة  رقم التليفون بنجاح');
-          },
-          error => {
-            if (error.error.errors) {
-              this.showErrors(error.error.errors);
-              this.setError = true;
-            } else {
-              this.showErrors(error.error.message);
-            }
-          }
-        );
+        this.updatePhone = false  ;
+        this.endLoading();
+        this.getClientDetails(this.clientId);
+
+        this.showSuccess('تم إضافة  رقم التليفون بنجاح');
+
+      }, error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+          this.setError = true ; 
+        } else {
+          this.showErrors(error.error.message);
+        }
+      })
+
     }
+   
   }
 
-  // edit phone number
-  editPhoneNumber(element) {
-    console.log(element);
+
+
+
+  // edit phone number 
+  editPhoneNumber(element)
+  {
+    console.log(element)
 
     this.phonesForm.controls.name.setValue(element.name);
-    this.phonesForm.controls.mobile.setValue(
-      element.mobile
-        .split('')
-        .slice(3)
-        .join('')
-    );
-    console.log(this.phonesForm.controls.mobile.value);
+    this.phonesForm.controls.mobile.setValue(element.mobile.split('').slice(3).join(''));
+    console.log( this.phonesForm.controls.mobile.value)
 
-    this.updatePhone = true;
-    this.fetchedPhone = element;
+    this.updatePhone = true  ;
+    this.fetchedPhone = element ;
+   
+      
+
   }
 
-  // delte phone number
-  deletePhoneNumber(phoneId) {
-    this.coreService.deleteMethod('clients/mobile/' + phoneId).subscribe(
-      (clientDetails: any) => {
-        console.log(clientDetails);
+
+
+  // delte phone number 
+  deletePhoneNumber(phoneId)
+  {
+    this.coreService
+      .deleteMethod('clients/mobile/' + phoneId )
+      .subscribe((clientDetails: any) => {
+        console.log(clientDetails )
+
+        
 
         this.endLoading();
         this.getClientDetails(this.clientId);
         this.showSuccess('تم إزالة  رقم التليفون بنجاح');
+
+
+
       },
       error => {
         if (error.error.errors) {
@@ -510,7 +549,7 @@ export class ClientDetailsComponent implements OnInit {
           this.showErrors(error.error.message);
         }
       }
-    );
+      )
   }
 
   //
@@ -533,10 +572,13 @@ export class ClientDetailsComponent implements OnInit {
   // ──────────────────────────────────────────────── END MAIN ADDRESS SELECT ─────
   //
 
-  // ─── START DELETE CLIENT ─────────────────────────────────────────
+
+   // ─── START DELETE CLIENT ─────────────────────────────────────────
   //
 
   openDeletePopup() {
+ 
+
     this.deletedClientId = this.clientId;
     this.showDeletePopup = true;
   }
@@ -548,9 +590,9 @@ export class ClientDetailsComponent implements OnInit {
         this.showSuccess('تم إلغاء بنجاح');
         this.getClientDetails(this.clientId);
 
-        setTimeout(() => {
-          this.router.navigate(['/clients/all-clients']);
-        }, 1000);
+          setTimeout(() => {
+            this.router.navigate(['/clients/all-clients']);
+          }, 1000);
       },
       error => {
         if (error.error.errors) {
@@ -568,10 +610,13 @@ export class ClientDetailsComponent implements OnInit {
   //
   // ────────────────────────────────────── END DELETE TECHNICAL ─────
 
-  // ─── START stop CLIENT ─────────────────────────────────────────
+
+     // ─── START stop CLIENT ─────────────────────────────────────────
   //
 
   openStopPopup() {
+ 
+
     this.deletedClientId = this.clientId;
     this.showStopPopup = true;
   }
@@ -579,51 +624,57 @@ export class ClientDetailsComponent implements OnInit {
   stopClient() {
     this.closePopup();
     this.startLoading();
-    if (this.active) {
-      this.coreService
-        .postMethod('clients/stop/' + this.deletedClientId, {})
-        .subscribe(
-          () => {
-            this.showSuccess('تم إيقاف بنجاح');
-            setTimeout(() => {
-              this.getClientDetails(this.clientId);
-              this.showStopPopup = false;
-
-              // this.router.navigate(['/clients/client-details']);
-            }, 1000);
-            // this.getClientDetails(this.clientId);
-          },
-          error => {
-            if (error.error.errors) {
-              this.showErrors(error.error.errors);
-            } else {
-              this.showErrors(error.error.message);
-            }
+    if(this.active)
+    {
+      this.coreService.postMethod('clients/stop/' + this.deletedClientId , {}).subscribe(
+        () => {
+          this.showSuccess('تم إيقاف بنجاح');
+          setTimeout(() => {
+          this.getClientDetails(this.clientId);
+      this.showStopPopup = false;
+  
+  
+            // this.router.navigate(['/clients/client-details']);
+          }, 1000);
+          // this.getClientDetails(this.clientId);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
           }
+        }
         );
-    } else {
-      this.coreService
-        .postMethod('clients/active/' + this.deletedClientId, {})
-        .subscribe(
-          () => {
-            this.showSuccess('تم تفعيل بنجاح');
-            setTimeout(() => {
-              this.getClientDetails(this.clientId);
-              this.showStopPopup = false;
 
-              // this.router.navigate(['/clients/client-details']);
-            }, 1000);
-            // this.getClientDetails(this.clientId);
-          },
-          error => {
-            if (error.error.errors) {
-              this.showErrors(error.error.errors);
-            } else {
-              this.showErrors(error.error.message);
-            }
-          }
-        );
     }
+    else
+    {
+
+      this.coreService.postMethod('clients/active/' + this.deletedClientId , {}).subscribe(
+        () => {
+          this.showSuccess('تم تفعيل بنجاح');
+          setTimeout(() => {
+          this.getClientDetails(this.clientId);
+      this.showStopPopup = false;
+  
+  
+            // this.router.navigate(['/clients/client-details']);
+          }, 1000);
+          // this.getClientDetails(this.clientId);
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
+
+    }
+  
+    
   }
   stopClosePopup() {
     this.showStopPopup = false;
@@ -859,4 +910,6 @@ export class ClientDetailsComponent implements OnInit {
   //
   // ───────────────────────────────────── END RESPONSE MESSEGES ─────
   //
+
+
 }

@@ -33,11 +33,7 @@
           (click)="toggle_drop_List('roles_menu')"
           style="display: flex; align-items: center;"
         >
-          <img
-            src="../../../assets/img/visitor.svg"
-            style="width: 18%; margin-left: 10px;"
-            alt=""
-          />
+        <i class="fal fa-store"></i>
           إدارة الشركات
         </a>
         <ul class="drop_menu" id="roles_menu">
@@ -62,11 +58,7 @@
           (click)="toggle_drop_List('users_menu')"
           style="display: flex; align-items: center;"
         >
-          <img
-            style="margin-left: 10px;"
-            src="../../../assets/img/support.svg"
-            alt=""
-          />
+        <i class="fal fa-cog"></i>
           إدارة الخدمات
         </a>
         <ul class="drop_menu" id="users_menu">
@@ -85,6 +77,8 @@
           </li>
         </ul>
       </li>
+
+
       <li
         class="drop_list"
         routerLinkActive="active"
@@ -94,11 +88,7 @@
           (click)="toggle_drop_List('class_menu')"
           style="display: flex; align-items: center;"
         >
-          <img
-            style="margin-left: 10px;"
-            src="../../../assets/img/service.svg"
-            alt=""
-          />
+        <i class="fal fa-cogs"></i>
           إدارة التصنيفات
         </a>
         <ul class="drop_menu" id="class_menu">
@@ -120,6 +110,21 @@
           </li>
         </ul>
       </li>
+
+      <li>
+        <a
+          [routerLink]="['/system-managment']"
+          routerLinkActive="active"
+          style="display: flex; align-items: center;"
+        >
+        <i class="fal fa-plug"></i>
+          اداره النظام
+        </a>
+      </li>
+      <li>
+
+
+
     </ul>
   </div>
 </div>
@@ -128,7 +133,7 @@
   alt="hum"
   style="position: absolute;
   top: 3%;
-  left: 86%;
+  left: 89%;
   cursor: pointer;"
   (click)="hideMenu()"
 />

@@ -27,7 +27,7 @@ import { ClassificationDetailsComponent } from './classification-details/classif
   declarations: [
     AllClassificationsComponent,
     AddClassificationComponent,
-    ClassificationDetailsComponent,
+    ClassificationDetailsComponent
   ],
   imports: [
     //
@@ -47,9 +47,9 @@ import { ClassificationDetailsComponent } from './classification-details/classif
     MatSelectModule,
     MatGridListModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
-      libraries: ['geometry']
+      apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
+      libraries: ['geometry', 'places']
     })
   ]
 })
-export class ClassificationsModule { }
+export class ClassificationsModule {}

@@ -3,16 +3,37 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
+
 const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
+      // {
+      //   path: 'system-managment', component: SystemManagmentComponent, canActivate: [AuthGuard]
+      // },
+      {
+        path: 'system-managment',
+        loadChildren: './templates/system-managment/system-managment.module#SystemManagmentModule'
+      },
+      {
+        path: 'system-off',
+        loadChildren: './templates/system-off/system-off.module#SystemOffModule'
+      },
+
+      // {
+      //   path: 'system-off', component: SystemOffComponent, canActivate: [AuthGuard]
+      // },
+      
       // { path: 'access', loadChildren: './templates/access/access.module#AccessModule' },
       {
         path: 'orders',
         loadChildren: './templates/orders/orders.module#OrdersModule'
+      },
+      {
+        path: 'sales',
+        loadChildren: './templates/sales/sales.module#SalesModule'
       },
       {
         path: 'clients',

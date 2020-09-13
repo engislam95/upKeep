@@ -36,13 +36,15 @@
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
         margin-right: 30px;
         margin-top: 19px;
+        text-align: center;
 
-        img {
-          margin-right: 16px;
-          margin-top: 11px;
+        i {
+          font-size: 27px;
+          margin-top: 16px;
         }
 
       }
+
 
       .count-name {
         margin-right: 30px;
@@ -89,7 +91,7 @@
         text-align: center;
         color: #000;
         text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-        margin-right: 35px;
+        margin-right: 13px;
         margin-top: 3px;
 
       }
@@ -97,7 +99,7 @@
       h4 {
         margin-top: 10px;
 
-        img {
+        i {
           margin-left: 10px;
         }
       }
@@ -137,6 +139,13 @@
       background: #f6a811;
       margin-bottom: 10px;
       box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      text-align: center;
+
+      i {
+        font-size: 27px;
+        margin-top: 16px;
+      }
+
 
 
     }
@@ -382,4 +391,26 @@
 
 .active-0 {
   background: red;
+}
+
+.arrow {
+  background: #f5f5f5;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 31px;
+  height: 31px;
+
+  i {
+    font-size: 21px;
+    color: gray;
+    vertical-align: middle;
+  }
+}
+
+.numberPagination {
+  background: #fff;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 42px;
+  height: 31px
 }
