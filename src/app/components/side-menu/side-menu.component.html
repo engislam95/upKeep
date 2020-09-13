@@ -237,6 +237,18 @@
           الادارة
         </a>
       </li>
+      <li
+        class="drop_list"
+        *ngIf="user.privilege == 'super-admin'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/sales/all-sales"
+      >
+        <a>
+          <i class="fas fa-sort-shapes-down-alt"></i>
+          المبيعات
+        </a>
+      </li>
       <!-- <li
         class="drop_list"
         *ngIf="user.privilege == 'super-admin'"

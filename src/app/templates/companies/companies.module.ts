@@ -25,8 +25,6 @@ import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { CompanyCitiesComponent } from './company-cities/company-cities.component';
 
-
-
 @NgModule({
   declarations: [
     AllCompaniesComponent,
@@ -53,11 +51,9 @@ import { CompanyCitiesComponent } from './company-cities/company-cities.componen
     MatSelectModule,
     MatGridListModule,
     AgmCoreModule.forRoot({
-      // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
-      apiKey : 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs' ,
-
-      libraries: ['geometry']
+      apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
+      libraries: ['geometry', 'places']
     })
   ]
 })
-export class CompaniesModule { }
+export class CompaniesModule {}
