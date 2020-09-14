@@ -18,6 +18,9 @@ export class TechnicalDetailsComponent implements OnInit {
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
+  max: number = 10;
+  rate: number = 7;
+  isReadonly: boolean = true;
   /* ----------------------- Constructor ------------------------ */
   constructor(
     private loaderService: LoaderService,
