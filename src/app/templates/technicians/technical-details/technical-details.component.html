@@ -5,7 +5,7 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3><i class="fas fa-users-cog"></i>بيانات الفني</h3>
+      <h3><i class="fas fa-users-cog"></i>معلومات عن الفنى</h3>
       <div class="page_body_main_buttons">
         <a
           *ngIf="technician_update || this.user.privilege == 'super-admin'"
@@ -23,15 +23,50 @@
         </a>
       </div>
     </div>
-    <div class="page_body">
-      <div class="page_body_main">
-        <div class="page_block detailsContainer">
-          <div class="profileImageContainer">
+
+
+    <div class="page_body formContainer"  [ngClass]="{ pageNotLoaded: !pageLoaded }">
+
+      <div class="clientDetails-name">
+
+          <ul>
+            <li>
+              <span class="cilentAccount-type ">
+               251
+              </span>
+            </li>
+            <li>
+              <h3>
+                <i class="fas fa-user"></i>
+                محمد جابر 
+              </h3>
+            </li>
+          
+            <li>
+              <span class="cilentAccount-type-0 " >
+                حساب نشط 
+              </span>
+             
+            </li>
+    
+            
+          </ul>
+        </div>
+
+
+
+
+      <div class="page_body_main" style="display:flex">
+        <div class="page_block " style="width: 50%;">
+          
+          <!-- <div class="profileImageContainer">
             <img src="{{ pageLoaded ? technicalDetails.image : '' }}" alt="" />
-          </div>
+          </div> -->
           <div class="profileDetails">
             <div class="profileDetails">
-              <ul>
+              <h3><i class="fas fa-users-cog" style="margin-left:2%"></i>تقارير و بيانات الفنى</h3>
+
+              <!-- <ul>
                 <li>
                   <h4>إسم الفنى</h4>
                   <h5>
@@ -64,7 +99,6 @@
                   <h4>الخدمات</h4>
                   <h5>
                     <i class="fas fa-globe"></i>
-                    <!-- {{ pageLoaded ? technicalDetails.services : "" }} -->
                    <span *ngFor="let service of technicalDetails.services ; let i=index ">   <span *ngIf="i != 0 && i != technicalDetails.services.length"> - </span>{{  pageLoaded ? service.name : '' }}  </span> 
                   </h5>
                 </li>
@@ -80,15 +114,65 @@
                   <h4>المدينة</h4>
                   <h5>
                     <i class="fas fa-map-marker-alt"></i>
-                    <!-- {{ pageLoaded ? technicalDetails.cities : "" }} -->
                    <span *ngFor="let service of technicalDetails.cities ; let i=index">  <span *ngIf="i != 0 && i != technicalDetails.cities.length"> - </span> {{  pageLoaded ? service.name : '' }}  </span> 
 
                   </h5>
                 </li>
-              </ul>
+              </ul> -->
+
+
+
             </div>
           </div>
+
+          <div class="rating" style="display:flex">
+            <div class="allRating" style="width: 50%;">
+              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
+                <h3>التقييم العام للفنى </h3>
+                <rating style="color: #FFD500; padding: 0% 3%; font-size: 23px; float: left; padding: 0% 3%;" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
+              </div>
+              <div style="display: flex; width: 100%; padding:2% ; text-align: center;">
+              <div style="width: 33%; padding: 1% 5%; border-left: 1px dotted black" >
+                <h5 style="font-size: 0.9rem;">تقييم العملاء </h5> 
+                <h5 style="font-size: 0.9rem;">5/10</h5>
+              </div>
+              <div style="width: 33%; padding: 1% 4%;  border-left: 1px dotted black" > 
+              <h5 style="font-size: 0.9rem;"> تقييم الإدارة</h5>
+              <h5 style="font-size: 0.9rem;">5/10</h5>
+            </div>
+              <div style="width: 33%; padding: 1% 4%;" >
+              <h5 style="font-size: 0.9rem;"> النقاط </h5>
+              <h5 style="font-size: 0.9rem;"> 355 </h5>
+              </div>
+
+              </div>
+            </div>
+            <div class="allRating" style="width: 50%;">
+              <div class="ratingHead"></div>
+            </div>
+          </div>
+
+
+          <div class="ratingControl" style="display:flex">
+            <div class="allRating" style="width: 50%;">
+              <div class="ratingHead"></div>
+            </div>
+            <div class="allRating" style="width: 50%;">
+              <div class="ratingHead"></div>
+            </div>
+          </div>
+
+
+
+
         </div>
+
+        <div class="page_block" style="width:30%">
+        </div>
+
+        <div class="page_block" style="width:20%">
+        </div>
+
       </div>
     </div>
   </div>

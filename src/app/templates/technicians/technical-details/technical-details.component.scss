@@ -1,3 +1,102 @@
 .profileImageContainer {
   padding-top: 15px;
 }
+// start new style client details data
+.clientDetails-name {
+  padding: 0px 50px;
+  margin-bottom: 2%;
+ul{
+  display: flex;
+  li {
+    margin-bottom: 1px;
+    margin-left: 15px;
+  }
+  .clientDetails-id {
+    background: #27282a;
+    color: #fff;
+    padding: 0px 10px 0px 5px;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  .cilentAccount-type {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    color: #Fff;
+    padding: 3px 18px;
+    width: 105px;
+      height: 30px;
+      background: #000000;
+      border: 2px solid rgba(112, 112, 112, 0.34);
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      padding-bottom: 5px;
+
+  }
+
+  .cilentAccount-type-0 {
+
+    background: #1e9a19;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    color: #fff;
+    padding: 4px 29px;
+    padding-bottom: 7px;
+
+
+  }
+
+  .cilentAccount-type-1 {
+    width: 125px;
+    height: 30px;
+    background: #444;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 15px;
+    text-align: right;
+    color: #fff;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+    padding: 7px 29px;
+
+  }
+}
+}
+
+.rating .allRating, .ratingControl .allRating
+{
+
+  width: 380px;
+  margin: 2% ;
+  height: 175px;
+  border-radius: 10px;
+  background: #fbfbfb;
+  border: 1px solid rgba(112, 112, 112, 0.45);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+  .ratingHead
+  {
+    width: 380px;
+    height: 35px;
+    background: #363636;
+
+    h3
+    {
+      text-align:right ;
+      color: #fff;
+      padding: 2% ;
+      display: inline-block;
+
+    }
+
+    
+   
+
+  }
+
+}
+
+

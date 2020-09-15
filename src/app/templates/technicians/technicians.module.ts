@@ -8,6 +8,7 @@ import { AddTechnicalComponent } from './add-technical/add-technical.component';
 import { AllTechniciansComponent } from './all-technicians/all-technicians.component';
 import { TechnicalDetailsComponent } from './technical-details/technical-details.component';
 import { ToolsModule } from 'src/app/tools/tools.module';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 @NgModule({
   declarations: [AddTechnicalComponent, AllTechniciansComponent, TechnicalDetailsComponent],
@@ -19,7 +20,8 @@ import { ToolsModule } from 'src/app/tools/tools.module';
     ToolsModule,
     MatInputModule,
     MatTableModule,
-    MatSlideToggleModule
+    MatSlideToggleModule ,
+    RatingModule.forRoot()
   ]
 })
 export class TechniciansModule {}
