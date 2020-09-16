@@ -6,7 +6,7 @@
     </div>
     <div class="page_body_title">
       <h3><i class="fas fa-users-cog"></i>معلومات عن الفنى</h3>
-      <div class="page_body_main_buttons">
+      <!-- <div class="page_body_main_buttons">
         <a
           *ngIf="technician_update || this.user.privilege == 'super-admin'"
           [routerLink]="['/technicians/update-technical']"
@@ -21,29 +21,39 @@
           كل الفنيين
           <i class="fas fa-th-list"></i>
         </a>
-      </div>
+      </div> -->
     </div>
 
 
     <div class="page_body formContainer"  [ngClass]="{ pageNotLoaded: !pageLoaded }">
+
+      <div class="button-add-taxs">
+        <button
+        [routerLink]="['/technicians/update-technical']"
+          [queryParams]="{
+            updateMode: true,
+            updatedTechnicalId: tecniciansId
+          }">
+        <i class="fal fa-user-edit"></i>  تعديل بيانات الفنى </button>
+      </div>
 
       <div class="clientDetails-name">
 
           <ul>
             <li>
               <span class="cilentAccount-type ">
-               251
+               {{ technicalDetails.id }}
               </span>
             </li>
             <li>
               <h3>
                 <i class="fas fa-user"></i>
-                محمد جابر 
+                {{ technicalDetails.name}}
               </h3>
             </li>
           
             <li>
-              <span class="cilentAccount-type-0 " >
+              <span class="cilentAccount-type-0 " *ngIf="technicalDetails.active == 1" >
                 حساب نشط 
               </span>
              
@@ -57,7 +67,7 @@
 
 
       <div class="page_body_main" style="display:flex">
-        <div class="page_block " style="width: 50%;  border-left: 1px dotted #707070;">
+        <div class="page_block " style="width: 60%;  border-left: 1px dotted #707070;">
           
      
           <div class="profileDetails">
@@ -73,17 +83,36 @@
               <span> متصل بالتطبيق </span>
             </div>
 
+            
             <div class="logout">
               <i class="fas fa-sign-out-alt"></i>
             </div>
+
+
+           
+
+            <div class="disConnected">
+              <i class="fas fa-user-check"></i>
+              <span>   غير متصل بالتطبيق </span>
+            </div>
+
+            <div class="logoutDis">
+              <i class="fas fa-sign-out-alt"></i>
+            </div>
+
+           
+          
+
+            
+
 
           </div>
 
           <div class="rating" style="display:flex">
             <div class="allRating" style="width: 50%;">
-              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
                 <h3>التقييم العام للفنى </h3>
-                <rating style="color: #FFD500; padding: 0% 3%; font-size: 23px; float: left; padding: 0% 3%;" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
+                <rating style="color: #FFD500; padding: 0% 3%; font-size: 28px; float: left; padding: 0% 3%;" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
               </div>
               <div style="display: flex; width: 100%; padding:2% ; text-align: center;">
               <div style="width: 33%; padding: 1% 5%; border-left: 1px dotted black" >
@@ -103,7 +132,7 @@
             </div>
 
             <div class="allRating" style="width: 50% ; height:200px ">
-              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
                 <h3> تتبع الفنى </h3>
               </div>
               <div class="controlAllOrder">
@@ -113,14 +142,14 @@
                     <button  type="button">
                       <i class="fas fa-map-marked"></i>
                     </button>
-                    <p > خط سير الفنى </p>
+                    <p class="fontSt" > خط سير الفنى </p>
                   </li>
 
                   <li>
                     <button type="button">
                       <i class="fas fa-map-marker-alt"></i>
                     </button>
-                    <p> نقطة تواجد الفنى  </p>
+                    <p class="fontSt">  نقطة تواجد الفنى  </p>
                   </li>
 
                 </ul>
@@ -131,7 +160,7 @@
 
           <div class="ratingControl" style="display:flex">
             <div class="allRating" style="width: 50%;  height:200px">
-              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
                 <h3>  تقييمات و تقارير الفنى </h3>
               </div>
               <div class="controlAllOrder">
@@ -141,38 +170,47 @@
                     <button  type="button">
                       <i class="far fa-grin-stars"></i>
                     </button>
-                    <p > التقييم اليومى </p>
+                    <p class="fontSt"> التقييم اليومى </p>
                   </li>
 
                   <li>
                     <button type="button">
                       <i class="fas fa-grin-stars"></i>
                     </button>
-                    <p>تقييم العميل   </p>
+                    <p class="fontSt">تقييم العميل   </p>
                   </li>
 
                 </ul>
               </div>
             </div>
             <div class="allRating" style="width: 50% ; height:200px">
-              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
                 <h3> التحكم في حساب الفنى </h3>
               </div>
               <div class="controlAllOrder">
                 <ul>
 
                   <li>
+                    <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
                     <button  type="button">
                       <i class="far fa-stop-circle"></i>
                     </button>
-                    <p > إيقاف الحساب </p>
+                    <p class="fontSt"> إيقاف الحساب </p>
+                  </li>
+
+                  <li>
+                    <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
+                    <button  style="background: #139E18;" type="button">
+                      <i style="color:#fff" class="fas fa-play"></i>
+                    </button>
+                    <p class="fontSt"> تشغيل الحساب </p>
                   </li>
 
                   <li>
                     <button type="button">
                       <i class="far fa-comment-dots"></i>
                     </button>
-                    <p> إرسال رسالة </p>
+                    <p class="fontSt"> إرسال رسالة </p>
                   </li>
 
                 </ul>
@@ -185,7 +223,7 @@
 
         </div>
 
-        <div class="page_block" style="width:30% ; border-left: 1px dotted #707070;">
+        <div class="page_block" style="width:20% ; border-left: 1px dotted #707070;">
 
           <div style="margin-bottom:5%" class="profileDetails">
             <div class="profileDetails">
@@ -196,59 +234,59 @@
           <div class="technicalDetails">
             <h5 class="blueLabel"> 
               <i class="fas fa-ellipsis-h"></i>
-              <span > رقم الفنى </span>
-              <span style="float: left;"> 351 </span>
+              <span class="fontSt"> رقم الفنى </span>
+              <span class="fontSt" style="float: left;"> {{ technicalDetails.id }} </span>
             </h5> 
             <h5 class="grayLabel"> 
               <i class="fas fa-user"></i>
-              <span > اسم الفنى </span>
-              <span style="float: left;"> محمد جابر </span>
+              <span class="fontSt"> اسم الفنى </span>
+              <span  class="fontSt" style="float: left;"> {{ technicalDetails.name }} </span>
             </h5> 
             <h5 class="blueLabel"> 
               <i class="fas fa-flag"></i>
-              <span  > الجنسية </span>
-              <span style="float: left;"> مصرى </span>
+              <span  class="fontSt"> الجنسية </span>
+              <span class="fontSt" style="float: left;"> {{ technicalDetails.country }} </span>
             </h5> 
             <h5 class="grayLabel"> 
               <i class="fas fa-mobile"></i>
-              <span > رقم الموبايل </span>
-              <span style="margin-right: 19%; "> 0562635487 </span>
+              <span class="fontSt"> رقم الموبايل </span>
+              <span class="fontSt" style="margin-right: 19%; "> {{ technicalDetails.mobile }} </span>
               <i class="fas fa-copy" style="    float: left; padding-top: 2%; "></i>
             </h5> 
             <h5 class="blueLabel"> 
               <i class="fas fa-envelope"></i>
-              <span >  البريد الإلكتروني </span>
-              <span style="float: left;"> mohamed@vid.com.sa </span>
+              <span class="fontSt">  البريد الإلكتروني </span>
+              <span class="fontSt" style="float: left;" > {{ technicalDetails.email ? technicalDetails.email : 'لا يوجد ' }} </span>
             </h5> 
             <h5 class="grayLabel"> 
               <i class="fas fa-id-card-alt"></i>
-              <span  > نوع التعاقد </span>
-              <span style="float: left;"> موظف </span>
+              <span class="fontSt" > نوع التعاقد </span>
+              <span class="fontSt" style="float: left;"> موظف </span>
             </h5> 
             <h5 class="blueLabel"> 
               <i class="fab fa-pinterest"></i>
-              <span  > فاعلية الحساب </span>
-              <span style="color: green ; float: left;"> نشط </span>
+              <span  class="fontSt"> فاعلية الحساب </span>
+              <span class="fontSt" style="color: green ; float: left;" *ngIf="technicalDetails.active == 1"> نشط </span>
             </h5> 
             <h5 class="grayLabel"> 
               <i class="fas fa-calendar-week"></i>
-              <span  > تاريخ الاضافة</span>
-              <span style="float: left;"> 25/5/2020 </span>
+              <span class="fontSt" > تاريخ الاضافة</span>
+              <span  class="fontSt" style="float: left;"> {{ technicalDetails.created_at }} </span>
             </h5> 
             <h5 class="blueLabel"> 
               <i class="fas fa-user-plus"></i>
-              <span  > إضافة بواسطة </span>
-              <span style="float: left;"> Super admin </span>
+              <span  class="fontSt"> إضافة بواسطة </span>
+              <span class="fontSt" style="float: left;"> Super admin </span>
             </h5> 
             <h5 class="grayLabel"> 
               <i class="fas fa-user-shield"></i>
-              <span  > الخدمات </span>
-              <span style="float: left;"> مكيفات - سباكة - كهرباء </span>
+              <span class="fontSt" > الخدمات </span>
+              <span class="fontSt" style="float: left;" *ngFor="let service of technicalDetails.services; let i = index">  {{ service.name  }}  <span *ngIf="i != 0 && i != technicalDetails.services.length"> - </span> </span>
             </h5> 
             <h5 class="blueLabel"> 
               <i class="fas fa-map-marker"></i>
-              <span  > أماكن الخدمات </span>
-              <span style="float: left;"> جدة - الرياض  </span>
+              <span class="fontSt" > أماكن الخدمات </span>
+              <span class="fontSt" style="float: left;" *ngFor="let city of technicalDetails.cities; let i = index">  {{ city.name  }} <span *ngIf="i != 0 && i != technicalDetails.cities.length"> - </span> </span> 
             </h5> 
           </div>
 
@@ -256,15 +294,29 @@
 
         <div class="page_block" style="width:20% ; border-left: 1px dotted #707070;">
           <div class="technicalImg">
-            <i class="fas fa-image"></i>
-            <span> صورة الفنى  </span>
-            <img src="" >
+            <i class="fas fa-image" ></i>
+            <span class="fontSt" > صورة الفنى  </span>
+            <img id="imageTech" src="{{ technicalDetails.image }}" >
+            <div class="zoom" (click)="openModalImage()"><i class="fas fa-search"></i></div> 
+          </div>
+
+          <!-- The Modal Image-->
+          <div id="imageTechModel" class="modal">
+            <span (click)="closeImageTech()" class="close">&times;</span>
+            <img src="{{ technicalDetails.image }}" class="modal-content" id="img01">
           </div>
 
           <div class="mapImg">
-            <i class="fas fa-map-marker"></i>
-            <span> دبوس الخريطة </span>
-            <img src="" >
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="fontSt" style="margin-bottom: 2%;"> دبوس الخريطة </span>
+            <img id="imageTechPin" src="{{ technicalDetails.imagePin}}" >
+            <div class="zoom" (click)="openModalPin()"><i class="fas fa-search"></i></div> 
+          </div>
+
+           <!-- The Modal pin-->
+           <div id="imageTechPinModel" class="modal">
+            <span (click)="closeImagePin()" class="close">&times;</span>
+            <img src="{{ technicalDetails.imagePin}}"  class="modal-content" id="img02">
           </div>
          
         </div>
