@@ -70,7 +70,7 @@ ul{
 {
 
   width: 380px;
-  margin: 2% ;
+  margin: 1% ;
   height: 175px;
   border-radius: 10px;
   background: #fbfbfb;
@@ -82,6 +82,7 @@ ul{
     width: 380px;
     height: 35px;
     background: #363636;
+    width: 100% ;
 
     h3
     {
@@ -99,4 +100,147 @@ ul{
 
 }
 
+.controlAllOrder{
+  margin-bottom: 40px;
+  ul{
+    display: flex;
+    margin-right: 19%;
 
+    li{
+
+
+      button{
+        margin-left: 16px;
+        text-align: center;
+        border: 1px solid #7070708f;
+        padding: 12px 14px;
+        border-radius: 15px;
+        width: 80px;
+        width: 81px;
+        // padding-bottom: 7px;
+        border-radius: 10px;
+        background:#EFEFEF;
+        border: 1px solid rgba(112, 112, 112, 0.34);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        margin-right: 13px;
+          font-size: 32px;
+          text-align: center;
+          color: #636363;
+
+      }
+      i
+      {
+        color: black ;
+      }
+      p{
+        font-family: "GE SS Two";
+        font-weight: 300;
+        font-size: 14px;
+        text-align: center;
+        color: #000;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        margin-top: 5px;
+
+      }
+
+    }
+  }
+}
+.mobileConnected
+{
+  text-align: left;
+  margin-bottom: 2%;
+}
+.mobileConnected .connected
+{
+  width: 172px;
+  height: 42px;
+  border-radius: 10px;
+  background: #139e18;
+  border: 1px solid rgba(112, 112, 112, 0.34);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  display: inline-block ;
+  color: #fff ;
+  padding: 0% 2%;
+  text-align: center;
+  margin-left: 2% ;
+  i
+  {
+    margin-left: 6%;
+    font-size: 24px;
+    padding-top: 4%;
+  }
+
+}
+
+.mobileConnected .logout
+{
+  width: 53px;
+  height: 42px;
+  border-radius: 10px;
+  background: #515151;
+  border: 1px solid rgba(112, 112, 112, 0.34);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  display: inline-block ;
+  color: #fff ;
+  padding: 0% 2%;
+  text-align: center;
+
+  i
+  {
+    font-size: 25px;
+    padding-top: 8px;
+  }
+
+
+}
+
+.blueLabel
+{
+  width: 417px;
+  height: 40px;
+  background: #f1f7ff;
+  padding: 2%;
+  font-size: 15px ;
+  border-bottom: 1px dotted #707070;
+  i
+  {
+    margin-left: 2%;
+    font-size: 20px;
+
+  }
+}
+
+.grayLabel
+{
+  width: 417px;
+  height: 40px;
+  background: #fff;
+  padding: 2%;
+  font-size: 15px ;
+  i
+  {
+    margin-left: 2%;
+    font-size: 20px;
+  }
+
+}
+.technicalImg
+{
+  margin-bottom: 5%;
+  i
+  {
+    margin-left: 2%;
+    font-size: 20px;
+  }
+}
+
+.mapImg
+{
+  margin-bottom: 5%;
+  i
+  {
+    margin-left: 2%;
+    font-size: 20px;
+  }
+}

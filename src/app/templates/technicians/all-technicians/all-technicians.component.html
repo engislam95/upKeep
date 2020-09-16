@@ -139,6 +139,46 @@
 
                 </mat-form-field>
               </div>
+
+
+              <div class="form_input" id="NameFillterInputStyle">
+                <label> نوع التعاقد</label>
+                <mat-form-field style="  width: 100% !important"  dir="rtl" appearance="outline">
+                  <input
+                    class="filterInput"
+                    type="text"
+                    placeholder=" الكل"
+                    matInput
+                    [matAutocomplete]="techniciansStatus"
+                    formControlName="techniciansStatusObj"
+                    style="    padding-top: 6px !important;"
+               
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('techniciansStatusObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #techniciansStatus="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+
+
+
+
+
             </form>
 
 
