@@ -239,15 +239,36 @@
       </li>
       <li
         class="drop_list"
-        *ngIf="user.privilege == 'super-admin'"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
-        routerLink="/sales/all-sales"
       >
-        <a>
+        <a (click)="toggle_drop_List('sales')">
           <i class="fas fa-sort-shapes-down-alt"></i>
           المبيعات
         </a>
+        <ul class="drop_menu" id="sales">
+          <li>
+            <a routerLink="/sales/all-sales" routerLinkActive="active">
+              <i class="fas fa-table"> </i>
+              طلبات المبيعات
+            </a>
+          </li>
+          <li>
+            <a routerLink="/orders/orders-map" routerLinkActive="active">
+              <i class="fas fa-map-marked-alt"> </i>
+              خريطة الطلبات
+            </a>
+          </li>
+          <li>
+            <a
+              routerLink="/company-services/all-sub-services"
+              routerLinkActive="active"
+            >
+              <i class="fas fa-comment-alt-plus"> </i>
+              مسودة الطلبات
+            </a>
+          </li>
+        </ul>
       </li>
       <!-- <li
         class="drop_list"
