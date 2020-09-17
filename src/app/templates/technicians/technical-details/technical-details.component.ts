@@ -3,6 +3,7 @@ import { LoaderService } from 'src/app/tools/shared-services/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from 'src/app/tools/shared-services/core.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
 
 @Component({
   selector: 'app-technical-details',
@@ -24,6 +25,8 @@ export class TechnicalDetailsComponent implements OnInit {
   rate: number = 4;
   isReadonly: boolean = true;
   modalRef: BsModalRef;
+  responseState;
+  responseData;
 
   /* ----------------------- Constructor ------------------------ */
   constructor(
@@ -31,7 +34,8 @@ export class TechnicalDetailsComponent implements OnInit {
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
     private router: Router ,
-    private modalService: BsModalService
+    private modalService: BsModalService , 
+    private responseStateService: ResponseStateService,
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
@@ -60,13 +64,15 @@ export class TechnicalDetailsComponent implements OnInit {
     this.startLoading();
     this.activatedRoute.queryParams.subscribe(params => {
       this.tecniciansId = params.tecniciansId;
-      this.coreService
-        .getMethod('technicians/' + this.tecniciansId, {})
-        .subscribe((technicalDetails: any) => {
-          console.log(technicalDetails.data);
-          this.technicalDetails = technicalDetails.data;
-          this.endLoading();
-        });
+      this.getTechnicalData() ;
+
+      // this.coreService
+      //   .getMethod('technicians/' + this.tecniciansId, {})
+      //   .subscribe((technicalDetails: any) => {
+      //     console.log(technicalDetails.data);
+      //     this.technicalDetails = technicalDetails.data;
+      //     this.endLoading();
+      //   });
     });
   }
   /* ---------------------- Start Loading ----------------------------- */
@@ -116,9 +122,63 @@ export class TechnicalDetailsComponent implements OnInit {
         
   }
 
+  getTechnicalData()
+  {
+
+    this.coreService
+        .getMethod('technicians/' + this.tecniciansId, {})
+        .subscribe((technicalDetails: any) => {
+          console.log(technicalDetails.data);
+          this.technicalDetails = technicalDetails.data;
+          this.endLoading();
+        });
+
+  }
+
   closeImagePin()
   {
     document.getElementById("imageTechPinModel").style.display = "none";
+  }
+
+  stopTechnical()
+  {
+    this.coreService
+    .updateMethod('technicians/' + this.tecniciansId + '/toggle-active' , {
+      active : 0
+    })
+    .subscribe((technicalDetails: any) => {
+      console.log(technicalDetails.data);
+      this.showSuccess('تم تشغيل حساب  الفنى   ');
+      this.getTechnicalData() ;
+
+      this.endLoading();
+    });
+  }
+
+  activateTechnical()
+  {
+    this.coreService
+    .updateMethod('technicians/' + this.tecniciansId + '/toggle-active' , {
+      active : 1
+    })
+    .subscribe((technicalDetails: any) => {
+      console.log(technicalDetails.data);
+       this.showSuccess('تم  إيقاف حساب  الفنى   ');
+      this.getTechnicalData() ;
+
+      this.endLoading();
+    });
+  }
+
+
+  showSuccess(successText) {
+    this.endLoading();
+    this.responseState = 'success';
+    this.responseData = successText;
+    this.responseStateService.responseState(
+      this.responseState,
+      this.responseData
+    );
   }
 
 

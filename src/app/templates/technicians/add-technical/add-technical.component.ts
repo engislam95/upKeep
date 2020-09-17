@@ -513,6 +513,7 @@ export class AddTechnicalComponent implements OnInit {
     });
     this.submitted = true;
     this.startLoading();
+    console.log(this.techniciansForm.value)
     this.coreService
       .postMethod('technicians', this.techniciansForm.value)
       .subscribe(

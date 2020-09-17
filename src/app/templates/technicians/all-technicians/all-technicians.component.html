@@ -151,7 +151,7 @@
                     matInput
                     [matAutocomplete]="techniciansStatus"
                     formControlName="techniciansStatusObj"
-                    style="    padding-top: 6px !important;"
+                    style="padding-top: 6px !important;"
                
                   />
                   <button
@@ -166,7 +166,7 @@
                     [displayWith]="displayOptionsFunction"
                   >
                     <mat-option
-                      *ngFor="let option of statusFilteredOptions | async"
+                      *ngFor="let option of mainContractTpe "
                       [value]="option"
                     >
                       {{ option.name }}

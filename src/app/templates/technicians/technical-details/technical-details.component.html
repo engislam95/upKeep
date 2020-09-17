@@ -1,4 +1,6 @@
 <div class="main_page">
+  <app-alerts></app-alerts>
+
   <app-side-menu></app-side-menu>
   <div class="page_main_blocks middle_page">
     <div class="page_header">
@@ -190,17 +192,17 @@
               <div class="controlAllOrder">
                 <ul>
 
-                  <li>
+                  <li *ngIf="technicalDetails.active == 1 ">
                     <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
-                    <button  type="button">
+                    <button (click)="activateTechnical()" type="button">
                       <i class="far fa-stop-circle"></i>
                     </button>
                     <p class="fontSt"> إيقاف الحساب </p>
                   </li>
 
-                  <li>
-                    <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
-                    <button  style="background: #139E18;" type="button">
+                  <li *ngIf="technicalDetails.active == 0 ">
+                    <i   style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
+                    <button (click)="stopTechnical()"  style="background: #139E18;" type="button">
                       <i style="color:#fff" class="fas fa-play"></i>
                     </button>
                     <p class="fontSt"> تشغيل الحساب </p>
