@@ -1,3 +1,4 @@
+import { DraftSalesComponent } from './draft-sales/draft-sales.component';
 import { SalesRoutingModule } from './sales-routing.module';
 import { AddSaleComponent } from './add-sale/add-sale.component';
 import { AllSalesComponent } from './all-sales/all-sales.component';
@@ -24,7 +25,7 @@ import {
 } from '@angular/material';
 
 @NgModule({
-  declarations: [AllSalesComponent, AddSaleComponent],
+  declarations: [AllSalesComponent, AddSaleComponent, DraftSalesComponent],
   imports: [
     //
     CommonModule,
