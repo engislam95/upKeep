@@ -84,7 +84,8 @@ export class AddTechnicalComponent implements OnInit {
 
     imagePin: new FormControl(''),
     imageInputObjPin: new FormControl(''),
-    delete_pin: new FormControl(false)
+    delete_pin: new FormControl(false) ,
+    contract_type : new FormControl('')
   });
   notConfirmed = false;
   submitted = false;
@@ -111,8 +112,20 @@ export class AddTechnicalComponent implements OnInit {
   technician_delete: boolean = false;
   fetchedServicee = [];
   fetchedCityy = [];
+  fetchedContractss = [] ;
   user: any = '';
   technicians: any = [];
+  // mainContractTpe = [
+  //   {
+  //     id: 1 ,
+  //     name: 'موظف'
+  //   },
+  //   {
+  //     id : 2 ,
+  //     name: 'بالقطعة'
+  //   }
+  // ]
+  mainContractTpe = [] ;
   //  ############################ End Update Data ############################
   constructor(
     //
@@ -158,17 +171,22 @@ export class AddTechnicalComponent implements OnInit {
         this.mainServicesLoaded = true;
         // Start End Loading
         this.endLoading();
-        // End End Loading
-
-        // Start Select Search For Main Services
-
-        // this.mainServiceFilteredOptions = this.techniciansForm.get('serviceObj').valueChanges.pipe(
-        //   startWith(''),
-        //   map(value => this.filterMainService(value))
-        // );
-
-        // End Select Search For Main Services
       });
+
+      this.coreService
+      .getMethod('lookup/contract-types', {})
+      .subscribe((contracts: any) => {
+        
+        console.log(contracts);
+        this.mainContractTpe = contracts.data;
+        this.mainServicesLoaded = true;
+        // Start End Loading
+        this.endLoading();
+      });
+
+
+
+
     // End Get All Services
     //  Start Get Countries
     this.coreService.getMethod('countries', {}).subscribe((countries: any) => {
@@ -237,10 +255,19 @@ export class AddTechnicalComponent implements OnInit {
 
   fetchedService() {
     console.log(this.techniciansForm.controls.service_tech.value);
-    this.fetchedServicee = this.techniciansForm.controls.service_tech.value.map(
+    this.fetchedServicee = this.techniciansForm.controls.contract_type.value.map(
       ele => ele.id
     );
   }
+
+  fetchedContracts()
+  {
+    this.fetchedContractss = this.techniciansForm.controls.service_tech.value.map(
+      ele => ele.id
+    );
+  }
+
+
   fetchedCity() {
     console.log(this.techniciansForm.controls.city_tech.value);
     this.fetchedCityy = this.techniciansForm.controls.city_tech.value.map(
@@ -302,6 +329,9 @@ export class AddTechnicalComponent implements OnInit {
       this.techniciansForm.patchValue({ service: '' });
       this.techniciansForm.patchValue({ service_tech: [] });
     }
+
+ 
+
     if (key === 'cityObj') {
       (document.getElementById('cityObj') as HTMLInputElement).value = '';
       this.techniciansForm.patchValue({ city: '' });
@@ -375,6 +405,7 @@ export class AddTechnicalComponent implements OnInit {
 
       service_tech: data['services'].map(el => el.id),
       city_tech: data['cities'].map(el => el.id),
+      contract_type : data['contract_type'].map(el => el.id) ,
 
       serviceObj: data['service'],
       cityObj: data['city'],

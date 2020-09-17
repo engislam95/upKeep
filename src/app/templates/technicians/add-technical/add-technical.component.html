@@ -446,33 +446,7 @@
                     </mat-option>
                   </mat-select>
 
-                  <!-- <input
-                    type="text"
-                    placeholder="اختر الخدمات"
-                    aria-label="Number"
-                    matInput
-                    formControlName="serviceObj"
-                    [matAutocomplete]="mainServicesAutoComplete"
-                    id="serviceObj"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('serviceObj')"
-                  >
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                  <mat-autocomplete
-                    #mainServicesAutoComplete="matAutocomplete"
-                    [displayWith]="displayMainServices"
-                  >
-                    <mat-option
-                      *ngFor="let option of mainServiceFilteredOptions | async"
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-autocomplete> -->
+                
                 </mat-form-field>
                 <div
                   [@fade]
@@ -829,6 +803,53 @@
                   <img src="../../../../assets/img/close.svg" />
                 </button>
               </div>
+
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-people-arrows"></i> نوع التعاقد
+                  <span>*</span></label
+                >
+              
+               
+
+                <mat-form-field dir="rtl" appearance="outline">
+                  <mat-select
+                    class="filterInput"
+                    formControlName="contract_type"
+                    placeholder="اختر نوع التعاقد"
+                  >
+                    <mat-option
+                      *ngFor="let option of mainContractTpe"
+                      [value]="option.id"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+
+                
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (techniciansForm.get('service_tech').status === 'INVALID' &&
+                      techniciansForm.get('service_tech').touched) ||
+                    (submitted &&
+                      techniciansForm.get('service_tech').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('service_tech').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+                
+              </div>
+
 
               <div class="form_field fullWidth toggle">
                 <p>

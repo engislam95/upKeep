@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { LoaderService } from 'src/app/tools/shared-services/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from 'src/app/tools/shared-services/core.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
 @Component({
   selector: 'app-technical-details',
   templateUrl: './technical-details.component.html',
@@ -18,15 +20,18 @@ export class TechnicalDetailsComponent implements OnInit {
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
-  max: number = 10;
-  rate: number = 7;
+  max: number = 6;
+  rate: number = 4;
   isReadonly: boolean = true;
+  modalRef: BsModalRef;
+
   /* ----------------------- Constructor ------------------------ */
   constructor(
     private loaderService: LoaderService,
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router ,
+    private modalService: BsModalService
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
@@ -74,4 +79,49 @@ export class TechnicalDetailsComponent implements OnInit {
     this.pageLoaded = true;
     this.loaderService.endLoading();
   }
+  
+  openModalImage() {
+            // Get the modal
+          var modal = document.getElementById("imageTechModel");
+
+          console.log(modal)
+
+          // Get the image and insert it inside the modal - use its "alt" text as a caption
+          var img = document.getElementById("imageTech");
+       
+            modal.style.display = "block";
+            
+          
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks on <span> (x), close the modal
+        
+  }
+
+  closeImageTech()
+  {
+   
+    console.log( document.getElementById("imageTechModel"));
+    
+    document.getElementById("imageTechModel").style.display = "none";
+  }
+
+  
+  openModalPin() {
+      // Get the modal
+      var modal = document.getElementById("imageTechPinModel");
+       modal.style.display = "block";
+        
+  }
+
+  closeImagePin()
+  {
+    document.getElementById("imageTechPinModel").style.display = "none";
+  }
+
+
 }
+
+

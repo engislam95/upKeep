@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { TechniciansRoutingModule } from './technicians-routing.module';
 import { MatTableModule, MatInputModule, MatSlideToggleModule } from '@angular/material';
@@ -9,6 +10,7 @@ import { AllTechniciansComponent } from './all-technicians/all-technicians.compo
 import { TechnicalDetailsComponent } from './technical-details/technical-details.component';
 import { ToolsModule } from 'src/app/tools/tools.module';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { BarRatingModule } from 'ngx-bar-rating-custom/rating.module';
 
 @NgModule({
   declarations: [AddTechnicalComponent, AllTechniciansComponent, TechnicalDetailsComponent],
@@ -21,7 +23,9 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     MatInputModule,
     MatTableModule,
     MatSlideToggleModule ,
-    RatingModule.forRoot()
+    BarRatingModule ,
+    RatingModule.forRoot() ,
+    ModalModule.forRoot()
   ]
 })
 export class TechniciansModule {}
