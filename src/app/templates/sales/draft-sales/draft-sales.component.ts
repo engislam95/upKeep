@@ -18,12 +18,12 @@ import { noAddressValidator } from 'src/app/tools/shared_validators/NoAddress.va
 import { startEndTimeValidator } from 'src/app/tools/shared_validators/StartEndTime.validator';
 
 @Component({
-  selector: 'app-all-sales',
-  templateUrl: './all-sales.component.html',
-  styleUrls: ['./all-sales.component.scss'],
+  selector: 'app-draft-sales',
+  templateUrl: './draft-sales.component.html',
+  styleUrls: ['./draft-sales.component.scss'],
   animations: [popup]
 })
-export class AllSalesComponent implements OnInit {
+export class DraftSalesComponent implements OnInit {
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
@@ -80,10 +80,9 @@ export class AllSalesComponent implements OnInit {
     'main_service',
     'service_date',
     'order_res',
+    'city',
     'order_time',
     'order_status',
-    'city',
-    'order_resource',
     'order_details'
   ];
   ordersArray = [];
@@ -102,7 +101,6 @@ export class AllSalesComponent implements OnInit {
   //
 
   filteredClientData = '';
-  filteredBy = '';
   filteredFromDate = '';
   filteredToDate = '';
   filteredTechnicians = '';
@@ -122,7 +120,6 @@ export class AllSalesComponent implements OnInit {
       startDateFilter: new FormControl(''),
       endDateFilter: new FormControl(''),
       filterName: new FormControl(''),
-      filterNameby: new FormControl(''),
       ordersNumberObj: new FormControl(''),
       start: new FormControl(''),
       end: new FormControl(''),
@@ -157,7 +154,6 @@ export class AllSalesComponent implements OnInit {
   orderStatusArray = [];
   servicesArray: any = [];
   cityArray: any = [];
-  citiedIDs: any = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -261,8 +257,7 @@ export class AllSalesComponent implements OnInit {
 
   orderCity(event) {
     console.log(event);
-    this.citiedIDs = event;
-    this.getAllOrders();
+
   }
   //
   // ──────────────────────────────────────────── END LISTEN FOR ORDERS UPDATES ─────
@@ -335,21 +330,6 @@ export class AllSalesComponent implements OnInit {
         this.getAllOrders();
       });
   }
-  filterby() {
-    const filterName = document.getElementById('filterNameby');
-    const filterNameListner = fromEvent(filterName, 'keyup');
-    filterNameListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filteredBy = value;
-        this.getAllOrders();
-      });
-  }
 
   //
   // ──────────────────────────────────────── END GET SERVICES WITH TECHNICIANS ─────
@@ -366,13 +346,7 @@ export class AllSalesComponent implements OnInit {
         filterName: ''
       });
       this.filteredClientData = '';
-    }
-    if (key === 'filterNameby') {
-      this.filterForm.patchValue({
-        filterNameby: ''
-      });
-    }
-    else if (key === 'startDateFilter') {
+    } else if (key === 'startDateFilter') {
       this.filterForm.patchValue({ filteredFromDate: '', startDateFilter: '' });
       this.filteredFromDate = '';
     } else if (key === 'endDateFilter') {
@@ -469,9 +443,7 @@ export class AllSalesComponent implements OnInit {
         created_at: this.filteredFromDate,
         order_date: this.filteredToDate,
         client: this.filteredClientData,
-        created_by: this.filteredBy,
         'service_ids[]': this.filterForm['controls'].services.value,
-        'city_id[]': this.citiedIDs,
         start: this.filterForm.value.start,
         end: this.filterForm.value.end,
         today: this.todayFilltered,
