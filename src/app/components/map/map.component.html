@@ -178,6 +178,22 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+                <div class="form_input" style="margin-top: 20px;">
+                  <button
+                    type="button"
+                    alt="جدول الطلبات"
+                    title="جدول الطلبات"
+                    routerLink="/orders/orders-table"
+                    style="width: 54px;
+                 height: 49px;
+                 border-radius: 10px;
+                 background: #f6a811;
+                 box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                 "
+                  >
+                    <i class="fas fa-bars"></i>
+                  </button>
+                </div>
               </ng-container>
             </form>
 
@@ -670,7 +686,7 @@
               تغيير اللون
             </button>
           </mat-tab>
-          <mat-tab label="تحويل الطلب" *ngIf="updateSaleOrder.technician_id">
+          <mat-tab label="تحويل الطلب" *ngIf="updateSaleOrder['technician_id']">
             <div
               class="form_field full_width"
               style="margin: 20px 0; padding: 15px;"

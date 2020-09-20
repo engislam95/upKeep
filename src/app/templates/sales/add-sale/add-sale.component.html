@@ -20,7 +20,7 @@
         </a>
       </div>
     </div>
-    
+
     <div
       class="page_body formContainer"
       [ngClass]="{ pageNotLoaded: !pageLoaded }"
@@ -640,6 +640,16 @@
                   <i class="fas fa-check"></i>
                   إدخال صحيح
                 </div>
+                <a routerLink="/orders/orders-tables" target="_blank">
+                  <button
+                    type="button"
+                    id="ordersMap"
+                    *ngIf="selectMainService && selectDate && selectClient"
+                    [@fade]
+                  >
+                    خريطة الطلبات
+                  </button>
+                </a>
               </div>
               <div class="form_field inputWithButton">
                 <label>
