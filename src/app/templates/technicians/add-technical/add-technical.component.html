@@ -832,10 +832,10 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    (techniciansForm.get('service_tech').status === 'INVALID' &&
-                      techniciansForm.get('service_tech').touched) ||
+                    (techniciansForm.get('contract_type').status === 'INVALID' &&
+                      techniciansForm.get('contract_type').touched) ||
                     (submitted &&
-                      techniciansForm.get('service_tech').status === 'INVALID')
+                      techniciansForm.get('contract_type').status === 'INVALID')
                   "
                 >
                   <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
@@ -843,7 +843,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="techniciansForm.get('service_tech').status === 'VALID'"
+                  *ngIf="techniciansForm.get('contract_type').status === 'VALID'"
                 >
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>

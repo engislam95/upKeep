@@ -85,7 +85,7 @@ export class AddTechnicalComponent implements OnInit {
     imagePin: new FormControl(''),
     imageInputObjPin: new FormControl(''),
     delete_pin: new FormControl(false) ,
-    contract_type : new FormControl('')
+    contract_type : new FormControl('', Validators.required)
   });
   notConfirmed = false;
   submitted = false;
@@ -384,7 +384,7 @@ export class AddTechnicalComponent implements OnInit {
   //  ############################# End Assign Updated Data #############################
   assignUpdatedData() {
     const data = this.updatedTechnicalData;
-    console.log(data['cities']);
+    console.log(data);
     this.countryPhoneKey = data['city'].country.phone_code;
     this.mobileNumber = data['mobile'];
     // Start Select Search For Main Services
@@ -405,7 +405,7 @@ export class AddTechnicalComponent implements OnInit {
 
       service_tech: data['services'].map(el => el.id),
       city_tech: data['cities'].map(el => el.id),
-      contract_type : data['contract_type'].map(el => el.id) ,
+      contract_type : data['contract'].id ,
 
       serviceObj: data['service'],
       cityObj: data['city'],
@@ -513,6 +513,7 @@ export class AddTechnicalComponent implements OnInit {
     });
     this.submitted = true;
     this.startLoading();
+    console.log(this.techniciansForm.value)
     this.coreService
       .postMethod('technicians', this.techniciansForm.value)
       .subscribe(

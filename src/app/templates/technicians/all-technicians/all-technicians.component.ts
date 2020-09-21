@@ -79,7 +79,8 @@ export class AllTechniciansComponent implements OnInit {
 
   CityArray = [];
   filteredCityArray = [];
-
+  mainContractTpe = [] ;
+  mainServicesLoaded ;
   technician_add: boolean = false;
   technician_all: boolean = false;
   technician_update: boolean = false;
@@ -135,6 +136,18 @@ export class AllTechniciansComponent implements OnInit {
     this.getAllTechnicians(this.pageId);
     this.getAllServices();
     this.getAllServicesCities();
+
+    this.coreService
+      .getMethod('lookup/contract-types', {})
+      .subscribe((contracts: any) => {
+        
+        console.log(contracts);
+        this.mainContractTpe = contracts.data;
+        this.mainServicesLoaded = true;
+        // Start End Loading
+        this.endLoading();
+      });
+
     // End Get All Technicians
 
     //  ############################ Start Filters ############################
