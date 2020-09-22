@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { fadeAnimation } from './animations';
 import { MessagingService } from './tools/shared-services/messaging.service';
 import { CoreService } from './tools/shared-services/core.service';
-import { WebSocketService } from './tools/shared-services/web-socket.service' ;
+import { WebSocketService } from './tools/shared-services/web-socket.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,18 +13,23 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   showSideMenu = false;
-  currentUser ;
+  currentUser;
   // message: any = '';
   constructor(
     private messagingService: MessagingService,
-    private coreService: CoreService ,
-    private WebSocketService : WebSocketService ,
+    private coreService: CoreService,
+    private WebSocketService: WebSocketService,
     private router: Router
   ) {
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
-    window.addEventListener('beforeunload', function(e) {
+    if (this.currentUser) {
+      console.log(this.currentUser.company_slug);
+      document.title = this.currentUser.company_slug;
+    }
+
+    window.addEventListener('beforeunload', function (e) {
       // e.preventDefault();
       // console.log(localStorage.getItem('notificationToken') )
 
@@ -45,12 +50,11 @@ export class AppComponent implements OnInit {
     });
 
 
-    if(localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner' )
-    {
+    if (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner') {
 
-     this.WebSocketService.listenChannel('company.' + this.currentUser.id)
+      this.WebSocketService.listenChannel('company.' + this.currentUser.id)
 
-    //   // this.router.navigate(['/system-off']);
+      //   // this.router.navigate(['/system-off']);
 
 
     }
@@ -69,7 +73,7 @@ export class AppComponent implements OnInit {
 
     // console.log(this.WebSocketService.listenChannel("name")) 
 
-  
+
 
 
   }
