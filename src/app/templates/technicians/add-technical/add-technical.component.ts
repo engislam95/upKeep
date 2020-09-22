@@ -405,7 +405,7 @@ export class AddTechnicalComponent implements OnInit {
 
       service_tech: data['services'].map(el => el.id),
       city_tech: data['cities'].map(el => el.id),
-      contract_type : data['contract'].id ,
+      contract_type : data['contract'] ? data['contract'].id : null ,
 
       serviceObj: data['service'],
       cityObj: data['city'],
