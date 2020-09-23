@@ -4,9 +4,24 @@
   font-size: 15px;
   text-align: right;
   color: #101010;
-  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);      
+  // text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);      
+}
+.fontStt
+{
+  font-weight: 100;
+  font-size: 13px;
+  font-style: normal;
+  text-shadow: none;
+  text-align: center;
 }
 
+.fontSN
+{
+  font-weight: 100;
+  font-size: 13px;
+  color: #000000bd;
+  font-style: normal;
+}
 .profileImageContainer {
   padding-top: 15px;
 }
@@ -80,7 +95,7 @@ ul{
 
   width: 380px;
   margin: 1% ;
-  height: 175px;
+  height: 200px;
   border-radius: 10px;
   background: #fbfbfb;
   border: 1px solid rgba(112, 112, 112, 0.45);
@@ -126,13 +141,21 @@ ul{
         width: 81px;
         // padding-bottom: 7px;
         border-radius: 10px;
-        background:#EFEFEF;
-        border: 1px solid rgba(112, 112, 112, 0.34);
-        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+        background: #efefef;
+        border: 1px solid #fff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
         margin-right: 13px;
           font-size: 32px;
           text-align: center;
           color: #636363;
+
+//           width: 98px;
+// height: 91px;
+// border-radius: 10px;
+// background: #efefef;
+// border: 1px solid #fff;
+// box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+
 
       }
       i
@@ -140,12 +163,11 @@ ul{
         color: black ;
       }
       p{
-        font-family: "GE SS Two";
-        font-weight: 300;
-        font-size: 14px;
+        font-weight: 100;
+        font-size: 13px;
+        font-style: normal;
+        text-shadow: none;
         text-align: center;
-        color: #000;
-        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
         margin-top: 5px;
 
       }
@@ -252,11 +274,12 @@ ul{
   background: #f1f7ff;
   padding: 2%;
   font-size: 15px ;
-  border-bottom: 1px dotted #707070;
+  // border-bottom: 1px dotted #707070;
   i
   {
     margin-left: 2%;
     font-size: 20px;
+    color: #5E5544 ;
 
   }
 }
@@ -272,6 +295,7 @@ ul{
   {
     margin-left: 2%;
     font-size: 20px;
+    color: #5E5544 ;
   }
 
 }
@@ -291,7 +315,7 @@ ul{
     width: 180px;
     height: 213px;
     border-radius: 10px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     display: block;
     position: relative;
 
@@ -309,9 +333,9 @@ ul{
     cursor: pointer;
 
     i{
-      top: 28%;
-    position: relative;
-    right: 20%;
+      top: 21%;
+      position: relative;
+      right: 16%;
     }
 
 
@@ -334,7 +358,7 @@ ul{
     width: 180px;
     height: 213px;
     border-radius: 10px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     display: block;
     position: relative;
 
@@ -353,9 +377,9 @@ ul{
 
 
     i{
-      top: 28%;
+      top: 21%;
       position: relative;
-      right: 20%;
+      right: 16%;
       }
 
 

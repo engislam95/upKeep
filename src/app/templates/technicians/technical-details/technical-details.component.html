@@ -69,9 +69,7 @@
 
 
       <div class="page_body_main" style="display:flex">
-        <div class="page_block " style="width: 50%;  border-left: 1px dotted #707070;">
-          
-     
+        <div class="page_block " style="width: 55%;  "> 
           <div class="profileDetails">
             <div class="profileDetails">
               <h3><i class="fas fa-users-cog" style="margin-left:2% ; font-size: 25px;"></i>تقارير و بيانات الفنى</h3>
@@ -112,29 +110,29 @@
 
           <div class="rating" style="display:flex">
             <div class="allRating" style="width: 50%;">
-              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:8% ; padding: 2% 0%">
                 <h3>التقييم العام للفنى </h3>
                 <rating style="color: #FFD500; padding: 0% 3%; font-size: 22px; float: left; padding: 0% 3%;" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
               </div>
-              <div style="display: flex; width: 100%; padding:2% ; text-align: center;">
-              <div style="width: 33%; padding: 1% 5%; border-left: 1px dotted black" >
-                <h5 style="font-size: 0.9rem;">تقييم العملاء </h5> 
-                <h5 style="font-size: 0.9rem;">5/10</h5>
+              <div style="display: flex; width: 100%; padding:3% ; text-align: center;">
+              <div style="width: 33%; padding: 1% 2%; border-left: 1px dotted #fff; filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));">
+                <p class="fontStt">تقييم العملاء </p> 
+                <h5 style="font-size: 1rem; color: #000;  font-weight: bold;">5/10</h5>
               </div>
-              <div style="width: 33%; padding: 1% 4%;  border-left: 1px dotted black" > 
-              <h5 style="font-size: 0.9rem;"> تقييم الإدارة</h5>
-              <h5 style="font-size: 0.9rem;">5/10</h5>
+              <div style="width: 33%; padding: 1% 4%;  border-left: 1px dotted #fff;  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));" > 
+              <p class="fontStt"> تقييم الإدارة</p>
+              <h5 style="font-size: 1rem; color: #000;  font-weight: bold;">5/10</h5>
             </div>
-              <div style="width: 33%; padding: 1% 4%;" >
-              <h5 style="font-size: 0.9rem;"> النقاط </h5>
-              <h5 style="font-size: 0.9rem;"> 355 </h5>
+              <div style="width: 33%; padding: 1% 3% 1% 4%;" >
+                <p class="fontStt"> النقاط </p>
+              <h5 style="font-size: 1rem; color: #000;  font-weight: bold;"> 355 </h5>
               </div>
 
               </div>
             </div>
 
             <div class="allRating" style="width: 50% ; height:200px ">
-              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
                 <h3> تتبع الفنى </h3>
               </div>
               <div class="controlAllOrder">
@@ -162,7 +160,7 @@
 
           <div class="ratingControl" style="display:flex">
             <div class="allRating" style="width: 50%;  height:200px">
-              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
                 <h3>  تقييمات و تقارير الفنى </h3>
               </div>
               <div class="controlAllOrder">
@@ -186,14 +184,14 @@
               </div>
             </div>
             <div class="allRating" style="width: 50% ; height:200px">
-              <div class="ratingHead" style="margin-bottom:4% ; padding: 2% 0%">
+              <div class="ratingHead" style="margin-bottom:6% ; padding: 2% 0%">
                 <h3> التحكم في حساب الفنى </h3>
               </div>
               <div class="controlAllOrder">
                 <ul>
 
                   <li *ngIf="technicalDetails.active == 1 ">
-                    <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
+                    <i  style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fal fa-info-circle"></i>
                     <button (click)="activateTechnical()" type="button">
                       <i class="far fa-stop-circle"></i>
                     </button>
@@ -225,76 +223,212 @@
 
         </div>
 
-        <div class="page_block" style="width:30% ; border-left: 1px dotted #707070;">
+        <div style="width: 0px;
+        height: 706px;
+        background: transparent;
+        border: 1px solid #fff;
+        filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));
+        "></div>
+
+        <div class="page_block" style="width:30% ; padding:15px 60px ; padding-right: 20px;">
 
           <div style="margin-bottom:5%" class="profileDetails">
             <div class="profileDetails">
-              <h3><i class="fas fa-users-cog" style="margin-left:2% ; font-size: 25px;"></i>تقارير و بيانات الفنى</h3>
+              <h3><i class="fas fa-users-cog" style="margin-left:2% ; font-size: 25px;"></i> بيانات الفنى</h3>
             </div>
           </div>
 
           <div class="technicalDetails">
             <h5 class="blueLabel"> 
-              <i class="fas fa-ellipsis-h"></i>
-              <span class="fontSt"> رقم الفنى </span>
-              <span class="fontSt" style="float: left;"> {{ technicalDetails.id }} </span>
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-ellipsis-h"></i>
+                  <span class="fontSN"> رقم الفنى </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                 <span class="fontSt" style="font-weight: bold;" > {{ technicalDetails.id }} </span>
+                </div>
+                <!-- <div style="width: 33%; display: inline-block;" ></div> -->
+
+              </div>
+              
             </h5> 
             <h5 class="grayLabel"> 
-              <i class="fas fa-user"></i>
-              <span class="fontSt"> اسم الفنى </span>
-              <span  class="fontSt" style="float: left;"> {{ technicalDetails.name }} </span>
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-user"></i>
+                  <span class="fontSN"> اسم الفنى </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                  <span  class="fontSt" > {{ technicalDetails.name }} </span>
+                </div>
+                <!-- <div style="width: 33%; display: inline-block;" ></div> -->
+
+              </div>
+             
+              
             </h5> 
             <h5 class="blueLabel"> 
-              <i class="fas fa-flag"></i>
-              <span  class="fontSt"> الجنسية </span>
-              <span class="fontSt" style="float: left;"> {{ technicalDetails.country }} </span>
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-flag"></i>
+                 <span  class="fontSN"> الجنسية </span>
+                </div>
+                <div style=" width: 50%; display: inline-block; text-align: right; " >
+                  <span class="fontSt" > {{ technicalDetails.country }} </span>
+                </div>
+                <div style="width: 10%; display: inline-block;" ></div>
+
+              </div>
+              
+             
             </h5> 
             <h5 class="grayLabel"> 
-              <i class="fas fa-mobile"></i>
-              <span class="fontSt"> رقم الموبايل </span>
-              <span class="fontSt" style="margin-right: 19%; "> {{ technicalDetails.mobile }} </span>
-              <i class="fas fa-copy" style="    float: left; padding-top: 2%; "></i>
+              <div class="display:flex ;" style="padding-top: 2%;">
+
+                <div style="width: 33%; display: inline-block;" >
+                  <i class="fas fa-mobile"></i>
+                  <span class="fontSN"> رقم الموبايل </span>
+                </div>
+                <div style=" width: 33%; display: inline-block; text-align: right; " >
+                  <span class="fontSt" style="margin-right: 19%; font-weight: bold;"> {{ technicalDetails.mobile }} </span>
+                </div>
+                <div style="width: 33%; display: inline-block; text-align: left;" >
+                  <i class="fal fa-copy" ></i></div>
+
+              </div>
+            
             </h5> 
             <h5 class="blueLabel"> 
-              <i class="fas fa-envelope"></i>
-              <span class="fontSt">  البريد الإلكتروني </span>
-              <span class="fontSt" style="float: left;" > {{ technicalDetails.email ? technicalDetails.email : 'لا يوجد ' }} </span>
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-envelope"></i>
+                 <span class="fontSN">  البريد الإلكتروني </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                  <span class="fontSt" style="font-weight: bold;" > {{ technicalDetails.email ? technicalDetails.email : 'لا يوجد ' }} </span>
+                </div>
+                <!-- <div style="width: 33%; display: inline-block;" ></div> -->
+
+              </div>
+            
             </h5> 
             <h5 class="grayLabel"> 
-              <i class="fas fa-id-card-alt"></i>
-              <span class="fontSt" > نوع التعاقد </span>
-              <span class="fontSt" style="float: left;"> موظف </span>
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-id-card-alt"></i>
+                  <span class="fontSN" > نوع التعاقد </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                  <span class="fontSt" > موظف </span>
+                </div>
+                <!-- <div style="width: 33%; display: inline-block;" ></div> -->
+
+              </div>
+              
+              
             </h5> 
             <h5 class="blueLabel"> 
-              <i class="fab fa-pinterest"></i>
-              <span  class="fontSt"> فاعلية الحساب </span>
-              <span class="fontSt" style="color: green ; float: left;" *ngIf="technicalDetails.active == 1"> نشط </span>
+              <div class="display:flex ;" style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fab fa-pinterest"></i>
+                  <span  class="fontSN"> فاعلية الحساب </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right" >
+                  <span class="fontSt" style="color: green " *ngIf="technicalDetails.active == 1"> نشط </span>
+                </div>
+                <!-- <div style="width: 33%; display: inline-block;" ></div> -->
+
+              </div>
+              
+             
+            </h5> 
+            
+            <h5 class="grayLabel"> 
+              <div class="display:flex " style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-calendar-week"></i>
+                 <span class="fontSN" > تاريخ الاضافة</span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                  <span  class="fontSt" style="font-weight: bold;" > {{ technicalDetails.created_at }} </span>
+                </div>
+                <!-- <div style="width: 20%; display: inline-block;" ></div> -->
+
+              </div>
+             
+             
+            </h5> 
+            <h5 class="blueLabel ; "> 
+
+              <div class="display:flex ;" style="padding-top: 2%;">
+
+                <div style="width: 40%; display: inline-block;" >
+                  <i class="fas fa-user-plus"></i>
+                  <span  class="fontSN"> إضافة بواسطة </span>
+                </div>
+                <div style=" width: 40%; display: inline-block; text-align: right; " >
+                  <span  class="fontSt" style="font-weight: bold;" > Super admin  </span>
+                </div>
+                <!-- <div style="width: 20%; display: inline-block; text-align: center; " >  </div> -->
+                
+
+              </div>
+             
+             
             </h5> 
             <h5 class="grayLabel"> 
-              <i class="fas fa-calendar-week"></i>
-              <span class="fontSt" > تاريخ الاضافة</span>
-              <span  class="fontSt" style="float: left;"> {{ technicalDetails.created_at }} </span>
+
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 41%; display: inline-block;" >
+                  <i class="fas fa-user-shield"></i>
+                  <span class="fontSN" > الخدمات </span>
+                </div>
+                <div style=" width: 59%; display: inline-block; text-align: right; " >
+                  <span class="fontSN" style="font-size: 9px; font-weight: bold;" *ngFor="let service of technicalDetails.services; let i = index">  {{ service.name  }}  <span *ngIf="i != 0 && i != technicalDetails.services.length"> - </span> </span>
+                </div>
+             
+
+              </div>
+             
+              
             </h5> 
             <h5 class="blueLabel"> 
-              <i class="fas fa-user-plus"></i>
-              <span  class="fontSt"> إضافة بواسطة </span>
-              <span class="fontSt" style="float: left;"> Super admin </span>
-            </h5> 
-            <h5 class="grayLabel"> 
-              <i class="fas fa-user-shield"></i>
-              <span class="fontSt" > الخدمات </span>
-              <span class="fontSt" style="float: left;" *ngFor="let service of technicalDetails.services; let i = index">  {{ service.name  }}  <span *ngIf="i != 0 && i != technicalDetails.services.length"> - </span> </span>
-            </h5> 
-            <h5 class="blueLabel"> 
-              <i class="fas fa-map-marker"></i>
-              <span class="fontSt" > أماكن الخدمات </span>
-              <span class="fontSt" style="float: left;" *ngFor="let city of technicalDetails.cities; let i = index">  {{ city.name  }} <span *ngIf="i != 0 && i != technicalDetails.cities.length"> - </span> </span> 
+              <div class="display:flex ; " style="padding-top: 2%;">
+
+                <div style="width: 41%; display: inline-block;" >
+                  <i class="fas fa-map-marker"></i>
+                 <span class="fontSN" > أماكن الخدمات </span>
+                </div>
+                <div style=" width: 59%; display: inline-block; text-align: right; " >
+                  <span class="fontSN" style="font-size: 9px;" *ngFor="let city of technicalDetails.cities; let i = index">  {{ city.name  }} <span *ngIf="i != 0 && i != technicalDetails.cities.length"> - </span> </span> 
+                </div>
+
+              </div>
+             
+             
+           
             </h5> 
           </div>
 
         </div>
 
-        <div class="page_block" style="width:20% ; border-left: 1px dotted #707070;">
+        <div style="width: 0px;
+        height: 706px;
+        background: transparent;
+        border: 1px solid #fff;
+        filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.16));
+        "></div>
+
+        <div class="page_block" style="width:15% ">
           <div class="technicalImg">
             <i class="fas fa-image" ></i>
             <span class="fontSt" > صورة الفنى  </span>
