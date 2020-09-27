@@ -67,12 +67,13 @@ export class AllTechniciansComponent implements OnInit {
     techniciansStatusObj: new FormControl(),
     filterName: new FormControl(),
     service: new FormControl(),
-    serviceCity: new FormControl()
+    serviceCity: new FormControl() ,
+    contractType : new FormControl()
   });
 
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
   statusFilteredOptions: Observable<any>;
-  filteredStatusId = '';
+  filteredStatusId:any = '';
 
   ServiceArray = [];
   filteredServiceArray = [];
@@ -87,7 +88,7 @@ export class AllTechniciansComponent implements OnInit {
   technician_delete: boolean = false;
   user: any = '';
   technicians: any = [];
-
+  filteredContractId ;
   //  ###################### End Select Status ######################
   constructor(
     //
@@ -169,12 +170,15 @@ export class AllTechniciansComponent implements OnInit {
     //  ############################ End Filters ############################
 
     // Start Select Search For Status Types
-    this.statusFilteredOptions = this.filterForm
+
+      this.statusFilteredOptions = this.filterForm
       .get('techniciansStatusObj')
       .valueChanges.pipe(
         startWith(''),
         map(value => this.filterTechniciansStatus(value))
       );
+
+    
     // End Select Search For Status Types
 
     // End Select Search For Status Types
@@ -195,24 +199,48 @@ export class AllTechniciansComponent implements OnInit {
     //   });
     // // End Select Search For Status Types
   }
+  selectStatus(ev) {
+    console.log(ev);
+    this.filteredStatusId = ev ;
+    this.getAllTechnicians(this.pageId);
+  }
 
+  selectContract(ev)
+  {
+    console.log(ev);
+    this.filteredContractId = ev ;
+    this.getAllTechnicians(this.pageId);
+  }
   //  ############################### End OnInit ###############################
   //  ######################### Start Filter Order Status  #########################
   filterTechniciansStatus(value: any) {
+    console.log(value);
+    
     if (typeof value === 'object') {
       this.filteredStatusId = value.id;
       this.pageId = 1;
       this.getAllTechnicians(this.pageId);
     }
     if (value === '') {
+      console.log(this.statusArray);
+      
       this.filteredStatusId = '';
       this.pageId = 1;
       this.getAllTechnicians(this.pageId);
     }
+
     return this.statusArray.filter(option => option.name.includes(value));
   }
 
-  filterTechniciansService(value) {
+  filterTechniciansService(services,value) {
+  
+    // services.openedChange.subscribe(opened => {
+    //   return opened
+
+          services.close();
+      
+      
+    
     console.log(value);
     if (value.length > 0) {
       this.filteredServiceArray = value;
@@ -231,7 +259,9 @@ export class AllTechniciansComponent implements OnInit {
     return this.filteredServiceArray;
   }
 
-  filterTechniciansCity(value) {
+  filterTechniciansCity(cities , value) {
+    cities.close();
+
     if (value.length > 0) {
       this.filteredCityArray = value;
       console.log(this.filteredCityArray);
@@ -287,10 +317,15 @@ export class AllTechniciansComponent implements OnInit {
       });
       this.filteredTechniciansData = '';
     } else if (key === 'techniciansStatusObj') {
+      this.filteredStatusId =  '',
       this.filterForm.patchValue({
-        filteredStatusId: '',
         techniciansStatusObj: ''
       });
+
+    }
+    else if (key == 'contractType')
+    {
+      this.filteredContractId = ''
     }
     this.pageId = 1;
     this.getAllTechnicians(this.pageId);
