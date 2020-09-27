@@ -85,7 +85,7 @@ export class AddTechnicalComponent implements OnInit {
     imagePin: new FormControl(''),
     imageInputObjPin: new FormControl(''),
     delete_pin: new FormControl(false) ,
-    contract_type : new FormControl('')
+    contract_type : new FormControl('' , Validators.required)
   });
   notConfirmed = false;
   submitted = false;
