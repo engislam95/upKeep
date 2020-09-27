@@ -6586,3 +6586,13 @@ button:disabled {
   }
 
 }
+
+.cityInputSelect {
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0px .75em 5px .75em;
+  }
+}
