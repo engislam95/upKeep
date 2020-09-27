@@ -248,15 +248,21 @@
         </a>
         <ul class="drop_menu" id="sales">
           <li>
+            <a routerLink="/sales/add-sale" routerLinkActive="active">
+              <i class="fas fa-plus"> </i>
+              اضافة مبيعات جديدة
+            </a>
+          </li>
+          <li>
             <a routerLink="/sales/all-sales" routerLinkActive="active">
               <i class="fas fa-table"> </i>
-              طلبات المبيعات
+              جدول المبيعات
             </a>
           </li>
           <li>
             <a routerLink="/sales/orders-sales-map" routerLinkActive="active">
               <i class="fas fa-map-marked-alt"> </i>
-              خريطة الطلبات
+              خريطة المبيعات
             </a>
           </li>
           <!-- <li>
@@ -270,18 +276,6 @@
           </li> -->
         </ul>
       </li>
-      <!-- <li
-        class="drop_list"
-        *ngIf="user.privilege == 'super-admin'"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        routerLink="/owner"
-      >
-        <a>
-          <i class="fas fa-user-shield"></i>
-          المالك
-        </a>
-      </li> -->
     </ul>
   </div>
 </div>
