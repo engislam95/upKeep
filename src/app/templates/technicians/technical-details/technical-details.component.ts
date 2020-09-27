@@ -85,6 +85,18 @@ export class TechnicalDetailsComponent implements OnInit {
     this.pageLoaded = true;
     this.loaderService.endLoading();
   }
+
+  copyURL(text) {
+    console.log(text);
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    this.showSuccess('تم النسخ');
+  }
+
   
   openModalImage() {
             // Get the modal

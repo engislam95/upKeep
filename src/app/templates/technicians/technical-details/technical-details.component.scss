@@ -1,10 +1,24 @@
 .fontSt
 {
+  font-weight: 200;
+  font-size: 15px;
+  text-align: right;
+  color: #101010;
+  font-family: 'Arabic Roboto bold';
+
+
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);      
+}
+.fontStN
+{
   font-weight: 500;
   font-size: 15px;
   text-align: right;
   color: #101010;
-  // text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);      
+  font-family: 'Roboto';
+  font-weight: bold ;
+
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);      
 }
 .fontStt
 {
@@ -15,12 +29,15 @@
   text-align: center;
 }
 
+
 .fontSN
 {
-  font-weight: 100;
-  font-size: 13px;
+  font-weight: 500;
+  font-size: 15px;
   color: #000000bd;
-  font-style: normal;
+  font-family: 'Arabic gess light';
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;      
+
 }
 .profileImageContainer {
   padding-top: 15px;
@@ -29,11 +46,18 @@
 .clientDetails-name {
   padding: 0px 50px;
   margin-bottom: 2%;
+  h3
+  {
+    font-family: 'Arabic gess light';
+
+  }
 ul{
   display: flex;
   li {
     margin-bottom: 1px;
     margin-left: 15px;
+  font-family: 'Arabic gess light';
+
   }
   .clientDetails-id {
     background: #27282a;
@@ -43,7 +67,7 @@ ul{
     margin-left: 10px;
   }
   .cilentAccount-type {
-    font-family: Roboto;
+    font-family: 'Roboto';
     font-weight: bold;
     font-size: 16px;
     text-align: center;
@@ -62,8 +86,7 @@ ul{
 
     background: #1e9a19;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
-    font-family: Roboto;
-    font-weight: bold;
+    font-family: 'Arabic gess light';
     font-size: 15px;
     text-align: center;
     color: #fff;
@@ -77,8 +100,7 @@ ul{
 
     background: red;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
-    font-family: Roboto;
-    font-weight: bold;
+    font-family: 'Arabic gess light';
     font-size: 15px;
     text-align: center;
     color: #fff;
@@ -198,20 +220,21 @@ ul{
 .mobileConnected .connected
 {
   width: 172px;
-  height: 42px;
   border-radius: 10px;
   background: #139e18;
   border: 1px solid rgba(112, 112, 112, 0.34);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-  display: inline-block ;
-  color: #fff ;
-  padding: 0% 2%;
+  display: inline-block;
+  color: #fff;
+  padding: 0.5% 1%;
   text-align: center;
-  margin-left: 2% ;
+  margin-left: 2%;
+
+  
   i
   {
     margin-left: 6%;
-    font-size: 24px;
+    font-size: 18px;
     padding-top: 4%;
   }
 
@@ -220,20 +243,19 @@ ul{
 .mobileConnected .disConnected
 {
   width: 172px;
-  height: 42px;
   border-radius: 10px;
   background: #C5C5C5;
   border: 1px solid rgba(112, 112, 112, 0.34);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   display: inline-block ;
   color: #fff ;
-  padding: 0% 2%;
+  padding: 0.5% 1%;
   text-align: center;
   margin-left: 2% ;
   i
   {
     margin-left: 6%;
-    font-size: 24px;
+    font-size: 18px;
     padding-top: 4%;
   }
 
@@ -241,19 +263,18 @@ ul{
 .mobileConnected .logout
 {
   width: 53px;
-  height: 42px;
   border-radius: 10px;
   background: #515151;
   border: 1px solid rgba(112, 112, 112, 0.34);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   display: inline-block ;
   color: #fff ;
-  padding: 0% 2%;
+  padding: 0.5% 0.7%;
   text-align: center;
 
   i
   {
-    font-size: 25px;
+    font-size: 18px;
     padding-top: 8px;
   }
 
@@ -270,12 +291,12 @@ ul{
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   display: inline-block ;
   color: #fff ;
-  padding: 0% 2%;
+  padding: 0.5% 0.7%;
   text-align: center;
 
   i
   {
-    font-size: 25px;
+    font-size: 18px;
     padding-top: 8px;
   }
 
@@ -285,32 +306,34 @@ ul{
 .blueLabel
 {
   width: 100%;
-  height: 40px;
+  // height: 40px;
   background: #f1f7ff;
-  padding: 2%;
+  padding: 1%;
   font-size: 15px ;
   // border-bottom: 1px dotted #707070;
-  i
-  {
-    margin-left: 2%;
-    font-size: 20px;
-    color: #5E5544 ;
+ 
 
+  i
+  {    margin-left: 6%;
+    font-size: 15px;
+    margin-right: 10px;
+    color: #5E5544;
   }
 }
 
 .grayLabel
 {
   width: 100%;
-  height: 40px;
+  // height: 40px;
   background: #fff;
-  padding: 2%;
+  padding: 1%;
   font-size: 15px ;
   i
   {
-    margin-left: 2%;
-    font-size: 20px;
-    color: #5E5544 ;
+    margin-left: 6%;
+    font-size: 15px;
+    margin-right: 10px;
+    color: #5E5544;
   }
 
 }
@@ -325,16 +348,23 @@ ul{
     margin-bottom: 7%;
 
   }
-  img 
+  .technicalImgImg
   {
     width: 180px;
     height: 213px;
-    border-radius: 10px;
-    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+   
     display: block;
     position: relative;
-
+    img 
+    {
+      width: 180px;
+      height: 213px;
+      border-radius: 10px;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  
+    }
   }
+ 
   .zoom 
   {
     width: 38px;
@@ -368,15 +398,24 @@ ul{
     font-size: 25px;
     margin-bottom: 7%;
   }
-  img 
+
+  .mapImgImg
   {
     width: 180px;
     height: 213px;
     border-radius: 10px;
-    // box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     display: block;
     position: relative;
-
+    img 
+    {
+      width: 70px;
+      height: 70px;
+      position: relative;
+      top: 40%;
+      right: 25%;
+  
+    }
   }
   .zoom 
   {
@@ -525,4 +564,10 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   .modal-content {
     width: 100%;
   }
+}
+
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
 }
