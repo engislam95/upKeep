@@ -58,6 +58,9 @@
               <span class="cilentAccount-type-0 " *ngIf="technicalDetails.active == 1" >
                 حساب نشط 
               </span>
+              <span class="cilentAccount-type-10 "  *ngIf="technicalDetails.active == 0" >
+                حساب  غير نشط 
+              </span>
              
             </li>
     
@@ -197,14 +200,14 @@
                     </button>
                     <p class="fontSt"> إيقاف الحساب </p>
                   </li>
-<!-- 
+
                   <li *ngIf="technicalDetails.active == 0 ">
                     <i   style="color:red ; position: relative ; top: -40px; right: 12px; font-size: 21px;" class="fas fa-info-circle"></i>
                     <button (click)="stopTechnical()"  style="background: #139E18;" type="button">
                       <i style="color:#fff" class="fas fa-play"></i>
                     </button>
                     <p class="fontSt"> تشغيل الحساب </p>
-                  </li> -->
+                  </li>
 
                   <li>
                     <button type="button">
@@ -342,6 +345,8 @@
                 </div>
                 <div style=" width: 40%; display: inline-block; text-align: right" >
                   <span class="fontSt" style="color: green " *ngIf="technicalDetails.active == 1"> نشط </span>
+                  <span class="fontSt" style="color: red " *ngIf="technicalDetails.active == 0"> غير نشط </span>
+
                 </div>
                 <!-- <div style="width: 33%; display: inline-block;" ></div> -->
 
