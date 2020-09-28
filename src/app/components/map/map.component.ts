@@ -185,10 +185,21 @@ export class MapComponent implements OnInit {
         }
       });
     }
+    const date = new Date()
+    .toLocaleString('en-GB', {
+      timeZone: 'Asia/Riyadh',
+      timeZoneName: 'short'
+    })
+    .split(',')[0]
+    .split('/')
+    .reverse()
+    .join('/');
+    console.log(date);
+    
     this.orderDate = '';
     this.coreService
       .getMethod('sales/map/orders', {
-        order_date: this.orderDate
+        order_date: this.orderDate? this.orderDate: date
       })
       .subscribe(orders => {
         console.log(orders);
@@ -252,7 +263,9 @@ export class MapComponent implements OnInit {
         );
     }
   }
-  updateColor() {
+  updateColor(color) {
+    console.log(color);
+    
     this.updateSaleOrder['label-color'] = this.color;
     console.log(this.updateSaleOrder['start'].split(':'));
     this.updateSaleOrder['start'] =

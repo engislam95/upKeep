@@ -338,7 +338,7 @@ form {
   font-size: 10px;
   position: relative;
   top: 23px;
-  left: -45px;
+  left: -37px;
 }
 
 @-moz-keyframes bounce {
@@ -506,5 +506,10 @@ form {
   top: 50%;
   left: 34%;
   background: #FFF;
-  width: 510px;
+}
+.overlayTech {
+  position: relative;
+  top: -51px;
+  left: -8px;
+  opacity: .3;
 }

@@ -547,19 +547,19 @@
                 <div
                   class="timePin"
                 >
-                <span>
+                <!-- <span>
                   من
-                </span>
+                </span> -->
                 <span>
                   {{
                     order.fromH > 12
                       ? order.fromH - 12 + ":" + order.fromM + "م"
                       : order.fromH + ":" + order.fromM + "ص"
-                  }}
+                  }} :
                 </span>
-                <span>
+                <!-- <span>
                   الي
-                </span>
+                </span> -->
                 <span>
                   {{
                     order.toH > 12
@@ -623,9 +623,15 @@
                 [longitude]="sale.location.long"
               >
                 <div
+                *ngIf="!sale.technician"
                   class="pin"
                   [ngStyle]="{ background: sale['label-color'] }"
                 ></div>
+                <div
+                *ngIf="sale.technician"
+                  class="overlayTech"
+                >
+              <img [src]="sale.technician.imagePin" alt=""></div>
                 <div class="pulse"></div>
               </agm-overlay>
             </agm-marker>
@@ -650,6 +656,12 @@
           mat-align-tabs="start"
           (selectedTabChange)="routerToEdit($event)"
         >
+          <mat-tab label="تفاصيل الطلب">
+            <div style="padding: 20px;text-align:center">
+              <h2>تفاصيل الطلب</h2>
+            </div>
+
+          </mat-tab>
           <mat-tab label="تغيير اللون">
             <div
               class="form_field"
