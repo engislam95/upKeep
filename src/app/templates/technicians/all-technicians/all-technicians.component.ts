@@ -347,7 +347,7 @@ export class AllTechniciansComponent implements OnInit {
       .getMethod('technicians?page=' + pageId, {
         name: this.filteredTechniciansData,
         active: this.filteredStatusId,
-        contract_type: this.filteredContractId ,
+        contract_type: this.filteredContractId ? this.filteredContractId : '' ,
         'service[]': this.filteredServiceArray,
         'city[]': this.filteredCityArray
       })
