@@ -484,9 +484,7 @@
                 [iconUrl]="{
                   url: order.technical.imagePin
                 }"
-                (mouseOver)="onMouseOver(infoWindow, gm)"
-                (mouseOut)="onMouseOut(infoWindow, gm)"
-                (markerClick)="orderDetails(order)"
+                (markerClick)="orderDetails(infoWindow, gm)"
               >
                 <div class="infoStyle" id="test">
                   <agm-info-window #infoWindow>
@@ -520,6 +518,12 @@
                         الملاحظات :
                         <div [innerHTML]="order.details"></div>
                       </li>
+                      <li>
+                        <a [routerLink]="['/orders/order-details']"
+                        [queryParams]="{
+                          orderId: order.id
+                        }">تفاصيل الطلب</a>
+                      </li>
                     </ul>
                   </agm-info-window>
                 </div>
@@ -536,35 +540,35 @@
                 style="opacity: 0;"
               >
                 <div class="infoStyle2" id="test2">
-                  <agm-info-window
-                    #infoWindoww
-                    [disableAutoPan]="false"
-                    [isOpen]="true"
-                    class="infoTime"
-                    style="background: #333 !important"
-                  >
-                    <ul style="background: #333; color: #fff;">
-                      <li>
-                        وقت تنفيذ الطلبية :
-                        <ng-container>
-                          <span class="timeTitleSpan">من : </span
-                          >{{
-                            order.fromH > 12
-                              ? order.fromH - 12 + ":" + order.fromM + "م"
-                              : order.fromH + ":" + order.fromM + "ص"
-                          }}
-                        </ng-container>
-                        <ng-container>
-                          <span class="timeTitleSpan"> الي : </span
-                          >{{
-                            order.toH > 12
-                              ? order.toH - 12 + ":" + order.toM + "م"
-                              : order.toH + ":" + order.toM + "ص"
-                          }}
-                        </ng-container>
-                      </li>
-                    </ul>
-                  </agm-info-window>
+                  <agm-overlay
+                  [latitude]="order.location.lat"
+                  [longitude]="order.location.long"
+              >
+                <div
+                  class="timePin"
+                >
+                <span>
+                  من
+                </span>
+                <span>
+                  {{
+                    order.fromH > 12
+                      ? order.fromH - 12 + ":" + order.fromM + "م"
+                      : order.fromH + ":" + order.fromM + "ص"
+                  }}
+                </span>
+                <span>
+                  الي
+                </span>
+                <span>
+                  {{
+                    order.toH > 12
+                      ? order.toH - 12 + ":" + order.toM + "م"
+                      : order.toH + ":" + order.toM + "ص"
+                  }}
+                </span>
+                </div>
+              </agm-overlay>
                 </div>
               </agm-marker>
             </ng-container>

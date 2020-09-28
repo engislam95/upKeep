@@ -769,7 +769,7 @@ export class MapComponent implements OnInit {
     setTimeout(() => {
       gm.lastOpen = infoWindow;
       infoWindow.close();
-    }, 7000);
+    }, 600000);
   }
   /* --------------------- Open Popup of Recommendations --------------------- */
   openRecommendationForm() {
@@ -830,11 +830,10 @@ export class MapComponent implements OnInit {
   }
 
   /* -------------------- Get Order Details ------------------------- */
-  orderDetails(order) {
-    console.log(order);
-    this.router.navigate(['/orders/order-details'], {
-      queryParams: { orderId: order.id }
-    });
+  orderDetails(infoWindow, gm) {
+    console.log(infoWindow);
+    gm.lastOpen = infoWindow;
+    infoWindow.open();
   }
   showErrors(errors) {
     this.responseState = 'error';

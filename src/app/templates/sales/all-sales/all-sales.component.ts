@@ -231,6 +231,32 @@ export class AllSalesComponent implements OnInit {
     this.todayOrdersPage();
     this.pageCountOptions();
     this.listenOrdersUpdates();
+    const filterName = document.getElementById('filterName');
+    const filterNameListner = fromEvent(filterName, 'keyup');
+    filterNameListner
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe((value: any) => {
+        this.pageId = 1;
+        this.filteredClientData = value;
+        this.getAllOrders();
+      });
+      const filterName2 = document.getElementById('filterNameby');
+      const filterNameListner2 = fromEvent(filterName2, 'keyup');
+      filterNameListner2
+        .pipe(
+          map((event: any) => event.target.value),
+          debounceTime(200),
+          distinctUntilChanged()
+        )
+        .subscribe((value: any) => {
+          this.pageId = 1;
+          this.filteredBy = value;
+          this.getAllOrders();
+        });
   }
   //
   // ─────────────────────────────────────────────────────────────── END ONINIT ─────
@@ -320,36 +346,6 @@ export class AllSalesComponent implements OnInit {
   // ─── FILTER NAME ────────────────────────────────────────────────────────────────
   //
 
-  filterClientName() {
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
-    filterNameListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filteredClientData = value;
-        this.getAllOrders();
-      });
-  }
-  filterby() {
-    const filterName = document.getElementById('filterNameby');
-    const filterNameListner = fromEvent(filterName, 'keyup');
-    filterNameListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filteredBy = value;
-        this.getAllOrders();
-      });
-  }
 
   //
   // ──────────────────────────────────────── END GET SERVICES WITH TECHNICIANS ─────
