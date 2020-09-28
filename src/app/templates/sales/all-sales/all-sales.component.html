@@ -7,19 +7,19 @@
     </div>
     <div class="page_body_title" [ngClass]="{ pageNotLoaded: !pageLoaded }">
       <h3><i class="fas fa-sort-shapes-down-alt"></i>طلبات المبيعات</h3>
-      <div class="button-add-taxs">
+      <div class="button-add-taxs" style="margin-left: 19px;">
         <button
-          routerLink="/orders/orders-map"
+          routerLink="/sales/orders-sales-map"
           *ngIf="order_add || user.privilege == 'super-admin'"
         >
-          <i class="fas fa-map"></i> خريطة الطلبات
+          <i class="fas fa-map"></i>خريطة المبيعات
         </button>
         <button
           routerLink="/sales/add-sale"
           style="margin-right: 20px;"
           *ngIf="order_add || user.privilege == 'super-admin'"
         >
-          <i class="fal fa-file-plus"></i> إضافة طلب مبيعات
+          <i class="fal fa-file-plus"></i>اضافة مبيعات جديدة
         </button>
       </div>
 
