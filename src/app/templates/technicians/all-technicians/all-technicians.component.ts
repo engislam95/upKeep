@@ -149,6 +149,8 @@ export class AllTechniciansComponent implements OnInit {
         this.endLoading();
       });
 
+      
+
     // End Get All Technicians
 
     //  ############################ Start Filters ############################
@@ -325,7 +327,11 @@ export class AllTechniciansComponent implements OnInit {
     }
     else if (key == 'contractType')
     {
+
       this.filteredContractId = ''
+      this.filterForm.patchValue({
+        contractType: ''
+      });
     }
     this.pageId = 1;
     this.getAllTechnicians(this.pageId);
@@ -341,6 +347,7 @@ export class AllTechniciansComponent implements OnInit {
       .getMethod('technicians?page=' + pageId, {
         name: this.filteredTechniciansData,
         active: this.filteredStatusId,
+        contract_type: this.filteredContractId ? this.filteredContractId : '' ,
         'service[]': this.filteredServiceArray,
         'city[]': this.filteredCityArray
       })

@@ -71,9 +71,65 @@
                 </div>
               </div>
 
+
               <div class="form_field">
                 <label>
                   <i class="fas fa-flag"></i> الجنسية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="اخنر جنسية الفنى"
+                    aria-label="Number"
+                    id="nationalityObj"
+                    matInput
+                    formControlName="nationalityObj"
+                    [matAutocomplete]="nationalitiesAutoComplete"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('nationalityObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+
+                  <mat-autocomplete
+                    #nationalitiesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCountries"
+                  >
+                    <mat-option
+                      *ngFor="let option of nationalitiesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (techniciansForm.get('nationalityObj').status === 'INVALID' &&
+                      techniciansForm.get('nationalityObj').touched) ||
+                    (submitted &&
+                      techniciansForm.get('nationalityObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الجنسية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('nationalityObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-flag"></i> الدولة <span>*</span></label
                 >
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
@@ -560,6 +616,52 @@
                   <p>يمكنك اختيار اكثر من مدينة</p>
                 </div>
               </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-people-arrows"></i> نوع التعاقد
+                  <span>*</span></label
+                >
+              
+               
+
+                <mat-form-field dir="rtl" appearance="outline">
+                  <mat-select
+                    class="filterInput"
+                    formControlName="contract_type"
+                    placeholder="اختر نوع التعاقد"
+                  >
+                    <mat-option
+                      *ngFor="let option of mainContractTpe"
+                      [value]="option.id"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+
+                
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (techniciansForm.get('contract_type').status === 'INVALID' &&
+                      techniciansForm.get('contract_type').touched) ||
+                    (submitted &&
+                      techniciansForm.get('contract_type').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('contract_type').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+                
+              </div>
+
 
               <!-- <div class="form_field">
                 <label> <i class="far fa-image"></i> صورة الفنى </label>
@@ -804,54 +906,8 @@
                 </button>
               </div>
 
-              <div class="form_field"></div>
 
-              <div class="form_field">
-                <label>
-                  <i class="fas fa-people-arrows"></i> نوع التعاقد
-                  <span>*</span></label
-                >
               
-               
-
-                <mat-form-field dir="rtl" appearance="outline">
-                  <mat-select
-                    class="filterInput"
-                    formControlName="contract_type"
-                    placeholder="اختر نوع التعاقد"
-                  >
-                    <mat-option
-                      *ngFor="let option of mainContractTpe"
-                      [value]="option.id"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-select>
-
-                
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (techniciansForm.get('contract_type').status === 'INVALID' &&
-                      techniciansForm.get('contract_type').touched) ||
-                    (submitted &&
-                      techniciansForm.get('contract_type').status === 'INVALID')
-                  "
-                >
-                  <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="techniciansForm.get('contract_type').status === 'VALID'"
-                >
-                  <i class="fas fa-check"></i> إدخال صحيح
-                </div>
-                
-              </div>
-
 
               <div class="form_field fullWidth toggle">
                 <p>
