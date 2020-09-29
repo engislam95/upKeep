@@ -209,6 +209,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   );
   numberOrder_id: any = '';
   changeTech = false;
+  isMap = '';
   /* -------------------;--- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
@@ -321,6 +322,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       console.log(params);
       this.updateMode = params.updateMode === 'true';
       this.updateButton = params.updateMode === 'true';
+      this.isMap = params.map;
       this.updatedOrderId = +params.updatedOrderId;
       if (
         (this.updateMode && this.order_update) ||
@@ -1112,9 +1114,17 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
         this.endLoading();
         this.showSuccess('تم تعديل الطلب بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/sales/all-sales']);
-        }, 2500);
+        if(this.isMap != 'true') {
+          setTimeout(() => {
+            this.router.navigate(['/sales/all-sales']);
+          }, 1500);
+        }
+       else if(this.isMap == 'true') {
+          setTimeout(() => {
+            this.router.navigate(['/sales/orders-sales-map']);
+          }, 1500);
+        }
+        
       },
         error => {
           if (error.error.errors) {

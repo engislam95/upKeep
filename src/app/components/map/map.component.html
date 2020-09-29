@@ -179,12 +179,16 @@
                   </mat-form-field>
                 </div>
                 <div class="form_input" style="margin-top: 20px;">
-                  <button
+                  <a
                     type="button"
                     alt="جدول الطلبات"
                     title="جدول الطلبات"
                     routerLink="/orders/orders-table"
+                    target="_blank"
                     style="width: 54px;
+                    display: inline-block;
+                    text-align: center;
+    line-height: 49px;
                  height: 49px;
                  border-radius: 10px;
                  background: #f6a811;
@@ -192,7 +196,7 @@
                  "
                   >
                     <i class="fas fa-bars"></i>
-                  </button>
+                </a>
                 </div>
               </ng-container>
             </form>
@@ -633,6 +637,27 @@
                 >
               <img [src]="sale.technician.imagePin" alt=""></div>
                 <div class="pulse"></div>
+                <div
+                  class="timePin2"
+                >
+                <span>
+                  {{
+                    sale.fromH > 12
+                      ? sale.fromH - 12 + ":" + sale.fromM + "م"
+                      : sale.fromH + ":" + sale.fromM + "ص"
+                  }} :
+                </span>
+                <span>
+                  {{
+                    sale.toH > 12
+                      ? sale.toH - 12 + ":" + sale.toM + "م"
+                      : sale.toH + ":" + sale.toM + "ص"
+                  }}
+                </span>
+                </div>
+                <div class="statusPandding">
+                  Pendding
+                </div>
               </agm-overlay>
             </agm-marker>
           </agm-map>

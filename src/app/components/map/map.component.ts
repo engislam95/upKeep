@@ -212,7 +212,8 @@ export class MapComponent implements OnInit {
       this.router.navigate(['/sales/update-sale'], {
         queryParams: {
           updateMode: true,
-          updatedOrderId: this.updateSaleOrder_id
+          updatedOrderId: this.updateSaleOrder_id,
+          map:true
         }
       });
     }
@@ -763,7 +764,10 @@ export class MapComponent implements OnInit {
     this.getOrders();
     this.coreService
       .getMethod('sales/map/orders', {
-        order_date: this.orderDate
+        order_date: this.orderDate,
+        city_id: this.city_id,
+        'ids[]': this.filteredTechniciansIds,
+        service_id: this.orderServiceId,
       })
       .subscribe(orders => {
         console.log(orders);
