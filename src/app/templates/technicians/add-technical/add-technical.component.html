@@ -752,7 +752,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span style="    width: 112px;">{{ imagePlaceHolder }}</span>
+                  <span style="    width: 112px;">Technical image  </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -778,7 +778,7 @@
                     formControlName="imageInputObj"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolder }}</span>
+                  <span>Technical image  </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -789,7 +789,12 @@
                     <i class="fas fa-times-circle"></i>
                   </button>
                 </div>
+                  <!-- <span style="color:red ; position: absolute; " *ngIf="errorMaxDim" > Max height 162px and Max width 124px </span> -->
               </div>
+              
+
+
+
 
               <div class="form_field">
                 <label> صورة الفني على الخريطة </label>
@@ -809,7 +814,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
+                  <span> Technical image pin </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -835,7 +840,7 @@
                     formControlName="imageInputObjPin"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
+                  <span>Technical image pin </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -846,21 +851,21 @@
                     <i class="fas fa-times-circle"></i>
                   </button>
                 </div>
+                <!-- <span style="color:red ; position: absolute; " *ngIf="errorMaxDimPin" > Max height 162px and Max width 124px </span> -->
+
               </div>
 
               <div class="form_field">
                 <img
                   *ngIf="techniciansForm.controls.image.value"
                   src="{{ techniciansForm.controls.image.value }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <img
                   *ngIf="updatedTechnicalData['image'] && updateMode"
                   src="{{ updatedTechnicalData['image'] }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <button
@@ -871,7 +876,7 @@
                   (click)="deleteIMG()"
                   style="position: relative;
                   left: -30px;
-                  top: -80px;"
+                  top: -47px;"
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>
@@ -881,15 +886,13 @@
                 <img
                   *ngIf="techniciansForm.controls.imagePin.value"
                   src="{{ techniciansForm.controls.imagePin.value }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <img
                   *ngIf="updatedTechnicalData['imagePin'] && updateMode"
                   src="{{ updatedTechnicalData['imagePin'] }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <button
@@ -900,7 +903,7 @@
                   (click)="deleteIMGPin()"
                   style="position: relative;
                   left: -30px;
-                  top: -80px;"
+                  top: -32px;"
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>

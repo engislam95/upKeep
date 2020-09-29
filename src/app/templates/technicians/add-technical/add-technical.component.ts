@@ -19,6 +19,7 @@ import { CoreService } from '../../../tools/shared-services/core.service';
 export class AddTechnicalComponent implements OnInit {
   imageUpdated = false;
   imageUpdated2 = false;
+  errorMaxDim = false ;
 
   modeTitle = 'إضافة فنى جديد';
   //  ################################### Start General Data ###################################
@@ -690,12 +691,39 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### End Loading Functions #########################
   //  ######################### Start Handle Image Base64 #########################
   onUploadImage(e) {
-    this.imagePlaceHolder = e[0].name;
-    this.techniciansForm.patchValue({
-      image: e[0].base64
-    });
-    this.imageUpdated2 = false;
-    this.techniciansForm.controls.delete_image.setValue(false);
+
+    // let max_height = 162;
+    // let max_width = 124;
+
+    // console.log(e);
+    
+
+    //   var i = new Image(); 
+
+    //    i.src = e[0].base64
+
+    //    i.onload = () => {
+       
+    
+      // if (i.height > max_height && i.width > max_width) {
+      //    this.errorMaxDim = true ;
+      // }
+
+            
+        this.errorMaxDim = false ;
+        this.imagePlaceHolder = e[0].name;
+        this.techniciansForm.patchValue({
+          image: e[0].base64
+        });
+        this.imageUpdated2 = false;
+        this.techniciansForm.controls.delete_image.setValue(false);
+
+      
+    
+    
+
+
+    
   }
 
   onUploadImagePin(e) {

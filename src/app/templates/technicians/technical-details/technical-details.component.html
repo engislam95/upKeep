@@ -81,13 +81,13 @@
 
           <div class="mobileConnected">
 
-            <div class="connected">
+            <div class="connected" style="cursor: no-drop;">
               <i class="fas fa-user-check"></i>
-              <span class="fontSN" style="color:#fff"> متصل بالتطبيق </span>
+              <span class="fontSN" style="color:#fff ; position: relative ; top: -3px; cursor: disable;"> متصل بالتطبيق </span>
             </div>
 
             
-            <div class="logout">
+            <div class="logout" style="cursor: no-drop;">
               <i class="fas fa-sign-out-alt"></i>
             </div>
 
@@ -281,7 +281,7 @@
                  <span  class="fontSN"> الجنسية </span>
                 </div>
                 <div style=" width: 50%; display: inline-block; text-align: right; " >
-                  <span class="fontSt" > {{ technicalDetails.nationality.name }} </span>
+                  <span class="fontSN" > {{ technicalDetails.nationality ?  technicalDetails.nationality.name : 'لا يوجد' }} </span>
                 </div>
                 <div style="width: 10%; display: inline-block;" ></div>
 
