@@ -8,7 +8,7 @@
     <div class="page_body_title">
       <h3>
         <i class="fas fa-plus"></i
-        >{{ this.updateMode ? 'تعديل الطلب' : 'إضافة طلب' }}
+        >{{ this.updateMode ? "تعديل الطلب" : "إضافة طلب" }}
       </h3>
       <div
         class="page_body_main_buttons"
@@ -188,7 +188,7 @@
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : 'لم يتم ادخال المنققة'
+                                    : "لم يتم ادخال المنققة"
                                 }}</span>
                               </li>
                             </ul>
@@ -222,9 +222,18 @@
                     {{
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations
-                        ? 'هذا العميل لديه أكثر من عنوان'
-                        : ''
+                        ? "هذا العميل لديه أكثر من عنوان"
+                        : ""
                     }}
+                  </h5>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState errorState"
+                  *ngIf="clientStatus == 0 && selectClient"
+                >
+                  <h5 id="multiLocationWarning">
+                    هذا العميل غير نشط
                   </h5>
                 </div>
               </div>
@@ -503,10 +512,10 @@
                     <div>الإسم</div>
                     <div *ngFor="let hour of dayHoursArray">
                       <ng-container *ngIf="hour !== 12">
-                        {{ hour > 12 ? hour - 12 + ':00 م' : hour + ':00 ص' }}
+                        {{ hour > 12 ? hour - 12 + ":00 م" : hour + ":00 ص" }}
                       </ng-container>
                       <ng-container *ngIf="hour === 12">
-                        {{ hour === 12 ? 12 + ':00 م' : null }}
+                        {{ hour === 12 ? 12 + ":00 م" : null }}
                       </ng-container>
                     </div>
                   </div>
@@ -586,17 +595,17 @@
                                       order.fromH > 12
                                         ? order.fromH -
                                           12 +
-                                          ':' +
+                                          ":" +
                                           order.fromM +
-                                          'م'
-                                        : order.fromH + ':' + order.fromM + 'ص'
+                                          "م"
+                                        : order.fromH + ":" + order.fromM + "ص"
                                     }}
                                   </ng-container>
                                   <ng-container *ngIf="order.fromH === 12">
                                     <span class="timeTitleSpan">من : </span
                                     >{{
                                       order.fromH === 12
-                                        ? 12 + ':' + order.fromM + 'م'
+                                        ? 12 + ":" + order.fromM + "م"
                                         : null
                                     }}
                                   </ng-container>
@@ -605,15 +614,15 @@
                                     <span class="timeTitleSpan"> الي : </span
                                     >{{
                                       order.toH > 12
-                                        ? order.toH - 12 + ':' + order.toM + 'م'
-                                        : order.toH + ':' + order.toM + 'ص'
+                                        ? order.toH - 12 + ":" + order.toM + "م"
+                                        : order.toH + ":" + order.toM + "ص"
                                     }}
                                   </ng-container>
                                   <ng-container *ngIf="order.toH === 12">
                                     <span class="timeTitleSpan"> الي : </span
                                     >{{
                                       order.toH === 12
-                                        ? 12 + ':' + order.toM + 'م'
+                                        ? 12 + ":" + order.toM + "م"
                                         : null
                                     }}
                                   </ng-container>
@@ -799,7 +808,9 @@
               <hr />
               <div class="form_field fullWidth formButtons">
                 <button
-                  [disabled]="ordersForm.invalid"
+                  [disabled]="
+                    ordersForm.invalid || (clientStatus == 0 && selectClient)
+                  "
                   type="submit"
                   class="formSubmit formButton"
                   *ngIf="!updateButton"

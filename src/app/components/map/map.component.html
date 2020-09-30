@@ -635,63 +635,81 @@
             >
             </agm-marker>
             <agm-marker
+              *ngIf="url.includes('/clients/client-details')"
+              [markerDraggable]="true"
+              (dragEnd)="markerDragEnd($event)"
               [agmFitBounds]="true"
-              *ngFor="let sale of salesOrders"
-              [latitude]="sale.location.lat"
-              [longitude]="sale.location.long"
-              (markerClick)="showSalesPopup(sale)"
-              class="markerTec"
+              [latitude]="clientDetailsOrgins.lat"
+              [longitude]="clientDetailsOrgins.lng"
               [iconUrl]="{
-                url: ''
+                url: companyPin
               }"
-              style="opacity: 0;"
             >
             </agm-marker>
-            <agm-marker
-              *ngFor="let sale of salesOrders"
-              [latitude]="sale.location.lat"
-              (markerClick)="showSalesPopup(sale)"
-              [longitude]="sale.location.long"
+            <div
+              *ngIf="
+                url == '/orders/orders-map' || url == '/sales/orders-sales-map'
+              "
             >
-              <agm-overlay
+              <agm-marker
+                [agmFitBounds]="true"
                 *ngFor="let sale of salesOrders"
                 [latitude]="sale.location.lat"
                 [longitude]="sale.location.long"
+                (markerClick)="showSalesPopup(sale)"
+                class="markerTec"
+                [iconUrl]="{
+                  url: ''
+                }"
+                style="opacity: 0;"
               >
-                <div
-                  *ngIf="!sale.technician"
-                  class="pin"
-                  [ngStyle]="{ background: sale['label-color'] }"
-                ></div>
-                <div *ngIf="sale.technician" class="overlayTech">
-                  <img [src]="sale.technician.imagePin" alt="" />
-                </div>
-
-                <div
-                  class="timePin2"
-                  [ngStyle]="{ top: !sale.technician ? '0px' : '-53px' }"
+              </agm-marker>
+              <agm-marker
+                *ngFor="let sale of salesOrders"
+                [latitude]="sale.location.lat"
+                (markerClick)="showSalesPopup(sale)"
+                [longitude]="sale.location.long"
+              >
+                <agm-overlay
+                  *ngFor="let sale of salesOrders"
+                  [latitude]="sale.location.lat"
+                  [longitude]="sale.location.long"
                 >
-                  <span>
-                    {{
-                      sale.fromH > 12
-                        ? sale.fromH - 12 + ":" + sale.fromM + "م"
-                        : sale.fromH + ":" + sale.fromM + "ص"
-                    }}
-                    :
-                  </span>
-                  <span>
-                    {{
-                      sale.toH > 12
-                        ? sale.toH - 12 + ":" + sale.toM + "م"
-                        : sale.toH + ":" + sale.toM + "ص"
-                    }}
-                  </span>
-                </div>
-                <div class="statusPandding" *ngIf="sale.technician">
-                  Pendding
-                </div>
-              </agm-overlay>
-            </agm-marker>
+                  <div
+                    *ngIf="!sale.technician"
+                    class="pin"
+                    [ngStyle]="{ background: sale['label-color'] }"
+                  ></div>
+                  <div *ngIf="sale.technician" class="overlayTech">
+                    <img [src]="sale.technician.imagePin" alt="" />
+                  </div>
+
+                  <div
+                    class="timePin2"
+                    [ngStyle]="{ top: !sale.technician ? '0px' : '-53px' }"
+                  >
+                    <span>
+                      {{
+                        sale.fromH > 12
+                          ? sale.fromH - 12 + ":" + sale.fromM + "م"
+                          : sale.fromH + ":" + sale.fromM + "ص"
+                      }}
+                      :
+                    </span>
+                    <span>
+                      {{
+                        sale.toH > 12
+                          ? sale.toH - 12 + ":" + sale.toM + "م"
+                          : sale.toH + ":" + sale.toM + "ص"
+                      }}
+                    </span>
+                  </div>
+                  <div class="statusPandding" *ngIf="sale.technician">
+                    Pendding
+                  </div>
+                </agm-overlay>
+              </agm-marker>
+            </div>
           </agm-map>
         </div>
       </div>

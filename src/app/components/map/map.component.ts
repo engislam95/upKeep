@@ -459,6 +459,7 @@ export class MapComponent implements OnInit {
   /* ---------------- Client Location on Map ------------------------ */
   clientLocationOnMap() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
       if (queryParams.clientDetailsMode) {
         this.clientDetailsMode = true;
         this.orderDetailsOrgins = {

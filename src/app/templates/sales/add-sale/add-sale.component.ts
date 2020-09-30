@@ -55,6 +55,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   showNote = false;
   updatePhone = false;
   user: any = '';
+  clientStatus: any = 1;
   todayDate: Date = new Date();
   // Clients
   clientsArray: any = [];
@@ -810,6 +811,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     this.technical_id = this.updatedOrderData.technician_id;
     this.filterClients(this.updatedOrderData.client);
     this.selectClient = true;
+    this.clientStatus = 1;
     this.selectMainService = true;
     this.selectDate = true;
     this.orderClient = this.updatedOrderData.client;
@@ -960,6 +962,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
+      this.clientStatus = value.user.active;
       //Get Client Mobile
       this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
         console.log(mobiles['data']['mobiles']);
@@ -1114,17 +1117,17 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
         this.endLoading();
         this.showSuccess('تم تعديل الطلب بنجاح');
-        if(this.isMap != 'true') {
+        if (this.isMap != 'true') {
           setTimeout(() => {
             this.router.navigate(['/sales/all-sales']);
           }, 1500);
         }
-       else if(this.isMap == 'true') {
+        else if (this.isMap == 'true') {
           setTimeout(() => {
             this.router.navigate(['/sales/orders-sales-map']);
           }, 1500);
         }
-        
+
       },
         error => {
           if (error.error.errors) {

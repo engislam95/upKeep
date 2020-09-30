@@ -47,7 +47,7 @@ export class AllClientsComponent implements OnInit {
   selectedTypeId = '';
   selectedWayId = null;
   selectedCity = null;
-  clientCondition: number;
+  clientCondition: any = '';
   clientStatusId = '';
   citiesArray = [];
   cityId = '';
@@ -100,7 +100,6 @@ export class AllClientsComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.clientCondition = 1;
   }
 
   //
@@ -221,12 +220,8 @@ export class AllClientsComponent implements OnInit {
   }
 
   getConditions() {
-    console.log(this.clientCondition);
-
-    this.clientCondition = 1;
-    console.log(this.clientCondition);
     this.clientConditionArray = ['نشط', 'غير نشط'];
-    this.getAllClients(1);
+    this.getAllClients(this.pageId);
   }
 
   selectCity(ev) {
@@ -242,13 +237,8 @@ export class AllClientsComponent implements OnInit {
 
   selectCondition(ev) {
     console.log(ev);
-    if (ev == 'نشط') {
-      this.clientCondition = 1;
-    } else {
-      this.clientCondition = 0;
-    }
-
-    this.getAllClients(1);
+    this.clientCondition = ev;
+    this.getAllClients(this.pageId);
   }
 
   //

@@ -163,7 +163,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     },
     [noAddressValidator, startEndTimeValidator]
   );
-
+  clientStatus: any = 1;
   /* ---------------------- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
@@ -194,7 +194,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     }
   }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -569,6 +569,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     this.selectMainService = true;
     this.selectDate = true;
     this.orderClient = this.updatedOrderData.client;
+    this.clientStatus = 1;
+    console.log(this.updatedOrderData);
     console.log(this.orderClient);
     this.orderServiceId = this.updatedOrderData.service.parent;
   }
@@ -657,6 +659,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
+      this.clientStatus = value.user.active;
 
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
