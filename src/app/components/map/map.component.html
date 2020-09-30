@@ -48,7 +48,8 @@
           !orderDetailsMode &&
           !clientDetailsMode &&
           !clientDetailsPageMode &&
-          !addOrderMapMode
+          !addOrderMapMode &&
+          url != '/sales/orders-sales-map'
         "
       >
         <h3><i class="fas fa-plus"></i>خريطة الطلبات</h3>
@@ -63,6 +64,36 @@
           >
             إضافة طلب
             <i class="fas fa-th-list"></i>
+          </a>
+          <a routerLink="/orders/orders-table">
+            جدول الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+        </div>
+      </div>
+      <div
+        class="page_body_title"
+        *ngIf="
+          !addOrderMode &&
+          !orderDetailsMode &&
+          !clientDetailsMode &&
+          !clientDetailsPageMode &&
+          !addOrderMapMode &&
+          url == '/sales/orders-sales-map'
+        "
+      >
+        <h3><i class="fas fa-map-marked-alt"></i>خريطة المبيعات</h3>
+        <div class="page_body_main_buttons">
+          <a routerLink="/sales/all-sales">
+            جدول المبيعات
+            <i class="fas fa-table"></i>
+          </a>
+          <a
+            routerLink="/sales/add-sale"
+            *ngIf="order_add || user.privilege == 'super-admin'"
+          >
+            إضافة مبيعات جديدة
+            <i class="fas fa-plus"></i>
           </a>
           <a routerLink="/orders/orders-table">
             جدول الطلبات
@@ -126,7 +157,6 @@
                           class="filterInput mapOrderDateFilter"
                           (dateInput)="orderDateChanged($event)"
                           matInput
-                          [min]="todayDate"
                           [matDatepicker]="fromFilterDate"
                           placeholder="التاريخ"
                           autocomplete="off"
@@ -196,7 +226,7 @@
                  "
                   >
                     <i class="fas fa-bars"></i>
-                </a>
+                  </a>
                 </div>
               </ng-container>
             </form>
@@ -523,10 +553,13 @@
                         <div [innerHTML]="order.details"></div>
                       </li>
                       <li>
-                        <a [routerLink]="['/orders/order-details']"
-                        [queryParams]="{
-                          orderId: order.id
-                        }">تفاصيل الطلب</a>
+                        <a
+                          [routerLink]="['/orders/order-details']"
+                          [queryParams]="{
+                            orderId: order.id
+                          }"
+                          >تفاصيل الطلب</a
+                        >
                       </li>
                     </ul>
                   </agm-info-window>
@@ -545,34 +578,33 @@
               >
                 <div class="infoStyle2" id="test2">
                   <agm-overlay
-                  [latitude]="order.location.lat"
-                  [longitude]="order.location.long"
-              >
-                <div
-                  class="timePin"
-                >
-                <!-- <span>
+                    [latitude]="order.location.lat"
+                    [longitude]="order.location.long"
+                  >
+                    <div class="timePin">
+                      <!-- <span>
                   من
                 </span> -->
-                <span>
-                  {{
-                    order.fromH > 12
-                      ? order.fromH - 12 + ":" + order.fromM + "م"
-                      : order.fromH + ":" + order.fromM + "ص"
-                  }} :
-                </span>
-                <!-- <span>
+                      <span>
+                        {{
+                          order.fromH > 12
+                            ? order.fromH - 12 + ":" + order.fromM + "م"
+                            : order.fromH + ":" + order.fromM + "ص"
+                        }}
+                        :
+                      </span>
+                      <!-- <span>
                   الي
                 </span> -->
-                <span>
-                  {{
-                    order.toH > 12
-                      ? order.toH - 12 + ":" + order.toM + "م"
-                      : order.toH + ":" + order.toM + "ص"
-                  }}
-                </span>
-                </div>
-              </agm-overlay>
+                      <span>
+                        {{
+                          order.toH > 12
+                            ? order.toH - 12 + ":" + order.toM + "م"
+                            : order.toH + ":" + order.toM + "ص"
+                        }}
+                      </span>
+                    </div>
+                  </agm-overlay>
                 </div>
               </agm-marker>
             </ng-container>
@@ -627,35 +659,35 @@
                 [longitude]="sale.location.long"
               >
                 <div
-                *ngIf="!sale.technician"
+                  *ngIf="!sale.technician"
                   class="pin"
                   [ngStyle]="{ background: sale['label-color'] }"
                 ></div>
-                <div
-                *ngIf="sale.technician"
-                  class="overlayTech"
-                >
-              <img [src]="sale.technician.imagePin" alt=""></div>
-                <div class="pulse"></div>
+                <div *ngIf="sale.technician" class="overlayTech">
+                  <img [src]="sale.technician.imagePin" alt="" />
+                </div>
+
                 <div
                   class="timePin2"
+                  [ngStyle]="{ top: !sale.technician ? '0px' : '-53px' }"
                 >
-                <span>
-                  {{
-                    sale.fromH > 12
-                      ? sale.fromH - 12 + ":" + sale.fromM + "م"
-                      : sale.fromH + ":" + sale.fromM + "ص"
-                  }} :
-                </span>
-                <span>
-                  {{
-                    sale.toH > 12
-                      ? sale.toH - 12 + ":" + sale.toM + "م"
-                      : sale.toH + ":" + sale.toM + "ص"
-                  }}
-                </span>
+                  <span>
+                    {{
+                      sale.fromH > 12
+                        ? sale.fromH - 12 + ":" + sale.fromM + "م"
+                        : sale.fromH + ":" + sale.fromM + "ص"
+                    }}
+                    :
+                  </span>
+                  <span>
+                    {{
+                      sale.toH > 12
+                        ? sale.toH - 12 + ":" + sale.toM + "م"
+                        : sale.toH + ":" + sale.toM + "ص"
+                    }}
+                  </span>
                 </div>
-                <div class="statusPandding">
+                <div class="statusPandding" *ngIf="sale.technician">
                   Pendding
                 </div>
               </agm-overlay>
@@ -685,7 +717,6 @@
             <div style="padding: 20px;text-align:center">
               <h2>تفاصيل الطلب</h2>
             </div>
-
           </mat-tab>
           <mat-tab label="تغيير اللون">
             <div

@@ -186,20 +186,20 @@ export class MapComponent implements OnInit {
       });
     }
     const date = new Date()
-    .toLocaleString('en-GB', {
-      timeZone: 'Asia/Riyadh',
-      timeZoneName: 'short'
-    })
-    .split(',')[0]
-    .split('/')
-    .reverse()
-    .join('/');
+      .toLocaleString('en-GB', {
+        timeZone: 'Asia/Riyadh',
+        timeZoneName: 'short'
+      })
+      .split(',')[0]
+      .split('/')
+      .reverse()
+      .join('/');
     console.log(date);
-    
+
     this.orderDate = '';
     this.coreService
       .getMethod('sales/map/orders', {
-        order_date: this.orderDate? this.orderDate: date
+        order_date: this.orderDate ? this.orderDate : date
       })
       .subscribe(orders => {
         console.log(orders);
@@ -213,7 +213,7 @@ export class MapComponent implements OnInit {
         queryParams: {
           updateMode: true,
           updatedOrderId: this.updateSaleOrder_id,
-          map:true
+          map: true
         }
       });
     }
@@ -266,7 +266,7 @@ export class MapComponent implements OnInit {
   }
   updateColor(color) {
     console.log(color);
-    
+
     this.updateSaleOrder['label-color'] = this.color;
     console.log(this.updateSaleOrder['start'].split(':'));
     this.updateSaleOrder['start'] =
@@ -368,6 +368,7 @@ export class MapComponent implements OnInit {
       });
     }
     this.getOrders();
+    this.getServicesWithTechnicians();
   }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
@@ -480,7 +481,7 @@ export class MapComponent implements OnInit {
     if (!this.clientDetailsPageMode) {
       let servicesWithTechnicians = [];
       this.coreService
-        .getMethod('services/active', { with_technicians: 1 })
+        .getMethod('services/active', { with_technicians: 1, city_id: this.city_id })
         .subscribe((servicesWithTechniciansResponse: any) => {
           servicesWithTechnicians = servicesWithTechniciansResponse.data;
           servicesWithTechnicians = servicesWithTechnicians.map(service => {
@@ -620,8 +621,8 @@ export class MapComponent implements OnInit {
           return orderOne.totalTimeToArrive > orderTwo.totalTimeToArrives
             ? 1
             : orderTwo.totalTimeToArrive > orderOne.totalTimeToArrive
-            ? -1
-            : 0;
+              ? -1
+              : 0;
         });
         this.bestTechnicalName = this.sortedArray[0].technical.name;
         this.bestTechnicalArriveTime = this.sortedArray[0].totalTimeToArrive;
