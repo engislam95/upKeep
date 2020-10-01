@@ -79,9 +79,11 @@
             </div>
           </div>
 
-          <div class="mobileConnected">
 
-            <div class="connected" style="cursor: no-drop;">
+
+          <div class="mobileConnected" *ngIf="connected">
+
+            <div class="connected" style="cursor: no-drop;" >
               <i class="fas fa-user-check"></i>
               <span class="fontSN" style="color:#fff ; position: relative ; top: -3px; cursor: disable;"> متصل بالتطبيق </span>
             </div>
@@ -91,25 +93,32 @@
               <i class="fas fa-sign-out-alt"></i>
             </div>
 
+          </div>
 
-           
 
-            <!-- <div class="disConnected">
+          <div class="mobileConnected" *ngIf="!connected">
+
+            <div class="disConnected">
               <i class="fas fa-user-check"></i>
-              <span class="fontSN">   غير متصل بالتطبيق </span>
+              <span class="fontSN" style="color:#fff ; position: relative ; top: -3px; cursor: disable;">   غير متصل بالتطبيق </span>
             </div>
 
             <div class="logoutDis">
               <i class="fas fa-sign-out-alt"></i>
-            </div> -->
+            </div>
 
+
+          </div>
+
+           
+
+            
            
           
 
             
 
 
-          </div>
 
           <div class="rating" style="display:flex">
             <div class="allRating" style="width: 50%;">
