@@ -308,7 +308,7 @@ form {
   background: #89849b;
   transform: rotate(-45deg);
   top: -24px;
-  left: -51px;
+  left: -57px;
   // margin: -20px 0 0 -20px;
   animation-fill-mode: both;
   animation-duration: 1s;
@@ -340,11 +340,6 @@ form {
   left: -37px;
 }
 
-
-
-
-
-
 .salePopup {
   position: absolute;
   top: 50%;
@@ -355,7 +350,7 @@ form {
 .overlayTech {
   position: relative;
   top: -51px;
-  left: -32px;
+  left: -36px;
 }
 
 .timePin2 {
@@ -377,4 +372,26 @@ form {
   top: -172px;
   left: -14px;
   border-radius: 14px;
+}
+
+.orderSalesDetails {
+  text-align: right;
+
+  li {
+    padding: 10px 0;
+    border-bottom: .5px solid rgba(0, 0, 0, .5);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    span {
+      display: inline-block;
+    }
+
+    .saleOrderTitle {
+      font-weight: bold;
+      width: 50%;
+    }
+  }
 }

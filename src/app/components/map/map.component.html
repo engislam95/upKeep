@@ -520,9 +520,9 @@
                 }"
                 (markerClick)="orderDetails(infoWindow, gm)"
               >
-                <div class="infoStyle" id="test">
-                  <agm-info-window #infoWindow>
-                    <ul>
+                <div class="infoStyle" id="test" style="z-index: 99999;">
+                  <agm-info-window #infoWindow [zIndex]="9999999">
+                    <ul style="position: relative; z-index: 99999999;">
                       <li>رقم الطلب : {{ order.id }}</li>
                       <li>إسم العميل : {{ order.client.user.name }}</li>
                       <li>إسم الفني : {{ order.technical.name }}</li>
@@ -661,7 +661,8 @@
                 [iconUrl]="{
                   url: ''
                 }"
-                style="opacity: 0;"
+                [opacity]="0"
+                [zIndex]="9999"
               >
               </agm-marker>
               <agm-marker
@@ -669,6 +670,8 @@
                 [latitude]="sale.location.lat"
                 (markerClick)="showSalesPopup(sale)"
                 [longitude]="sale.location.long"
+                [opacity]="0"
+                [zIndex]="9999"
               >
                 <agm-overlay
                   *ngFor="let sale of salesOrders"
@@ -721,7 +724,11 @@
     >
       <h3>
         تفاصيل الطلب الخاص بالعميل
-        {{ updateSaleOrder.client ? updateSaleOrder.client.user.name : "" }}
+        {{
+          updateSaleOrder["client"]
+            ? updateSaleOrder["client"]["user"]["name"]
+            : ""
+        }}
       </h3>
       <i class="fas fa-times-circle" (click)="showSale = false"></i>
     </header>
@@ -733,10 +740,106 @@
         >
           <mat-tab label="تفاصيل الطلب">
             <div style="padding: 20px;text-align:center">
-              <h2>تفاصيل الطلب</h2>
+              <ul class="orderSalesDetails">
+                <li>
+                  <span class="saleOrderTitle" *ngIf="updateSaleOrder['client']"
+                    >اسم العميل :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["client"]
+                      ? updateSaleOrder["client"]["user"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['technician']"
+                    >اسم الفنى :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["technician"]
+                      ? updateSaleOrder["technician"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['order_date']"
+                    >تاريخ الطلب :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["order_date"]
+                      ? updateSaleOrder["order_date"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span class="saleOrderTitle">وقت تنفيذ الطلبية :</span>
+                  <ng-container>
+                    <span class="timeTitleSpan">من : </span
+                    >{{
+                      updateSaleOrder["fromH"] > 12
+                        ? updateSaleOrder["fromH"] -
+                          12 +
+                          ":" +
+                          updateSaleOrder["fromM"] +
+                          "م"
+                        : updateSaleOrder["fromH"] +
+                          ":" +
+                          updateSaleOrder["fromM"] +
+                          "ص"
+                    }}
+                  </ng-container>
+                  <ng-container>
+                    <span class="timeTitleSpan"> الي : </span
+                    >{{
+                      updateSaleOrder["toH"] > 12
+                        ? updateSaleOrder["toH"] -
+                          12 +
+                          ":" +
+                          updateSaleOrder["toM"] +
+                          "م"
+                        : updateSaleOrder["toH"] +
+                          ":" +
+                          updateSaleOrder["toM"] +
+                          "ص"
+                    }}
+                  </ng-container>
+                </li>
+                <li>
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['service']"
+                    >الخدمة الرئيسية :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["service"]
+                      ? updateSaleOrder["service"]["parent_service"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['service']"
+                    >الخدمة الفرعية :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["service"]
+                      ? updateSaleOrder["service"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span class="saleOrderTitle">الملاحظات :</span>
+                  <span [innerHTML]="updateSaleOrder['details']"></span>
+                </li>
+              </ul>
             </div>
           </mat-tab>
-          <mat-tab label="تغيير اللون">
+          <mat-tab label="تغيير اللون" *ngIf="!updateSaleOrder['technician']">
             <div
               class="form_field"
               style="margin: 20px 0; padding: 20px 0; height: 130px;"

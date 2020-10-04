@@ -1090,7 +1090,7 @@
                   *ngIf="!updateMode || !updatedOrderData.technician"
                   [checked]="techFlage"
                   (change)="chooseTechnical($event.checked)"
-                  >تحويل الطلب الى التنفيذ
+                  >اختيار فنى مبدئى
                 </mat-checkbox>
                 <mat-checkbox
                   *ngIf="updateMode && updatedOrderData.technician"
@@ -1290,7 +1290,10 @@
                 </h4>
               </div>
             </header>
-            <div *ngIf="showNote && lastOrderClient.LastOrder">
+            <div
+              *ngIf="showNote && lastOrderClient.LastOrder"
+              style="border:1px solid #000;"
+            >
               <section
                 class="prevoiusOrdersNumber"
                 style="display:flex; justify-content: space-between;"
@@ -1431,7 +1434,10 @@
                 </ul>
               </section>
             </div>
-            <div *ngIf="showNote && orderClient && !lastOrderClient.LastOrder">
+            <div
+              *ngIf="showNote && orderClient && !lastOrderClient.LastOrder"
+              style="border:1px solid #000;"
+            >
               <h4
                 style="font-weight: 300;
               font-size: 15px;
