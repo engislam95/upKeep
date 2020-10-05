@@ -342,9 +342,12 @@ form {
 
 .salePopup {
   position: absolute;
-  top: 50%;
+  top: 25%;
   left: 34%;
   background: #FFF;
+  max-width: 518px;
+  max-height: 524px;
+  overflow-y: scroll;
 }
 
 .overlayTech {

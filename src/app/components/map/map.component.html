@@ -588,8 +588,8 @@
                       <span>
                         {{
                           order.fromH > 12
-                            ? order.fromH - 12 + ":" + order.fromM + "م"
-                            : order.fromH + ":" + order.fromM + "ص"
+                            ? " PM " + (order.fromH - 12) + ":" + order.fromM
+                            : " AM " + order.fromH + ":" + order.fromM
                         }}
                         :
                       </span>
@@ -599,8 +599,8 @@
                       <span>
                         {{
                           order.toH > 12
-                            ? order.toH - 12 + ":" + order.toM + "م"
-                            : order.toH + ":" + order.toM + "ص"
+                            ? " PM " + (order.toH - 12) + ":" + order.toM
+                            : " AM " + order.toH + ":" + order.toM
                         }}
                       </span>
                     </div>
@@ -694,16 +694,16 @@
                     <span>
                       {{
                         sale.fromH > 12
-                          ? sale.fromH - 12 + ":" + sale.fromM + "م"
-                          : sale.fromH + ":" + sale.fromM + "ص"
+                          ? " PM " + (sale.fromH - 12) + ":" + sale.fromM
+                          : " AM " + sale.fromH + ":" + sale.fromM
                       }}
                       :
                     </span>
                     <span>
                       {{
                         sale.toH > 12
-                          ? sale.toH - 12 + ":" + sale.toM + "م"
-                          : sale.toH + ":" + sale.toM + "ص"
+                          ? " PM " + (sale.toH - 12) + ":" + sale.toM
+                          : " AM " + sale.toH + ":" + sale.toM
                       }}
                     </span>
                   </div>
@@ -737,6 +737,7 @@
         <mat-tab-group
           mat-align-tabs="start"
           (selectedTabChange)="routerToEdit($event)"
+          style="word-break: break-all;"
         >
           <mat-tab label="تفاصيل الطلب">
             <div style="padding: 20px;text-align:center">
@@ -778,34 +779,48 @@
                 <li>
                   <span class="saleOrderTitle">وقت تنفيذ الطلبية :</span>
                   <ng-container>
-                    <span class="timeTitleSpan">من : </span
-                    >{{
-                      updateSaleOrder["fromH"] > 12
-                        ? updateSaleOrder["fromH"] -
-                          12 +
-                          ":" +
-                          updateSaleOrder["fromM"] +
-                          "م"
-                        : updateSaleOrder["fromH"] +
-                          ":" +
-                          updateSaleOrder["fromM"] +
-                          "ص"
-                    }}
+                    <span class="timeTitleSpan" style="margin-left: 10px;"
+                      >من :
+                    </span>
+                    <span
+                      class="timeTitleSpan"
+                      style="font-family: 'Roboto'; font-weight: 500;"
+                    >
+                      {{
+                        updateSaleOrder["fromH"] > 12
+                          ? updateSaleOrder["fromH"] -
+                            12 +
+                            ":" +
+                            updateSaleOrder["fromM"] +
+                            " PM "
+                          : updateSaleOrder["fromH"] +
+                            ":" +
+                            updateSaleOrder["fromM"] +
+                            " AM "
+                      }}
+                    </span>
                   </ng-container>
                   <ng-container>
-                    <span class="timeTitleSpan"> الي : </span
-                    >{{
-                      updateSaleOrder["toH"] > 12
-                        ? updateSaleOrder["toH"] -
-                          12 +
-                          ":" +
-                          updateSaleOrder["toM"] +
-                          "م"
-                        : updateSaleOrder["toH"] +
-                          ":" +
-                          updateSaleOrder["toM"] +
-                          "ص"
-                    }}
+                    <span class="timeTitleSpan" style="margin: 0 10px;">
+                      الي :
+                    </span>
+                    <span
+                      class="timeTitleSpan"
+                      style="font-family: 'Roboto'; font-weight: 500;"
+                    >
+                      {{
+                        updateSaleOrder["toH"] > 12
+                          ? updateSaleOrder["toH"] -
+                            12 +
+                            ":" +
+                            updateSaleOrder["toM"] +
+                            " PM "
+                          : updateSaleOrder["toH"] +
+                            ":" +
+                            updateSaleOrder["toM"] +
+                            " AM "
+                      }}
+                    </span>
                   </ng-container>
                 </li>
                 <li>
