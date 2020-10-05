@@ -253,6 +253,18 @@ export class MapComponent implements OnInit {
             this.showSale = false;
             this.showSuccess('تم تحويل الطلب الى التنفيذ بنجاح');
             this.getOrders();
+            this.coreService
+              .getMethod('sales/map/orders', {
+                order_date: this.orderDate,
+                city_id: this.city_id,
+                'ids[]': this.filteredTechniciansIds,
+                service_id: this.orderServiceId,
+              })
+              .subscribe(orders => {
+                console.log(orders);
+                this.salesOrders = orders['data']['sales'];
+                console.log(this.salesOrders);
+              });
           },
           error => {
             if (error.error.errors) {

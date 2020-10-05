@@ -680,7 +680,7 @@ app-map {
 
 .twoButtons {
   position: relative;
-  z-index: 99999;
+  z-index: 2;
 
   .clientBtn {
     position: relative;
@@ -737,7 +737,6 @@ button:disabled {
 
 .additionClientDetails {
   header {
-    width: 370px;
     height: 48px;
     border: 1px solid #242a2d;
     line-height: 48px;
@@ -755,11 +754,11 @@ button:disabled {
   }
 
   .prevoiusOrdersNumber {
-    width: 370px;
     height: 52px;
     background: #ebebeb;
     line-height: 52px;
     padding: 0 16px;
+    border: 1px solid #000000;
 
 
     h4 {
@@ -777,6 +776,9 @@ button:disabled {
         margin-top: 15px;
         padding: 0 16px;
 
+        span {
+          font-weight: bold;
+        }
       }
     }
   }

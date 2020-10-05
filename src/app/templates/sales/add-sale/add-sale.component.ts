@@ -361,6 +361,14 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     if (key === 'orderDateObj') {
       this.resetInputs('date');
     }
+    if (key === 'servicesObj') {
+      this.technical_id = '';
+      (document.getElementById('technical_id') as HTMLInputElement).value = '';
+      this.salesForm.controls.technical_id.setValue('');
+      this.technicians = [];
+      this.filterTechnical('');
+      this.xResetInputs('technical_id');
+    }
     (document.getElementById(key) as HTMLInputElement).value = '';
     if (this.salesForm.controls[key]) {
       this.salesForm.controls[key].patchValue('');
