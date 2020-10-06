@@ -1132,7 +1132,11 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
         else if (this.isMap == 'true') {
           setTimeout(() => {
-            this.router.navigate(['/sales/orders-sales-map']);
+            this.router.navigate(['/sales/orders-sales-map'],{
+              queryParams: {
+                date: this.salesForm.value.order_date,
+              }
+            });
           }, 1500);
         }
 

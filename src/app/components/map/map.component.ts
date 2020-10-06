@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { ResponseStateService } from 'src/app/tools/shared-services/response-state.service';
+import { DatePipe } from '@angular/common';
 
 declare var google: any;
 @Component({
@@ -138,6 +139,7 @@ export class MapComponent implements OnInit {
   confirmSales = false;
   updateSaleOrder = {};
   updateSaleOrder_id = '';
+  paramDate:any = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
@@ -145,11 +147,11 @@ export class MapComponent implements OnInit {
     private messagingService: MessagingService,
     private router: Router,
     private mapsAPILoader: MapsAPILoader,
-    private responseStateService: ResponseStateService
+    private responseStateService: ResponseStateService,
+    private datePipe: DatePipe
   ) {
     this.url = this.router.url;
     console.log(this.url);
-
     if (!this.clientDetailsPageMode) {
       this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
         this.cities = cities.data;
@@ -213,7 +215,7 @@ export class MapComponent implements OnInit {
         queryParams: {
           updateMode: true,
           updatedOrderId: this.updateSaleOrder_id,
-          map: true
+          map: true,
         }
       });
     }
@@ -416,8 +418,37 @@ export class MapComponent implements OnInit {
     // });
   }
 
+  getCurrentDate() {
+    if(this.paramDate) {
+    return this.datePipe.transform(this.orderDate,'yyyy-MM-dd')
+    }
+  }
   /* ---------------------- Oninit -------------------------- */
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      this.paramDate = queryParams.date;
+      if (queryParams.date) {
+        console.log(queryParams.date);        
+        this.orderDate = queryParams.date;
+        this.getOrders();
+        this.coreService
+        .getMethod('sales/map/orders', {
+          order_date: this.orderDate,
+          city_id: this.city_id,
+          'ids[]': this.filteredTechniciansIds,
+          service_id: this.orderServiceId,
+        })
+        .subscribe(orders => {
+          console.log(orders);
+          this.salesOrders = orders['data']['sales'];
+          console.log(this.salesOrders);
+        });
+      }
+      else {
+        this.pickUpTodayDate();
+      }
+    });
     // this.showTime(this.infoWindow2, AgmMap);
     // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
     //   this.cities = cities.data;
@@ -432,7 +463,6 @@ export class MapComponent implements OnInit {
     //     map(value => this.filterCities(value))
     //   );
     // });
-    this.pickUpTodayDate();
     this.clientLocationOnMap();
     if (!this.multiAddressMapPopupSelections) {
       this.getServicesWithTechnicians();
@@ -443,7 +473,7 @@ export class MapComponent implements OnInit {
       !this.orderDetailsMode &&
       !this.clientDetailsMode &&
       !this.clientDetailsPageMode &&
-      !this.addOrderMapMode
+      !this.addOrderMapMode &&  !this.paramDate
     ) {
       let todayDate;
       // Today's Order
@@ -776,6 +806,17 @@ export class MapComponent implements OnInit {
     }
     this.orderDate = orderDate;
     this.getOrders();
+
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      if (queryParams.date) {
+        console.log(queryParams.date);        
+        this.orderDate = queryParams.date;
+        this.getOrders();
+      }
+    });
+    console.log(this.orderDate);
+    
     this.coreService
       .getMethod('sales/map/orders', {
         order_date: this.orderDate,
