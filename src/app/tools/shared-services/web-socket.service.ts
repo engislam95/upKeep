@@ -46,8 +46,6 @@ export class WebSocketService {
         localStorage.setItem('active', '0')
         newRouter.navigate(['/system-off'])
         localStorage.removeItem('currentUser')
-
-
       }
 
     
