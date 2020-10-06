@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from 'src/app/tools/shared-services/core.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
+import { WebSocketService } from '../../../tools/shared-services/web-socket.service';
 
 @Component({
   selector: 'app-technical-details',
@@ -28,9 +29,12 @@ export class TechnicalDetailsComponent implements OnInit {
   responseState;
   responseData;
 
+
   /* ----------------------- Constructor ------------------------ */
   constructor(
     private loaderService: LoaderService,
+    private WebSocketService: WebSocketService,
+
     private coreService: CoreService,
     private activatedRoute: ActivatedRoute,
     private router: Router ,
@@ -74,6 +78,21 @@ export class TechnicalDetailsComponent implements OnInit {
       //     this.endLoading();
       //   });
     });
+
+
+
+    // Fetch technical condition 
+
+    if (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner') {
+
+      this.WebSocketService.listenChannel('company.')
+
+
+    }
+
+
+
+
   }
   /* ---------------------- Start Loading ----------------------------- */
   startLoading() {
@@ -176,6 +195,21 @@ export class TechnicalDetailsComponent implements OnInit {
     .subscribe((technicalDetails: any) => {
       console.log(technicalDetails.data);
        this.showSuccess('تم  إيقاف حساب  الفنى   ');
+      this.getTechnicalData() ;
+
+      this.endLoading();
+    });
+  }
+
+  logout()
+  {
+    this.coreService
+    .postMethod('logout', {
+      id : this.tecniciansId 
+    })
+    .subscribe((technicalDetails: any) => {
+      console.log(technicalDetails.data);
+      this.showSuccess('تم الخروج من  حساب  الفنى   ');
       this.getTechnicalData() ;
 
       this.endLoading();
