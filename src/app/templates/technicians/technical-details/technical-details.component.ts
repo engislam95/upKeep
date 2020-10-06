@@ -28,7 +28,6 @@ export class TechnicalDetailsComponent implements OnInit {
   modalRef: BsModalRef;
   responseState;
   responseData;
-  connected = false ;
 
 
   /* ----------------------- Constructor ------------------------ */
@@ -79,6 +78,8 @@ export class TechnicalDetailsComponent implements OnInit {
       //     this.endLoading();
       //   });
     });
+
+
 
     // Fetch technical condition 
 
@@ -194,6 +195,21 @@ export class TechnicalDetailsComponent implements OnInit {
     .subscribe((technicalDetails: any) => {
       console.log(technicalDetails.data);
        this.showSuccess('تم  إيقاف حساب  الفنى   ');
+      this.getTechnicalData() ;
+
+      this.endLoading();
+    });
+  }
+
+  logout()
+  {
+    this.coreService
+    .postMethod('logout', {
+      id : this.tecniciansId 
+    })
+    .subscribe((technicalDetails: any) => {
+      console.log(technicalDetails.data);
+      this.showSuccess('تم الخروج من  حساب  الفنى   ');
       this.getTechnicalData() ;
 
       this.endLoading();

@@ -81,7 +81,7 @@
 
 
 
-          <div class="mobileConnected" *ngIf="connected">
+          <div class="mobileConnected" *ngIf="technicalDetails.appConnection == 'online' ">
 
             <div class="connected" style="cursor: no-drop;" >
               <i class="fas fa-user-check"></i>
@@ -89,14 +89,14 @@
             </div>
 
             
-            <div class="logout" style="cursor: no-drop;">
+            <div class="logout" style="cursor: no-drop;" (click)="logout()">
               <i class="fas fa-sign-out-alt"></i>
             </div>
 
           </div>
 
 
-          <div class="mobileConnected" *ngIf="!connected">
+          <div class="mobileConnected"  *ngIf="technicalDetails.appConnection != 'online' ">
 
             <div class="disConnected">
               <i class="fas fa-user-check"></i>
