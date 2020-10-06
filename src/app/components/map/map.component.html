@@ -160,6 +160,7 @@
                           [matDatepicker]="fromFilterDate"
                           placeholder="التاريخ"
                           autocomplete="off"
+                          [value]="getCurrentDate()"
                           id="filterStartDate"
                         />
                         <mat-datepicker-toggle
@@ -648,7 +649,7 @@
             </agm-marker>
             <div
               *ngIf="
-                url == '/orders/orders-map' || url == '/sales/orders-sales-map'
+                url == '/orders/orders-map' || url.includes('/sales/orders-sales-map')
               "
             >
               <agm-marker
@@ -742,7 +743,7 @@
           <mat-tab label="تفاصيل الطلب">
             <div style="padding: 20px;text-align:center">
               <ul class="orderSalesDetails">
-                <li>
+                <li *ngIf="updateSaleOrder['client']">
                   <span class="saleOrderTitle" *ngIf="updateSaleOrder['client']"
                     >اسم العميل :</span
                   >
@@ -752,7 +753,7 @@
                       : ""
                   }}</span>
                 </li>
-                <li>
+                <li *ngIf="updateSaleOrder['technician']">
                   <span
                     class="saleOrderTitle"
                     *ngIf="updateSaleOrder['technician']"
@@ -764,7 +765,7 @@
                       : ""
                   }}</span>
                 </li>
-                <li>
+                <li *ngIf="updateSaleOrder['order_date']">
                   <span
                     class="saleOrderTitle"
                     *ngIf="updateSaleOrder['order_date']"
@@ -823,7 +824,7 @@
                     </span>
                   </ng-container>
                 </li>
-                <li>
+                <li *ngIf="updateSaleOrder['service']">
                   <span
                     class="saleOrderTitle"
                     *ngIf="updateSaleOrder['service']"
@@ -835,7 +836,7 @@
                       : ""
                   }}</span>
                 </li>
-                <li>
+                <li *ngIf="updateSaleOrder['service']">
                   <span
                     class="saleOrderTitle"
                     *ngIf="updateSaleOrder['service']"
