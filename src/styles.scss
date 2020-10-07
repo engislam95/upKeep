@@ -6578,3 +6578,23 @@ button:disabled {
     padding: 0px .75em 5px .75em;
   }
 }
+
+#order-details {
+  .mat-tab-list {
+    background: #000;
+  }
+
+  .mat-tab-label-content {
+    color: #ffffff;
+  }
+
+  .mat-tab-label-active {
+    .mat-tab-label-content {
+      color: #ffffff;
+    }
+  }
+
+  .mat-tab-label {
+    opacity: 1;
+  }
+}
