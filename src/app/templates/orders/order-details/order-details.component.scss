@@ -152,7 +152,6 @@
     h2 {
       margin-top: 4px;
       display: inline-block;
-      margin-right: 35px;
 
       i {
         margin-left: 11px;
@@ -319,6 +318,7 @@
 
 .detailsInvoice {
   display: flex;
+  margin-bottom: 45px;
 
   .totalInvoice {
     margin-top: 42px;
@@ -620,6 +620,14 @@
   span[_ngcontent-c1] {
     margin-right: 2px !important;
   }
+}
+
+.red {
+  color: #FF6363;
+}
+
+#popupData2 {
+  background: #ffff;
 }
 
 // ################################### 3 - End (max-width: 767px) ###################################

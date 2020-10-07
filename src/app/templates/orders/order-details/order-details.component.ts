@@ -97,6 +97,8 @@ export class OrderDetailsComponent implements OnInit {
   order_delete: boolean = false;
   orders: any = [];
   user: any = '';
+  showWaitingPopup: any = false;
+  showSalesgPopup: any = false;
   // Active State For Control Panel
   //  ######################### End General Data #########################
   constructor(
@@ -379,8 +381,123 @@ export class OrderDetailsComponent implements OnInit {
         }
       );
   }
+  openWaitPopup() {
+    this.showWaitingPopup = true;
+  }
   closePopup() {
     this.showPostponedPopup = false;
+  }
+
+  toSalesWithTech() {
+    let order_date = '';
+    let orderDate = '';
+    order_date = this.orderDetails['order_date'].split('-');
+    orderDate =
+      order_date[0] + '/' + order_date[1] + '/' + order_date[2];
+
+    this.startLoading();
+    this.coreService.postMethod('orders/' + this.orderId + '/tosales', {
+      client_id: this.orderDetails['client_id'],
+      service_id: this.orderDetails['service_id'],
+      source_id: this.orderDetails['source_id'],
+      offer_id: this.orderDetails['offer_id'],
+      technician_id: this.orderDetails['technical_id'],
+      order_date: orderDate,
+      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
+      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      details: this.orderDetails['details'],
+      location_id: this.orderDetails['location_id'],
+      status: 72,
+      period_id: 1,
+      order_related: this.orderDetails['order_related'],
+      urgent: (this.orderDetails['urgent'] == null ? '0' : this.orderDetails['urgent']),
+    }).subscribe(data => {
+      console.log(data);
+      this.endLoading();
+      this.showSuccess('تم تحويل الطلب الى المبيعات بنجاح');
+      this.showWaitingPopup = false;
+    },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
+        }
+      })
+  }
+
+  toWaitingList() {
+    let order_date = '';
+    let orderDate = '';
+    order_date = this.orderDetails['order_date'].split('-');
+    orderDate =
+      order_date[0] + '/' + order_date[1] + '/' + order_date[2];
+
+    this.startLoading();
+    this.coreService.postMethod('orders/' + this.orderId + '/tosales', {
+      client_id: this.orderDetails['client_id'],
+      service_id: this.orderDetails['service_id'],
+      source_id: this.orderDetails['source_id'],
+      offer_id: this.orderDetails['offer_id'],
+      order_date: orderDate,
+      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
+      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      details: this.orderDetails['details'],
+      location_id: this.orderDetails['location_id'],
+      status: 75,
+      period_id: 1,
+      order_related: this.orderDetails['order_related'],
+      urgent: (this.orderDetails['urgent'] == null ? '0' : this.orderDetails['urgent']),
+    }).subscribe(data => {
+      console.log(data);
+      this.endLoading();
+      this.showSuccess('تم نقل الطلب الى قائمة الانتظار');
+      this.showWaitingPopup = false;
+    },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
+        }
+      })
+  }
+
+  toSalesWithoutTech() {
+    let order_date = '';
+    let orderDate = '';
+    order_date = this.orderDetails['order_date'].split('-');
+    orderDate =
+      order_date[0] + '/' + order_date[1] + '/' + order_date[2];
+
+    this.startLoading();
+    this.coreService.postMethod('orders/' + this.orderId + '/tosales', {
+      client_id: this.orderDetails['client_id'],
+      service_id: this.orderDetails['service_id'],
+      source_id: this.orderDetails['source_id'],
+      offer_id: this.orderDetails['offer_id'],
+      order_date: orderDate,
+      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
+      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      details: this.orderDetails['details'],
+      location_id: this.orderDetails['location_id'],
+      status: 72,
+      period_id: 1,
+      order_related: this.orderDetails['order_related'],
+      urgent: (this.orderDetails['urgent'] == null ? '0' : this.orderDetails['urgent']),
+    }).subscribe(data => {
+      console.log(data);
+      this.endLoading();
+      this.showSuccess('تم تحويل الطلب الى المبيعات بنجاح بدون فنى');
+      this.showWaitingPopup = false;
+    },
+      error => {
+        if (error.error.errors) {
+          this.showErrors(error.error.errors);
+        } else {
+          this.showErrors(error.error.message);
+        }
+      })
   }
   //  ######################### End Postponed Technical #########################
 

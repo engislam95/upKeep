@@ -25,6 +25,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrdersTableComponent } from './orders-table/orders-table.component';
 import { SuspendedOrdersComponent } from './suspended-orders/suspended-orders.component';
 import { PostponedOrdersComponent } from './postponed-orders/postponed-orders.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PostponedOrdersComponent } from './postponed-orders/postponed-orders.co
     MatMenuModule,
     MatPaginatorModule,
     CKEditorModule,
+    MatTabsModule,
     ToolsModule,
     MatSlideToggleModule,
     NgxMaterialTimepickerModule,
@@ -58,4 +60,4 @@ import { PostponedOrdersComponent } from './postponed-orders/postponed-orders.co
     })
   ]
 })
-export class OrdersModule {}
+export class OrdersModule { }
