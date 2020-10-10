@@ -6,16 +6,29 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3 style="display: flex; align-items: center;">
-        <img
-          style="margin-left: 10px; width: 19%;"
-          src="../../../assets/img/home_page/security-on.svg"
-          alt=""
-        />{{ modeTitle }}
+      <h3 class="fontRole">
+        <i style="font-weight: 500;" class="fal fa-cog"></i>إدارة الصلاحيات
       </h3>
-      <div class="page_body_main_buttons">
-        <a routerLink="/roles/all-roles">
-          الرجوع الى قائمة الادوار
+      <div class="clientDetails-name">
+        <ul>
+          <li>
+            <span class="cilentAccount-type-0 ">
+              الحساب نشط
+            </span>
+          </li>
+          <li>
+            باقى
+            <span style="padding: 0% 10px;">
+              1
+            </span>
+            يوم على صلاحية النظام
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="page_body_main_buttons">
+        <a routerLink="/roles/add-role">
+          إضافة صلاحية جديدة
           <i
             ><img
               style="width: 60%;"
@@ -23,7 +36,7 @@
               alt=""
           /></i>
         </a>
-      </div>
+      </div> -->
     </div>
     <div
       class="page_body formContainer"
@@ -31,15 +44,28 @@
     >
       <div class="page_body_main">
         <div class="page_block">
+          <div
+            class="button-add-taxs"
+            style="position: relative;
+          left: 8px;
+          float: left;
+          top: 33px;"
+          >
+            <button [routerLink]="['/roles/all-roles']">
+              <i class="fal fa-backward"></i> الرجوع الى قائمة الصلاحيات
+            </button>
+          </div>
           <div id="add_form">
             <form (ngSubmit)="onSubmit()" [formGroup]="rolesForm">
               <div class="form_field">
-                <label>إسم الدور <span>*</span></label>
+                <label
+                  ><i class="fas fa-plus-square"></i> إضافة صلاحية جديدة
+                </label>
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
                     formControlName="name"
                     matInput
-                    placeholder="إسم الدور"
+                    placeholder="إسم الصلاحية"
                     autocomplete="off"
                     id="name"
                   />
@@ -50,7 +76,6 @@
                   >
                     <i class="fas fa-times-circle"></i>
                   </button>
-                  <i class="fas fa-briefcase"></i>
                 </mat-form-field>
                 <div
                   [@fade]
@@ -71,35 +96,42 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
-              <div class="form_field full_width">
+              <div class="form_field"></div>
+              <div class="form_field">
                 <label>الملاحظات</label>
-                <ckeditor
-                  formControlName="description"
-                  [config]="config"
-                  [editor]="Editor"
-                  data="<p>تجربة نص</p>"
-                ></ckeditor>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <textarea
+                    style="height: 165px"
+                    matInput
+                    formControlName="description"
+                    placeholder="الملاحظات"
+                  ></textarea>
+                </mat-form-field>
               </div>
               <div
-                class="form_field fullWidth formButtons"
-                style="justify-content: start;"
+                class="button-add-taxs"
+                style="display: block; margin-top: 20px; left: 0; position: relative;"
               >
                 <button
                   *ngIf="!updateMode"
                   type="submit"
-                  class="formSubmit formButton"
+                  class=""
                   [disabled]="rolesForm.invalid || submitted"
+                  style="width: 176px;"
                 >
-                  اضافة الى دور القائمة
+                  <i class="fas fa-plus-square"></i>
+                  اضافة الصلاحية
                 </button>
                 <button
                   *ngIf="updateMode"
                   type="button"
                   (click)="onUpdate()"
-                  class="formSubmit formButton"
+                  class=""
                   [disabled]="rolesForm.invalid || submitted"
+                  style="width: 123px;"
                 >
-                  تعديل الدور
+                  <i class="fas fa-file-edit"></i>
+                  تعديل
                 </button>
               </div>
             </form>
