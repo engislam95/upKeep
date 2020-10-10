@@ -1,3 +1,164 @@
+.fontRole {
+  font-family: "GE SS Two" !important;
+  font-weight: 300;
+  font-size: 19px;
+  text-align: right;
+  color: #464646;
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+#display_table tr {
+  height: 46px;
+}
+
+#display_table td.mat-cell {
+  padding: 0 5px;
+  border-right: none;
+  border-left: none;
+  font-family: "GE SS Two";
+  font-weight: 300;
+  font-size: 16px;
+  text-align: center;
+  color: #343434;
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  width: 1560px;
+
+
+
+
+}
+
+// start new style client details data
+.clientDetails-name {
+  padding: 0px 50px;
+
+  h3 {
+    font-family: 'Arabic gess light';
+
+  }
+
+  ul {
+    display: flex;
+
+    li {
+      margin-bottom: 1px;
+      margin-left: 15px;
+      font-family: 'Arabic gess light';
+
+    }
+
+    .clientDetails-id {
+      background: #27282a;
+      color: #fff;
+      padding: 0px 10px 0px 5px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    .cilentAccount-type {
+      font-family: 'Roboto';
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      color: #Fff;
+      padding: 3px 18px;
+      width: 105px;
+      height: 30px;
+      background: #000000;
+      border: 2px solid rgba(112, 112, 112, 0.34);
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      padding-bottom: 5px;
+
+    }
+
+    .cilentAccount-type-0 {
+
+      background: #1e9a19;
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      font-family: 'Arabic gess light';
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      padding: 7px 29px;
+      padding-bottom: 7px;
+
+
+    }
+
+    .cilentAccount-type-10 {
+
+      background: red;
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      font-family: 'Arabic gess light';
+      font-size: 15px;
+      text-align: center;
+      color: #fff;
+      padding: 7px 29px;
+      padding-bottom: 7px;
+
+
+    }
+
+    .cilentAccount-type-1 {
+      width: 125px;
+      height: 30px;
+      background: #444;
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.16);
+      font-family: "GE SS Two";
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #fff;
+      text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
+      padding: 7px 29px;
+
+    }
+  }
+}
+
+.button-add-taxs {
+  position: absolute;
+  margin-top: -40px;
+  left: 59px;
+
+  button {
+    padding-left: 19px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+
+    font-size: 14px;
+    margin-left: 9px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 25px;
+      padding: 10px;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-left: 14px;
+      margin-right: 3px;
+
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 300;
+      font-size: 18px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+
+    }
+  }
+}
+
+
+
+
 #NameFillterInputStyle {
   width: calc(350px);
   margin-left: 10px;
@@ -22,7 +183,7 @@
 }
 
 .resetInput {
-  color: #95989a;
+  color: black;
   margin-top: 2px;
   background-color: white;
 }
@@ -104,7 +265,7 @@
   box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
   padding: 5px 10px;
   margin-top: -9px;
-  margin-right: 48px;
+  margin-right: 113px;
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;

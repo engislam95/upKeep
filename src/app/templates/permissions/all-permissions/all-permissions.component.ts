@@ -36,6 +36,7 @@ export class AllPermissionsComponent implements OnInit {
   pagesNumbers: any = [];
   pageId: number = 1;
   firstPage: any = '';
+  labelPosition: 'before' | 'after' = 'after';
   lastPage: any = '';
   // roleFilteredOptions: Observable<any>;
   filteredRoleId: any = '';
@@ -44,12 +45,14 @@ export class AllPermissionsComponent implements OnInit {
   roleObject: any = '';
   moduleObject: any = '';
   moduleArray: any = [];
+  hideme: any = [];
+  showOrdercontrolst: boolean = false;
   rolesArray: any = [];
   privileges: any = [
-    { eng: 'create', arb: 'اضافة' },
-    { eng: 'update', arb: 'تعديل' },
-    { eng: 'delete', arb: 'حذف' },
-    { eng: 'show', arb: 'مشاهدة' },
+    { eng: 'create', arb: 'اضافة', icon: 'plus-circle' },
+    { eng: 'update', arb: 'تعديل', icon: 'money-check-edit' },
+    { eng: 'delete', arb: 'حذف', icon: 'trash' },
+    { eng: 'show', arb: 'مشاهدة', icon: 'eye' },
   ];
   privilegesArray: any = ['all'];
   permissionObject: any = '';

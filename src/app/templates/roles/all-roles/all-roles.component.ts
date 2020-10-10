@@ -36,6 +36,8 @@ export class AllRolesComponent implements OnInit {
     'ID',
     'name',
     'count',
+    'date',
+    'note',
     // 'edit',
     // 'details',
     // 'delete',
