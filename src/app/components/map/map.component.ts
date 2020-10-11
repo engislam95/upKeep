@@ -37,6 +37,7 @@ export class MapComponent implements OnInit {
   @Input() orderClient;
   @Input() orderDetailsOrgins;
   @Input() clientDetailsOrgins;
+  @Input() clientDetailsSalesOrgins;
   @Input() updatedLocationData;
   @Input() orderServiceId = '';
   @Input() addOrderMode = false;
@@ -46,7 +47,9 @@ export class MapComponent implements OnInit {
   @Input() addOrderPageMode = false;
   @Input() addNewAddressMode = false;
   @Input() clientDetailsPageMode = false;
+  @Input () orderClientSales = false;
   @Input() clientDetailsPopupOpen = false;
+  @Input() clientDetailsSalesPopupOpen = false;
   @Input() clientDetailsPageModeAddMap = false;
   @Input() multiAddressMapPopupSelections = false;
   @Input() clientDetailsPageModeDtailsMap = false;

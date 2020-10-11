@@ -83,13 +83,24 @@
                 {{ element.mobile ? element.mobile : "" }}
               </td>
             </ng-container>
+            <ng-container matColumnDef="map">
+              <th mat-header-cell *matHeaderCellDef>الخريطة</th>
+              <td mat-cell *matCellDef="let element">
+               <i class="fas fa-map-marked-alt" style="cursor: pointer; font-size: 22px; " (click)="openMap(element)"></i>
+              </td>
+            </ng-container>
             <ng-container matColumnDef="order_res">
               <th mat-header-cell *matHeaderCellDef>محتويات</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.mobile ? element.mobile : "" }}
+               <span *ngIf="element.add_type == 'sound'" style="font-size: 22px;">
+                 <i class="fas fa-waveform-path"></i>
+               </span>
+               <span *ngIf="element.add_type != 'sound'" style="font-size: 22px;">
+                <i class="fas fa-bullseye-pointer"></i>
+              </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="city">
+            <!-- <ng-container matColumnDef="city">
               <th mat-header-cell *matHeaderCellDef>المدينة</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.mobile ? element.mobile : "" }}
@@ -100,13 +111,13 @@
               <td mat-cell *matCellDef="let element">
                 {{ element.mobile ? element.mobile : "" }}
               </td>
-            </ng-container>
-            <ng-container matColumnDef="order_status">
+            </ng-container> -->
+            <!-- <ng-container matColumnDef="order_status">
               <th mat-header-cell *matHeaderCellDef>المطلوب</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.mobile ? element.mobile : "" }}
               </td>
-            </ng-container>
+            </ng-container> -->
             <ng-container matColumnDef="order_details">
               <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
               <td
@@ -115,13 +126,14 @@
                 style="display: flex; align-items: center; justify-content: center;"
               >
                 <!-- <i class="fas fa-play-circle" style="font-size: 18px;"></i> -->
-                <audio controls>
-                  <source [src]="element.record" type="audio/ma4" />
+                <audio controls *ngIf="element.record">
+                  <source [src]="element.record" type="audio/wav" />
                   Your browser does not support the audio element.
                 </audio>
                 <i
                   class="fas fa-trash-alt"
-                  style="font-size: 18px; margin-right: 10px;"
+                  (click)="openDeletePopup(element.id, element.client_name)"
+                  style="font-size: 18px; margin-right: 10px; cursor: pointer;"
                 ></i>
               </td>
             </ng-container>
@@ -206,6 +218,37 @@
           <button type="button" (click)="closePopup()">إلغاء الحذف</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div id="popup" *ngIf="showMapPopup">
+  <!-- changeVidOrgins() -->
+
+  <div
+    class="overlay"
+    id="overLay"
+    *ngIf="overLayShow"
+    (click)="
+      showMapPopup = false;
+      updateAdressMode = false;
+      addNewAddressModeStatus = false
+    "
+  >
+  <div id="popupData">
+    <div class="popupMap">
+ 
+      <app-map
+        [orderClientSales]="true"
+        [clientDetailsSalesOrgins]="{
+          lng: clientMapDetails.long,
+          lat: clientMapDetails.lat
+        }"
+        [clientDetailsSalesPopupOpen]="showMapPopup"
+      >
+      </app-map>
+     
+      </div>
+      <!-- </form> -->
     </div>
   </div>
 </div>

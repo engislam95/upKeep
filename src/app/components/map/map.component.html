@@ -124,7 +124,7 @@
         >
           <div
             class="noData"
-            *ngIf="orders.length === 0 && ordersLoaded && !addOrderMapMode"
+            *ngIf="orders.length === 0 && ordersLoaded && !addOrderMapMode && !orderClientSales"
           >
             لا يوجد طلبات اليوم
           </div>
@@ -143,7 +143,8 @@
                 !orderDetailsMode &&
                 !clientDetailsMode &&
                 !clientDetailsPageMode &&
-                !addOrderMapMode
+                !addOrderMapMode && 
+                !orderClientSales
               "
               [@fade]
             >
@@ -479,6 +480,18 @@
               iconUrl="./../../../../assets/img/marker_vid.png"
             >
             </agm-marker> -->
+
+            
+         
+              <agm-marker
+              *ngIf="orderClientSales"
+               
+              [agmFitBounds]="true"
+              [latitude]="clientDetailsSalesOrgins.lat"
+              [longitude]="clientDetailsSalesOrgins.lng"
+              >
+              </agm-marker>
+           
 
             <ng-container
               *ngIf="citiesLating.length && url == '/orders/orders-map'"
