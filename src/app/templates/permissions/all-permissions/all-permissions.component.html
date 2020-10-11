@@ -12,11 +12,14 @@
       <div class="clientDetails-name">
         <ul>
           <li>
-            <span class="cilentAccount-type-0 ">
+            <span class="cilentAccount-type-0  fontRole">
               الحساب نشط
             </span>
           </li>
-          <li>
+          <li class="fontRole" style="    position: relative;
+          bottom: 5px;
+          font-size: 16px;
+      ">
             باقى
             <span style="padding: 0% 10px;">
               1
@@ -32,13 +35,13 @@
           <div class="main_block ">
             <div class="button-add-taxs" style="position:relative; left:-28px;">
               <button [routerLink]="['/roles/all-roles']">
-                <i class="fal fa-backward"></i> الرجوع الى قائمة الصلاحيات
+                <i class="fal fa-backward "></i> <span class="fontRole" style="font-size: 16px;">الرجوع الى قائمة الصلاحيات</span> 
               </button>
             </div>
             <form [formGroup]="filterForm" class="filter_form">
               <div class="form_input" id="NameFillterInputStyle">
-                <label style="display: flex; align-items: center;"
-                  ><i class="fas fa-tasks" style="margin-left: 10px;"></i> توزيع
+                <label class="fontRole" style="display: flex; align-items: center;"
+                  ><i class="fas fa-tasks " style="margin-left: 10px;"></i> توزيع
                   الصلاحيات</label
                 >
                 <!-- <p style="margin: 10px 0; color: #707070; margin-right: 35px;">
@@ -79,7 +82,11 @@
               class="permissionActions"
               style="background: #E9E9E9; border: 1px solid #9E9E9E; padding: 10px 15px; display: flex;
               width: 99%;
-              align-items: center;"
+              align-items: center; 
+              border: 1px solid #9e9e9e;
+              box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+              margin-bottom: 5%;
+              "
             >
               <form
                 *ngIf="moduleArray.length"
@@ -87,13 +94,14 @@
                 [formGroup]="filterForm"
                 class=""
               >
-                <span>
+                <span class="fontRole" style="font-size: 16px">
                   أقسام النظام
                 </span>
                 <div class="form_input" id="NameFillterInputStyle">
                   <mat-form-field dir="rtl" appearance="outline">
                     <mat-select
                       placeholder="اختر اسم الفرع"
+                      formControlName="modules"
                       (selectionChange)="changeModule($event.value)"
                     >
                       <mat-option
@@ -140,14 +148,16 @@
               <div
                 class="checking"
                 *ngIf="!showModule && !updateMode"
-                style="width: 100%;"
+                style="width: 100%; position: relative;
+                top: 8px;"
               >
                 <span *ngFor="let item of privileges; let i = index">
                   <mat-checkbox
-                    style="color: #343434;"
+                    style="color: #343434; font-size: 16px ; font-weight: 300 !important;"
                     [labelPosition]="labelPosition"
-                    class="example-margin text-capitalize"
+                    class="example-margin fontRole"
                     (change)="checkPermission($event, item.eng)"
+
                   >
                     <i
                       class="fal fa-{{ item.icon }}"
@@ -176,13 +186,16 @@
               <div class="button-add-taxs" style="margin-bottom: 0px;">
                 <button
                   class="show"
-                  style="width: 196px; padding: 2px; margin-top: 10px; line-height: 39px;
-                  padding-right: 2px;"
+                  style="width: 196px; padding: 0px; margin-top: 10px; line-height: 39px;
+                  padding-right: 2px; margin-top: 32px;"
                   (click)="getPermissions()"
                   *ngIf="moduleArray.length && !updateMode"
                   [disabled]="showModule || privilegesArray.length < 2"
                 >
+                <div class="addIconF">
+
                   <i class="fas fa-plus-square" style="float: right;"></i>
+                </div>
                   اضافة
                 </button>
               </div>
@@ -205,7 +218,7 @@
               </div>
             </section>
           </div>
-          <h3 style="margin: 20px 30px 0 0;">جدول الصلاحيات</h3>
+          <h3 class="fontRole" style="margin: 20px 30px 0 0; ">جدول الصلاحيات</h3>
           <table
             style="margin-top: 20px;"
             width="100%"
@@ -215,12 +228,12 @@
             class="mat-elevation-z8"
             id="display_table"
           >
-            <ng-container matColumnDef="ID">
+            <!-- <ng-container matColumnDef="ID">
               <th mat-header-cell *matHeaderCellDef>المسلسل</th>
               <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-            </ng-container>
+            </ng-container> -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>إسم الفرع</th>
+              <th mat-header-cell *matHeaderCellDef>قائمة الأقسام</th>
               <td mat-cell *matCellDef="let element">
                 <span *ngIf="element.name == 'clients'">العملاء</span>
                 <span *ngIf="element.name == 'orders'">الطلبات</span>
@@ -283,7 +296,6 @@
                   <button
                     (click)="updateItem(i, element)"
                     id="editButton"
-                    [routerLink]="['/roles/update-role']"
                     class="basic_button"
                     style="
                     background: transparent;
@@ -348,6 +360,55 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
+
+          <div class="pagination">
+            <ul>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page == totalPage"
+                  (click)="nextPage(current_page)"
+                >
+                  <i class="fas fa-angle-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+                  border: 1px solid rgba(112, 112, 112, 0.38);
+                  width: 42px;
+                  height: 31px;
+                  text-align: center;"
+                    type="text"
+                    type="number"
+                    min="1"
+                    [max]="totalPage"
+                    #pageNumber
+                    [value]="current_page"
+                    (keyup.enter)="changePagination(pageNumber)"
+                  />
+                </div>
+              </li>
+              <li>
+                <button
+                  class="arrow"
+                  [disabled]="current_page <= 1"
+                  (click)="prevPage(current_page)"
+                >
+                  <i class="fas fa-angle-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
+          </div>
 
           <section class="saveSection">
             <button (click)="createPermission()" class="show">حفظ</button>

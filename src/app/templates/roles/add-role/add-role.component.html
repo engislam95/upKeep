@@ -42,7 +42,7 @@
       class="page_body formContainer"
       [ngClass]="{ pageNotLoaded: !pageLoaded }"
     >
-      <div class="page_body_main">
+      <div class="page_body_main" id="add_role">
         <div class="page_block">
           <div
             class="button-add-taxs"
@@ -58,9 +58,11 @@
           <div id="add_form">
             <form (ngSubmit)="onSubmit()" [formGroup]="rolesForm">
               <div class="form_field">
-                <label
-                  ><i class="fas fa-plus-square"></i> إضافة صلاحية جديدة
+                <label class="fontRole" style="margin-bottom: 6%;"
+                  ><i class="fas fa-plus-square" style="margin:1%"></i> إضافة صلاحية جديدة
                 </label>
+                <label class="fontRole" style="font-size: 16px; margin-bottom: 3px;">اسم الصلاحية</label>
+
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
                     formControlName="name"
@@ -98,8 +100,8 @@
               </div>
               <div class="form_field"></div>
               <div class="form_field">
-                <label>الملاحظات</label>
-                <mat-form-field appearance="outline" dir="rtl">
+                <label class="fontRole" style="font-size: 16px;  margin-bottom: 3px;">الملاحظات</label>
+                <mat-form-field appearance="outline" dir="rtl" >
                   <textarea
                     style="height: 165px"
                     matInput

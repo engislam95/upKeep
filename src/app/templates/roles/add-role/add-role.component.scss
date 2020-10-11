@@ -3,6 +3,25 @@
   background: #eeeeee0d;
 }
 
+.mat-form-field-appearance-outline .mat-form-field-outline
+{
+  box-shadow: none !important;
+  border: none !important;
+}
+.fontRole {
+  font-family: "GE SS Two" !important;
+  font-weight: 300;
+  font-size: 17px;
+  text-align: right;
+  color: #343434;
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+
+
+}
+
+
 // start new style client details data
 .clientDetails-name {
   padding: 0px 50px;
@@ -115,10 +134,9 @@
       padding-right: 15px;
       padding-left: 15px;
       margin-left: 14px;
-      margin-right: 3px;
+      margin-right: -7px;
 
       font-family: "Font Awesome 5 Pro";
-      font-weight: 300;
       font-size: 18px;
       text-align: center;
       color: #fff;
