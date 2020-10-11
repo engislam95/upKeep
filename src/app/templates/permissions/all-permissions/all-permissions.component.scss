@@ -109,6 +109,7 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, .16);
   margin-left: 10px;
   margin-bottom: 20px;
+  
 
   &:disabled {
     background: #DDD !important;
@@ -225,6 +226,8 @@
     font-size: 14px;
     margin-left: 9px;
 
+    
+
     i {
 
       background: #242a2d;
@@ -234,19 +237,45 @@
       padding-right: 15px;
       padding-left: 15px;
       margin-left: 14px;
-      margin-right: 3px;
-
       font-family: "Font Awesome 5 Pro";
-      font-weight: 300;
       font-size: 18px;
       text-align: center;
       color: #fff;
       text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
-
-
     }
   }
+}
+.numberPagination {
+  background: #fff;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 42px;
+  height: 31px
+}
+.arrow {
+  background: #f5f5f5;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 31px;
+  height: 31px;
+
+  i {
+    font-size: 21px;
+    color: gray;
+    vertical-align: middle;
+  }
+}
+#display_table td.mat-cell
+{
+  padding: 0 5px;
+  border-width: 1px !important;
+
+}
+
+
+#display_table tr {
+  height: 46px;
 }
 
 #showOrdercontrols {
@@ -260,7 +289,100 @@
   box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
   padding: 5px 10px;
   margin-top: -9px;
-  margin-right: 10px;
+  margin-right: -40px !important;
+  border-radius: 5px ;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+
+  img {
+    background: transparent;
+    border: none;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // start toolTip in details menu controls
+  .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    font-size: 15px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltiptext::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  button {
+    text-align: center;
+
+    &:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:first-child {
+      .tooltiptext {
+        right: -15px;
+      }
+    }
+
+    &:last-child {
+      .tooltiptext {
+        left: 40px;
+      }
+    }
+  }
+
+  // end toolTip in details menu controls
+}
+
+
+
+.fontRole {
+  font-family: "GE SS Two" !important;
+  font-weight: 300;
+  font-size: 19px;
+  text-align: right;
+  color: #464646;
+  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+}
+
+#showOrdercontrols {
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  border: 1px;
+  background-color: #f9f9f9;
+  -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  margin-top: -9px;
+  margin-right: 113px;
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;
@@ -307,8 +429,6 @@
   }
 
   button {
-    text-align: center;
-
     &:hover .tooltiptext {
       visibility: visible;
       opacity: 1;

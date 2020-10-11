@@ -27,11 +27,14 @@ export class AllPermissionsComponent implements OnInit {
   role: any = '';
   module: any = '';
   displayedColumns: any = [
-    'ID',
     'name',
     'details',
     'actions',
   ];
+  totalPage: any = '';
+  current_page: any = '';
+
+
   dataSource: any = new MatTableDataSource([]);
   pagesNumbers: any = [];
   pageId: number = 1;
@@ -61,11 +64,13 @@ export class AllPermissionsComponent implements OnInit {
   updateArray = [];
   updatedRow: any = '';
   updatedIndex: any = '';
+  updateModuleSelect:any = {};
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     // userRole: new FormControl(),
     userModule: new FormControl(),
-    module: new FormControl()
+    module: new FormControl(),
+    modules:new FormControl()
   });
   /* --------------------- Constructor ---------------------- */
   constructor(
@@ -97,6 +102,14 @@ export class AllPermissionsComponent implements OnInit {
           }
           console.log(this.moduleArray);
           this.tableArray = arr;
+          this.totalPage = arr.length-1;
+          this.current_page = 1;
+          if(this.totalPage > 10)
+          {
+           this.current_page ++ ;
+          }
+
+
           this.dataSource = new MatTableDataSource(this.tableArray);
         });
       })
@@ -161,6 +174,7 @@ export class AllPermissionsComponent implements OnInit {
     console.log(event);
     this.showModule = false;
     this.moduleObject = event;
+    this.updateModuleSelect = event;
   }
   /* --------------------------- Add Permission Item to Table ------------------------- */
   getPermissions() {
@@ -226,7 +240,7 @@ export class AllPermissionsComponent implements OnInit {
       this.privilegesArray.splice(this.privilegesArray.indexOf(item), 1);
     };
     console.log(this.privilegesArray.includes('update'))
-    if (this.privilegesArray.includes('update') && this.privilegesArray.indexOf('show') === -1) {
+    if ( ( this.privilegesArray.includes('update') || this.privilegesArray.includes('create') ) && this.privilegesArray.indexOf('show') === -1) {
       this.privilegesArray.push('show');
     }
     else if (!this.privilegesArray.includes('update') && this.privilegesArray.indexOf('show') != -1) {
@@ -286,6 +300,10 @@ export class AllPermissionsComponent implements OnInit {
     this.privilegesArray = this.tableArray[i].privileges;
     this.updateArray = row.privileges;
     this.updateMode = true;
+    this.filterForm.controls.modules.setValue(this.updateModuleSelect);
+    console.log(this.filterForm.controls.modules.value);
+    
+
     console.log(this.privilegesArray);
   }
   /* --------------------- Update ----------------- */
