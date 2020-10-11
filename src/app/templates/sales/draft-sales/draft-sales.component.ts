@@ -36,6 +36,9 @@ export class DraftSalesComponent implements OnInit {
   deletedOrderId: number;
   showDeletePopup = false;
   user: any = '';
+  showMapPopup = false;
+  overLayShow = false;
+
   //
   // ─── START TABLE DATA ─────────────────────────────────────────────────────────────────
   //
@@ -47,9 +50,10 @@ export class DraftSalesComponent implements OnInit {
     'main_service',
     'service_date',
     'order_res',
-    'city',
-    'order_time',
-    'order_status',
+    'map',
+    // 'city',
+    // 'order_time',
+    // 'order_status',
     'order_details'
   ];
   sales: any = [];
@@ -58,6 +62,7 @@ export class DraftSalesComponent implements OnInit {
   countPerPage: any = [];
   current_page: any = '';
   totalPage: any = '';
+  clientMapDetails:any = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -72,6 +77,13 @@ export class DraftSalesComponent implements OnInit {
     console.log(this.user);
     this.getAllSales();
 
+  }
+
+  openMap(row) {
+    console.log(row);
+    this.showMapPopup = true;
+    this.overLayShow  = true
+    this.clientMapDetails = row;
   }
 
   getAllSales() {
@@ -107,6 +119,7 @@ export class DraftSalesComponent implements OnInit {
     // End END Loading
   }
 
+
   //
   // ─── START ONINIT ────────────────────────────────────────────────
   //
@@ -140,10 +153,11 @@ export class DraftSalesComponent implements OnInit {
     this.closePopup();
     this.startLoading();
     this.coreService
-      .deleteMethod('sales/orders/' + this.deletedOrderId)
+      .deleteMethod('sales/client/orders/' + this.deletedOrderId)
       .subscribe(
         () => {
           this.showSuccess();
+          this.getAllSales();
         },
         error => {
           if (error.error.errors) {
