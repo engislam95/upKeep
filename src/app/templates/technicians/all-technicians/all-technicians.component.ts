@@ -67,28 +67,29 @@ export class AllTechniciansComponent implements OnInit {
     techniciansStatusObj: new FormControl(),
     filterName: new FormControl(),
     service: new FormControl(),
-    serviceCity: new FormControl() ,
-    contractType : new FormControl()
+    serviceCity: new FormControl(),
+    contractType: new FormControl()
   });
 
   statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
   statusFilteredOptions: Observable<any>;
-  filteredStatusId:any = '';
+  filteredStatusId: any = '';
 
   ServiceArray = [];
   filteredServiceArray = [];
 
   CityArray = [];
   filteredCityArray = [];
-  mainContractTpe = [] ;
-  mainServicesLoaded ;
+  mainContractTpe = [];
+  mainServicesLoaded;
   technician_add: boolean = false;
   technician_all: boolean = false;
   technician_update: boolean = false;
   technician_delete: boolean = false;
   user: any = '';
+  total: any = '';
   technicians: any = [];
-  filteredContractId ;
+  filteredContractId;
   //  ###################### End Select Status ######################
   constructor(
     //
@@ -141,7 +142,7 @@ export class AllTechniciansComponent implements OnInit {
     this.coreService
       .getMethod('lookup/contract-types', {})
       .subscribe((contracts: any) => {
-        
+
         console.log(contracts);
         this.mainContractTpe = contracts.data;
         this.mainServicesLoaded = true;
@@ -149,7 +150,7 @@ export class AllTechniciansComponent implements OnInit {
         this.endLoading();
       });
 
-      
+
 
     // End Get All Technicians
 
@@ -173,14 +174,14 @@ export class AllTechniciansComponent implements OnInit {
 
     // Start Select Search For Status Types
 
-      this.statusFilteredOptions = this.filterForm
+    this.statusFilteredOptions = this.filterForm
       .get('techniciansStatusObj')
       .valueChanges.pipe(
         startWith(''),
         map(value => this.filterTechniciansStatus(value))
       );
 
-    
+
     // End Select Search For Status Types
 
     // End Select Search For Status Types
@@ -203,21 +204,20 @@ export class AllTechniciansComponent implements OnInit {
   }
   selectStatus(ev) {
     console.log(ev);
-    this.filteredStatusId = ev ;
+    this.filteredStatusId = ev;
     this.getAllTechnicians(this.pageId);
   }
 
-  selectContract(ev)
-  {
+  selectContract(ev) {
     console.log(ev);
-    this.filteredContractId = ev ;
+    this.filteredContractId = ev;
     this.getAllTechnicians(this.pageId);
   }
   //  ############################### End OnInit ###############################
   //  ######################### Start Filter Order Status  #########################
   filterTechniciansStatus(value: any) {
     console.log(value);
-    
+
     if (typeof value === 'object') {
       this.filteredStatusId = value.id;
       this.pageId = 1;
@@ -225,7 +225,7 @@ export class AllTechniciansComponent implements OnInit {
     }
     if (value === '') {
       console.log(this.statusArray);
-      
+
       this.filteredStatusId = '';
       this.pageId = 1;
       this.getAllTechnicians(this.pageId);
@@ -234,15 +234,15 @@ export class AllTechniciansComponent implements OnInit {
     return this.statusArray.filter(option => option.name.includes(value));
   }
 
-  filterTechniciansService(services,value) {
-  
+  filterTechniciansService(services, value) {
+
     // services.openedChange.subscribe(opened => {
     //   return opened
 
-          services.close();
-      
-      
-    
+    services.close();
+
+
+
     console.log(value);
     if (value.length > 0) {
       this.filteredServiceArray = value;
@@ -261,7 +261,7 @@ export class AllTechniciansComponent implements OnInit {
     return this.filteredServiceArray;
   }
 
-  filterTechniciansCity(cities , value) {
+  filterTechniciansCity(cities, value) {
     cities.close();
 
     if (value.length > 0) {
@@ -319,14 +319,13 @@ export class AllTechniciansComponent implements OnInit {
       });
       this.filteredTechniciansData = '';
     } else if (key === 'techniciansStatusObj') {
-      this.filteredStatusId =  '',
-      this.filterForm.patchValue({
-        techniciansStatusObj: ''
-      });
+      this.filteredStatusId = '',
+        this.filterForm.patchValue({
+          techniciansStatusObj: ''
+        });
 
     }
-    else if (key == 'contractType')
-    {
+    else if (key == 'contractType') {
 
       this.filteredContractId = ''
       this.filterForm.patchValue({
@@ -347,12 +346,13 @@ export class AllTechniciansComponent implements OnInit {
       .getMethod('technicians?page=' + pageId, {
         name: this.filteredTechniciansData,
         active: this.filteredStatusId,
-        contract_type: this.filteredContractId ? this.filteredContractId : '' ,
+        contract_type: this.filteredContractId ? this.filteredContractId : '',
         'service[]': this.filteredServiceArray,
         'city[]': this.filteredCityArray
       })
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
+        this.total = getTechniciansResponse.data.total;
         this.dataSource = getTechniciansResponse.data.data;
         this.current_page = getTechniciansResponse.data.current_page;
         this.totalPage = getTechniciansResponse.data.last_page;
@@ -452,7 +452,7 @@ export class AllTechniciansComponent implements OnInit {
   }
   //  ######################### End Update Technical #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() {}
+  dataExistance() { }
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {

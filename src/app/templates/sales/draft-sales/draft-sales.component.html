@@ -44,6 +44,7 @@
             </select>
           </div>
           <table
+            *ngIf="sales.length"
             width="100%"
             dir="rtl"
             mat-table
@@ -86,18 +87,28 @@
             <ng-container matColumnDef="map">
               <th mat-header-cell *matHeaderCellDef>الخريطة</th>
               <td mat-cell *matCellDef="let element">
-               <i class="fas fa-map-marked-alt" style="cursor: pointer; font-size: 22px; " (click)="openMap(element)"></i>
+                <i
+                  class="fas fa-map-marked-alt"
+                  style="cursor: pointer; font-size: 22px; "
+                  (click)="openMap(element)"
+                ></i>
               </td>
             </ng-container>
             <ng-container matColumnDef="order_res">
               <th mat-header-cell *matHeaderCellDef>محتويات</th>
               <td mat-cell *matCellDef="let element">
-               <span *ngIf="element.add_type == 'sound'" style="font-size: 22px;">
-                 <i class="fas fa-waveform-path"></i>
-               </span>
-               <span *ngIf="element.add_type != 'sound'" style="font-size: 22px;">
-                <i class="fas fa-bullseye-pointer"></i>
-              </span>
+                <span
+                  *ngIf="element.add_type == 'sound'"
+                  style="font-size: 22px;"
+                >
+                  <i class="fas fa-waveform-path"></i>
+                </span>
+                <span
+                  *ngIf="element.add_type != 'sound'"
+                  style="font-size: 22px;"
+                >
+                  <i class="fas fa-bullseye-pointer"></i>
+                </span>
               </td>
             </ng-container>
             <!-- <ng-container matColumnDef="city">
@@ -141,7 +152,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
-          <div class="pagination">
+          <div class="pagination" *ngIf="sales.length">
             <ul>
               <li>
                 <button
@@ -189,6 +200,12 @@
               </li>
             </ul>
           </div>
+          <div
+            style="text-align: center; margin-top: 20px;"
+            *ngIf="!sales.length"
+          >
+            <h3>عفوا لا توجد طلبات</h3>
+          </div>
         </div>
       </div>
     </div>
@@ -234,19 +251,17 @@
       addNewAddressModeStatus = false
     "
   >
-  <div id="popupData">
-    <div class="popupMap">
- 
-      <app-map
-        [orderClientSales]="true"
-        [clientDetailsSalesOrgins]="{
-          lng: clientMapDetails.long,
-          lat: clientMapDetails.lat
-        }"
-        [clientDetailsSalesPopupOpen]="showMapPopup"
-      >
-      </app-map>
-     
+    <div id="popupData">
+      <div class="popupMap">
+        <app-map
+          [orderClientSales]="true"
+          [clientDetailsSalesOrgins]="{
+            lng: clientMapDetails.long,
+            lat: clientMapDetails.lat
+          }"
+          [clientDetailsSalesPopupOpen]="showMapPopup"
+        >
+        </app-map>
       </div>
       <!-- </form> -->
     </div>

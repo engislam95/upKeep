@@ -641,7 +641,7 @@
 
                     <p>
                       {{
-                        pageLoaded
+                        pageLoaded && orderDetails["technician"].service
                           ? orderDetails["technician"].service.name
                           : ""
                       }}

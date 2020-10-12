@@ -394,7 +394,6 @@ export class OrderDetailsComponent implements OnInit {
     order_date = this.orderDetails['order_date'].split('-');
     orderDate =
       order_date[0] + '/' + order_date[1] + '/' + order_date[2];
-
     this.startLoading();
     this.coreService.postMethod('orders/' + this.orderId + '/tosales', {
       client_id: this.orderDetails['client_id'],
@@ -403,8 +402,8 @@ export class OrderDetailsComponent implements OnInit {
       offer_id: this.orderDetails['offer_id'],
       technician_id: this.orderDetails['technical_id'],
       order_date: orderDate,
-      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
-      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      start: (this.orderDetails['fromH'].toString().length == 1 ? '0' + this.orderDetails['fromH'].toString() : this.orderDetails['fromH'].toString()) + ':' + (this.orderDetails['fromM'].toString().length == 1 ? + '0' + this.orderDetails['fromM'].toString() : this.orderDetails['fromM'].toString()),
+      end: (this.orderDetails['toH'].toString().length == 1 ? '0' + this.orderDetails['toH'].toString() : this.orderDetails['toH'].toString()) + ':' + (this.orderDetails['toM'].toString().length == 1 ? + '0' + this.orderDetails['toM'].toString() : this.orderDetails['toM'].toString()),
       details: this.orderDetails['details'],
       location_id: this.orderDetails['location_id'],
       status: 72,
@@ -415,6 +414,9 @@ export class OrderDetailsComponent implements OnInit {
       console.log(data);
       this.endLoading();
       this.showSuccess('تم تحويل الطلب الى المبيعات بنجاح');
+      setTimeout(() => {
+        this.router.navigateByUrl('/orders/all-orders');
+      }, 2000);
       this.showWaitingPopup = false;
     },
       error => {
@@ -440,8 +442,8 @@ export class OrderDetailsComponent implements OnInit {
       source_id: this.orderDetails['source_id'],
       offer_id: this.orderDetails['offer_id'],
       order_date: orderDate,
-      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
-      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      start: (this.orderDetails['fromH'].toString().length == 1 ? '0' + this.orderDetails['fromH'].toString() : this.orderDetails['fromH'].toString()) + ':' + (this.orderDetails['fromM'].toString().length == 1 ? + '0' + this.orderDetails['fromM'].toString() : this.orderDetails['fromM'].toString()),
+      end: (this.orderDetails['toH'].toString().length == 1 ? '0' + this.orderDetails['toH'].toString() : this.orderDetails['toH'].toString()) + ':' + (this.orderDetails['toM'].toString().length == 1 ? + '0' + this.orderDetails['toM'].toString() : this.orderDetails['toM'].toString()),
       details: this.orderDetails['details'],
       location_id: this.orderDetails['location_id'],
       status: 75,
@@ -453,6 +455,9 @@ export class OrderDetailsComponent implements OnInit {
       this.endLoading();
       this.showSuccess('تم نقل الطلب الى قائمة الانتظار');
       this.showWaitingPopup = false;
+      setTimeout(() => {
+        this.router.navigateByUrl('/orders/all-orders');
+      }, 2000);
     },
       error => {
         if (error.error.errors) {
@@ -477,8 +482,8 @@ export class OrderDetailsComponent implements OnInit {
       source_id: this.orderDetails['source_id'],
       offer_id: this.orderDetails['offer_id'],
       order_date: orderDate,
-      start: (this.orderDetails['fromH'] == 0 ? this.orderDetails['fromH'] + '0' : this.orderDetails['fromH']) + ':' + (this.orderDetails['fromM'] == 0 ? this.orderDetails['fromM'] + '0' : this.orderDetails['fromM']),
-      end: this.orderDetails['toH'] + ':' + (this.orderDetails['toM'] == 0 ? this.orderDetails['toM'] + '0' : this.orderDetails['toM']),
+      start: (this.orderDetails['fromH'].toString().length == 1 ? '0' + this.orderDetails['fromH'].toString() : this.orderDetails['fromH'].toString()) + ':' + (this.orderDetails['fromM'].toString().length == 1 ? + '0' + this.orderDetails['fromM'].toString() : this.orderDetails['fromM'].toString()),
+      end: (this.orderDetails['toH'].toString().length == 1 ? '0' + this.orderDetails['toH'].toString() : this.orderDetails['toH'].toString()) + ':' + (this.orderDetails['toM'].toString().length == 1 ? + '0' + this.orderDetails['toM'].toString() : this.orderDetails['toM'].toString()),
       details: this.orderDetails['details'],
       location_id: this.orderDetails['location_id'],
       status: 72,
@@ -490,6 +495,9 @@ export class OrderDetailsComponent implements OnInit {
       this.endLoading();
       this.showSuccess('تم تحويل الطلب الى المبيعات بنجاح بدون فنى');
       this.showWaitingPopup = false;
+      setTimeout(() => {
+        this.router.navigateByUrl('/orders/all-orders');
+      }, 2000);
     },
       error => {
         if (error.error.errors) {
