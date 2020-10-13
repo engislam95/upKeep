@@ -12,14 +12,18 @@
       <div class="clientDetails-name">
         <ul>
           <li>
-            <span class="cilentAccount-type-0 ">
-              الحساب نشط
+            <span class="cilentAccount-type-0 "  *ngIf="company_details && company_details.active == 1" >
+              الحساب نشط 
             </span>
+            <span class="cilentAccount-type-10 "  *ngIf=" company_details && company_details.active != 1" >
+              الحساب غير نشط  
+            </span>
+          
           </li>
           <li>
             باقى
             <span style="padding: 0% 10px;">
-              1
+              {{company_details  ? company_details.availableTo : ''}}
             </span>
             يوم على صلاحية النظام
           </li>

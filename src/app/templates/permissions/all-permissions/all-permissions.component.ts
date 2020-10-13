@@ -19,6 +19,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class AllPermissionsComponent implements OnInit {
   /* ----------------------------- Variables --------------------------- */
   pageLoaded: boolean = false;
+  currentUser ;
   responseState: any = '';
   responseData: any = '';
   showRole: boolean = true;
@@ -34,6 +35,7 @@ export class AllPermissionsComponent implements OnInit {
   totalPage: any = '';
   current_page: any = '';
 
+  company_details ;
 
   dataSource: any = new MatTableDataSource([]);
   pagesNumbers: any = [];
@@ -114,6 +116,16 @@ export class AllPermissionsComponent implements OnInit {
         });
       })
     })
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    this.coreService.superGet('companyDetails/' + this.currentUser.id).subscribe(
+      res => {
+        console.log(res);
+        this.company_details = res
+      },
+      err => {
+        console.log(err);
+      })
   }
   /* ------------------- Oninit --------------------- */
   ngOnInit() {
@@ -122,6 +134,8 @@ export class AllPermissionsComponent implements OnInit {
     // this.coreService.getMethod('role/all', {}).subscribe(roles => {
     //   this.rolesArray = roles;
     // });
+
+  
     /* ---------------------- Get Module ------------------------- */
     this.coreService.getMethod('permission').subscribe(value => {
       this.moduleArray = value['data'];
@@ -398,4 +412,6 @@ export class AllPermissionsComponent implements OnInit {
       this.responseData
     );
   }
+
+ 
 }

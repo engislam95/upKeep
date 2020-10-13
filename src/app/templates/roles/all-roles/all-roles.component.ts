@@ -59,16 +59,30 @@ export class AllRolesComponent implements OnInit {
     RoleStatus: new FormControl(),
     filterName: new FormControl()
   });
+  company_details: any;
+  currentUser: any;
   /* -------------------- Constructor --------------------------- */
   constructor(
     private loaderService: LoaderService,
     private responseStateService: ResponseStateService,
     private coreService: CoreService,
     private paginationService: PaginationService
-  ) {}
+  ) {
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    this.coreService.superGet('companyDetails/' + this.currentUser.id).subscribe(
+      res => {
+        console.log(res);
+        this.company_details = res
+      },
+      err => {
+        console.log(err);
+      })
+  }
   /* ------------------------ Oninit -------------------------- */
   ngOnInit() {
     this.startLoading();
+ 
     this.getAllRoles(this.pageId);
     const filterName = document.getElementById('filterName');
     const filterNameListner = fromEvent(filterName, 'keyup');
