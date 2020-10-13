@@ -745,6 +745,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         ? this.updatedOrderData.status.id
         : '',
       clientContact: this.updatedOrderData.contacted,
+      alternative_contact: this.updatedOrderData.alternative_contact,
       urgent: this.updatedOrderData.urgent,
       color: this.updatedOrderData['label-color'],
       client_id: this.updatedOrderData.client_id
@@ -923,6 +924,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   changeMobile(id, i) {
     this.clientMobile_id = id;
+    this.salesForm.controls.clientAddMobile.setValue(id);
     this.showMobilePopup = false;
     this.showSuccess('تم اختيار الرقم البديل');
     this.clientMobiles.forEach(ele => {
@@ -1116,6 +1118,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         order_related: this.numberOrder,
         contacted: this.salesForm.value.clientContact,
         urgent: this.salesForm.value.urgent,
+        alternative_contact: this.salesForm.value.clientAddMobile,
         'label-color': this.color
       })
       .subscribe((updatedOrder: any) => {
@@ -1132,7 +1135,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
         else if (this.isMap == 'true') {
           setTimeout(() => {
-            this.router.navigate(['/sales/orders-sales-map'],{
+            this.router.navigate(['/sales/orders-sales-map'], {
               queryParams: {
                 date: this.salesForm.value.order_date,
               }
@@ -1204,6 +1207,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         order_related: this.numberOrder,
         contacted: this.salesForm.value.clientContact,
         urgent: this.salesForm.value.urgent,
+        alternative_contact: this.salesForm.value.clientAddMobile,
         'label-color': this.color
       })
       .subscribe(

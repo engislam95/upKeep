@@ -895,7 +895,7 @@
               <div class="form_field inputWithButton" *ngIf="addNumber">
                 <mat-form-field dir="rtl" appearance="outline">
                   <mat-select
-                    formControlName="clientAddMobile"
+                    formControlName="alternative_contact"
                     placeholder="رقم اضافى للعميل فى حالة عدم الرد"
                   >
                     <mat-option
@@ -923,8 +923,8 @@
                   [@fade]
                   class="validationState  errorState"
                   *ngIf="
-                    ordersForm['controls'].clientAddMobile.touched &&
-                    !ordersForm['controls'].clientAddMobile.value
+                    ordersForm['controls'].alternative_contact.touched &&
+                    !ordersForm['controls'].alternative_contact.value
                   "
                 >
                   <i class="fas fa-times"></i>
@@ -933,7 +933,7 @@
                 <div
                   [@fade]
                   class="validationState successState"
-                  *ngIf="ordersForm['controls'].clientAddMobile.value"
+                  *ngIf="ordersForm['controls'].alternative_contact.value"
                 >
                   <i class="fas fa-check"></i>
                   إدخال صحيح
@@ -1035,12 +1035,16 @@
                   />
                   <span id="phoneKey" [@fade]>966+</span>
                 </mat-form-field>
-                <div [@fade] class="validationState  errorState" *ngIf="setError">
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="setError"
+                >
                   <i class="fas fa-times"></i> {{ errorMessage }}
                 </div>
               </div>
               <!-- end Form field -->
-  
+
               <!-- Start Form field -->
               <div class="form_field">
                 <label> <i class="fas fa-user"></i> الاسم الخاص بالرقم </label>

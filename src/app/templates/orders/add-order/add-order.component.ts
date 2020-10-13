@@ -165,7 +165,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
         emptyValidator,
         Validators.required
       ]),
-      clientAddMobile: new FormControl(''),
+      alternative_contact: new FormControl(''),
       service_id: new FormControl(),
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
@@ -633,6 +633,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       clientContact: this.updatedOrderData.contacted,
       sourceObj: this.updatedOrderData.source,
       source_id: this.updatedOrderData.id,
+      alternative_contact: this.updatedOrderData.alternative_contact,
       servicesObj: this.updatedOrderData.service.parent_service,
       main_service_id: this.updatedOrderData.service.parent,
       subServicesObj: this.updatedOrderData.service,
