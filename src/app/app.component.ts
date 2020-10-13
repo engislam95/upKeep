@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
     if (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser')).privilege != 'owner') {
 
       this.WebSocketService.listenChannel('company.' + this.currentUser.id)
+      this.WebSocketService.listenChannel_user('myuser.' + this.currentUser.id)
 
       //   // this.router.navigate(['/system-off']);
 
