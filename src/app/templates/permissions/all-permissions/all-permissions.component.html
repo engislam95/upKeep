@@ -82,7 +82,7 @@
               </div>
             </form>
             <section
-              *ngIf="moduleArray.length"
+              
               class="permissionActions"
               style="background: #E9E9E9; border: 1px solid #9E9E9E; padding: 10px 15px; display: flex;
               width: 99%;
@@ -93,7 +93,7 @@
               "
             >
               <form
-                *ngIf="moduleArray.length"
+                
                 style="margin-top: 10px; margin-bottom: 0;"
                 [formGroup]="filterForm"
                 class=""
@@ -153,7 +153,7 @@
                 class="checking"
                 *ngIf="!showModule && !updateMode"
                 style="width: 100%; position: relative;
-                top: 8px;"
+                top: 9px;"
               >
                 <span *ngFor="let item of privileges; let i = index">
                   <mat-checkbox
@@ -213,7 +213,7 @@
                   style="width: 196px; padding: 2px; margin-top: 10px; line-height: 39px;
                   padding-right: 2px;"
                   (click)="updatePerm()"
-                  *ngIf="moduleArray.length && updateMode"
+                  *ngIf=" updateMode"
                   [disabled]="privilegesArray.length < 2"
                 >
                   <i class="fas fa-save" style="float: right;"></i>

@@ -100,7 +100,12 @@ export class AllPermissionsComponent implements OnInit {
               if (arr[i].id == ele.id) {
                 this.moduleArray.splice(this.moduleArray.indexOf(ele), 1);
               }
+              
             });
+          }
+          if(this.moduleArray.length < 1) 
+          {
+            this.moduleArray = []
           }
           console.log(this.moduleArray);
           this.tableArray = arr;
@@ -313,7 +318,11 @@ export class AllPermissionsComponent implements OnInit {
     console.log(this.tableArray[i].privileges);
     this.privilegesArray = this.tableArray[i].privileges;
     this.updateArray = row.privileges;
+    console.log(this.updateArray);
+    
     this.updateMode = true;
+    this.showModule = true ;
+    console.log(this.updateModuleSelect)
     this.filterForm.controls.modules.setValue(this.updateModuleSelect);
     console.log(this.filterForm.controls.modules.value);
     
