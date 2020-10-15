@@ -412,7 +412,14 @@
                         ><span>إصدار فاتورة</span>
                       </li>
 
-                      <li>
+                      <li
+                        *ngIf="
+                          orderDetails['status']?.id == 29 ||
+                          orderDetails['status']?.id == 19 ||
+                          orderDetails['status']?.id == 20 ||
+                          orderDetails['status']?.id == 40
+                        "
+                      >
                         <button
                           style="border: 1px solid #FF7700;"
                           type="button"
@@ -425,7 +432,14 @@
                         ><span>تحويل مبيعات</span>
                       </li>
 
-                      <li>
+                      <li
+                        *ngIf="
+                          orderDetails['status']?.id == 29 ||
+                          orderDetails['status']?.id == 19 ||
+                          orderDetails['status']?.id == 20 ||
+                          orderDetails['status']?.id == 40
+                        "
+                      >
                         <button
                           style="border: 1px solid #F7FF00; background: #159778;"
                           type="button"

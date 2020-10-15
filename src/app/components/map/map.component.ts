@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
   @Input() addOrderPageMode = false;
   @Input() addNewAddressMode = false;
   @Input() clientDetailsPageMode = false;
-  @Input () orderClientSales = false;
+  @Input() orderClientSales = false;
   @Input() clientDetailsPopupOpen = false;
   @Input() clientDetailsSalesPopupOpen = false;
   @Input() clientDetailsPageModeAddMap = false;
@@ -70,6 +70,11 @@ export class MapComponent implements OnInit {
   order_update: boolean = false;
   order_delete: boolean = false;
   ordersModule: any = [];
+  sales_add: boolean = false;
+  sales_all: boolean = false;
+  sales_update: boolean = false;
+  sales_delete: boolean = false;
+  sales: any = [];
   user: any = '';
   bestTechnicalName: any = '';
   bestTechnicalArriveTime: any = '';
@@ -142,7 +147,7 @@ export class MapComponent implements OnInit {
   confirmSales = false;
   updateSaleOrder = {};
   updateSaleOrder_id = '';
-  paramDate:any = '';
+  paramDate: any = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
@@ -186,6 +191,25 @@ export class MapComponent implements OnInit {
             break;
           case 'delete':
             this.order_delete = true;
+            break;
+        }
+      });
+    }
+    this.sales = this.user.modules.sales;
+    if (this.sales) {
+      this.sales.map(ele => {
+        switch (ele) {
+          case 'add':
+            this.sales_add = true;
+            break;
+          case 'all':
+            this.sales_all = true;
+            break;
+          case 'update':
+            this.sales_update = true;
+            break;
+          case 'delete':
+            this.sales_delete = true;
             break;
         }
       });
@@ -422,8 +446,8 @@ export class MapComponent implements OnInit {
   }
 
   getCurrentDate() {
-    if(this.paramDate) {
-    return this.datePipe.transform(this.orderDate,'yyyy-MM-dd')
+    if (this.paramDate) {
+      return this.datePipe.transform(this.orderDate, 'yyyy-MM-dd')
     }
   }
   /* ---------------------- Oninit -------------------------- */
@@ -432,21 +456,21 @@ export class MapComponent implements OnInit {
       console.log(queryParams);
       this.paramDate = queryParams.date;
       if (queryParams.date) {
-        console.log(queryParams.date);        
+        console.log(queryParams.date);
         this.orderDate = queryParams.date;
         this.getOrders();
         this.coreService
-        .getMethod('sales/map/orders', {
-          order_date: this.orderDate,
-          city_id: this.city_id,
-          'ids[]': this.filteredTechniciansIds,
-          service_id: this.orderServiceId,
-        })
-        .subscribe(orders => {
-          console.log(orders);
-          this.salesOrders = orders['data']['sales'];
-          console.log(this.salesOrders);
-        });
+          .getMethod('sales/map/orders', {
+            order_date: this.orderDate,
+            city_id: this.city_id,
+            'ids[]': this.filteredTechniciansIds,
+            service_id: this.orderServiceId,
+          })
+          .subscribe(orders => {
+            console.log(orders);
+            this.salesOrders = orders['data']['sales'];
+            console.log(this.salesOrders);
+          });
       }
       else {
         this.pickUpTodayDate();
@@ -476,7 +500,7 @@ export class MapComponent implements OnInit {
       !this.orderDetailsMode &&
       !this.clientDetailsMode &&
       !this.clientDetailsPageMode &&
-      !this.addOrderMapMode &&  !this.paramDate
+      !this.addOrderMapMode && !this.paramDate
     ) {
       let todayDate;
       // Today's Order
@@ -813,13 +837,13 @@ export class MapComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       console.log(queryParams);
       if (queryParams.date) {
-        console.log(queryParams.date);        
+        console.log(queryParams.date);
         this.orderDate = queryParams.date;
         this.getOrders();
       }
     });
     console.log(this.orderDate);
-    
+
     this.coreService
       .getMethod('sales/map/orders', {
         order_date: this.orderDate,

@@ -168,6 +168,10 @@ export class AllPermissionsComponent implements OnInit {
           item.arabic = 'الفواتير';
           return item;
         }
+        else if (item.name == 'sales') {
+          item.arabic = 'المبيعات';
+          return item;
+        }
       });
       /* --------------- Filter Module -------------------- */
       this.ModuleFilteredOptions = this.filterForm

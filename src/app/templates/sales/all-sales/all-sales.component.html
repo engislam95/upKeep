@@ -10,14 +10,14 @@
       <div class="button-add-taxs" style="margin-left: 19px;">
         <button
           routerLink="/sales/orders-sales-map"
-          *ngIf="order_add || user.privilege == 'super-admin'"
+          *ngIf="sales_all || user.privilege == 'super-admin'"
         >
           <i class="fas fa-map"></i>خريطة المبيعات
         </button>
         <button
           routerLink="/sales/add-sale"
           style="margin-right: 20px;"
-          *ngIf="order_add || user.privilege == 'super-admin'"
+          *ngIf="sales_add || user.privilege == 'super-admin'"
         >
           <i class="fal fa-file-plus"></i>اضافة مبيعات جديدة
         </button>
@@ -25,7 +25,7 @@
 
       <!-- <a
           routerLink="/sales/add-sale"
-          *ngIf="order_add || user.privilege == 'super-admin'"
+          *ngIf="sales_add || user.privilege == 'super-admin'"
         >
           إضافة طلب مبيعات جديد
           <i class="fas fa-plus"></i>
@@ -371,7 +371,7 @@
                   *ngIf="hideme[element.id]"
                 >
                   <button
-                    *ngIf="order_delete || user.privilege == 'super-admin'"
+                    *ngIf="sales_delete || user.privilege == 'super-admin'"
                     (click)="
                       openDeletePopup(element.id, element.client.user.name)
                     "
@@ -390,7 +390,7 @@
                     }"
                     class="basic_button"
                     type="button"
-                    *ngIf="user.privilege == 'super-admin'"
+                    *ngIf="user.privilege == 'super-admin' || sales_update"
                   >
                     <img src="../../../../assets/img/icons/edit.png" alt="" />
                     <span class="tooltiptext">تعديل</span>
