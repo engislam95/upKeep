@@ -19,7 +19,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class AllPermissionsComponent implements OnInit {
   /* ----------------------------- Variables --------------------------- */
   pageLoaded: boolean = false;
-  currentUser ;
+  currentUser;
   responseState: any = '';
   responseData: any = '';
   showRole: boolean = true;
@@ -35,7 +35,7 @@ export class AllPermissionsComponent implements OnInit {
   totalPage: any = '';
   current_page: any = '';
 
-  company_details ;
+  company_details;
 
   dataSource: any = new MatTableDataSource([]);
   pagesNumbers: any = [];
@@ -66,13 +66,13 @@ export class AllPermissionsComponent implements OnInit {
   updateArray = [];
   updatedRow: any = '';
   updatedIndex: any = '';
-  updateModuleSelect:any = {};
+  updateModuleSelect: any = {};
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     // userRole: new FormControl(),
     userModule: new FormControl(),
     module: new FormControl(),
-    modules:new FormControl()
+    modules: new FormControl()
   });
   /* --------------------- Constructor ---------------------- */
   constructor(
@@ -100,23 +100,20 @@ export class AllPermissionsComponent implements OnInit {
               if (arr[i].id == ele.id) {
                 this.moduleArray.splice(this.moduleArray.indexOf(ele), 1);
               }
-              
+
             });
           }
-          if(this.moduleArray.length < 1) 
-          {
+          if (this.moduleArray.length < 1) {
             this.moduleArray = []
           }
           console.log(this.moduleArray);
           this.tableArray = arr;
-          this.totalPage = arr.length-1;
+          this.totalPage = arr.length - 1;
           this.current_page = 1;
-          if(this.totalPage > 10)
-          {
-           this.current_page ++ ;
+          if (this.totalPage > 10) {
+            this.current_page++;
           }
-
-
+          console.log(this.tableArray.privileges);
           this.dataSource = new MatTableDataSource(this.tableArray);
         });
       })
@@ -140,7 +137,7 @@ export class AllPermissionsComponent implements OnInit {
     //   this.rolesArray = roles;
     // });
 
-  
+
     /* ---------------------- Get Module ------------------------- */
     this.coreService.getMethod('permission').subscribe(value => {
       this.moduleArray = value['data'];
@@ -243,6 +240,9 @@ export class AllPermissionsComponent implements OnInit {
     else if (element.name == 'receipts') {
       element.arabic = 'الفواتير';
     }
+    else if (element.name == 'sales') {
+      element.arabic = 'المبيعات';
+    }
     this.moduleArray.push(element);
     console.log(this.moduleArray);
 
@@ -263,7 +263,7 @@ export class AllPermissionsComponent implements OnInit {
       this.privilegesArray.splice(this.privilegesArray.indexOf(item), 1);
     };
     console.log(this.privilegesArray.includes('update'))
-    if ( ( this.privilegesArray.includes('update') || this.privilegesArray.includes('create') ) && this.privilegesArray.indexOf('show') === -1) {
+    if ((this.privilegesArray.includes('update') || this.privilegesArray.includes('create')) && this.privilegesArray.indexOf('show') === -1) {
       this.privilegesArray.push('show');
     }
     else if (!this.privilegesArray.includes('update') && this.privilegesArray.indexOf('show') != -1) {
@@ -323,13 +323,13 @@ export class AllPermissionsComponent implements OnInit {
     this.privilegesArray = this.tableArray[i].privileges;
     this.updateArray = row.privileges;
     console.log(this.updateArray);
-    
+
     this.updateMode = true;
-    this.showModule = true ;
+    this.showModule = true;
     console.log(this.updateModuleSelect)
     this.filterForm.controls.modules.setValue(this.updateModuleSelect);
     console.log(this.filterForm.controls.modules.value);
-    
+
 
     console.log(this.privilegesArray);
   }
@@ -426,5 +426,5 @@ export class AllPermissionsComponent implements OnInit {
     );
   }
 
- 
+
 }

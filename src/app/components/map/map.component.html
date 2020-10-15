@@ -890,7 +890,13 @@
               </ul>
             </div>
           </mat-tab>
-          <mat-tab label="تغيير اللون" *ngIf="!updateSaleOrder['technician']">
+          <mat-tab
+            label="تغيير اللون"
+            *ngIf="
+              (!updateSaleOrder['technician'] && sales_update) ||
+              user.privilege == 'super-admin'
+            "
+          >
             <div
               class="form_field"
               style="margin: 20px 0; padding: 20px 0; height: 130px;"
@@ -933,7 +939,7 @@
           <mat-tab
             label="تحويل الطلب"
             *ngIf="
-              (updateSaleOrder['technician_id'] && sales_add) ||
+              (updateSaleOrder['technician_id'] && sales_update) ||
               user.privilege == 'super-admin'
             "
           >
@@ -948,7 +954,7 @@
           </mat-tab>
           <mat-tab
             label="تعديل الطلب"
-            *ngIf="sales_add || user.privilege == 'super-admin'"
+            *ngIf="sales_update || user.privilege == 'super-admin'"
           ></mat-tab>
         </mat-tab-group>
       </form>
