@@ -7,7 +7,7 @@
     </div>
     <div class="page_body_title">
       <h3 class="fontRole">
-        <i style="font-weight: 500;" class="fal fa-cog"></i>إدارة الصلاحيات
+        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة الصلاحيات
       </h3>
       <div class="clientDetails-name">
         <ul>
@@ -44,7 +44,7 @@
     <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
       <div class="page_body_main">
         <div class="page_block">
-          <div class="main_block ">
+          <div class="main_block " style="padding-right: 0px;">
             <div class="button-add-taxs" style="position:relative; left:-28px;">
               <button [routerLink]="['/roles/all-roles']">
                 <i class="fal fa-backward "></i>
@@ -58,7 +58,7 @@
                 <label
                   class="fontRole"
                   style="display: flex; align-items: center;"
-                  ><i class="fas fa-tasks " style="margin-left: 10px;"></i>
+                  ><i class="fas fa-tasks " style="margin-left: 10px; font-size:26px"></i>
                   توزيع الصلاحيات</label
                 >
                 <!-- <p style="margin: 10px 0; color: #707070; margin-right: 35px;">
@@ -207,7 +207,7 @@
                   [disabled]="showModule || privilegesArray.length < 2"
                 >
                   <div class="addIconF">
-                    <i class="fas fa-plus-square" style="float: right;"></i>
+                    <i class="fas fa-plus-square" style="float: right; font-size: 17px;"></i>
                   </div>
                   اضافة
                 </button>

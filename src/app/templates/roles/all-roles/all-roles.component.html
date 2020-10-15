@@ -6,7 +6,7 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3 class="fontRole"><i style="font-weight: 500;" class="fal fa-cog"></i>إدارة  الصلاحيات</h3>
+      <h3 class="fontRole"><i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة  الصلاحيات</h3>
       <div class="clientDetails-name">
 
         <ul>
@@ -44,13 +44,13 @@
     <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
       <div class="page_body_main">
         <div class="page_block">
-          <div class="main_block ">
+          <div class="main_block " style="padding-right:0px">
             
-            <h3  style="margin-bottom: 2%;" class="fontRole"><i style="font-weight: 500; margin-left: 1%;" class="fal fa-users-cog"></i>قائمة الصلاحيات</h3>
+            <h3  style="margin-bottom: 2%;" class="fontRole"><i style="font-weight: 500; margin-left: 1%; font-size:26px" class="fal fa-users-cog"></i>قائمة الصلاحيات</h3>
             <div class="button-add-taxs">
               <button
               [routerLink]="['/roles/add-role']">
-              <i class="fal fa-user-cog"></i>  إضافة صلاحية جديدة </button>
+              <i class="fal fa-user-cog" style="font-size: 21px"></i>  إضافة صلاحية جديدة </button>
             </div>
 
 
@@ -194,7 +194,7 @@
                     roleID: element.id
                   }">
                   
-                    <i style="font-weight: 500; padding-left: 15px;" class="fal fa-tasks"></i>  
+                    <i style="font-weight: 500; padding-left: 15px; " class="fal fa-tasks"></i>  
                       <!-- <img
                         src="../../../../assets/img/home_page/security-on.svg"
                         style="width: 30px;"
