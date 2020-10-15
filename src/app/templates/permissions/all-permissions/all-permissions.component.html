@@ -112,7 +112,8 @@
                         *ngFor="let module of moduleArray"
                         [value]="module"
                       >
-                        {{ module.arabic }}
+                        {{ module ?  module.arabic : '' }}
+                        
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -258,6 +259,7 @@
                     [checked]="item == 'create'"
                     >اضافة</mat-checkbox
                   >
+                 
                   <mat-checkbox
                     *ngIf="item == 'delete'"
                     disabled="true"
