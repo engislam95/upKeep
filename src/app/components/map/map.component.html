@@ -54,7 +54,10 @@
       >
         <h3><i class="fas fa-plus"></i>خريطة الطلبات</h3>
         <div class="page_body_main_buttons">
-          <a routerLink="/orders/all-orders">
+          <a
+            routerLink="/orders/all-orders"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
             كل الطلبات
             <i class="fas fa-th-list"></i>
           </a>
@@ -65,7 +68,10 @@
             إضافة طلب
             <i class="fas fa-th-list"></i>
           </a>
-          <a routerLink="/orders/orders-table">
+          <a
+            routerLink="/orders/orders-table"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
             جدول الطلبات
             <i class="fas fa-th-list"></i>
           </a>
@@ -84,18 +90,24 @@
       >
         <h3><i class="fas fa-map-marked-alt"></i>خريطة المبيعات</h3>
         <div class="page_body_main_buttons">
-          <a routerLink="/sales/all-sales">
+          <a
+            routerLink="/sales/all-sales"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
             جدول المبيعات
             <i class="fas fa-table"></i>
           </a>
           <a
             routerLink="/sales/add-sale"
-            *ngIf="order_add || user.privilege == 'super-admin'"
+            *ngIf="sales_add || user.privilege == 'super-admin'"
           >
             إضافة مبيعات جديدة
             <i class="fas fa-plus"></i>
           </a>
-          <a routerLink="/orders/orders-table">
+          <a
+            routerLink="/orders/orders-table"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
             جدول الطلبات
             <i class="fas fa-th-list"></i>
           </a>
@@ -124,7 +136,12 @@
         >
           <div
             class="noData"
-            *ngIf="orders.length === 0 && ordersLoaded && !addOrderMapMode && !orderClientSales"
+            *ngIf="
+              orders.length === 0 &&
+              ordersLoaded &&
+              !addOrderMapMode &&
+              !orderClientSales
+            "
           >
             لا يوجد طلبات اليوم
           </div>
@@ -143,7 +160,7 @@
                 !orderDetailsMode &&
                 !clientDetailsMode &&
                 !clientDetailsPageMode &&
-                !addOrderMapMode && 
+                !addOrderMapMode &&
                 !orderClientSales
               "
               [@fade]
@@ -481,17 +498,13 @@
             >
             </agm-marker> -->
 
-            
-         
-              <agm-marker
+            <agm-marker
               *ngIf="orderClientSales"
-               
               [agmFitBounds]="true"
               [latitude]="clientDetailsSalesOrgins.lat"
               [longitude]="clientDetailsSalesOrgins.lng"
-              >
-              </agm-marker>
-           
+            >
+            </agm-marker>
 
             <ng-container
               *ngIf="citiesLating.length && url == '/orders/orders-map'"
@@ -662,7 +675,10 @@
             </agm-marker>
             <div
               *ngIf="
-                url == '/orders/orders-map' || url.includes('/sales/orders-sales-map')
+                ((url == '/orders/orders-map' ||
+                  url.includes('/sales/orders-sales-map')) &&
+                  sales_all) ||
+                user.privilege == 'super-admin'
               "
             >
               <agm-marker
@@ -732,7 +748,10 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showSale" class="salePopup">
+  <div
+    *ngIf="(showSale && sales_all) || user.privilege == 'super-admin'"
+    class="salePopup"
+  >
     <header
       style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #333; color: #fff;"
     >
@@ -753,7 +772,10 @@
           (selectedTabChange)="routerToEdit($event)"
           style="word-break: break-all;"
         >
-          <mat-tab label="تفاصيل الطلب">
+          <mat-tab
+            label="تفاصيل الطلب"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
             <div style="padding: 20px;text-align:center">
               <ul class="orderSalesDetails">
                 <li *ngIf="updateSaleOrder['client']">
@@ -908,7 +930,13 @@
               تغيير اللون
             </button>
           </mat-tab>
-          <mat-tab label="تحويل الطلب" *ngIf="updateSaleOrder['technician_id']">
+          <mat-tab
+            label="تحويل الطلب"
+            *ngIf="
+              (updateSaleOrder['technician_id'] && sales_add) ||
+              user.privilege == 'super-admin'
+            "
+          >
             <div
               class="form_field full_width"
               style="margin: 20px 0; padding: 15px;"
@@ -918,7 +946,10 @@
               </mat-checkbox>
             </div>
           </mat-tab>
-          <mat-tab label="تعديل الطلب"></mat-tab>
+          <mat-tab
+            label="تعديل الطلب"
+            *ngIf="sales_add || user.privilege == 'super-admin'"
+          ></mat-tab>
         </mat-tab-group>
       </form>
     </div>

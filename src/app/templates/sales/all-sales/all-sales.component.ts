@@ -45,11 +45,11 @@ export class AllSalesComponent implements OnInit {
   updatedTechnicalName: string;
   updatedTechnicalId: number;
   showUpdatePopup = false;
-  order_add: boolean = false;
-  order_all: boolean = false;
-  order_update: boolean = false;
-  order_delete: boolean = false;
-  orders: any = [];
+  sales_add: boolean = false;
+  sales_all: boolean = false;
+  sales_update: boolean = false;
+  sales_delete: boolean = false;
+  sales: any = [];
   user: any = '';
   darkTheme: any = {
     container: {
@@ -170,21 +170,21 @@ export class AllSalesComponent implements OnInit {
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
-    this.orders = this.user.modules.orders;
-    if (this.orders) {
-      this.orders.map(ele => {
+    this.sales = this.user.modules.sales;
+    if (this.sales) {
+      this.sales.map(ele => {
         switch (ele) {
           case 'create':
-            this.order_add = true;
+            this.sales_add = true;
             break;
           case 'show':
-            this.order_all = true;
+            this.sales_all = true;
             break;
           case 'update':
-            this.order_update = true;
+            this.sales_update = true;
             break;
           case 'delete':
-            this.order_delete = true;
+            this.sales_delete = true;
             break;
         }
       });
@@ -244,19 +244,19 @@ export class AllSalesComponent implements OnInit {
         this.filteredClientData = value;
         this.getAllOrders();
       });
-      const filterName2 = document.getElementById('filterNameby');
-      const filterNameListner2 = fromEvent(filterName2, 'keyup');
-      filterNameListner2
-        .pipe(
-          map((event: any) => event.target.value),
-          debounceTime(200),
-          distinctUntilChanged()
-        )
-        .subscribe((value: any) => {
-          this.pageId = 1;
-          this.filteredBy = value;
-          this.getAllOrders();
-        });
+    const filterName2 = document.getElementById('filterNameby');
+    const filterNameListner2 = fromEvent(filterName2, 'keyup');
+    filterNameListner2
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe((value: any) => {
+        this.pageId = 1;
+        this.filteredBy = value;
+        this.getAllOrders();
+      });
   }
   //
   // ─────────────────────────────────────────────────────────────── END ONINIT ─────
