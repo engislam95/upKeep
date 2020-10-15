@@ -749,7 +749,7 @@
     </div>
   </div>
   <div
-    *ngIf="(showSale && sales_all) || user.privilege == 'super-admin'"
+    *ngIf="showSale && (sales_all || user.privilege == 'super-admin')"
     class="salePopup"
   >
     <header
