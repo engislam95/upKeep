@@ -10,6 +10,15 @@
     width: 100%;
   }
 }
+.fontTDTable
+{
+  font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 16px;
+    text-align: center;
+    color: #343434;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+}
 
 @media (max-width: 1399px) and (min-width: 700px) {
   .filter_form {

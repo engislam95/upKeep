@@ -25,7 +25,7 @@
               الحساب غير نشط
             </span>
           </li>
-          <li
+          <!-- <li
             class="fontRole"
             style="    position: relative;
           bottom: 5px;
@@ -37,7 +37,7 @@
               {{ company_details ? company_details.availableTo : "" }}
             </span>
             يوم على صلاحية النظام
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -231,9 +231,20 @@
               </div>
             </section>
           </div>
-          <h3 class="fontRole" style="margin: 20px 30px 0 0; ">
+          <h3 class="fontRole" style="margin: 20px 6px 0 0; ">
             جدول الصلاحيات
           </h3>
+          <div class="countPerPage" style="margin-left: -8px ; margin-top: -47px;">
+            <select    
+        
+              name=""
+              class="selectPerpage"
+            >
+              <option >
+               10
+              </option>
+            </select>
+          </div>
           <table
             style="margin-top: 20px;"
             width="100%"
@@ -248,22 +259,23 @@
               <td mat-cell *matCellDef="let element">{{ element.id }}</td>
             </ng-container> -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>قائمة الأقسام</th>
-              <td mat-cell *matCellDef="let element">
-                <span *ngIf="element.name == 'clients'">العملاء</span>
-                <span *ngIf="element.name == 'orders'">الطلبات</span>
-                <span *ngIf="element.name == 'offers'">العروض</span>
-                <span *ngIf="element.name == 'resources'">المصادر</span>
-                <span *ngIf="element.name == 'technicians'">الفنين</span>
-                <span *ngIf="element.name == 'receipts'">الفواتير</span>
-                <span *ngIf="element.name == 'sales'">المبيعات</span>
+              <th mat-header-cell *matHeaderCellDef style="font-family: 'GE SS Two';">قائمة الأقسام</th>
+              <td mat-cell *matCellDef="let element" >
+                <span *ngIf="element.name == 'clients'" class="fontTDTable" >العملاء</span>
+                <span *ngIf="element.name == 'orders'" class="fontTDTable" >الطلبات</span>
+                <span *ngIf="element.name == 'offers'" class="fontTDTable" >العروض</span>
+                <span *ngIf="element.name == 'resources'" class="fontTDTable" >المصادر</span>
+                <span *ngIf="element.name == 'technicians'" class="fontTDTable" >الفنين</span>
+                <span *ngIf="element.name == 'receipts'" class="fontTDTable" >الفواتير</span>
+                <span *ngIf="element.name == 'sales'" class="fontTDTable" >المبيعات</span>
               </td>
             </ng-container>
             <ng-container matColumnDef="details">
-              <th mat-header-cell *matHeaderCellDef>الصلاحيات المتاحة</th>
-              <td mat-cell *matCellDef="let element; let index = index">
+              <th mat-header-cell *matHeaderCellDef style="font-family: 'GE SS Two';">الصلاحيات المتاحة</th>
+              <td mat-cell *matCellDef="let element; let index = index" style="font-family: 'GE SS Two';  color:#343434">
                 <mat-checkbox
                   disabled="true"
+                 
                   class="example-margin text-capitalize"
                   [checked]="element.privileges.includes('create')"
                   >اضافة</mat-checkbox
@@ -322,6 +334,7 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td
+
                 mat-cell
                 *matCellDef="let element; let i = index"
                 (mouseenter)="hideme[element.id] = !hideme[element.id]"
