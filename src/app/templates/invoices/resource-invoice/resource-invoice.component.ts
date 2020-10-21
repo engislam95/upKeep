@@ -558,17 +558,15 @@ export class ResourceInvoiceComponent implements OnInit {
     });
     if (this.totalTaxes != 0) {
       console.log(this.totalTaxes);
-
-      this.totalTaxes = Math.abs(this.totalTaxes - this.totalPrice);
+      this.totalTaxes = Math.abs(this.totalTaxes - totalBeforeTax);
       console.log(this.totalTaxes);
     } else if (this.totalTaxes == 0) {
       this.totalTaxes = 0;
     }
     // Total Price
-    console.log(this.totalPrice);
     console.log(this.totalTaxes);
 
-    this.priceWithTaxes = Math.ceil(this.totalPrice + this.totalTaxes);
+    this.priceWithTaxes = Math.ceil(totalBeforeTax + this.totalTaxes);
   }
   //
   // ───────────────────────────── END COUNT INVOICE TOTAL PRICE ─────
