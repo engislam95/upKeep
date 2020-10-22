@@ -751,7 +751,8 @@ $gray: #95989a;
 // Slider Toggle
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
   background-color: #fff;
-  border: 1px solid #9c9c9e;}
+  border: 1px solid #9c9c9e;
+}
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
   transform: translate3d(-32px, 0, 0) !important;
@@ -3189,15 +3190,14 @@ a.ck.ck-button {
   color: #fff !important;
   cursor: pointer !important;
 
-  
+
   &:hover {
     background: $main_color !important;
   }
 }
 
 
-.mat-select-value-text
-{
+.mat-select-value-text {
   float: right;
   position: relative;
   top: 1px;
@@ -6402,12 +6402,12 @@ a.ck.ck-button {
 }
 
 #permission {
-  .mat-checkbox-label
-  {
-   font-family: 'GE SS Two'; 
-   color: #343434 ;
-   font-size:16px ; 
+  .mat-checkbox-label {
+    font-family: 'GE SS Two';
+    color: #343434;
+    font-size: 16px;
   }
+
   .mat-checkbox-layout {
     margin: 0 18px;
 
@@ -6595,73 +6595,68 @@ button:disabled {
       color: #ffffff;
     }
   }
-  
+
   .mat-tab-label {
     opacity: 1;
 
-   
+
   }
-  .mat-select-arrow-wrapper
-{
+
+  .mat-select-arrow-wrapper {
     top: 50% !important;
     position: relative !important;
-}
-.mat-select-placeholder 
-{
-  float: right;
-}
-.checkbox label:before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  vertical-align: bottom;
-  margin-right: 10px;
-  line-height: 20px;
-  text-align: center;
-  border: 1px solid #ccc;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  font-family: "FontAwesome";
-}
+  }
 
-#display_table tr:visited
-{
-  background-color: #ddd;
+  .mat-select-placeholder {
+    float: right;
+  }
 
-}
-#display_table tr:active
-{
-  background-color: #ddd;
+  .checkbox label:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 10px;
+    line-height: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    font-family: "FontAwesome";
+  }
 
-}
+  #display_table tr:visited {
+    background-color: #ddd;
 
-.mat-checkbox-anim-checked-unchecked .mat-checkbox-background
+  }
 
-{
-  border: 1px solid #757575 !important;
+  #display_table tr:active {
+    background-color: #ddd;
+
+  }
+
+  .mat-checkbox-anim-checked-unchecked .mat-checkbox-background {
+    border: 1px solid #757575 !important;
     /* background: #757575; */
-     clip-path: polygon(0 0, 0% 100%, 100% 0) !important;
+    clip-path: polygon(0 0, 0% 100%, 100% 0) !important;
     padding: 2%;
-     clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%) !important;
-}
+    clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%) !important;
+  }
 }
 
-#add_role
-{
- 
-    .mat-form-field-appearance-outline .mat-form-field-outline
-    {
-      
-                  
-      background: #fff !important;
-      border: 1px solid #707070 !important;
-      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
-      
-      
-    }
-    
-  .mat-checkbox-label
-  {
+#add_role {
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+
+
+    background: #fff !important;
+    border: 1px solid #707070 !important;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
+
+
+  }
+
+  .mat-checkbox-label {
     font-weight: 300 !important;
   }
 
@@ -6825,37 +6820,43 @@ button:disabled {
   }
 }
 
-#all_role
-{
-  .mat-form-field-appearance-outline .mat-form-field-outline
-  {
-    
-                
+#all_role {
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+
+
     background: #fff !important;
     border: 1px solid #707070 !important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
-    
-    
+
+
   }
-  
+
 
 }
 
 #permission {
-  .mat-form-field-appearance-outline .mat-form-field-outline
-  {
-    
-                
+  .mat-row:hover {
+
+    .mat-cell {
+      border: 5px solid #616161;
+      border-top: 5px solid #616161 !important;
+      border-bottom: 5px solid #616161 !important;
+    }
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+
+
     background: #fff !important;
     border: 1px solid #707070 !important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
-    
-    
+
+
   }
-  .mat-checkbox-label
-  {
-   
-   font-family: "GE SS Two";
+
+  .mat-checkbox-label {
+
+    font-family: "GE SS Two";
     font-weight: 300 !important;
     font-size: 16px;
     text-align: center;
@@ -6863,6 +6864,7 @@ button:disabled {
     text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
   }
+
   .mat-checkbox {
     border-left: 1px solid #9E9E9E;
   }
@@ -6876,18 +6878,18 @@ button:disabled {
     border-right: 0;
     border-left: 0;
   }
-  .mat-select-arrow
-  {
-    position: relative  !important;
+
+  .mat-select-arrow {
+    position: relative !important;
     top: 7px 1 !important;
   }
-  .mat-select-arrow-wrapper
-  {
+
+  .mat-select-arrow-wrapper {
     position: relative !important;
     top: 7px !important;
   }
-  .mat-select-value
-  {
+
+  .mat-select-value {
     text-align: right !important;
   }
 }

@@ -187,10 +187,14 @@ export class AllSalesComponent implements OnInit {
             this.sales_delete = true;
             break;
         }
-        if (this.sales_delete || this.sales_update) {
-          this.displayedColumns.push('order_details');
-        }
       });
+      console.log(this.user.privilege);
+
+
+    }
+    if (this.user.privilege == 'super-admin' || this.sales_update || this.sales_delete) {
+
+      this.displayedColumns[10] = 'order_details';
     }
     // Cities
     this.startLoading();

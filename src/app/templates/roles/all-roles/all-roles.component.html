@@ -6,18 +6,25 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3 class="fontRole"><i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة  الصلاحيات</h3>
+      <h3 class="fontRole">
+        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة
+        الصلاحيات
+      </h3>
       <div class="clientDetails-name">
-
         <ul>
           <li>
-            <span class="cilentAccount-type-0 "  *ngIf="company_details && company_details.active == 1" >
-              الحساب نشط 
+            <span
+              class="cilentAccount-type-0 "
+              *ngIf="company_details && company_details.active == 1"
+            >
+              الحساب نشط
             </span>
-            <span class="cilentAccount-type-10 "  *ngIf="company_details && company_details.active != 1" >
-              الحساب غير نشط  
+            <span
+              class="cilentAccount-type-10 "
+              *ngIf="company_details && company_details.active != 1"
+            >
+              الحساب غير نشط
             </span>
-          
           </li>
           <!-- <li>
             باقى 
@@ -28,7 +35,7 @@
           </li> -->
         </ul>
       </div>
-      
+
       <!-- <div class="page_body_main_buttons">
         <a routerLink="/roles/add-role">
           إضافة صلاحية جديدة
@@ -45,16 +52,25 @@
       <div class="page_body_main" id="all_role">
         <div class="page_block">
           <div class="main_block " style="padding-right:0px">
-            
-            <h3  style="margin-bottom: 2%;" class="fontRole"><i style="font-weight: 500; margin-left: 1%; font-size:26px" class="fal fa-users-cog"></i>قائمة الصلاحيات</h3>
+            <h3 style="margin-bottom: 2%;" class="fontRole">
+              <i
+                style="font-weight: 500; margin-left: 1%; font-size:26px"
+                class="fal fa-users-cog"
+              ></i
+              >قائمة الصلاحيات
+            </h3>
             <div class="button-add-taxs">
-              <button
-              [routerLink]="['/roles/add-role']">
-              <i class="fal fa-user-cog" style="font-size: 21px"></i>  إضافة صلاحية جديدة </button>
+              <button [routerLink]="['/roles/add-role']">
+                <i class="fal fa-user-cog" style="font-size: 21px"></i> إضافة
+                صلاحية جديدة
+              </button>
             </div>
 
-
-            <form [formGroup]="filterForm" class="filter_form" style="margin-top: 20px ;margin-bottom: -20px;">
+            <form
+              [formGroup]="filterForm"
+              class="filter_form"
+              style="margin-top: 20px ;margin-bottom: -20px;"
+            >
               <div class="form_input" id="NameFillterInputStyle">
                 <mat-form-field appearance="outline" dir="rtl">
                   <input
@@ -70,25 +86,23 @@
                     class="resetInput"
                     (click)="xResetInputs('filterName')"
                   >
-                    <i  class="fas fa-times-circle"></i>
+                    <i class="fas fa-times-circle"></i>
                   </button>
                 </mat-form-field>
-               
               </div>
-           
             </form>
-            <div class="countPerPage" style="margin-left:-39px ; margin-top: -63px">
-              <select
-                name=""
-                class="selectPerpage"
-              >
-                <option >
-                 10
+            <div
+              class="countPerPage"
+              style="margin-left:-39px ; margin-top: -63px"
+            >
+              <select name="" class="selectPerpage">
+                <option>
+                  10
                 </option>
               </select>
             </div>
           </div>
-          
+
           <table
             width="100%"
             dir="rtl"
@@ -99,7 +113,13 @@
           >
             <ng-container matColumnDef="ID">
               <th mat-header-cell *matHeaderCellDef>#</th>
-              <td mat-cell *matCellDef="let element"  style="font-family: 'Roboto';  font-weight: normal;">{{ element.id }}</td>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                style="font-family: 'Roboto';  font-weight: normal;"
+              >
+                {{ element.id }}
+              </td>
             </ng-container>
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>إسم الصلاحية</th>
@@ -107,23 +127,34 @@
             </ng-container>
             <ng-container matColumnDef="count">
               <th mat-header-cell *matHeaderCellDef>عدد المستخدمين</th>
-              <td mat-cell *matCellDef="let element" style="font-family: 'Roboto';  font-weight: normal;">
+              <td
+                mat-cell
+                *matCellDef="let element"
+                style="font-family: 'Roboto';  font-weight: normal;"
+              >
                 {{ element.UserCount }}
               </td>
             </ng-container>
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>تاريخ انشاء الصلاحية</th>
-              <td mat-cell *matCellDef="let element" style="font-family: 'Roboto'; font-weight: normal;">
-                {{ element.created_at.split(' ')[0] }}
+              <td
+                mat-cell
+                *matCellDef="let element"
+                style="font-family: 'Roboto'; font-weight: normal;"
+              >
+                {{ element.created_at.split(" ")[0] }}
               </td>
             </ng-container>
             <ng-container matColumnDef="note">
               <th mat-header-cell *matHeaderCellDef>الملاحظات</th>
-              <td  mat-cell *matCellDef="let element" [innerHTML]="element.description" style="font-family: 'GE SS Two';">
-              </td>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [innerHTML]="element.description"
+                style="font-family: 'GE SS Two';"
+              ></td>
             </ng-container>
-            
-            
+
             <!-- <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef>تعديل البيانات</th>
               <td mat-cell *matCellDef="let element">
@@ -175,27 +206,33 @@
                 (mouseenter)="hideme[element.id] = !hideme[element.id]"
                 (mouseleave)="hideme[element.id] = !hideme[element.id]"
               >
-              <!--  -->
+                <!--  -->
                 <div
                   id="showOrdercontrols"
                   *ngIf="hideme[element.id]"
                   [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
                   style="background-color: #E9E9E9;"
                 >
-                  <button class="basic_button"  type="button"  style="
+                  <button
+                    class="basic_button"
+                    type="button"
+                    style="
                   background: transparent;
                   border: none;
                   font-size: 21px;
                   cursor: pointer;
                   color: black;
                 "
-                [routerLink]="['/permissions/all-permissions']"
-                  [queryParams]="{
-                    roleID: element.id
-                  }">
-                  
-                    <i style="font-weight: 500; padding-left: 15px; " class="fal fa-tasks"></i>  
-                      <!-- <img
+                    [routerLink]="['/permissions/all-permissions']"
+                    [queryParams]="{
+                      roleID: element.id
+                    }"
+                  >
+                    <i
+                      style="font-weight: 400; padding-left: 15px; "
+                      class="fal fa-tasks"
+                    ></i>
+                    <!-- <img
                         src="../../../../assets/img/home_page/security-on.svg"
                         style="width: 30px;"
                         alt=""
@@ -229,13 +266,16 @@
                     border: none;
                     font-size: 21px;
                     cursor: pointer;
-                    color: black;
+                    color: #4A4A4A;
                 
                 "
                     type="button"
                   >
                     <!-- <img src="../../../../assets/img/icons/edit.png" alt="" /> -->
-                    <i style="font-weight: 500;  padding-left: 15px;" class="fal fa-file-edit"></i>
+                    <i
+                      style="padding-left: 15px; font-weight: 400;"
+                      class="fal fa-file-edit"
+                    ></i>
                     <span class="tooltiptext">تعديل</span>
                   </button>
                   <button
@@ -246,28 +286,29 @@
                       border: none;
                       font-size: 21px;
                       cursor: pointer;
-                      color: black;
+                      color: #4A4A4A;
                   
                   "
                     type="button"
                   >
                     <!-- <img src="../../../../assets/img/icons/delete.png" alt="" /> -->
-                    <i style="font-weight: 500; " class="fal fa-trash-alt"></i>
-                    
+                    <i class="fal fa-trash-alt" style="font-weight: 400;"></i>
 
                     <span class="tooltiptext">حذف</span>
                   </button>
                 </div>
-                <div class="basic_button" style="
+                <div
+                  class="basic_button"
+                  style="
                 background: transparent;
                 border: none;
                 font-size: 21px;
                 cursor: pointer;
-                color: black; text-align: left; margin-left: 10%;"
-
-                 type="button">
+                color: #4A4A4A; text-align: left; margin-left: 10%;"
+                  type="button"
+                >
                   <!-- <img src="../../../../assets/img/icons/Menu.svg" alt="" /> -->
-                  <i class="fal fa-bars" ></i>
+                  <i class="fal fa-bars"></i>
                 </div>
               </td>
             </ng-container>
