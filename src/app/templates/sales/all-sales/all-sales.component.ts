@@ -84,7 +84,7 @@ export class AllSalesComponent implements OnInit {
     'order_status',
     'city',
     'order_resource',
-    'order_details'
+    // 'order_details'
   ];
   ordersArray = [];
   getOrderNumber;
@@ -186,6 +186,9 @@ export class AllSalesComponent implements OnInit {
           case 'delete':
             this.sales_delete = true;
             break;
+        }
+        if (this.sales_delete || this.sales_update) {
+          this.displayedColumns.push('order_details');
         }
       });
     }

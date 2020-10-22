@@ -242,6 +242,7 @@
         class="drop_list"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
+        *ngIf="user.privilege == 'super-admin' || sales_all"
       >
         <a (click)="toggle_drop_List('sales')">
           <i class="fas fa-sort-shapes-down-alt"></i>
