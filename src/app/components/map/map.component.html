@@ -662,7 +662,10 @@
             >
             </agm-marker>
             <agm-marker
-              *ngIf="url.includes('/clients/client-details')"
+              *ngIf="
+                url.includes('/clients/client-details') ||
+                url.includes('/clients/add-new-map')
+              "
               [markerDraggable]="true"
               (dragEnd)="markerDragEnd($event)"
               [agmFitBounds]="true"
