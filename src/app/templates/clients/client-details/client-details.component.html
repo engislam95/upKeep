@@ -35,15 +35,32 @@
     <div class="clientDetails-name">
 
     <div class="button-add-taxs">
-      <button
+
+      <button class="button-user-check">
+
+
+        <i class="fas fa-user-check"></i>
+        متصل بالتطبيق
+      </button>
+      <button class="button-sign-out">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+
+      <button class="button-edit-client"
       [routerLink]="['/clients/update-client']"
       [queryParams]="{
       updateMode: true,
       updatedClientId: clientId
       }">
       <i class="fal fa-user-edit"></i>  تعديل بيانات العميل </button>
+
+     
+
+
     </div>
-    <h4 style="    margin-bottom: 9px; font-size: 14px; color: #464646;"> <a style="color: #464646;" matBadgePosition="after" routerLink="/home">الصفحة الرئيسية </a> <   <a style="color: #464646;" matBadgePosition="after" routerLink="/clients/all-clients"> العملاء </a>  <  تفاصيل العميل   </h4>
+    <h4 style="    margin-bottom: 9px; font-size: 14px; color: #464646;"> <a style="color: #464646; font-family: 'Arabic gess light';
+      margin-left: 11px;" matBadgePosition="after" routerLink="/home">الصفحة الرئيسية </a> <   <a style="color: #464646; font-family: 'Arabic gess light';
+      margin-left: 11px;" matBadgePosition="after" routerLink="/clients/all-clients"> العملاء </a>  <  تفاصيل العميل   </h4>
 
       <ul>
         <!-- <li>
@@ -116,17 +133,21 @@
 
                 </li>
 
-                <span style="  width: 25px;
-                height: 26px;
-                border-radius: 50%;
-                background: black;
-                color: white;
-                text-align: center;
-                position: absolute;
-                right: 567px;
-                /* margin-bottom: -7px; */
-                margin-top: -8px;
-                top: auto;">
+                <span style=" 
+                width: 33px;
+    height: 30px;
+    border-radius: 50%;
+    background: #505050;
+    color: white;
+    text-align: center;
+    position: absolute;
+    right: 597px;
+    /* margin-bottom: -7px; */
+    margin-top: -8px;
+    padding-top: 5px;
+    border: 1px solid black;
+    top: auto;
+                ">
                   {{ phoneNumbers.length }}
                 </span>
                 <li>
@@ -140,11 +161,25 @@
 
                 </li>
 
+          
+
+              </ul>
+
+              <ul style="    margin-top: 35px;">
+                <li >
+                  <button type="button">
+                    <i class="fas fa-lock"></i>
+                  </button>
+                  <p >  تعيين كلمة السر </p>
+      
+
+
+                </li>
               </ul>
             </div>
 
 
-            <div class="rate-client">
+            <!-- <div class="rate-client">
             <p> تقييم العميل</p>
             <h5>2/10</h5>
 
@@ -160,7 +195,7 @@
 
             </div>
 
-            </div>
+            </div> -->
 
           </div>
 
@@ -313,8 +348,8 @@
 
 
 
-            <h4 *ngIf="above_url != null"><i class="far fa-globe-americas"></i> <a [href]="above_url" target="_blank">المشاهدة من خلال المتصفح</a> </h4>
-            <h4 *ngIf="above_url == null" style="opacity: 0.5;"><i class="far fa-globe-americas"></i> <a  target="_blank">لا يمكن المشاهدة من خلال المتصفح</a> </h4>
+            <h4 *ngIf="above_url != null"><i class="far fa-globe-americas"></i> <a style="    color: #885b05;" [href]="above_url" target="_blank">المشاهدة من خلال المتصفح</a> </h4>
+            <h4 *ngIf="above_url == null" style="opacity: 0.5;"><i class="far fa-globe-americas"></i> <a style="    color: #885b05;" target="_blank">لا يمكن المشاهدة من خلال المتصفح</a> </h4>
 
 
             <div class="number-address">

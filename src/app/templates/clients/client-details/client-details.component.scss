@@ -428,15 +428,15 @@ ul{
 
 .button-add-taxs{
   position: absolute;
-  margin-top: -7px;
+  margin-top: 20px;
   left: 23px;
-  button{
+  .button-edit-client{
     padding-left: 19px;
     height: auto;
     background: #f6a811;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     border: none;
-
+    font-family: 'Arabic gess light';
     font-size: 14px;
     margin-left: 17px;
 i{
@@ -456,10 +456,58 @@ font-size: 18px;
 text-align: center;
 color: #fff;
 text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+height: 27px;
+padding-top: 15px;
 
 
 
 }
+  }
+
+  .button-sign-out{
+    width: 53px;
+height: 42px;
+border-radius: 10px;
+background: #515151;
+border: 1px solid #fff;
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+margin-left: 27px;
+margin-right: 6px;
+
+i{
+
+
+  font-size: 18px;
+  text-align: center;
+  color: #fff;
+
+
+}
+
+  }
+
+  .button-user-check{
+    width: 172px;
+    height: 42px;
+    border-radius: 10px;
+    background: #139e18;
+    border: 1px solid #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+    color: #fff;
+    font-family: 'Arabic gess light';
+    font-size: 15px;
+
+    i{
+      margin-left: 10px;
+      font-size: 18px;
+      text-align: center;
+      color: #fff;
+
+
+
+
+    }
+
   }
 }
 
@@ -500,6 +548,7 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   padding-right: 30px;
   display: flex;
   padding-bottom: 26px;
+  height: 451px;
   .account-client{
 
     width: 25%;
@@ -562,6 +611,7 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
               font-size: 32px;
               text-align: center;
               color: #636363;
+              margin: 0 20px;
 
           }
           p{
@@ -902,7 +952,8 @@ text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     font-size: 15px;
     text-align: right;
     color: #000;
-    margin-top: 23px;
+    margin-top: 53px;
+    margin-bottom: 10px;
     text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.16);
     span{
         font-family: Roboto;
