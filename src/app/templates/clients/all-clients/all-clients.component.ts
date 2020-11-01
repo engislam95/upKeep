@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CoreService } from './../../../tools/shared-services/core.service';
 import { LoaderService } from '../../../tools/shared-services/loader.service';
@@ -8,6 +8,7 @@ import { PaginationService } from './../../../tools/shared-services/pagination.s
 import { fromEvent } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -20,6 +21,9 @@ export class AllClientsComponent implements OnInit {
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
+  @ViewChild('TABLE') TABLE: ElementRef;
+
+  todayDate = new Date().toLocaleDateString("en-US");
   showOrdercontrolst = false;
   hideme = [];
   pageLoaded = false;
@@ -27,7 +31,11 @@ export class AllClientsComponent implements OnInit {
   responseData;
   countPerPage = [];
   totalSize;
+  printCase = true; 
 
+  excel = false ;
+  pdf = false ; 
+  justPrint = false ;
   //
   deletedClientName: string;
   deletedClientId: number;
@@ -55,11 +63,37 @@ export class AllClientsComponent implements OnInit {
   per_page: any = 10;
   totalPage: any = '';
   current_page: any = '';
+  showAddNumberPopup = false;
+  Task = {
+    
+    subtasks: [
+      {name: 'كود العميل', completed: false},
+      {name: 'اسم العميل', completed: false},
+      {name: 'رقم هاتف العميل', completed: false},
+      {name: 'نوع العميل', completed: false},
+      {name: 'الحالة', completed: false},
+    
+    ]
+  };
+
+  Taskt = {
+   
+    subtasks: [
+      {name: 'طريقة التعامل', completed: false},
+      {name: 'عدد الطلبات', completed: false},
+      {name: 'تاريخ التسجيل', completed: false},
+      {name: 'تاريخ اخر طلب', completed: false},
+    
+    ]
+  };
+
   //  Filter Data
 
   //
   // ────────────────────────────────────────── END GENERAL DATA ─────
   //
+
+  filterArray:any = [];
 
   filterForm = new FormGroup({
     filterName: new FormControl(),
@@ -85,11 +119,14 @@ export class AllClientsComponent implements OnInit {
     'clients_details'
     // 'delete_order'
   ];
+  displayColums2 = [];
   dataSource = [];
+  dataSource2 = [];
   pagesNumbers = [];
   pageId = 1; // number
   firstPage; // any
   lastPage;
+  user:any = '';
   //
   // ─────────────────────────────────────────────────────────────── END TABLE DATA ─────
   //
@@ -101,6 +138,7 @@ export class AllClientsComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
+    this.user = localStorage.getItem('currentUser');
   }
 
   //
@@ -387,7 +425,17 @@ export class AllClientsComponent implements OnInit {
   //
   // ──────────────────────────────────────────── END PAGINATION ─────
   //
-
+  getFilter(val,name) {
+    console.log(val);
+    if(val &&  this.filterArray.indexOf(name) === -1) {
+      this.filterArray.push(name);
+    }
+    else {
+      this.filterArray.splice(this.filterArray.indexOf(name), 1);
+    }
+    this.displayColums2 = this.filterArray;
+  
+  }
   //
   // ─── START GO PAGE ───────────────────────────────────────────────
   //
@@ -402,6 +450,97 @@ export class AllClientsComponent implements OnInit {
       this.getAllClients(this.pageId);
     }
   }
+
+  filterPrint() {
+    this.excel = false ;
+    this.pdf = false ;
+
+    this.startLoading();
+    this.coreService
+      .getMethod('clients', {
+        name: this.filteredClientData,
+        client_type: this.selectedTypeId, // طريقة التعاقد
+        status: this.clientStatusId, // نوع العميل
+        registration_from: this.filteredFromDate,
+        registration_to: this.filteredToDate,
+        active: this.clientCondition,
+        city_id: this.cityId,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+       this.dataSource2 = getClientsResponse.data.data;
+        this.showAddNumberPopup = false ;
+        this.printCase = false
+
+        setTimeout(() => {
+         window.print()
+      }, 2000);
+     
+  })
+}
+
+
+ExportTOExcel() {
+  this.justPrint = false ;
+  this.pdf = false ;
+  this.startLoading();
+  this.coreService
+    .getMethod('clients', {
+      name: this.filteredClientData,
+      client_type: this.selectedTypeId, // طريقة التعاقد
+      status: this.clientStatusId, // نوع العميل
+      registration_from: this.filteredFromDate,
+      registration_to: this.filteredToDate,
+      active: this.clientCondition,
+      city_id: this.cityId,
+    })
+    .subscribe((getClientsResponse: any) => {
+      this.endLoading();
+      console.log(getClientsResponse);
+     this.dataSource2 = getClientsResponse.data.data;
+      this.showAddNumberPopup = false ;
+      this.printCase = false
+
+   
+})
+setTimeout(() => {
+  
+  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+    this.TABLE.nativeElement
+    );
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Clients.xlsx');
+  }, 2000);
+  }
+
+showExcel()
+{
+
+ this.showAddNumberPopup = true 
+ this.excel = true 
+ this.pdf = false
+  this.justPrint = false 
+}
+showPrint()
+{
+  this.showAddNumberPopup = true 
+  this.excel = false 
+  this.pdf = false
+   this.justPrint = true 
+
+}
+
+showPdf()
+{
+  this.showAddNumberPopup = true 
+  this.excel = false 
+  this.pdf = true
+   this.justPrint = false 
+
+}
+
 
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────

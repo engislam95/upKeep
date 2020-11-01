@@ -1,4 +1,4 @@
-<div class="main_page form-taxs-mng cliend-edit-neww" id="listPage">
+  <div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="printCase">
   <app-alerts></app-alerts>
   <!-- ################################### Start Side Menu ################################### -->
   <app-side-menu></app-side-menu>
@@ -256,6 +256,178 @@
               </option>
             </select>
           </div>
+
+          <div class="print">
+
+          <button mat-raised-button
+          (click)="showExcel()"
+            style="border: none;  background: none;"
+            matTooltipPosition="above"
+            matTooltip="ملف اكسل"
+            aria-label="Button that displays a tooltip when focused or hovered over">
+            
+            <i class="fas fa-file-excel" style="
+            font-size: 25px;
+            text-align: center;
+            color: #086314;
+            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+            "></i>
+
+          </button>
+
+            
+          <button mat-raised-button
+          (click)="showPrint()"
+            style="border: none; background: none; "
+            matTooltip=" طباعة"
+          matTooltipPosition="above"
+            aria-label="Button that displays a tooltip when focused or hovered over">
+
+            <i class="fas fa-shredder" style="
+            font-weight: 300;
+            font-size: 25px;
+            text-align: center;
+            color: #de2369;
+            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+            "></i>
+
+          </button>
+
+          <button mat-raised-button
+          (click)="showPdf()"
+            style="border: none;  background: none;"
+            matTooltipPosition="above"
+            matTooltip=" نسخة PDF"
+            aria-label="Button that displays a tooltip when focused or hovered over">
+
+             <i class="fas fa-file-pdf" style="
+             font-size: 25px;
+             text-align: center;
+             color: #f00;
+             text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+             "></i>
+
+          </button>
+
+
+          </div>
+
+
+            <!-- ######################### Start add number phone Popup ######################### -->
+  <div class="popup_form_client " id="popup" *ngIf="showAddNumberPopup" >
+    <div id="backDrop"></div>
+      <div class="border-popup-print">
+        <a style="position: relative;
+        right: 97%;" (click)="showAddNumberPopup = false"><i class="fas fa-times-circle"></i> </a>
+
+        <span class="example-list-section">
+          <div style="display: flex;">
+            <div style="width: 30%;
+            margin-left: 39%;" >
+              <mat-checkbox *ngFor="let subtask of Task.subtasks" [(ngModel)]="subtask.completed" (change)="getFilter($event.checked,subtask.name)"
+                           
+                            >
+                {{subtask.name}}
+              </mat-checkbox>
+            </div>
+              <div style="width: 30%;" >
+              <mat-checkbox *ngFor="let subtask of Taskt.subtasks" [(ngModel)]="subtask.completed" (change)="getFilter($event.checked,subtask.name)"
+                            >
+                {{subtask.name}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </span>
+
+
+
+        <button
+        style="
+           margin: 0 20px;
+    color: black;
+    width: 60px;
+    position: relative;
+    top: -29px;
+    right: 65%;
+    height: 40px;
+    width: 121px;
+    height: 32px;
+    background: #f6a811;
+    border: 1px solid #707070;"
+        type="button"
+    *ngIf="justPrint"
+
+        (click)="
+         filterPrint()
+        "
+      >
+      طباعة
+      </button>
+      <button
+      style="
+         margin: 0 20px;
+  color: black;
+  width: 60px;
+  position: relative;
+  top: -29px;
+  right: 65%;
+  height: 40px;
+  width: 121px;
+  height: 32px;
+  background: #f6a811;
+  border: 1px solid #707070;"
+      type="button"
+      *ngIf="excel"
+      (click)="
+      ExportTOExcel()
+      "
+    >
+    ملف اكسل
+    </button>
+    <button
+    style="
+       margin: 0 20px;
+color: black;
+width: 60px;
+position: relative;
+top: -29px;
+right: 65%;
+height: 40px;
+width: 121px;
+height: 32px;
+background: #f6a811;
+border: 1px solid #707070;"
+    type="button"
+    *ngIf="pdf"
+    (click)="
+     filterPrintPDF()
+    "
+  >
+  طباعة
+  </button>
+
+     </div>
+
+  </div>
+  <!-- ######################### End add number phone Popup ######################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <table
             width="100%"
             style="padding:2%; padding-top: 0;"
@@ -598,4 +770,49 @@
     </div>
   </div>
   <!-- ######################### End Delete Popup ######################### -->
+</div>
+
+  <div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="!printCase">
+  <div class="page_body_main">
+    <!-- ################################### Start Page Block ################################### -->
+    <div class="page_block">
+
+<div>
+  <div style="background: #fff; padding: 40px;">
+    <img [src]="user.company_logo" alt="">
+<h4>تقرير العملاء</h4>
+<div style="display: flex; align-items: center; margin-top: 50px;">
+  
+  <p>مجموع البيانات المطلوبة في التقارير</p> <span style="margin-right: 20px;">{{dataSource2.length}}</span>
+  <p style="margin-right: 200px">تاريخ التقرير </p> <span style="margin-right: 20px;">{{todayDate }}</span>
+</div>
+
+
+
+<table
+#TABLE #table
+width="100%"
+style="padding:20px 0;"
+dir="rtl"
+mat-table
+[dataSource]="dataSource2"
+id="display_table"
+>
+<!-- ID -->
+<ng-container [matColumnDef]="col" *ngFor="let col of displayColums2">
+  <th mat-header-cell *matHeaderCellDef>{{col}}</th>
+  <td mat-cell *matCellDef="let element">
+    <p>{{col == 'طريقة التعامل'? element.client_type: col == 'كود العميل'? element.user.id: col == 'اسم العميل'? element.user.name: col =='رقم هاتف العميل'? element.user.mobile:  col =='نوع العميل'? (element.gender == 24? 'ذكر': 'انثى'): col == 'الحالة'? (element.user.active == 1? 'نشط': 'غير نشط'):  col =='عدد الطلبات'? element.orders.count:  col =='تاريخ التسجيل'? element.created_at: col == 'تاريخ اخر طلب'? (element.orders.order_date?element.orders.order_date: 'لا يوجد'): ''}}</p>
+  </td>
+</ng-container>
+
+
+
+<tr mat-header-row *matHeaderRowDef="displayColums2"></tr>
+<tr mat-row *matRowDef="let row; columns: displayColums2"></tr>
+</table>
+</div>
+</div>
+</div>
+  </div>
 </div>
