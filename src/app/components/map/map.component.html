@@ -48,12 +48,16 @@
           !orderDetailsMode &&
           !clientDetailsMode &&
           !clientDetailsPageMode &&
-          !addOrderMapMode
+          !addOrderMapMode &&
+          url != '/sales/orders-sales-map'
         "
       >
         <h3><i class="fas fa-plus"></i>خريطة الطلبات</h3>
         <div class="page_body_main_buttons">
-          <a routerLink="/orders/all-orders">
+          <a
+            routerLink="/orders/all-orders"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
             كل الطلبات
             <i class="fas fa-th-list"></i>
           </a>
@@ -64,7 +68,46 @@
             إضافة طلب
             <i class="fas fa-th-list"></i>
           </a>
-          <a routerLink="/orders/orders-table">
+          <a
+            routerLink="/orders/orders-table"
+            *ngIf="order_all || user.privilege == 'super-admin'"
+          >
+            جدول الطلبات
+            <i class="fas fa-th-list"></i>
+          </a>
+        </div>
+      </div>
+      <div
+        class="page_body_title"
+        *ngIf="
+          !addOrderMode &&
+          !orderDetailsMode &&
+          !clientDetailsMode &&
+          !clientDetailsPageMode &&
+          !addOrderMapMode &&
+          url == '/sales/orders-sales-map'
+        "
+      >
+        <h3><i class="fas fa-map-marked-alt"></i>خريطة المبيعات</h3>
+        <div class="page_body_main_buttons">
+          <a
+            routerLink="/sales/all-sales"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
+            جدول المبيعات
+            <i class="fas fa-table"></i>
+          </a>
+          <a
+            routerLink="/sales/add-sale"
+            *ngIf="sales_add || user.privilege == 'super-admin'"
+          >
+            إضافة مبيعات جديدة
+            <i class="fas fa-plus"></i>
+          </a>
+          <a
+            routerLink="/orders/orders-table"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
             جدول الطلبات
             <i class="fas fa-th-list"></i>
           </a>
@@ -93,7 +136,12 @@
         >
           <div
             class="noData"
-            *ngIf="orders.length === 0 && ordersLoaded && !addOrderMapMode"
+            *ngIf="
+              orders.length === 0 &&
+              ordersLoaded &&
+              !addOrderMapMode &&
+              !orderClientSales
+            "
           >
             لا يوجد طلبات اليوم
           </div>
@@ -112,7 +160,8 @@
                 !orderDetailsMode &&
                 !clientDetailsMode &&
                 !clientDetailsPageMode &&
-                !addOrderMapMode
+                !addOrderMapMode &&
+                !orderClientSales
               "
               [@fade]
             >
@@ -126,10 +175,10 @@
                           class="filterInput mapOrderDateFilter"
                           (dateInput)="orderDateChanged($event)"
                           matInput
-                          [min]="todayDate"
                           [matDatepicker]="fromFilterDate"
                           placeholder="التاريخ"
                           autocomplete="off"
+                          [value]="getCurrentDate()"
                           id="filterStartDate"
                         />
                         <mat-datepicker-toggle
@@ -179,12 +228,16 @@
                   </mat-form-field>
                 </div>
                 <div class="form_input" style="margin-top: 20px;">
-                  <button
+                  <a
                     type="button"
                     alt="جدول الطلبات"
                     title="جدول الطلبات"
                     routerLink="/orders/orders-table"
+                    target="_blank"
                     style="width: 54px;
+                    display: inline-block;
+                    text-align: center;
+    line-height: 49px;
                  height: 49px;
                  border-radius: 10px;
                  background: #f6a811;
@@ -192,7 +245,7 @@
                  "
                   >
                     <i class="fas fa-bars"></i>
-                  </button>
+                  </a>
                 </div>
               </ng-container>
             </form>
@@ -445,6 +498,14 @@
             >
             </agm-marker> -->
 
+            <agm-marker
+              *ngIf="orderClientSales"
+              [agmFitBounds]="true"
+              [latitude]="clientDetailsSalesOrgins.lat"
+              [longitude]="clientDetailsSalesOrgins.lng"
+            >
+            </agm-marker>
+
             <ng-container
               *ngIf="citiesLating.length && url == '/orders/orders-map'"
             >
@@ -484,13 +545,11 @@
                 [iconUrl]="{
                   url: order.technical.imagePin
                 }"
-                (mouseOver)="onMouseOver(infoWindow, gm)"
-                (mouseOut)="onMouseOut(infoWindow, gm)"
-                (markerClick)="orderDetails(order)"
+                (markerClick)="orderDetails(infoWindow, gm)"
               >
-                <div class="infoStyle" id="test">
-                  <agm-info-window #infoWindow>
-                    <ul>
+                <div class="infoStyle" id="test" style="z-index: 99999;">
+                  <agm-info-window #infoWindow [zIndex]="9999999">
+                    <ul style="position: relative; z-index: 99999999;">
                       <li>رقم الطلب : {{ order.id }}</li>
                       <li>إسم العميل : {{ order.client.user.name }}</li>
                       <li>إسم الفني : {{ order.technical.name }}</li>
@@ -520,6 +579,15 @@
                         الملاحظات :
                         <div [innerHTML]="order.details"></div>
                       </li>
+                      <li>
+                        <a
+                          [routerLink]="['/orders/order-details']"
+                          [queryParams]="{
+                            orderId: order.id
+                          }"
+                          >تفاصيل الطلب</a
+                        >
+                      </li>
                     </ul>
                   </agm-info-window>
                 </div>
@@ -536,35 +604,34 @@
                 style="opacity: 0;"
               >
                 <div class="infoStyle2" id="test2">
-                  <agm-info-window
-                    #infoWindoww
-                    [disableAutoPan]="false"
-                    [isOpen]="true"
-                    class="infoTime"
-                    style="background: #333 !important"
+                  <agm-overlay
+                    [latitude]="order.location.lat"
+                    [longitude]="order.location.long"
                   >
-                    <ul style="background: #333; color: #fff;">
-                      <li>
-                        وقت تنفيذ الطلبية :
-                        <ng-container>
-                          <span class="timeTitleSpan">من : </span
-                          >{{
-                            order.fromH > 12
-                              ? order.fromH - 12 + ":" + order.fromM + "م"
-                              : order.fromH + ":" + order.fromM + "ص"
-                          }}
-                        </ng-container>
-                        <ng-container>
-                          <span class="timeTitleSpan"> الي : </span
-                          >{{
-                            order.toH > 12
-                              ? order.toH - 12 + ":" + order.toM + "م"
-                              : order.toH + ":" + order.toM + "ص"
-                          }}
-                        </ng-container>
-                      </li>
-                    </ul>
-                  </agm-info-window>
+                    <div class="timePin">
+                      <!-- <span>
+                  من
+                </span> -->
+                      <span>
+                        {{
+                          order.fromH > 12
+                            ? " PM " + (order.fromH - 12) + ":" + order.fromM
+                            : " AM " + order.fromH + ":" + order.fromM
+                        }}
+                        :
+                      </span>
+                      <!-- <span>
+                  الي
+                </span> -->
+                      <span>
+                        {{
+                          order.toH > 12
+                            ? " PM " + (order.toH - 12) + ":" + order.toM
+                            : " AM " + order.toH + ":" + order.toM
+                        }}
+                      </span>
+                    </div>
+                  </agm-overlay>
                 </div>
               </agm-marker>
             </ng-container>
@@ -595,48 +662,109 @@
             >
             </agm-marker>
             <agm-marker
+              *ngIf="
+                url.includes('/clients/client-details') ||
+                url.includes('/clients/add-new-map')
+              "
+              [markerDraggable]="true"
+              (dragEnd)="markerDragEnd($event)"
               [agmFitBounds]="true"
-              *ngFor="let sale of salesOrders"
-              [latitude]="sale.location.lat"
-              [longitude]="sale.location.long"
-              (markerClick)="showSalesPopup(sale)"
-              class="markerTec"
+              [latitude]="clientDetailsOrgins.lat"
+              [longitude]="clientDetailsOrgins.lng"
               [iconUrl]="{
-                url: ''
+                url: companyPin
               }"
-              style="opacity: 0;"
             >
             </agm-marker>
-            <agm-marker
-              *ngFor="let sale of salesOrders"
-              [latitude]="sale.location.lat"
-              (markerClick)="showSalesPopup(sale)"
-              [longitude]="sale.location.long"
+            <div
+              *ngIf="
+                ((url == '/orders/orders-map' ||
+                  url.includes('/sales/orders-sales-map')) &&
+                  sales_all) ||
+                user.privilege == 'super-admin'
+              "
             >
-              <agm-overlay
+              <agm-marker
+                [agmFitBounds]="true"
                 *ngFor="let sale of salesOrders"
                 [latitude]="sale.location.lat"
                 [longitude]="sale.location.long"
+                (markerClick)="showSalesPopup(sale)"
+                class="markerTec"
+                [iconUrl]="{
+                  url: ''
+                }"
+                [opacity]="0"
+                [zIndex]="9999"
               >
-                <div
-                  class="pin"
-                  [ngStyle]="{ background: sale['label-color'] }"
-                ></div>
-                <div class="pulse"></div>
-              </agm-overlay>
-            </agm-marker>
+              </agm-marker>
+              <agm-marker
+                *ngFor="let sale of salesOrders"
+                [latitude]="sale.location.lat"
+                (markerClick)="showSalesPopup(sale)"
+                [longitude]="sale.location.long"
+                [opacity]="0"
+                [zIndex]="9999"
+              >
+                <agm-overlay
+                  *ngFor="let sale of salesOrders"
+                  [latitude]="sale.location.lat"
+                  [longitude]="sale.location.long"
+                >
+                  <div
+                    *ngIf="!sale.technician"
+                    class="pin"
+                    [ngStyle]="{ background: sale['label-color'] }"
+                  ></div>
+                  <div *ngIf="sale.technician" class="overlayTech">
+                    <img [src]="sale.technician.imagePin" alt="" />
+                  </div>
+
+                  <div
+                    class="timePin2"
+                    [ngStyle]="{ top: !sale.technician ? '0px' : '-53px' }"
+                  >
+                    <span>
+                      {{
+                        sale.fromH > 12
+                          ? " PM " + (sale.fromH - 12) + ":" + sale.fromM
+                          : " AM " + sale.fromH + ":" + sale.fromM
+                      }}
+                      :
+                    </span>
+                    <span>
+                      {{
+                        sale.toH > 12
+                          ? " PM " + (sale.toH - 12) + ":" + sale.toM
+                          : " AM " + sale.toH + ":" + sale.toM
+                      }}
+                    </span>
+                  </div>
+                  <div class="statusPandding" *ngIf="sale.technician">
+                    Pendding
+                  </div>
+                </agm-overlay>
+              </agm-marker>
+            </div>
           </agm-map>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="showSale" class="salePopup">
+  <div
+    *ngIf="showSale && (sales_all || user.privilege == 'super-admin')"
+    class="salePopup"
+  >
     <header
       style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #333; color: #fff;"
     >
       <h3>
         تفاصيل الطلب الخاص بالعميل
-        {{ updateSaleOrder.client ? updateSaleOrder.client.user.name : "" }}
+        {{
+          updateSaleOrder["client"]
+            ? updateSaleOrder["client"]["user"]["name"]
+            : ""
+        }}
       </h3>
       <i class="fas fa-times-circle" (click)="showSale = false"></i>
     </header>
@@ -645,8 +773,133 @@
         <mat-tab-group
           mat-align-tabs="start"
           (selectedTabChange)="routerToEdit($event)"
+          style="word-break: break-all;"
         >
-          <mat-tab label="تغيير اللون">
+          <mat-tab
+            label="تفاصيل الطلب"
+            *ngIf="sales_all || user.privilege == 'super-admin'"
+          >
+            <div style="padding: 20px;text-align:center">
+              <ul class="orderSalesDetails">
+                <li *ngIf="updateSaleOrder['client']">
+                  <span class="saleOrderTitle" *ngIf="updateSaleOrder['client']"
+                    >اسم العميل :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["client"]
+                      ? updateSaleOrder["client"]["user"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li *ngIf="updateSaleOrder['technician']">
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['technician']"
+                    >اسم الفنى :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["technician"]
+                      ? updateSaleOrder["technician"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li *ngIf="updateSaleOrder['order_date']">
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['order_date']"
+                    >تاريخ الطلب :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["order_date"]
+                      ? updateSaleOrder["order_date"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span class="saleOrderTitle">وقت تنفيذ الطلبية :</span>
+                  <ng-container>
+                    <span class="timeTitleSpan" style="margin-left: 10px;"
+                      >من :
+                    </span>
+                    <span
+                      class="timeTitleSpan"
+                      style="font-family: 'Roboto'; font-weight: 500;"
+                    >
+                      {{
+                        updateSaleOrder["fromH"] > 12
+                          ? updateSaleOrder["fromH"] -
+                            12 +
+                            ":" +
+                            updateSaleOrder["fromM"] +
+                            " PM "
+                          : updateSaleOrder["fromH"] +
+                            ":" +
+                            updateSaleOrder["fromM"] +
+                            " AM "
+                      }}
+                    </span>
+                  </ng-container>
+                  <ng-container>
+                    <span class="timeTitleSpan" style="margin: 0 10px;">
+                      الي :
+                    </span>
+                    <span
+                      class="timeTitleSpan"
+                      style="font-family: 'Roboto'; font-weight: 500;"
+                    >
+                      {{
+                        updateSaleOrder["toH"] > 12
+                          ? updateSaleOrder["toH"] -
+                            12 +
+                            ":" +
+                            updateSaleOrder["toM"] +
+                            " PM "
+                          : updateSaleOrder["toH"] +
+                            ":" +
+                            updateSaleOrder["toM"] +
+                            " AM "
+                      }}
+                    </span>
+                  </ng-container>
+                </li>
+                <li *ngIf="updateSaleOrder['service']">
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['service']"
+                    >الخدمة الرئيسية :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["service"]
+                      ? updateSaleOrder["service"]["parent_service"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li *ngIf="updateSaleOrder['service']">
+                  <span
+                    class="saleOrderTitle"
+                    *ngIf="updateSaleOrder['service']"
+                    >الخدمة الفرعية :</span
+                  >
+                  <span>{{
+                    updateSaleOrder["service"]
+                      ? updateSaleOrder["service"]["name"]
+                      : ""
+                  }}</span>
+                </li>
+                <li>
+                  <span class="saleOrderTitle">الملاحظات :</span>
+                  <span [innerHTML]="updateSaleOrder['details']"></span>
+                </li>
+              </ul>
+            </div>
+          </mat-tab>
+          <mat-tab
+            label="تغيير اللون"
+            *ngIf="
+              (!updateSaleOrder['technician'] && sales_update) ||
+              user.privilege == 'super-admin'
+            "
+          >
             <div
               class="form_field"
               style="margin: 20px 0; padding: 20px 0; height: 130px;"
@@ -686,7 +939,13 @@
               تغيير اللون
             </button>
           </mat-tab>
-          <mat-tab label="تحويل الطلب" *ngIf="updateSaleOrder['technician_id']">
+          <mat-tab
+            label="تحويل الطلب"
+            *ngIf="
+              (updateSaleOrder['technician_id'] && sales_update) ||
+              user.privilege == 'super-admin'
+            "
+          >
             <div
               class="form_field full_width"
               style="margin: 20px 0; padding: 15px;"
@@ -696,7 +955,10 @@
               </mat-checkbox>
             </div>
           </mat-tab>
-          <mat-tab label="تعديل الطلب"></mat-tab>
+          <mat-tab
+            label="تعديل الطلب"
+            *ngIf="sales_update || user.privilege == 'super-admin'"
+          ></mat-tab>
         </mat-tab-group>
       </form>
     </div>

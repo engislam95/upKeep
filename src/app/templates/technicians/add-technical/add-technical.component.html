@@ -71,9 +71,65 @@
                 </div>
               </div>
 
+
               <div class="form_field">
                 <label>
                   <i class="fas fa-flag"></i> الجنسية <span>*</span></label
+                >
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="اخنر جنسية الفنى"
+                    aria-label="Number"
+                    id="nationalityObj"
+                    matInput
+                    formControlName="nationalityObj"
+                    [matAutocomplete]="nationalitiesAutoComplete"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('nationalityObj')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+
+                  <mat-autocomplete
+                    #nationalitiesAutoComplete="matAutocomplete"
+                    [displayWith]="displayCountries"
+                  >
+                    <mat-option
+                      *ngFor="let option of nationalitiesFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (techniciansForm.get('nationalityObj').status === 'INVALID' &&
+                      techniciansForm.get('nationalityObj').touched) ||
+                    (submitted &&
+                      techniciansForm.get('nationalityObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال الجنسية
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('nationalityObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-flag"></i> الدولة <span>*</span></label
                 >
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
@@ -560,6 +616,52 @@
                   <p>يمكنك اختيار اكثر من مدينة</p>
                 </div>
               </div>
+              <div class="form_field">
+                <label>
+                  <i class="fas fa-people-arrows"></i> نوع التعاقد
+                  <span>*</span></label
+                >
+              
+               
+
+                <mat-form-field dir="rtl" appearance="outline">
+                  <mat-select
+                    class="filterInput"
+                    formControlName="contract_type"
+                    placeholder="اختر نوع التعاقد"
+                  >
+                    <mat-option
+                      *ngFor="let option of mainContractTpe"
+                      [value]="option.id"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-select>
+
+                
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (techniciansForm.get('contract_type').status === 'INVALID' &&
+                      techniciansForm.get('contract_type').touched) ||
+                    (submitted &&
+                      techniciansForm.get('contract_type').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="techniciansForm.get('contract_type').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i> إدخال صحيح
+                </div>
+                
+              </div>
+
 
               <!-- <div class="form_field">
                 <label> <i class="far fa-image"></i> صورة الفنى </label>
@@ -650,7 +752,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span style="    width: 112px;">{{ imagePlaceHolder }}</span>
+                  <span style="    width: 112px;">Technical image  </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -676,7 +778,7 @@
                     formControlName="imageInputObj"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolder }}</span>
+                  <span>Technical image  </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -687,7 +789,12 @@
                     <i class="fas fa-times-circle"></i>
                   </button>
                 </div>
+                  <!-- <span style="color:red ; position: absolute; " *ngIf="errorMaxDim" > Max height 162px and Max width 124px </span> -->
               </div>
+              
+
+
+
 
               <div class="form_field">
                 <label> صورة الفني على الخريطة </label>
@@ -707,7 +814,7 @@
                     disabled="true"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
+                  <span> Technical image pin </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -733,7 +840,7 @@
                     formControlName="imageInputObjPin"
                   />
                   <i class="fas fa-image"></i>
-                  <span>{{ imagePlaceHolderPin }}</span>
+                  <span>Technical image pin </span>
                   <button
                     style="left: 15px; top: 72%; z-index: 99;"
                     type="button"
@@ -744,21 +851,21 @@
                     <i class="fas fa-times-circle"></i>
                   </button>
                 </div>
+                <!-- <span style="color:red ; position: absolute; " *ngIf="errorMaxDimPin" > Max height 162px and Max width 124px </span> -->
+
               </div>
 
               <div class="form_field">
                 <img
                   *ngIf="techniciansForm.controls.image.value"
                   src="{{ techniciansForm.controls.image.value }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <img
                   *ngIf="updatedTechnicalData['image'] && updateMode"
                   src="{{ updatedTechnicalData['image'] }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <button
@@ -769,7 +876,7 @@
                   (click)="deleteIMG()"
                   style="position: relative;
                   left: -30px;
-                  top: -80px;"
+                  top: -47px;"
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>
@@ -779,15 +886,13 @@
                 <img
                   *ngIf="techniciansForm.controls.imagePin.value"
                   src="{{ techniciansForm.controls.imagePin.value }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <img
                   *ngIf="updatedTechnicalData['imagePin'] && updateMode"
                   src="{{ updatedTechnicalData['imagePin'] }}"
-                  width="124px"
-                  height="162px"
+                  style="max-width:unset !important ; max-height:150px"
                   alt="user-image"
                 />
                 <button
@@ -798,60 +903,14 @@
                   (click)="deleteIMGPin()"
                   style="position: relative;
                   left: -30px;
-                  top: -80px;"
+                  top: -32px;"
                 >
                   <img src="../../../../assets/img/close.svg" />
                 </button>
               </div>
 
-              <div class="form_field"></div>
 
-              <div class="form_field">
-                <label>
-                  <i class="fas fa-people-arrows"></i> نوع التعاقد
-                  <span>*</span></label
-                >
               
-               
-
-                <mat-form-field dir="rtl" appearance="outline">
-                  <mat-select
-                    class="filterInput"
-                    formControlName="contract_type"
-                    placeholder="اختر نوع التعاقد"
-                  >
-                    <mat-option
-                      *ngFor="let option of mainContractTpe"
-                      [value]="option.id"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-select>
-
-                
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (techniciansForm.get('contract_type').status === 'INVALID' &&
-                      techniciansForm.get('contract_type').touched) ||
-                    (submitted &&
-                      techniciansForm.get('contract_type').status === 'INVALID')
-                  "
-                >
-                  <i class="fas fa-times"></i> برجاء إدخال نوع التعاقد
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="techniciansForm.get('contract_type').status === 'VALID'"
-                >
-                  <i class="fas fa-check"></i> إدخال صحيح
-                </div>
-                
-              </div>
-
 
               <div class="form_field fullWidth toggle">
                 <p>

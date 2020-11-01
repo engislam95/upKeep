@@ -41,6 +41,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   orderClient: any = '';
   orderServiceId: any = '';
   orderDate: any = '';
+  safetyOrder: any = false;
   pageLoaded: boolean = false;
   selectedResourceLogoShow: boolean = false;
   searchClientStarted: boolean = false;
@@ -80,6 +81,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   viewOfferDetailsPopupButton: boolean = false;
   viewClientDetails: boolean = false;
   selectClient: boolean = false;
+  showNote = false;
+
   /* --------------------- Update Data Variables ----------------- */
   updatedOrderId: any = '';
   updatedOrderData: any = '';
@@ -88,6 +91,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   updatedOrderDataLoaded: boolean = false;
   selectedUpdatedResourceChanged: boolean = false;
   selectedUpdatedMainServiceChanged: boolean = false;
+  orderNumbersFilteredOptions: Observable<any>;
+
   /* ------------------ Map Show ----------------------- */
   clientDetailsData: any = '';
   showMapPopup: boolean = false;
@@ -102,6 +107,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   multiAddressButtondisabled: boolean = true;
   selectSubLocations: boolean = false;
   selectedLocationIndexInUpdateMode: any = '';
+  clientMobiles: any = [];
   /* ---------------Editor --------------- */
   public Editor = ClassicEditor;
   public config = {
@@ -127,6 +133,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       clockFaceTimeInactiveColor: '#fff'
     }
   };
+  orderNumberControl = new FormControl();
+
   /* ------------------- Time Table ---------------------- */
   @ViewChild('loopContainer') loopContainer: ElementRef;
   loopCellWidth: any;
@@ -135,6 +143,10 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   hours: any = [];
   technicians: any = [];
   client_city_id: any = '';
+  addNumber: any = false;
+  showAddNumberPopup = false;
+  showMobilePopup: any = false;
+
   /* -------------------- Order Form ------------------------ */
   ordersForm = new FormGroup(
     {
@@ -146,23 +158,42 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       end: new FormControl(''),
       endObj: new FormControl('', [Validators.required]),
       details: new FormControl('', [detailsValidator, Validators.required]),
+      clientContact: new FormControl(false),
       location_id: new FormControl(''),
       main_service_id: new FormControl(),
       subServicesObj: new FormControl('', [
         emptyValidator,
         Validators.required
       ]),
+      alternative_contact: new FormControl(''),
       service_id: new FormControl(),
       offer_id: new FormControl(),
       offersObj: new FormControl(''),
       source_id: new FormControl(),
       sourceObj: new FormControl('', [emptyValidator, Validators.required]),
       servicesObj: new FormControl('', [emptyValidator, Validators.required]),
+      urgent: new FormControl(false),
       order_date: new FormControl(''),
       orderDateObj: new FormControl('', [Validators.required])
     },
     [noAddressValidator, startEndTimeValidator]
   );
+  clientStatus: any = 1;
+  orderNumbersArray: any = [];
+  numberOrder: any = '';
+  numberOrder_id: any = '';
+  phonesForm = new FormGroup({
+    mobile: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[0-9]* || [٠-٩]*'),
+      Validators.minLength(9),
+      Validators.maxLength(9)
+    ]),
+    name: new FormControl('')
+  });
+  setError = false;
+  errorMessage: string = 'هذا الرقم غير صحيح او موجود بالفعل ';
+  updatePhone = false;
 
   /* ---------------------- Constructor -------------------------- */
   constructor(
@@ -193,8 +224,67 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       });
     }
   }
+  // Change Number
+  changePhone(event) {
+    this.addNumber = event;
+  }
+  openMobilePopup() {
+    this.showMobilePopup = true;
+  }
+  // edit phone number
+  editPhoneNumber(element) {
+    console.log(element);
+
+    this.phonesForm.controls.name.setValue(element.name);
+    this.phonesForm.controls.mobile.setValue(
+      element.mobile
+        .split('')
+        .slice(3)
+        .join('')
+    );
+    console.log(this.phonesForm.controls.mobile.value);
+
+    this.updatePhone = true;
+    // this.fetchedPhone = element;
+  }
+  // add phone number
+  addPhoneNumber() {
+    console.log(this.orderClient);
+
+    this.coreService
+      .postMethod('clients/mobile/' + this.orderClient.id, {
+        name: this.phonesForm.controls.name.value,
+        mobile: +(966 + this.phonesForm.controls.mobile.value)
+      })
+      .subscribe(
+        (clientDetails: any) => {
+          console.log(clientDetails);
+          this.setError = false;
+          this.phonesForm.controls.name.setValue('');
+          this.phonesForm.controls.mobile.setValue('');
+          this.coreService
+            .getMethod('clients/' + this.orderClient.id)
+            .subscribe(mobiles => {
+              console.log(mobiles['data']['mobiles']);
+              this.clientMobiles = mobiles['data']['mobiles'];
+            });
+          this.updatePhone = false;
+          this.endLoading();
+          this.showSuccess('تم إضافة  رقم التليفون بنجاح');
+          this.showAddNumberPopup = false;
+        },
+        error => {
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+            this.setError = true;
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
+  }
   /* ---------------- After Init ------------------- */
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   /* ----------------- Oninit -------------------- */
   ngOnInit() {
     window.scroll({ top: 0, behavior: 'auto' });
@@ -529,11 +619,21 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     } else {
       endObj = this.updatedOrderData.toH + ':' + this.updatedOrderData.toM;
     }
+    if (this.updatedOrderData.order_related) {
+      this.safetyOrder = true;
+    }
+    this.orderNumberControl.setValue(this.updatedOrderData.order_related);
+    this.numberOrder_id = this.updatedOrderData.order_related;
+    this.numberOrder = this.updatedOrderData.order_related;
+
     this.patchForm({
       client_id: this.updatedOrderData.client_id,
       clientIdObj: this.updatedOrderData.client,
+      urgent: this.updatedOrderData.urgent,
+      clientContact: this.updatedOrderData.contacted,
       sourceObj: this.updatedOrderData.source,
       source_id: this.updatedOrderData.id,
+      alternative_contact: this.updatedOrderData.alternative_contact,
       servicesObj: this.updatedOrderData.service.parent_service,
       main_service_id: this.updatedOrderData.service.parent,
       subServicesObj: this.updatedOrderData.service,
@@ -569,6 +669,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     this.selectMainService = true;
     this.selectDate = true;
     this.orderClient = this.updatedOrderData.client;
+    this.clientStatus = 1;
+    console.log(this.updatedOrderData);
     console.log(this.orderClient);
     this.orderServiceId = this.updatedOrderData.service.parent;
   }
@@ -654,10 +756,26 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
   /* ------------------------ Filter Clients --------------------- */
   filterClients(value: any) {
     if (typeof value === 'object') {
-      console.log('Client');
       this.selectClient = true;
       console.log(value);
-
+      this.clientStatus = value.user.active;
+      this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
+        console.log(mobiles['data']['mobiles']);
+        this.clientMobiles = mobiles['data']['mobiles'];
+      });
+      this.coreService
+        .getMethod('clients/lastorder?client_id=' + value.id)
+        .subscribe(client => {
+          console.log(client['data']);
+          this.orderNumbersArray = client['data']['OrdersNumbers'];
+          console.log(this.orderNumbersArray);
+          this.orderNumbersFilteredOptions = this.orderNumberControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this.filterOrderNumber(value))
+          );
+          this.showNote = true;
+          this.endLoading();
+        });
       this.getClientlocationsArray(value.user.id);
       if (!this.updateMode) {
         this.selectedClientLocationsArray = value.locations;
@@ -690,6 +808,24 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       );
     }
   }
+  // Change Safety
+  changeSafetyOrder(event) {
+    this.safetyOrder = event;
+  }
+  /* ---------------------- Filter Resources ---------------------- */
+  filterOrderNumber(value: any) {
+    console.log(value);
+    this.numberOrder = value;
+    this.numberOrder_id = value;
+    console.log(this.orderNumbersArray);
+    return this.orderNumbersArray.filter(option =>
+      option.toString().includes(value)
+    );
+  }
+  displayOrderNumberFunction = state => {
+    console.log(state);
+    return state;
+  };
   /* ---------------------- Technicians Table Hours --------------------------- */
   initTechniciansTableHours() {
     let dayStart = this.dayStart - 1;
@@ -819,6 +955,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
       }
     }
     console.log(this.ordersForm.value.end);
+
+    this.ordersForm.value.order_related = this.numberOrder;
     this.submitted = true;
     this.ordersForm.value.location_id = this.selectedLocationId;
     this.coreService.postMethod('orders', this.ordersForm.value).subscribe(

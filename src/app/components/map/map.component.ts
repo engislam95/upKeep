@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { ResponseStateService } from 'src/app/tools/shared-services/response-state.service';
+import { DatePipe } from '@angular/common';
 
 declare var google: any;
 @Component({
@@ -36,6 +37,7 @@ export class MapComponent implements OnInit {
   @Input() orderClient;
   @Input() orderDetailsOrgins;
   @Input() clientDetailsOrgins;
+  @Input() clientDetailsSalesOrgins;
   @Input() updatedLocationData;
   @Input() orderServiceId = '';
   @Input() addOrderMode = false;
@@ -45,7 +47,9 @@ export class MapComponent implements OnInit {
   @Input() addOrderPageMode = false;
   @Input() addNewAddressMode = false;
   @Input() clientDetailsPageMode = false;
+  @Input() orderClientSales = false;
   @Input() clientDetailsPopupOpen = false;
+  @Input() clientDetailsSalesPopupOpen = false;
   @Input() clientDetailsPageModeAddMap = false;
   @Input() multiAddressMapPopupSelections = false;
   @Input() clientDetailsPageModeDtailsMap = false;
@@ -66,6 +70,11 @@ export class MapComponent implements OnInit {
   order_update: boolean = false;
   order_delete: boolean = false;
   ordersModule: any = [];
+  sales_add: boolean = false;
+  sales_all: boolean = false;
+  sales_update: boolean = false;
+  sales_delete: boolean = false;
+  sales: any = [];
   user: any = '';
   bestTechnicalName: any = '';
   bestTechnicalArriveTime: any = '';
@@ -138,6 +147,7 @@ export class MapComponent implements OnInit {
   confirmSales = false;
   updateSaleOrder = {};
   updateSaleOrder_id = '';
+  paramDate: any = '';
   /* ---------------------- Contructor -------------------------- */
   constructor(
     private coreService: CoreService,
@@ -145,11 +155,11 @@ export class MapComponent implements OnInit {
     private messagingService: MessagingService,
     private router: Router,
     private mapsAPILoader: MapsAPILoader,
-    private responseStateService: ResponseStateService
+    private responseStateService: ResponseStateService,
+    private datePipe: DatePipe
   ) {
     this.url = this.router.url;
     console.log(this.url);
-
     if (!this.clientDetailsPageMode) {
       this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
         this.cities = cities.data;
@@ -185,10 +195,40 @@ export class MapComponent implements OnInit {
         }
       });
     }
+    this.sales = this.user.modules.sales;
+    if (this.sales) {
+      this.sales.map(ele => {
+        switch (ele) {
+          case 'add':
+            this.sales_add = true;
+            break;
+          case 'all':
+            this.sales_all = true;
+            break;
+          case 'update':
+            this.sales_update = true;
+            break;
+          case 'delete':
+            this.sales_delete = true;
+            break;
+        }
+      });
+    }
+    const date = new Date()
+      .toLocaleString('en-GB', {
+        timeZone: 'Asia/Riyadh',
+        timeZoneName: 'short'
+      })
+      .split(',')[0]
+      .split('/')
+      .reverse()
+      .join('/');
+    console.log(date);
+
     this.orderDate = '';
     this.coreService
       .getMethod('sales/map/orders', {
-        order_date: this.orderDate
+        order_date: this.orderDate ? this.orderDate : date
       })
       .subscribe(orders => {
         console.log(orders);
@@ -201,7 +241,8 @@ export class MapComponent implements OnInit {
       this.router.navigate(['/sales/update-sale'], {
         queryParams: {
           updateMode: true,
-          updatedOrderId: this.updateSaleOrder_id
+          updatedOrderId: this.updateSaleOrder_id,
+          map: true,
         }
       });
     }
@@ -241,6 +282,18 @@ export class MapComponent implements OnInit {
             this.showSale = false;
             this.showSuccess('تم تحويل الطلب الى التنفيذ بنجاح');
             this.getOrders();
+            this.coreService
+              .getMethod('sales/map/orders', {
+                order_date: this.orderDate,
+                city_id: this.city_id,
+                'ids[]': this.filteredTechniciansIds,
+                service_id: this.orderServiceId,
+              })
+              .subscribe(orders => {
+                console.log(orders);
+                this.salesOrders = orders['data']['sales'];
+                console.log(this.salesOrders);
+              });
           },
           error => {
             if (error.error.errors) {
@@ -252,7 +305,9 @@ export class MapComponent implements OnInit {
         );
     }
   }
-  updateColor() {
+  updateColor(color) {
+    console.log(color);
+
     this.updateSaleOrder['label-color'] = this.color;
     console.log(this.updateSaleOrder['start'].split(':'));
     this.updateSaleOrder['start'] =
@@ -354,6 +409,7 @@ export class MapComponent implements OnInit {
       });
     }
     this.getOrders();
+    this.getServicesWithTechnicians();
   }
   /* -------------------------- Display ----------------------------- */
   displayOptionsFunction(state) {
@@ -389,8 +445,37 @@ export class MapComponent implements OnInit {
     // });
   }
 
+  getCurrentDate() {
+    if (this.paramDate) {
+      return this.datePipe.transform(this.orderDate, 'yyyy-MM-dd')
+    }
+  }
   /* ---------------------- Oninit -------------------------- */
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      this.paramDate = queryParams.date;
+      if (queryParams.date) {
+        console.log(queryParams.date);
+        this.orderDate = queryParams.date;
+        this.getOrders();
+        this.coreService
+          .getMethod('sales/map/orders', {
+            order_date: this.orderDate,
+            city_id: this.city_id,
+            'ids[]': this.filteredTechniciansIds,
+            service_id: this.orderServiceId,
+          })
+          .subscribe(orders => {
+            console.log(orders);
+            this.salesOrders = orders['data']['sales'];
+            console.log(this.salesOrders);
+          });
+      }
+      else {
+        this.pickUpTodayDate();
+      }
+    });
     // this.showTime(this.infoWindow2, AgmMap);
     // this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
     //   this.cities = cities.data;
@@ -405,7 +490,6 @@ export class MapComponent implements OnInit {
     //     map(value => this.filterCities(value))
     //   );
     // });
-    this.pickUpTodayDate();
     this.clientLocationOnMap();
     if (!this.multiAddressMapPopupSelections) {
       this.getServicesWithTechnicians();
@@ -416,7 +500,7 @@ export class MapComponent implements OnInit {
       !this.orderDetailsMode &&
       !this.clientDetailsMode &&
       !this.clientDetailsPageMode &&
-      !this.addOrderMapMode
+      !this.addOrderMapMode && !this.paramDate
     ) {
       let todayDate;
       // Today's Order
@@ -444,6 +528,7 @@ export class MapComponent implements OnInit {
   /* ---------------- Client Location on Map ------------------------ */
   clientLocationOnMap() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
       if (queryParams.clientDetailsMode) {
         this.clientDetailsMode = true;
         this.orderDetailsOrgins = {
@@ -466,7 +551,7 @@ export class MapComponent implements OnInit {
     if (!this.clientDetailsPageMode) {
       let servicesWithTechnicians = [];
       this.coreService
-        .getMethod('services/active', { with_technicians: 1 })
+        .getMethod('services/active', { with_technicians: 1, city_id: this.city_id })
         .subscribe((servicesWithTechniciansResponse: any) => {
           servicesWithTechnicians = servicesWithTechniciansResponse.data;
           servicesWithTechnicians = servicesWithTechnicians.map(service => {
@@ -606,8 +691,8 @@ export class MapComponent implements OnInit {
           return orderOne.totalTimeToArrive > orderTwo.totalTimeToArrives
             ? 1
             : orderTwo.totalTimeToArrive > orderOne.totalTimeToArrive
-            ? -1
-            : 0;
+              ? -1
+              : 0;
         });
         this.bestTechnicalName = this.sortedArray[0].technical.name;
         this.bestTechnicalArriveTime = this.sortedArray[0].totalTimeToArrive;
@@ -748,9 +833,23 @@ export class MapComponent implements OnInit {
     }
     this.orderDate = orderDate;
     this.getOrders();
+
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      console.log(queryParams);
+      if (queryParams.date) {
+        console.log(queryParams.date);
+        this.orderDate = queryParams.date;
+        this.getOrders();
+      }
+    });
+    console.log(this.orderDate);
+
     this.coreService
       .getMethod('sales/map/orders', {
-        order_date: this.orderDate
+        order_date: this.orderDate,
+        city_id: this.city_id,
+        'ids[]': this.filteredTechniciansIds,
+        service_id: this.orderServiceId,
       })
       .subscribe(orders => {
         console.log(orders);
@@ -769,7 +868,7 @@ export class MapComponent implements OnInit {
     setTimeout(() => {
       gm.lastOpen = infoWindow;
       infoWindow.close();
-    }, 7000);
+    }, 600000);
   }
   /* --------------------- Open Popup of Recommendations --------------------- */
   openRecommendationForm() {
@@ -830,11 +929,10 @@ export class MapComponent implements OnInit {
   }
 
   /* -------------------- Get Order Details ------------------------- */
-  orderDetails(order) {
-    console.log(order);
-    this.router.navigate(['/orders/order-details'], {
-      queryParams: { orderId: order.id }
-    });
+  orderDetails(infoWindow, gm) {
+    console.log(infoWindow);
+    gm.lastOpen = infoWindow;
+    infoWindow.open();
   }
   showErrors(errors) {
     this.responseState = 'error';

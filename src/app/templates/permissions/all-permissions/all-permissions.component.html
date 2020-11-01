@@ -6,32 +6,68 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
-      <h3 style="display: flex; align-items: center;">
-        <img
-          src="../../../../assets/img/home_page/security-on.svg"
-          alt=""
-          style="width: 19%; margin-left: 10px;"
-        />
-        اضافة صلاحيات
+      <h3 class="fontRole">
+        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة
+        الصلاحيات
       </h3>
+      <div class="clientDetails-name">
+        <ul>
+          <li>
+            <span
+              class="cilentAccount-type-0 "
+              *ngIf="company_details && company_details.active == 1"
+            >
+              الحساب نشط
+            </span>
+            <span
+              class="cilentAccount-type-10 "
+              *ngIf="company_details && company_details.active != 1"
+            >
+              الحساب غير نشط
+            </span>
+          </li>
+          <!-- <li
+            class="fontRole"
+            style="    position: relative;
+          bottom: 5px;
+          font-size: 16px;
+      "
+          >
+            باقى
+            <span style="padding: 0% 10px;">
+              {{ company_details ? company_details.availableTo : "" }}
+            </span>
+            يوم على صلاحية النظام
+          </li> -->
+        </ul>
+      </div>
     </div>
     <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
       <div class="page_body_main">
         <div class="page_block">
-          <div class="main_block ">
+          <div class="main_block " style="padding-right: 0px;">
+            <div class="button-add-taxs" style="position:relative; left:-28px;">
+              <button [routerLink]="['/roles/all-roles']">
+                <i class="fal fa-backward "></i>
+                <span class="fontRole" style="font-size: 16px;"
+                  >الرجوع الى قائمة الصلاحيات</span
+                >
+              </button>
+            </div>
             <form [formGroup]="filterForm" class="filter_form">
               <div class="form_input" id="NameFillterInputStyle">
-                <label style="display: flex; align-items: center;"
-                  ><img
-                    src="../../../../assets/img/home_page/security-on.svg"
-                    alt=""
-                    style="width: 7%; margin-left: 10px;"
-                  />
-                  اسم الصلاحية</label
+                <label
+                  class="fontRole"
+                  style="display: flex; align-items: center;"
+                  ><i
+                    class="fas fa-tasks "
+                    style="margin-left: 10px; font-size:26px"
+                  ></i>
+                  توزيع الصلاحيات</label
                 >
-                <p style="margin: 10px 0; color: #707070; margin-right: 35px;">
+                <!-- <p style="margin: 10px 0; color: #707070; margin-right: 35px;">
                   {{ role ? role.name : "" }}
-                </p>
+                </p> -->
                 <!-- <mat-form-field dir="rtl" appearance="outline">
                   <input
                     class="filterInput"
@@ -62,28 +98,47 @@
                 </mat-form-field> -->
               </div>
             </form>
-            <form
+            <section
               *ngIf="moduleArray.length"
-              style="margin-top: 10px; margin-bottom: 0;"
-              [formGroup]="filterForm"
-              class="filter_form"
+              class="permissionActions"
+              style="background: #E9E9E9; border: 1px solid #9E9E9E; padding: 10px 15px; display: flex;
+              width: 99%;
+              align-items: center; 
+              border: 1px solid #9e9e9e;
+              box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+              margin-bottom: 5%;
+              "
             >
-              <div class="form_input" id="NameFillterInputStyle">
-                <mat-form-field dir="rtl" appearance="outline">
-                  <mat-select
-                    placeholder="اختر اسم الفرع"
-                    (selectionChange)="changeModule($event.value)"
+              <form
+                *ngIf="!updateMode"
+                style="margin-top: 10px; margin-bottom: 0;"
+                [formGroup]="filterForm"
+                class=""
+              >
+                <span class="fontRole" style="font-size: 16px">
+                  أقسام النظام
+                </span>
+                <div class="form_input" id="NameFillterInputStyle">
+                  <mat-form-field
+                    dir="rtl"
+                    appearance="outline"
+                    *ngIf="moduleArray.length"
                   >
-                    <mat-option
-                      *ngFor="let module of moduleArray"
-                      [value]="module"
+                    <mat-select
+                      placeholder="اختر اسم الفرع"
+                      formControlName="modules"
+                      (selectionChange)="changeModule($event.value)"
                     >
-                      {{ module.arabic }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <!-- <div class="form_input" id="NameFillterInputStyle">
+                      <mat-option
+                        *ngFor="let module of moduleArray"
+                        [value]="module"
+                      >
+                        {{ module ? module.arabic : "" }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <!-- <div class="form_input" id="NameFillterInputStyle">
                 <mat-form-field dir="rtl" appearance="outline">
                   <input
                     class="filterInput"
@@ -114,58 +169,153 @@
                   </mat-autocomplete>
                 </mat-form-field>
               </div> -->
-            </form>
-            <div class="checking" *ngIf="!showModule && !updateMode">
-              <span *ngFor="let item of privileges; let i = index">
-                <mat-checkbox
-                  class="example-margin text-capitalize"
-                  (change)="checkPermission($event, item.eng)"
-                  >{{ item.arb }}</mat-checkbox
-                >
-              </span>
-            </div>
-            <div class="checking" *ngIf="updateMode">
-              <span *ngFor="let item of privileges; let i = index">
-                <mat-checkbox
-                  class="example-margin text-capitalize"
-                  (change)="checkPermission($event, item.eng)"
-                  [checked]="updateArray.includes(item.eng)"
-                  >{{ item.arb }}</mat-checkbox
-                >
-              </span>
-            </div>
-            <div
-              class="form_input"
-              style="margin-top: 10px;"
-              id="NameFillterInputStyle"
-            >
-              <button
-                class="show"
-                (click)="getPermissions()"
-                *ngIf="moduleArray.length && !updateMode"
-                [disabled]="showModule || privilegesArray.length < 2"
+              </form>
+              <form
+                *ngIf="updateMode"
+                style="margin-top: 10px; margin-bottom: 0;"
+                [formGroup]="filterForm"
+                class=""
               >
-                <i class="fas fa-plus"></i>
-                اضافة
-              </button>
-            </div>
-            <div
-              class="form_input"
-              style="margin-top: 10px;"
-              id="NameFillterInputStyle"
-            >
-              <button
-                class="show"
-                (click)="updatePerm()"
-                *ngIf="moduleArray.length && updateMode"
-                [disabled]="privilegesArray.length < 2"
+                <span class="fontRole" style="font-size: 16px">
+                  أقسام النظام
+                </span>
+                <div class="form_input" id="NameFillterInputStyle">
+                  <mat-form-field dir="rtl" appearance="outline">
+                    <mat-select
+                      [placeholder]="
+                        updatedRow.name == 'sales'
+                          ? 'المبيعات'
+                          : updatedRow.name == 'orders'
+                          ? 'الطلبات'
+                          : updatedRow.name == 'offers'
+                          ? 'العروض'
+                          : updatedRow.name == 'resources'
+                          ? 'المصادر'
+                          : updatedRow.name == 'technicians'
+                          ? 'الفنين'
+                          : updatedRow.name == 'receipts'
+                          ? 'الفواتير'
+                          : ''
+                      "
+                      formControlName="modules"
+                      (selectionChange)="changeModule($event.value)"
+                      disabled="true"
+                    >
+                      <mat-option>
+                        {{
+                          updatedRow.name == "sales"
+                            ? "المبيعات"
+                            : updatedRow.name == "orders"
+                            ? "الطلبات"
+                            : updatedRow.name == "offers"
+                            ? "العروض"
+                            : updatedRow.name == "resources"
+                            ? "المصادر"
+                            : updatedRow.name == "technicians"
+                            ? "الفنين"
+                            : updatedRow.name == "receipts"
+                            ? "الفواتير"
+                            : ""
+                        }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </form>
+              <div
+                class="checking"
+                *ngIf="!showModule && !updateMode"
+                style="width: 100%; position: relative;
+                top: 9px;"
               >
-                <i class="fas fa-plus"></i>
-                تعديل
-              </button>
-            </div>
+                <span *ngFor="let item of privileges; let i = index">
+                  <mat-checkbox
+                    style="color: #343434; font-size: 16px ; font-weight: 300 !important;"
+                    [labelPosition]="labelPosition"
+                    class="example-margin fontRole"
+                    (change)="checkPermission($event, item.eng)"
+                  >
+                    <i
+                      class="fal fa-{{ item.icon }}"
+                      style="color: #343434;"
+                    ></i>
+                    {{ item.arb }}
+                  </mat-checkbox>
+                </span>
+              </div>
+              <div
+                class="checking"
+                *ngIf="updateMode"
+                style="width: 100%; position: relative;
+              top: 8px"
+              >
+                <span *ngFor="let item of privileges; let i = index">
+                  <mat-checkbox
+                    style="color: #343434;"
+                    class="example-margin text-capitalize"
+                    (change)="checkPermission($event, item.eng)"
+                    [checked]="updateArray.includes(item.eng)"
+                  >
+                    <i
+                      class="fal fa-{{ item.icon }}"
+                      style="color: #343434;"
+                    ></i>
+                    {{ item.arb }}</mat-checkbox
+                  >
+                </span>
+              </div>
+              <div class="button-add-taxs" style="margin-bottom: 0px;">
+                <button
+                  class="show"
+                  style="width: 196px; padding: 0px; margin-top: 10px; line-height: 39px;
+                  padding-right: 2px; margin-top: 32px;"
+                  (click)="getPermissions()"
+                  *ngIf="moduleArray.length && !updateMode"
+                  [disabled]="showModule || privilegesArray.length < 2"
+                >
+                  <div class="addIconF">
+                    <i
+                      class="fas fa-plus-square"
+                      style="float: right; font-size: 17px;"
+                    ></i>
+                  </div>
+                  اضافة
+                </button>
+              </div>
+              <div
+                class="button-add-taxs"
+                style="margin-bottom: 0px;"
+                id="NameFillterInputStyle"
+              >
+                <button
+                  class="show"
+                  style="width: 196px; padding: 2px; margin-top: 10px; line-height: 39px;
+                  padding-right: 2px;"
+                  (click)="updatePerm()"
+                  *ngIf="updateMode"
+                  [disabled]="privilegesArray.length < 2"
+                >
+                  <i class="fas fa-save" style="float: right;"></i>
+                  حفظ
+                </button>
+              </div>
+            </section>
+          </div>
+          <h3 class="fontRole" style="margin: 20px 6px 0 0; ">
+            جدول الصلاحيات
+          </h3>
+          <div
+            class="countPerPage"
+            style="margin-left: -8px ; margin-top: -47px;"
+          >
+            <select name="" class="selectPerpage">
+              <option>
+                10
+              </option>
+            </select>
           </div>
           <table
+            style="margin-top: 20px;"
             width="100%"
             dir="rtl"
             mat-table
@@ -173,25 +323,80 @@
             class="mat-elevation-z8"
             id="display_table"
           >
-            <ng-container matColumnDef="ID">
+            <!-- <ng-container matColumnDef="ID">
               <th mat-header-cell *matHeaderCellDef>المسلسل</th>
               <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-            </ng-container>
+            </ng-container> -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>إسم الفرع</th>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-family: 'GE SS Two';"
+              >
+                قائمة الأقسام
+              </th>
               <td mat-cell *matCellDef="let element">
-                <span *ngIf="element.name == 'clients'">العملاء</span>
-                <span *ngIf="element.name == 'orders'">الطلبات</span>
-                <span *ngIf="element.name == 'offers'">العروض</span>
-                <span *ngIf="element.name == 'resources'">المصادر</span>
-                <span *ngIf="element.name == 'technicians'">الفنين</span>
-                <span *ngIf="element.name == 'receipts'">الفواتير</span>
+                <span *ngIf="element.name == 'clients'" class="fontTDTable"
+                  >العملاء</span
+                >
+                <span *ngIf="element.name == 'orders'" class="fontTDTable"
+                  >الطلبات</span
+                >
+                <span *ngIf="element.name == 'offers'" class="fontTDTable"
+                  >العروض</span
+                >
+                <span *ngIf="element.name == 'resources'" class="fontTDTable"
+                  >المصادر</span
+                >
+                <span *ngIf="element.name == 'technicians'" class="fontTDTable"
+                  >الفنين</span
+                >
+                <span *ngIf="element.name == 'receipts'" class="fontTDTable"
+                  >الفواتير</span
+                >
+                <span *ngIf="element.name == 'sales'" class="fontTDTable"
+                  >المبيعات</span
+                >
               </td>
             </ng-container>
             <ng-container matColumnDef="details">
-              <th mat-header-cell *matHeaderCellDef>الصلاحيات المتاحة</th>
-              <td mat-cell *matCellDef="let element; let index = index">
-                <span *ngFor="let item of element.privileges">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="font-family: 'GE SS Two';"
+              >
+                الصلاحيات المتاحة
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element; let index = index"
+                style="font-family: 'GE SS Two';  color:#343434"
+              >
+                <mat-checkbox
+                  disabled="true"
+                  class="example-margin text-capitalize"
+                  [checked]="element.privileges.includes('create')"
+                  >اضافة</mat-checkbox
+                >
+                <mat-checkbox
+                  disabled="true"
+                  class="example-margin text-capitalize"
+                  [checked]="element.privileges.includes('update')"
+                  >تعديل</mat-checkbox
+                >
+                <mat-checkbox
+                  disabled="true"
+                  class="example-margin text-capitalize"
+                  [checked]="element.privileges.includes('delete')"
+                  >حذف</mat-checkbox
+                >
+                <mat-checkbox
+                  disabled="true"
+                  class="example-margin text-capitalize"
+                  [checked]="element.privileges.includes('show')"
+                  >مشاهدة</mat-checkbox
+                >
+                <!-- <span *ngFor="let item of element.privileges">
                   <mat-checkbox
                     *ngIf="item == 'create'"
                     disabled="true"
@@ -199,6 +404,7 @@
                     [checked]="item == 'create'"
                     >اضافة</mat-checkbox
                   >
+                 
                   <mat-checkbox
                     *ngIf="item == 'delete'"
                     disabled="true"
@@ -220,13 +426,80 @@
                     [checked]="item == 'show'"
                     >مشاهدة</mat-checkbox
                   >
-                </span>
+                </span> -->
               </td>
             </ng-container>
             <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>تفاصيل</th>
-              <td mat-cell *matCellDef="let element; let i = index">
-                <img
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td
+                mat-cell
+                *matCellDef="let element; let i = index"
+                (mouseenter)="hideme[element.id] = !hideme[element.id]"
+                (mouseleave)="hideme[element.id] = !hideme[element.id]"
+              >
+                <!--  -->
+                <div
+                  id="showOrdercontrols"
+                  *ngIf="hideme[element.id]"
+                  [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
+                  style="background-color: #E9E9E9;"
+                >
+                  <button
+                    (click)="updateItem(i, element)"
+                    id="editButton"
+                    class="basic_button"
+                    style="
+                    background: transparent;
+                    border: none;
+                    font-size: 21px;
+                    cursor: pointer;
+                    color: black;
+                
+                "
+                    type="button"
+                  >
+                    <!-- <img src="../../../../assets/img/icons/edit.png" alt="" /> -->
+                    <i
+                      style="font-weight: 500;  padding-left: 15px;"
+                      class="fal fa-file-edit"
+                    ></i>
+                  </button>
+                  <button
+                    class="basic_button"
+                    type="button"
+                    style="
+                  background: transparent;
+                  border: none;
+                  font-size: 21px;
+                  cursor: pointer;
+                  color: black;
+                "
+                    (click)="removeItem(i, element)"
+                  >
+                    <i
+                      style="font-weight: 400; color: #4A4A4A;"
+                      class="fal fa-trash-alt"
+                    ></i>
+                  </button>
+                </div>
+                <div
+                  class="basic_button"
+                  style="
+                background: transparent;
+                border: none;
+                font-size: 21px;
+                cursor: pointer;
+                color: black; text-align: center; margin-left: 10%;"
+                  type="button"
+                >
+                  <!-- <img src="../../../../assets/img/icons/Menu.svg" alt="" /> -->
+                  <i
+                    class="fal fa-bars"
+                    style="font-weight: 400; color: #4A4A4A;"
+                  ></i>
+                </div>
+              </td>
+              <!-- <img
                   (click)="removeItem(i, element)"
                   class="pointer"
                   src="../../../../assets/img/icons/delete.png"
@@ -239,14 +512,65 @@
                   src="../../../../assets/img/icons/edit.png"
                   alt=""
                 />
-              </td>
+              </td> -->
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
+          <div class="pagination">
+            <ul>
+              <li>
+                <button class="arrow" [disabled]="current_page == totalPage">
+                  <i class="fas fa-angle-right"></i>
+                </button>
+              </li>
+              <li style="margin: 10px; text-align: center; line-height: 31px;">
+                <div class="numberPagination">
+                  <!-- {{ current_page }} -->
+                  <input
+                    style="background: #fff;
+                  border: 1px solid rgba(112, 112, 112, 0.38);
+                  width: 42px;
+                  height: 31px;
+                  text-align: center;"
+                    type="text"
+                    type="number"
+                    min="1"
+                    [max]="totalPage"
+                    #pageNumber
+                    [value]="current_page"
+                  />
+                </div>
+              </li>
+              <li>
+                <button class="arrow" [disabled]="current_page <= 1">
+                  <i class="fas fa-angle-left"></i>
+                </button>
+              </li>
+              <li style="margin: 15px 10px; box-shadow: none;">
+                <div class="pageNum">
+                  من
+                  <span>{{ totalPage }}</span>
+                  صفحة
+                </div>
+              </li>
+            </ul>
+          </div>
+
           <section class="saveSection">
-            <button (click)="createPermission()" class="show">حفظ</button>
+            <div class="button-add-taxs" style="width: 100%;">
+              <button
+                (click)="createPermission()"
+                style="
+              position: relative;
+              top: -39px;"
+              >
+                <i class="fas fa-save "></i>
+                <span class="fontRole" style="font-size: 16px;">حفظ</span>
+              </button>
+            </div>
+            <!-- <button class="show">حفظ</button> -->
           </section>
         </div>
       </div>

@@ -39,12 +39,17 @@ export class SideMenuComponent implements OnInit {
   resources_all: boolean = false;
   receipt_add: boolean = false;
   receipt_all: boolean = false;
+  sales_add: boolean = false;
+  sales_all: boolean = false;
+  service_add: boolean = false;
   service_all: boolean = false;
   orders: any = [];
+  sales: any = [];
   clients: any = [];
   technicians: any = [];
   offers: any = [];
   resoureces: any = [];
+  services: any = [];
   receipts: any = [];
   user: any = '';
   windowWidth = window.innerWidth;
@@ -114,6 +119,19 @@ export class SideMenuComponent implements OnInit {
         }
       });
     }
+    this.services = this.user.modules.services;
+    if (this.services) {
+      this.services.map(ele => {
+        switch (ele) {
+          case 'create':
+            this.service_add = true;
+            break;
+          case 'all':
+            this.service_all = true;
+            break;
+        }
+      });
+    }
     this.resoureces = this.user.modules.resources;
     if (this.resoureces) {
       this.resoureces.map(ele => {
@@ -136,6 +154,19 @@ export class SideMenuComponent implements OnInit {
             break;
           case 'all':
             this.receipt_all = true;
+            break;
+        }
+      });
+    }
+    this.sales = this.user.modules.sales;
+    if (this.sales) {
+      this.sales.map(ele => {
+        switch (ele) {
+          case 'create':
+            this.sales_add = true;
+            break;
+          case 'all':
+            this.sales_all = true;
             break;
         }
       });

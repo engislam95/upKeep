@@ -8,7 +8,7 @@
     <div class="page_body_title">
       <h3>
         <i class="fas fa-plus"></i
-        >{{ this.updateMode ? 'تعديل الطلب' : 'إضافة طلب' }}
+        >{{ this.updateMode ? "تعديل الطلب" : "إضافة طلب" }}
       </h3>
       <div
         class="page_body_main_buttons"
@@ -188,7 +188,7 @@
                                 <span>{{
                                   locations.area
                                     ? locations.area
-                                    : 'لم يتم ادخال المنققة'
+                                    : "لم يتم ادخال المنققة"
                                 }}</span>
                               </li>
                             </ul>
@@ -222,9 +222,31 @@
                     {{
                       selectedClientLocationsArray.length > 1 &&
                       !selectSubLocations
-                        ? 'هذا العميل لديه أكثر من عنوان'
-                        : ''
+                        ? "هذا العميل لديه أكثر من عنوان"
+                        : ""
                     }}
+                  </h5>
+                  <h5
+                    id="multiLocationWarning"
+                    style="position: absolute;
+                      top: 1px;
+                      left: -196px;
+              "
+                  >
+                    {{
+                      clientMobiles.length > 1
+                        ? "هذا العميل لديه أكثر من رقم هاتف"
+                        : ""
+                    }}
+                  </h5>
+                </div>
+                <div
+                  [@fade]
+                  class="validationState errorState"
+                  *ngIf="clientStatus == 0 && selectClient"
+                >
+                  <h5 id="multiLocationWarning">
+                    هذا العميل غير نشط
                   </h5>
                 </div>
               </div>
@@ -503,10 +525,10 @@
                     <div>الإسم</div>
                     <div *ngFor="let hour of dayHoursArray">
                       <ng-container *ngIf="hour !== 12">
-                        {{ hour > 12 ? hour - 12 + ':00 م' : hour + ':00 ص' }}
+                        {{ hour > 12 ? hour - 12 + ":00 م" : hour + ":00 ص" }}
                       </ng-container>
                       <ng-container *ngIf="hour === 12">
-                        {{ hour === 12 ? 12 + ':00 م' : null }}
+                        {{ hour === 12 ? 12 + ":00 م" : null }}
                       </ng-container>
                     </div>
                   </div>
@@ -586,17 +608,17 @@
                                       order.fromH > 12
                                         ? order.fromH -
                                           12 +
-                                          ':' +
+                                          ":" +
                                           order.fromM +
-                                          'م'
-                                        : order.fromH + ':' + order.fromM + 'ص'
+                                          "م"
+                                        : order.fromH + ":" + order.fromM + "ص"
                                     }}
                                   </ng-container>
                                   <ng-container *ngIf="order.fromH === 12">
                                     <span class="timeTitleSpan">من : </span
                                     >{{
                                       order.fromH === 12
-                                        ? 12 + ':' + order.fromM + 'م'
+                                        ? 12 + ":" + order.fromM + "م"
                                         : null
                                     }}
                                   </ng-container>
@@ -605,15 +627,15 @@
                                     <span class="timeTitleSpan"> الي : </span
                                     >{{
                                       order.toH > 12
-                                        ? order.toH - 12 + ':' + order.toM + 'م'
-                                        : order.toH + ':' + order.toM + 'ص'
+                                        ? order.toH - 12 + ":" + order.toM + "م"
+                                        : order.toH + ":" + order.toM + "ص"
                                     }}
                                   </ng-container>
                                   <ng-container *ngIf="order.toH === 12">
                                     <span class="timeTitleSpan"> الي : </span
                                     >{{
                                       order.toH === 12
-                                        ? 12 + ':' + order.toM + 'م'
+                                        ? 12 + ":" + order.toM + "م"
                                         : null
                                     }}
                                   </ng-container>
@@ -796,10 +818,144 @@
                   إدخال صحيح
                 </div>
               </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="safetyOrder"
+                  (change)="changeSafetyOrder($event.checked)"
+                  >الطلب عودة للضمان
+                </mat-checkbox>
+              </div>
+              <div class="form_field" *ngIf="safetyOrder">
+                <mat-form-field dir="rtl" appearance="outline">
+                  <input
+                    type="text"
+                    placeholder="رقم الطلب"
+                    aria-label="Number"
+                    matInput
+                    [formControl]="orderNumberControl"
+                    [matAutocomplete]="orderNumberAutoComplete"
+                    id="orderNumber"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('orderNumber')"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>
+                  <mat-autocomplete
+                    #orderNumberAutoComplete="matAutocomplete"
+                    [displayWith]="displayOrderNumberFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of orderNumbersFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="orderNumberControl.touched && !numberOrder"
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال رقم الطلب
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="numberOrder"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  formControlName="clientContact"
+                  (change)="
+                    ordersForm['controls'].clientContact.setValue(
+                      $event.checked
+                    )
+                  "
+                >
+                  تم الاتصال بالعميل
+                </mat-checkbox>
+              </div>
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  [checked]="addNumber"
+                  (change)="changePhone($event.checked)"
+                >
+                  رقم اضافى للعميل فى حالة عدم الرد
+                </mat-checkbox>
+              </div>
+              <div class="form_field inputWithButton" *ngIf="addNumber">
+                <mat-form-field dir="rtl" appearance="outline">
+                  <mat-select
+                    formControlName="alternative_contact"
+                    placeholder="رقم اضافى للعميل فى حالة عدم الرد"
+                  >
+                    <mat-option
+                      *ngFor="let mobile of clientMobiles; let i = index"
+                      [value]="mobile.id"
+                    >
+                      <div
+                        style="display: flex; justify-content: space-between;"
+                      >
+                        <span>{{ mobile.name }} </span>
+                        <span> {{ mobile.mobile }}</span>
+                      </div>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  type="button"
+                  (click)="showAddNumberPopup = true"
+                  id="button"
+                  class="clientBtn"
+                >
+                  <i class="fas fa-mobile"></i>
+                </button>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    ordersForm['controls'].alternative_contact.touched &&
+                    !ordersForm['controls'].alternative_contact.value
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال رقم اضافى
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="ordersForm['controls'].alternative_contact.value"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field full_width" style="margin-bottom: 0;">
+                <mat-checkbox
+                  formControlName="urgent"
+                  (change)="
+                    ordersForm['controls'].urgent.setValue($event.checked)
+                  "
+                >
+                  طلب عاجل
+                </mat-checkbox>
+              </div>
               <hr />
               <div class="form_field fullWidth formButtons">
                 <button
-                  [disabled]="ordersForm.invalid"
+                  [disabled]="
+                    ordersForm.invalid || (clientStatus == 0 && selectClient)
+                  "
                   type="submit"
                   class="formSubmit formButton"
                   *ngIf="!updateButton"
@@ -852,3 +1008,80 @@
     ></app-map>
   </div>
 </div>
+<section id="phonePO">
+  <div class="popup_form_client " id="popup" *ngIf="showAddNumberPopup">
+    <div id="backDrop"></div>
+    <div id="popupData">
+      <a (click)="showAddNumberPopup = false"
+        ><i class="fas fa-times-circle"></i>
+      </a>
+      <div class="border-popup">
+        <h4><i class="far fa-mobile-android-alt"></i> ارقام اضافية</h4>
+        <h5>حد أقصى <span>5</span> أرقام</h5>
+        <div id="add_form">
+          <form #form="ngForm" [formGroup]="phonesForm">
+            <div class="page_block registerForm">
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label> <i class="fas fa-phone-alt"></i> الرقم </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    appOnlyNumbers="true"
+                    maxlength="9"
+                    matInput
+                    formControlName="mobile"
+                    autocomplete="off"
+                    id="mobileKey"
+                  />
+                  <span id="phoneKey" [@fade]>966+</span>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="setError"
+                >
+                  <i class="fas fa-times"></i> {{ errorMessage }}
+                </div>
+              </div>
+              <!-- end Form field -->
+
+              <!-- Start Form field -->
+              <div class="form_field">
+                <label> <i class="fas fa-user"></i> الاسم الخاص بالرقم </label>
+                <mat-form-field
+                  style="width: 64%;"
+                  appearance="outline"
+                  dir="rtl"
+                >
+                  <input
+                    matInput
+                    autocomplete="off"
+                    id="name"
+                    formControlName="name"
+                  />
+                </mat-form-field>
+                <button
+                  *ngIf="!updatePhone"
+                  class="add-button-number"
+                  (click)="addPhoneNumber()"
+                  [disabled]="clientMobiles.length == 5"
+                >
+                  اضافة
+                </button>
+                <button
+                  *ngIf="updatePhone"
+                  class="add-button-number"
+                  (click)="addPhoneNumber()"
+                  [disabled]="clientMobiles.length == 5"
+                >
+                  تعديل
+                </button>
+              </div>
+              <!-- End Form field -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

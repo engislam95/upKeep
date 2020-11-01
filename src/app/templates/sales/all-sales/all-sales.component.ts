@@ -45,11 +45,11 @@ export class AllSalesComponent implements OnInit {
   updatedTechnicalName: string;
   updatedTechnicalId: number;
   showUpdatePopup = false;
-  order_add: boolean = false;
-  order_all: boolean = false;
-  order_update: boolean = false;
-  order_delete: boolean = false;
-  orders: any = [];
+  sales_add: boolean = false;
+  sales_all: boolean = false;
+  sales_update: boolean = false;
+  sales_delete: boolean = false;
+  sales: any = [];
   user: any = '';
   darkTheme: any = {
     container: {
@@ -84,7 +84,7 @@ export class AllSalesComponent implements OnInit {
     'order_status',
     'city',
     'order_resource',
-    'order_details'
+    // 'order_details'
   ];
   ordersArray = [];
   getOrderNumber;
@@ -170,24 +170,31 @@ export class AllSalesComponent implements OnInit {
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     console.log(this.user);
-    this.orders = this.user.modules.orders;
-    if (this.orders) {
-      this.orders.map(ele => {
+    this.sales = this.user.modules.sales;
+    if (this.sales) {
+      this.sales.map(ele => {
         switch (ele) {
           case 'create':
-            this.order_add = true;
+            this.sales_add = true;
             break;
           case 'show':
-            this.order_all = true;
+            this.sales_all = true;
             break;
           case 'update':
-            this.order_update = true;
+            this.sales_update = true;
             break;
           case 'delete':
-            this.order_delete = true;
+            this.sales_delete = true;
             break;
         }
       });
+      console.log(this.user.privilege);
+
+
+    }
+    if (this.user.privilege == 'super-admin' || this.sales_update || this.sales_delete) {
+
+      this.displayedColumns[10] = 'order_details';
     }
     // Cities
     this.startLoading();
@@ -231,6 +238,32 @@ export class AllSalesComponent implements OnInit {
     this.todayOrdersPage();
     this.pageCountOptions();
     this.listenOrdersUpdates();
+    const filterName = document.getElementById('filterName');
+    const filterNameListner = fromEvent(filterName, 'keyup');
+    filterNameListner
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe((value: any) => {
+        this.pageId = 1;
+        this.filteredClientData = value;
+        this.getAllOrders();
+      });
+    const filterName2 = document.getElementById('filterNameby');
+    const filterNameListner2 = fromEvent(filterName2, 'keyup');
+    filterNameListner2
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(200),
+        distinctUntilChanged()
+      )
+      .subscribe((value: any) => {
+        this.pageId = 1;
+        this.filteredBy = value;
+        this.getAllOrders();
+      });
   }
   //
   // ─────────────────────────────────────────────────────────────── END ONINIT ─────
@@ -320,36 +353,6 @@ export class AllSalesComponent implements OnInit {
   // ─── FILTER NAME ────────────────────────────────────────────────────────────────
   //
 
-  filterClientName() {
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
-    filterNameListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filteredClientData = value;
-        this.getAllOrders();
-      });
-  }
-  filterby() {
-    const filterName = document.getElementById('filterNameby');
-    const filterNameListner = fromEvent(filterName, 'keyup');
-    filterNameListner
-      .pipe(
-        map((event: any) => event.target.value),
-        debounceTime(200),
-        distinctUntilChanged()
-      )
-      .subscribe((value: any) => {
-        this.pageId = 1;
-        this.filteredBy = value;
-        this.getAllOrders();
-      });
-  }
 
   //
   // ──────────────────────────────────────── END GET SERVICES WITH TECHNICIANS ─────

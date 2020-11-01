@@ -19,6 +19,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class AllPermissionsComponent implements OnInit {
   /* ----------------------------- Variables --------------------------- */
   pageLoaded: boolean = false;
+  currentUser;
   responseState: any = '';
   responseData: any = '';
   showRole: boolean = true;
@@ -27,15 +28,20 @@ export class AllPermissionsComponent implements OnInit {
   role: any = '';
   module: any = '';
   displayedColumns: any = [
-    'ID',
     'name',
     'details',
     'actions',
   ];
+  totalPage: any = '';
+  current_page: any = '';
+
+  company_details;
+
   dataSource: any = new MatTableDataSource([]);
   pagesNumbers: any = [];
   pageId: number = 1;
   firstPage: any = '';
+  labelPosition: 'before' | 'after' = 'after';
   lastPage: any = '';
   // roleFilteredOptions: Observable<any>;
   filteredRoleId: any = '';
@@ -44,12 +50,14 @@ export class AllPermissionsComponent implements OnInit {
   roleObject: any = '';
   moduleObject: any = '';
   moduleArray: any = [];
+  hideme: any = [];
+  showOrdercontrolst: boolean = false;
   rolesArray: any = [];
   privileges: any = [
-    { eng: 'create', arb: 'اضافة' },
-    { eng: 'update', arb: 'تعديل' },
-    { eng: 'delete', arb: 'حذف' },
-    { eng: 'show', arb: 'مشاهدة' },
+    { eng: 'create', arb: 'اضافة', icon: 'plus-circle' },
+    { eng: 'update', arb: 'تعديل', icon: 'money-check-edit' },
+    { eng: 'delete', arb: 'حذف', icon: 'trash' },
+    { eng: 'show', arb: 'مشاهدة', icon: 'eye' },
   ];
   privilegesArray: any = ['all'];
   permissionObject: any = '';
@@ -58,11 +66,13 @@ export class AllPermissionsComponent implements OnInit {
   updateArray = [];
   updatedRow: any = '';
   updatedIndex: any = '';
+  updateModuleSelect: any = {};
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     // userRole: new FormControl(),
     userModule: new FormControl(),
-    module: new FormControl()
+    module: new FormControl(),
+    modules: new FormControl()
   });
   /* --------------------- Constructor ---------------------- */
   constructor(
@@ -90,14 +100,34 @@ export class AllPermissionsComponent implements OnInit {
               if (arr[i].id == ele.id) {
                 this.moduleArray.splice(this.moduleArray.indexOf(ele), 1);
               }
+
             });
+          }
+          if (this.moduleArray.length < 1) {
+            this.moduleArray = []
           }
           console.log(this.moduleArray);
           this.tableArray = arr;
+          this.totalPage = arr.length - 1;
+          this.current_page = 1;
+          if (this.totalPage > 10) {
+            this.current_page++;
+          }
+          console.log(this.tableArray.privileges);
           this.dataSource = new MatTableDataSource(this.tableArray);
         });
       })
     })
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    this.coreService.superGet('companyDetails/' + this.currentUser.id).subscribe(
+      res => {
+        console.log(res);
+        this.company_details = res
+      },
+      err => {
+        console.log(err);
+      })
   }
   /* ------------------- Oninit --------------------- */
   ngOnInit() {
@@ -106,6 +136,8 @@ export class AllPermissionsComponent implements OnInit {
     // this.coreService.getMethod('role/all', {}).subscribe(roles => {
     //   this.rolesArray = roles;
     // });
+
+
     /* ---------------------- Get Module ------------------------- */
     this.coreService.getMethod('permission').subscribe(value => {
       this.moduleArray = value['data'];
@@ -133,6 +165,10 @@ export class AllPermissionsComponent implements OnInit {
           item.arabic = 'الفواتير';
           return item;
         }
+        else if (item.name == 'sales') {
+          item.arabic = 'المبيعات';
+          return item;
+        }
       });
       /* --------------- Filter Module -------------------- */
       this.ModuleFilteredOptions = this.filterForm
@@ -158,6 +194,7 @@ export class AllPermissionsComponent implements OnInit {
     console.log(event);
     this.showModule = false;
     this.moduleObject = event;
+    this.updateModuleSelect = event;
   }
   /* --------------------------- Add Permission Item to Table ------------------------- */
   getPermissions() {
@@ -203,6 +240,9 @@ export class AllPermissionsComponent implements OnInit {
     else if (element.name == 'receipts') {
       element.arabic = 'الفواتير';
     }
+    else if (element.name == 'sales') {
+      element.arabic = 'المبيعات';
+    }
     this.moduleArray.push(element);
     console.log(this.moduleArray);
 
@@ -223,7 +263,7 @@ export class AllPermissionsComponent implements OnInit {
       this.privilegesArray.splice(this.privilegesArray.indexOf(item), 1);
     };
     console.log(this.privilegesArray.includes('update'))
-    if (this.privilegesArray.includes('update') && this.privilegesArray.indexOf('show') === -1) {
+    if ((this.privilegesArray.includes('update') || this.privilegesArray.includes('create')) && this.privilegesArray.indexOf('show') === -1) {
       this.privilegesArray.push('show');
     }
     else if (!this.privilegesArray.includes('update') && this.privilegesArray.indexOf('show') != -1) {
@@ -282,7 +322,15 @@ export class AllPermissionsComponent implements OnInit {
     console.log(this.tableArray[i].privileges);
     this.privilegesArray = this.tableArray[i].privileges;
     this.updateArray = row.privileges;
+    console.log(this.updateArray);
+
     this.updateMode = true;
+    this.showModule = true;
+    console.log(this.updateModuleSelect)
+    this.filterForm.controls.modules.setValue(this.updateModuleSelect);
+    console.log(this.filterForm.controls.modules.value);
+
+
     console.log(this.privilegesArray);
   }
   /* --------------------- Update ----------------- */
@@ -377,4 +425,6 @@ export class AllPermissionsComponent implements OnInit {
       this.responseData
     );
   }
+
+
 }

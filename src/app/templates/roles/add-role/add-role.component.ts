@@ -32,6 +32,8 @@ export class AddTRoleComponent implements OnInit {
     name: new FormControl('', Validators.required),
     description: new FormControl('')
   });
+  company_details: any;
+  currentUser: any;
   /* ---------------- Constructor ------------------------ */
   constructor(
     private loaderService: LoaderService,
@@ -39,9 +41,23 @@ export class AddTRoleComponent implements OnInit {
     private coreService: CoreService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) { 
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser')) 
+    this.coreService.superGet('companyDetails/' + this.currentUser.id).subscribe(
+      res => {
+        console.log(res);
+        this.company_details = res
+        
+      },
+      err => {
+        console.log(err);
+      })
+  }
   /* ----------------- Oninint -------------------- */
   ngOnInit() {
+
+   
     /* ------------------ Scrolling --------------------- */
     window.scroll({ top: 0, behavior: 'auto' });
     /* ------------ Start Loading --------------------- */

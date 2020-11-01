@@ -11,7 +11,7 @@
     </div>
     <!-- ################################### End Header ################################### -->
     <div class="page_body_title">
-      <h3><i class="fas fa-clipboard-list"></i>بيانات الطلب</h3>
+      <h3><i class="fas fa-analytics"></i>بيانات الطلب</h3>
 
       <div class="page_body_main_buttons">
         <a routerLink="/orders/all-orders">
@@ -60,19 +60,40 @@
               <li>
                 <h3>
                   <span>
-                    {{ pageLoaded ? orderDetails['id'] : '' }}
+                    {{ pageLoaded ? orderDetails["id"] : "" }}
                   </span>
-                  {{ pageLoaded ? orderDetails['client'].user.name : '' }}
+                  {{ pageLoaded ? orderDetails["client"].user.name : "" }}
                 </h3>
               </li>
               <li>
                 <p>
                   <span
+                    style="margin-left: 10px;"
                     class="{{
                       pageLoaded ? 'status_' + orderDetails['status'].id : ''
                     }}"
                   >
-                    {{ pageLoaded ? orderDetails['status'].name : '' }}</span
+                    {{ pageLoaded ? orderDetails["status"].name : "" }}</span
+                  >
+                  <span
+                    *ngIf="orderDetails['urgent']"
+                    style="margin-left: 10px;
+                    border-radius: 5px;
+                    background: #434e4a;
+                    border: 1px solid #707070;
+                    "
+                  >
+                    طلب هام و عاجل</span
+                  >
+                  <span
+                    *ngIf="orderDetails['order_related']"
+                    style="margin-left: 10px;
+                  border-radius: 5px;
+                  background: #434e4a;
+                  border: 1px solid #707070;
+                  "
+                  >
+                    عودة للضمان</span
                   >
                 </p>
               </li>
@@ -89,13 +110,10 @@
                   class="page_block controlPanel controlPanelOrder"
                   id="controlPanel"
                 >
-                  <!-- *ngIf="active40 || active35" -->
-
-                  <ng-container *ngIf="orderStatusId === 35">
-                    <img
-                      src="../../../../assets/img/icons/download-business-statistics-symbol-of-a-graphic.png"
-                      alt=""
-                    />
+                  <ng-container
+                    *ngIf="orderStatusId === 35"
+                    style="margin-bottom: 20px;"
+                  >
                     <h2>
                       لوحة التحكم في الطلب
                     </h2>
@@ -104,14 +122,14 @@
                         <h2>اجمالى الفاتورة</h2>
 
                         <h1>
-                          {{ pageLoaded ? orderDetails['receipt'].total : '' }}
+                          {{ pageLoaded ? orderDetails["receipt"].total : "" }}
                           <span>SAR</span>
                         </h1>
                         <p>
                           {{
                             pageLoaded
-                              ? orderDetails['receipt'].receipt_number
-                              : ''
+                              ? orderDetails["receipt"].receipt_number
+                              : ""
                           }}
                         </p>
                         <h5 *ngFor="let element of taxDetails">
@@ -119,10 +137,10 @@
                             src="../../../../assets/img/icons/Rectangle 904.svg"
                             alt=""
                           />
-                          شامل قيمة {{ pageLoaded ? element.name : '' }}
+                          شامل قيمة {{ pageLoaded ? element.name : "" }}
                           <span
-                            >{{ pageLoaded ? +element.value : '' }}
-                            {{ element.method == 'percent' ? '%' : 'SAR' }}
+                            >{{ pageLoaded ? +element.value : "" }}
+                            {{ element.method == "percent" ? "%" : "SAR" }}
                           </span>
                         </h5>
                       </div>
@@ -175,11 +193,6 @@
                       user.privilege == 'super-admin'
                     "
                   >
-                    <img
-                      *ngIf="order_update || user.privilege == 'super-admin'"
-                      src="../../../../assets/img/icons/download-business-statistics-symbol-of-a-graphic.png"
-                      alt=""
-                    />
                     <h2 *ngIf="order_update || user.privilege == 'super-admin'">
                       لوحة التحكم في الطلب
                     </h2>
@@ -207,6 +220,7 @@
                           (click)="technicalApproved()"
                           type="button"
                           [disabled]="!active20"
+                          style="border: 1px solid #FF6363;"
                           class="{{
                             pageLoaded
                               ? orderDetails['status'].id === 20
@@ -217,16 +231,14 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/technical-support.png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-users-medical red"></i></button
                         ><span>تأكيد الفني</span>
                       </li>
                       <li *ngIf="active41">
                         <button
                           (click)="onGoing()"
                           type="button"
+                          style="background: rgba(36,136,213,.72);"
                           [disabled]="!active41"
                           class="{{
                             pageLoaded
@@ -238,10 +250,7 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/route.png"
-                            alt=""
-                          /></button
+                          <div class="fas fa-running"></div></button
                         ><span>في الطريق</span>
                       </li>
                       <!-- Start Cancle button -->
@@ -266,10 +275,7 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/edit (1).png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-comment-alt-edit"></i></button
                         ><span>تعديل الطلب</span>
                       </li>
 
@@ -290,10 +296,7 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/24-hour-service (2).png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-stopwatch-20"></i></button
                         ><span>تأجيل الطلب</span>
                       </li>
 
@@ -301,6 +304,7 @@
                         <button
                           (click)="startOrder()"
                           type="button"
+                          style="background: #5D8D1D;"
                           [disabled]="!active21"
                           class="{{
                             pageLoaded
@@ -312,10 +316,7 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/play.png"
-                            alt=""
-                          />
+                          <i class="fas fa-play-circle"></i>
                         </button>
                         <span>بدء الطلب</span>
                       </li>
@@ -323,6 +324,7 @@
                         <button
                           (click)="finishOrder()"
                           type="button"
+                          style="border: 1px solid #111178;"
                           class="{{
                             pageLoaded
                               ? orderDetails['status'].id === 22
@@ -333,22 +335,19 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/finish.png"
-                            alt=""
-                          /></button
+                          <i
+                            class="fas fa-fist-raised"
+                            style="color: #111178;"
+                          ></i></button
                         ><span>إنهاء الطلب</span>
                       </li>
                       <li *ngIf="active65">
                         <button
-                          id="editOrder"
+                          style="background: #AB1A9D;"
                           type="button"
                           (click)="finishwithoutOrder()"
                         >
-                          <img
-                            src="../../../../assets/img/icons/finish.png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-ban"></i></button
                         ><span>انهاء الطلب بدون اصدار فاتورة</span>
                       </li>
                       <!-- Start Cancle button -->
@@ -369,10 +368,7 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/error (4).png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-times-circle"></i></button
                         ><span>إلغاء الطلب</span>
                       </li>
 
@@ -384,6 +380,7 @@
                         <button
                           (click)="openSuspendPopup()"
                           type="button"
+                          style="border: 1px solid #7D620C;"
                           [disabled]="!active42"
                           class="{{
                             pageLoaded
@@ -395,10 +392,10 @@
                               : ''
                           }}"
                         >
-                          <img
-                            src="../../../../assets/img/icons/Group 58.svg"
-                            alt=""
-                          /></button
+                          <i
+                            class="fas fa-pause-circle"
+                            style="color:#7D620C"
+                          ></i></button
                         ><span> إيقاف مؤقت</span>
                       </li>
 
@@ -407,14 +404,52 @@
                       <li *ngIf="active35">
                         <button
                           type="button"
+                          id="cancelOrder"
                           [disabled]="!active35"
                           (click)="goToOrderInvoice()"
                         >
-                          <img
-                            src="../../../../assets/img/icons/invoice (2).png"
-                            alt=""
-                          /></button
+                          <i class="fas fa-receipt"></i></button
                         ><span>إصدار فاتورة</span>
+                      </li>
+
+                      <li
+                        *ngIf="
+                          orderDetails['status']?.id == 29 ||
+                          orderDetails['status']?.id == 19 ||
+                          orderDetails['status']?.id == 20 ||
+                          orderDetails['status']?.id == 40
+                        "
+                      >
+                        <button
+                          style="border: 1px solid #FF7700;"
+                          type="button"
+                          (click)="openWaitPopup()"
+                        >
+                          <i
+                            class="fas fa-random"
+                            style="color: #FF7700;"
+                          ></i></button
+                        ><span>تحويل مبيعات</span>
+                      </li>
+
+                      <li
+                        *ngIf="
+                          orderDetails['status']?.id == 29 ||
+                          orderDetails['status']?.id == 19 ||
+                          orderDetails['status']?.id == 20 ||
+                          orderDetails['status']?.id == 40
+                        "
+                      >
+                        <button
+                          style="border: 1px solid #F7FF00; background: #159778;"
+                          type="button"
+                          (click)="toWaitingList()"
+                        >
+                          <i
+                            class="fas fa-random"
+                            style="color: #F7FF00;"
+                          ></i></button
+                        ><span>قائمة انتظار</span>
                       </li>
                     </ul>
                   </ng-container>
@@ -439,7 +474,7 @@
                           </h4>
                           <h5>
                             <span>
-                              {{ pageLoaded ? orderDetails['id'] : '' }}
+                              {{ pageLoaded ? orderDetails["id"] : "" }}
                             </span>
                           </h5>
                         </li>
@@ -455,7 +490,7 @@
                           </h4>
                           <h5>
                             {{
-                              pageLoaded ? orderDetails['client'].user.name : ''
+                              pageLoaded ? orderDetails["client"].user.name : ""
                             }}
                           </h5>
                         </li>
@@ -472,8 +507,8 @@
                           <h5>
                             {{
                               pageLoaded
-                                ? orderDetails['client'].user.mobile
-                                : ''
+                                ? orderDetails["client"].user.mobile
+                                : ""
                             }}+
                           </h5>
                         </li>
@@ -491,10 +526,10 @@
 
                           {{
                             pageLoaded
-                              ? orderDetails['receipt']
-                                ? orderDetails['receipt'].receipt_number
-                                : 'لم يتم اصدار فاتورة بعد'
-                              : ' '
+                              ? orderDetails["receipt"]
+                                ? orderDetails["receipt"].receipt_number
+                                : "لم يتم اصدار فاتورة بعد"
+                              : " "
                           }}
                         </h5>
                       </li>
@@ -511,15 +546,12 @@
                     alt=""
                   /> -->
 
-                  <img
-                    src="../../../../assets/img/icons/600_97d118b7a6f8f87d18f7b1385ea7665e.png"
-                    alt=""
-                  />
+                  <i class="fas fa-users-cog" style="font-size: 80px;"></i>
 
                   <h3>تمت الأضافة بواسطة</h3>
-                  <h5>{{ pageLoaded ? orderDetails['creator'].name : '' }}</h5>
+                  <h5>{{ pageLoaded ? orderDetails["creator"].name : "" }}</h5>
 
-                  <p>{{ pageLoaded ? spiltedCreatedDate[0] : '' }}</p>
+                  <p>{{ pageLoaded ? spiltedCreatedDate[0] : "" }}</p>
                 </div>
                 <div class="serviceOrder">
                   <div class="detailsOrder">
@@ -533,7 +565,7 @@
                           اسم المصدر
                         </h4>
                         <h5>
-                          {{ pageLoaded ? orderDetails['source'].name : '' }}
+                          {{ pageLoaded ? orderDetails["source"].name : "" }}
                         </h5>
                       </li>
                       <li>
@@ -547,8 +579,8 @@
                         <h5>
                           {{
                             pageLoaded
-                              ? orderDetails['service'].parent_service.name
-                              : ''
+                              ? orderDetails["service"].parent_service.name
+                              : ""
                           }}
                         </h5>
                       </li>
@@ -562,7 +594,7 @@
                           المطلوب
                         </h4>
                         <h5>
-                          {{ pageLoaded ? orderDetails['service'].name : '' }}
+                          {{ pageLoaded ? orderDetails["service"].name : "" }}
                         </h5>
                       </li>
                       <li>
@@ -591,10 +623,10 @@
 
                         {{
                           pageLoaded
-                            ? orderDetails['offer']
-                              ? orderDetails['offer'].name
-                              : 'لا يوجد عرض مشترك فيه'
-                            : ' '
+                            ? orderDetails["offer"]
+                              ? orderDetails["offer"].name
+                              : "لا يوجد عرض مشترك فيه"
+                            : " "
                         }}
                       </span>
                     </h5>
@@ -618,14 +650,14 @@
                     />
 
                     <h5>
-                      {{ pageLoaded ? orderDetails['technician'].name : '' }}
+                      {{ pageLoaded ? orderDetails["technician"].name : "" }}
                     </h5>
 
                     <p>
                       {{
-                        pageLoaded
-                          ? orderDetails['technician'].service.name
-                          : ''
+                        pageLoaded && orderDetails["technician"].service
+                          ? orderDetails["technician"].service.name
+                          : ""
                       }}
                     </p>
                   </div>
@@ -634,27 +666,27 @@
                     <h5>تاريخ بدء الطلب</h5>
 
                     <span>
-                      {{ pageLoaded ? orderDetails['order_date'] : '' }}
+                      {{ pageLoaded ? orderDetails["order_date"] : "" }}
                     </span>
                     <ul>
                       <li>
                         <h5>وقت بداية الطلب</h5>
 
                         <span>
-                          {{ pageLoaded ? orderDetails['from_time'] : '' }}
+                          {{ pageLoaded ? orderDetails["from_time"] : "" }}
                         </span>
                       </li>
                       <li>
                         <h5>وقت نهاية الطلب</h5>
                         <span>
-                          {{ pageLoaded ? orderDetails['to_time'] : '' }}
+                          {{ pageLoaded ? orderDetails["to_time"] : "" }}
                         </span>
                       </li>
 
                       <li>
                         <h5>اجمالى الوقت</h5>
                         <span>
-                          {{ pageLoaded ? orderDetails['total_time'] : '' }}
+                          {{ pageLoaded ? orderDetails["total_time"] : "" }}
                         </span>
                       </li>
                     </ul>
@@ -729,7 +761,7 @@
                     </div>
                     <div class="tableBodyCell">{{ orderStep.user.mobile }}</div>
                     <div class="tableBodyCell">
-                      {{ orderStep.postpone ? orderStep.postpone.reason : '' }}
+                      {{ orderStep.postpone ? orderStep.postpone.reason : "" }}
                     </div>
 
                     <div class="tableBodyCell">{{ orderStep.user.name }}</div>
@@ -740,11 +772,13 @@
 
             <br /><br />
           </div>
+
           <br /><br />
           <!-- ################################### End Page Block ################################### -->
         </div>
       </div>
     </div>
+
     <!-- ################################### End Middle Page ################################### -->
     <!-- ######################### Start Postponed Popup ######################### -->
     <div id="popup" *ngIf="showPostponedPopup" [@parentAnimation]>
@@ -765,7 +799,7 @@
           <p>
             انت تقوم الان بتأجيل الطلب رقم
             <span>
-              &nbsp; {{ pageLoaded ? orderDetails['id'] : '' }} &nbsp;
+              &nbsp; {{ pageLoaded ? orderDetails["id"] : "" }} &nbsp;
             </span>
             اذا اردت الاستمرار يرجى ذكر سبب التأجيل <br />
           </p>
@@ -803,7 +837,7 @@
           <p>
             انت تقوم الان بإلغاء الطلب رقم
             <span>
-              &nbsp; {{ pageLoaded ? orderDetails['id'] : '' }} &nbsp;
+              &nbsp; {{ pageLoaded ? orderDetails["id"] : "" }} &nbsp;
             </span>
             اذا اردت الاستمرار يرجى ذكر سبب الالغاء <br />
           </p>
@@ -844,7 +878,7 @@
           <p>
             انت تقوم الان بإيقاف الطلب رقم
             <span>
-              &nbsp; {{ pageLoaded ? orderDetails['id'] : '' }} &nbsp;
+              &nbsp; {{ pageLoaded ? orderDetails["id"] : "" }} &nbsp;
             </span>
             اذا اردت الاستمرار يرجى ذكر سبب الايقاف <br />
           </p>
@@ -865,5 +899,55 @@
       </div>
     </div>
     <!-- ######################### End Postponed Popup ######################### -->
+  </div>
+
+  <div id="popup" *ngIf="showWaitingPopup" [@parentAnimation]>
+    <div id="backDrop" (click)="closeCanceledPopup()"></div>
+    <div id="popupData" style="background: #fff;" [@childAnimation]>
+      <div class="headerPopup" style="background: #fff;">
+        <button
+          (click)="showWaitingPopup = false"
+          style="font-size: 36px;
+        background: 0;
+        border: 0;
+        position: absolute;
+        top: -11px;
+        right: 0;"
+        >
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+      <div class="detailsPopup" style="text-align: center;">
+        <p style="font-size: 24px;color: #333333;">
+          طلب تحويل الطلب
+          <span>
+            &nbsp; {{ pageLoaded ? orderDetails["id"] : "" }} &nbsp;
+          </span>
+          الى المبيعات <br />
+        </p>
+        <div id="confirmationButtons2" style="margin-top: 20px;">
+          <button
+            type="button"
+            (click)="toSalesWithTech()"
+            style="padding: 20px 35px;
+          font-size: 19px;
+          background: #FF7700;
+          color: #fff; margin-left: 5px;"
+          >
+            مع فنى
+          </button>
+          <button
+            type="button"
+            (click)="toSalesWithoutTech()"
+            style="padding: 20px 35px;
+          font-size: 19px;
+          background: #757575;
+          color: #fff; margin-right: 5px;"
+          >
+            بدون فنى
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -585,11 +585,12 @@
                         margin-top: -25px;
                         margin-right: 168px;"
                             class="span-error"
-                            ><i
+                          >
+                            <!-- <i
                               style="color: #FF0000;"
                               class="fal fa-exclamation-triangle"
-                            ></i
-                          ></span>
+                            ></i> -->
+                          </span>
                           <div class="plus-images">
                             <i class="fal fa-plus-square"></i>
                           </div>
@@ -644,10 +645,11 @@
                           *ngIf="companyForm.controls.logo.value"
                           [src]="companyForm.controls.logo.value"
                           alt=""
-                          style="position: absolute;
-                        top: 394px;
-
-                        width: 189px;"
+                          style=" position: absolute;
+                          top: 394px;
+                          width: 190px;
+                          max-width: unset;
+                          max-height: 150px;"
                         />
                       </div>
                     </div>

@@ -202,6 +202,9 @@
                       (selectionChange)="selectCondition($event.value)"
                       placeholder="  الحالة "
                     >
+                      <mat-option value="">
+                        كل الحالات
+                      </mat-option>
                       <mat-option
                         *ngFor="let clientcondition of clientConditionArray"
                         [value]="clientcondition"
@@ -286,7 +289,7 @@
                     <i class="fal fa-info-circle"></i>
                     <div class="notes-client">
                       <h5>
-                        {{ element.notes ? element.notes : 'لا يوجد ملاحظات' }}
+                        {{ element.notes ? element.notes : "لا يوجد ملاحظات" }}
                       </h5>
                     </div>
                   </span>
@@ -351,7 +354,7 @@
                   {{
                     element.orders.order_date
                       ? element.orders.order_date
-                      : 'لا يوجد'
+                      : "لا يوجد"
                   }}
                 </p>
               </td>

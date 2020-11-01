@@ -46,8 +46,6 @@ export class WebSocketService {
         localStorage.setItem('active', '0')
         newRouter.navigate(['/system-off'])
         localStorage.removeItem('currentUser')
-
-
       }
 
     
@@ -60,6 +58,44 @@ export class WebSocketService {
 
 
   }
+
+  listenChannel_user(name) {
+
+    let newRouter = this.router ;
+
+    var channel = this.pusher.subscribe(name);
+    this.pusher.connection.bind("connected", this.connectedExecute());
+
+
+    channel.bind('InactiveEvent', function (data, metadata) {
+      console.log(
+        "I received", data,
+      );
+
+      if(data.active == 1)
+      {
+        localStorage.setItem('active', '1')
+        newRouter.navigate(['/']);
+
+      }
+      else if(data.active == 0)
+      {
+        localStorage.setItem('active', '0')
+        newRouter.navigate(['access/login'])
+        localStorage.removeItem('currentUser')
+      }
+
+    
+    });
+
+    Pusher.log = msg => {
+      console.log(msg);
+    };
+
+
+
+  }
+
 
 
 

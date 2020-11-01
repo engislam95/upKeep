@@ -55,6 +55,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   showNote = false;
   updatePhone = false;
   user: any = '';
+  clientStatus: any = 1;
   todayDate: Date = new Date();
   // Clients
   clientsArray: any = [];
@@ -209,6 +210,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   );
   numberOrder_id: any = '';
   changeTech = false;
+  isMap = '';
   /* -------------------;--- Constructor -------------------------- */
   constructor(
     private loaderService: LoaderService,
@@ -321,6 +323,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       console.log(params);
       this.updateMode = params.updateMode === 'true';
       this.updateButton = params.updateMode === 'true';
+      this.isMap = params.map;
       this.updatedOrderId = +params.updatedOrderId;
       if (
         (this.updateMode && this.order_update) ||
@@ -357,6 +360,14 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   xResetInputs(key) {
     if (key === 'orderDateObj') {
       this.resetInputs('date');
+    }
+    if (key === 'servicesObj') {
+      this.technical_id = '';
+      (document.getElementById('technical_id') as HTMLInputElement).value = '';
+      this.salesForm.controls.technical_id.setValue('');
+      this.technicians = [];
+      this.filterTechnical('');
+      this.xResetInputs('technical_id');
     }
     (document.getElementById(key) as HTMLInputElement).value = '';
     if (this.salesForm.controls[key]) {
@@ -734,6 +745,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         ? this.updatedOrderData.status.id
         : '',
       clientContact: this.updatedOrderData.contacted,
+      alternative_contact: this.updatedOrderData.alternative_contact,
       urgent: this.updatedOrderData.urgent,
       color: this.updatedOrderData['label-color'],
       client_id: this.updatedOrderData.client_id
@@ -808,6 +820,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
     this.technical_id = this.updatedOrderData.technician_id;
     this.filterClients(this.updatedOrderData.client);
     this.selectClient = true;
+    this.clientStatus = 1;
     this.selectMainService = true;
     this.selectDate = true;
     this.orderClient = this.updatedOrderData.client;
@@ -911,6 +924,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
   }
   changeMobile(id, i) {
     this.clientMobile_id = id;
+    this.salesForm.controls.clientAddMobile.setValue(id);
     this.showMobilePopup = false;
     this.showSuccess('تم اختيار الرقم البديل');
     this.clientMobiles.forEach(ele => {
@@ -958,6 +972,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
       console.log('Client');
       this.selectClient = true;
       console.log(value);
+      this.clientStatus = value.user.active;
       //Get Client Mobile
       this.coreService.getMethod('clients/' + value.id).subscribe(mobiles => {
         console.log(mobiles['data']['mobiles']);
@@ -1103,6 +1118,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         order_related: this.numberOrder,
         contacted: this.salesForm.value.clientContact,
         urgent: this.salesForm.value.urgent,
+        alternative_contact: this.salesForm.value.clientAddMobile,
         'label-color': this.color
       })
       .subscribe((updatedOrder: any) => {
@@ -1112,9 +1128,21 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         }
         this.endLoading();
         this.showSuccess('تم تعديل الطلب بنجاح');
-        setTimeout(() => {
-          this.router.navigate(['/sales/all-sales']);
-        }, 2500);
+        if (this.isMap != 'true') {
+          setTimeout(() => {
+            this.router.navigate(['/sales/all-sales']);
+          }, 1500);
+        }
+        else if (this.isMap == 'true') {
+          setTimeout(() => {
+            this.router.navigate(['/sales/orders-sales-map'], {
+              queryParams: {
+                date: this.salesForm.value.order_date,
+              }
+            });
+          }, 1500);
+        }
+
       },
         error => {
           if (error.error.errors) {
@@ -1179,6 +1207,7 @@ export class AddSaleComponent implements OnInit, AfterViewInit {
         order_related: this.numberOrder,
         contacted: this.salesForm.value.clientContact,
         urgent: this.salesForm.value.urgent,
+        alternative_contact: this.salesForm.value.clientAddMobile,
         'label-color': this.color
       })
       .subscribe(

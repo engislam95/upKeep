@@ -19,6 +19,7 @@ import { CoreService } from '../../../tools/shared-services/core.service';
 export class AddTechnicalComponent implements OnInit {
   imageUpdated = false;
   imageUpdated2 = false;
+  errorMaxDim = false ;
 
   modeTitle = 'إضافة فنى جديد';
   //  ################################### Start General Data ###################################
@@ -75,6 +76,9 @@ export class AddTechnicalComponent implements OnInit {
     cityObj: new FormControl(''),
 
     countriesObj: new FormControl('', Validators.required),
+    nationalityObj : new FormControl('', Validators.required ) ,
+    nationality_id : new FormControl('' ) ,
+
     change_password: new FormControl(false),
     active: new FormControl(true),
 
@@ -99,7 +103,10 @@ export class AddTechnicalComponent implements OnInit {
   //  ###################### End Select Main Services ######################
   //  ###################### Start Select Country ######################
   countriesArray = [];
+  nationalitiesArray = [] ;
   countriesFilteredOptions: Observable<any>;
+  nationalitiesFilteredOptions: Observable<any>;
+
   //  ###################### End Select Country ######################
   //  ############################ Start Update Data ############################
   updateMode = false;
@@ -126,6 +133,7 @@ export class AddTechnicalComponent implements OnInit {
   //   }
   // ]
   mainContractTpe = [] ;
+  nationality: any;
   //  ############################ End Update Data ############################
   constructor(
     //
@@ -184,7 +192,24 @@ export class AddTechnicalComponent implements OnInit {
         this.endLoading();
       });
 
-
+      this.coreService.getMethod('nationalities', {}).subscribe((nationalities: any) => {
+        this.nationalitiesArray = nationalities.data;
+        console.log(nationalities.data);
+        this.countriesLoaded = true;
+        // Start End Loading
+        this.endLoading();
+        // End End Loading
+        if (!this.updateMode) {
+          // Start Select Search For Main Services
+          this.nationalitiesFilteredOptions = this.techniciansForm
+            .get('nationalityObj')
+            .valueChanges.pipe(
+              startWith(''),
+              map(value => this.filterNationalities(value))
+            );
+          // End Select Search For Main Services
+        }
+      });
 
 
     // End Get All Services
@@ -320,6 +345,10 @@ export class AddTechnicalComponent implements OnInit {
       this.techniciansForm.patchValue({ country: '' });
       this.techniciansForm.patchValue({ country_id: '' });
     }
+    if (key === 'nationalityObj') {
+      (document.getElementById('nationalityObj') as HTMLInputElement).value = '';
+      this.techniciansForm.patchValue({ nationalityObj: '', nationality_id:'' });
+    }
     if (key === 'mobileKey') {
       (document.getElementById('mobileKey') as HTMLInputElement).value = '';
       this.techniciansForm.patchValue({ mobile: '' });
@@ -394,6 +423,15 @@ export class AddTechnicalComponent implements OnInit {
         startWith(data['city'].country),
         map(value => this.filterCountries(value))
       );
+
+      this.nationalitiesFilteredOptions = this.techniciansForm
+      .get('nationalityObj')
+      .valueChanges.pipe(
+        startWith(data['nationality']),
+        map(value => this.filterNationalities(value))
+      );
+
+      this.nationality = data['nationality'] ; 
     // End Select Search For Main Services
     this.mobileChanged(data['mobile']);
     this.techniciansForm.patchValue({
@@ -402,6 +440,8 @@ export class AddTechnicalComponent implements OnInit {
       mobile: +(this.countryPhoneKey + data['mobile']),
       mobileKey: data['mobile'],
       countriesObj: data['city'].country,
+      nationalityObj: data['nationality'] ?data['nationality'] : {},
+      nationality_id: data['nationality'] ?data['nationality']['id']:'',
 
       service_tech: data['services'].map(el => el.id),
       city_tech: data['cities'].map(el => el.id),
@@ -427,6 +467,13 @@ export class AddTechnicalComponent implements OnInit {
     this.submitted = true;
     this.checkMatched();
     this.startLoading();
+
+    this.techniciansForm.value.nationality_id = this.techniciansForm.value.nationalityObj.id;
+
+   
+  console.log(this.techniciansForm.value);
+  
+   
     this.coreService
       .updateMethod(
         'technicians/' + this.updatedTechnicalId,
@@ -508,6 +555,8 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### Start Mobile Changed #########################
   //  ######################### Start OnSubmit Form #########################
   onSubmit() {
+    console.log(this.techniciansForm.value.nationality_id = this.techniciansForm.value.nationalityObj['id']);
+    this.techniciansForm.controls.nationality_id.setValue(this.techniciansForm.value.nationalityObj['id'])
     this.techniciansForm.patchValue({
       mobile: +(this.countryPhoneKey + this.mobileNumber)
     });
@@ -597,6 +646,18 @@ export class AddTechnicalComponent implements OnInit {
       return this.countriesArray.filter(option => option.name.includes(value));
     }
   }
+
+  filterNationalities(value : any)
+  {
+    console.log(value);
+    
+    // if (typeof value === 'object') {
+    //   this.techniciansForm.patchValue({ nationalityObj: value })
+    // }
+    if (this.nationalitiesArray !== null) {
+      return this.nationalitiesArray.filter(option => option.name.includes(value));
+    }
+  }
   displayCountries(state) {
     if (state !== null) {
       return state.name;
@@ -630,12 +691,39 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### End Loading Functions #########################
   //  ######################### Start Handle Image Base64 #########################
   onUploadImage(e) {
-    this.imagePlaceHolder = e[0].name;
-    this.techniciansForm.patchValue({
-      image: e[0].base64
-    });
-    this.imageUpdated2 = false;
-    this.techniciansForm.controls.delete_image.setValue(false);
+
+    // let max_height = 162;
+    // let max_width = 124;
+
+    // console.log(e);
+    
+
+    //   var i = new Image(); 
+
+    //    i.src = e[0].base64
+
+    //    i.onload = () => {
+       
+    
+      // if (i.height > max_height && i.width > max_width) {
+      //    this.errorMaxDim = true ;
+      // }
+
+            
+        this.errorMaxDim = false ;
+        this.imagePlaceHolder = e[0].name;
+        this.techniciansForm.patchValue({
+          image: e[0].base64
+        });
+        this.imageUpdated2 = false;
+        this.techniciansForm.controls.delete_image.setValue(false);
+
+      
+    
+    
+
+
+    
   }
 
   onUploadImagePin(e) {

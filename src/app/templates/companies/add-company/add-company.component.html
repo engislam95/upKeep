@@ -22,8 +22,8 @@
         <div class="page_block">
           <div class="start-first-title">
             <div style="display: flex;">
-              <i style="font-size: 27px"  class="fal fa-building"></i>
-              <h3>{{ updateMode ? 'تعديل شركة' : 'اضافة شركة جديدة' }}</h3>
+              <img src="../../../../assets/img/visitor.svg" />
+              <h3>{{ updateMode ? "تعديل شركة" : "اضافة شركة جديدة" }}</h3>
             </div>
           </div>
           <div class="title-add-owner">
@@ -439,7 +439,7 @@
                   ><img
                     src="../../../../assets/img/dot.svg"
                     style="margin-left: 10px"
-                  />{{ updateMode ? 'تعديل كلمة السر ' : 'كلمة السر' }}
+                  />{{ updateMode ? "تعديل كلمة السر " : "كلمة السر" }}
                 </label>
                 <div *ngIf="updateMode" class="toggleContainer">
                   <mat-slide-toggle
@@ -666,6 +666,7 @@
                   إدخال صحيح
                 </div>
               </div>
+
               <div class="form_field">
                 <label>
                   <img
@@ -737,6 +738,208 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
+
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  رقم السجل التجارى</label
+                >
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="رقم السجل التجارى"
+                    formControlName="commerceNo"
+                    id="commerceNo"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('commerceNo')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (companyForm.get('commerceNo').status === 'INVALID' &&
+                      companyForm.get('commerceNo').touched) ||
+                    (submitted &&
+                      companyForm.get('commerceNo').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال رقم السجل التجارى بشكل صحيح
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="companyForm.get('commerceNo').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field location">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الحالة
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    id="userStatus"
+                    placeholder="حالة التفعيل"
+                    matInput
+                    [matAutocomplete]="userStatus"
+                    formControlName="userStatus"
+                    [value]="updateMode && company.active == 1 ? 'نشط' : ''"
+                    [value]="updateMode && company.active == 0 ? 'غير نشط' : ''"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('userStatus')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                  <mat-autocomplete
+                    #userStatus="matAutocomplete"
+                    [displayWith]="displayOptionsFunction"
+                  >
+                    <mat-option
+                      *ngFor="let option of statusFilteredOptions | async"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div
+                  class="validationState errorState"
+                  *ngIf="
+                    companyForm.get('userStatus').touched && !filteredStatusId
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الحالة
+                </div>
+                <div
+                  class="validationState successState"
+                  *ngIf="filteredStatusId"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  الموقع الالكترونى
+                </label>
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    matInput
+                    placeholder="الموقع الإلكتروني"
+                    formControlName="website"
+                    id="website"
+                  />
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('website')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (companyForm.get('website').status === 'INVALID' &&
+                      companyForm.get('website').touched) ||
+                    (submitted &&
+                      companyForm.get('website').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال الموقع الالكترونى
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="companyForm.get('website').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  تاريخ الانتهاء</label
+                >
+                <mat-form-field appearance="outline" dir="rtl">
+                  <input
+                    formControlName="orderDateObj"
+                    [min]="todayDate"
+                    (dateInput)="orderDateChanged($event)"
+                    matInput
+                    [matDatepicker]="startDate"
+                    placeholder="تاريخ الانتهاء"
+                    autocomplete="off"
+                    id="orderDateObj"
+                  />
+                  <mat-datepicker-toggle class="dateButton" [for]="startDate">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker touchUi #startDate> </mat-datepicker>
+                  <button
+                    type="button"
+                    class="resetInput"
+                    (click)="xResetInputs('orderDateObj')"
+                  >
+                    <img src="../../../../assets/img/close.svg" />
+                  </button>
+                </mat-form-field>
+                <div
+                  [@fade]
+                  class="validationState  errorState"
+                  *ngIf="
+                    (companyForm.get('orderDateObj').status === 'INVALID' &&
+                      companyForm.get('orderDateObj').touched) ||
+                    (submitted &&
+                      companyForm.get('orderDateObj').status === 'INVALID')
+                  "
+                >
+                  <i class="fas fa-times"></i>
+                  برجاء إدخال تاريخ الانتهاء
+                </div>
+                <div
+                  [@fade]
+                  class="validationState successState"
+                  *ngIf="companyForm.get('orderDateObj').status === 'VALID'"
+                >
+                  <i class="fas fa-check"></i>
+                  إدخال صحيح
+                </div>
+              </div>
+
               <div class="form_field">
                 <label>
                   <img
@@ -813,6 +1016,44 @@
                   >
                 </div>
               </div>
+
+              <!-- صوره الماركر بتاعت الشركة -->
+              <div class="form_field">
+                <label>
+                  <img
+                    src="../../../../assets/img/dot.svg"
+                    style="margin-left: 10px"
+                  />
+                  تحميل صوره موقع الشركة</label
+                >
+                <div id="uploadImageContainer">
+                  <input
+                    type="file"
+                    alife-file-to-base64
+                    (onFileChanged)="onUploadImagePin($event)"
+                    accept="image/x-png,image/jpeg,image/jpg"
+                    class="uploadImageInput"
+                    id="pinImageInput"
+                    formControlName="pinImageInput"
+                  />
+                  <button
+                    style="left: 1px;
+                    top: 50%;
+                    z-index: 5;
+                    font-size: 12px;
+                    background: #4A4A4A;
+                    color: #fff;
+                    padding: 12px;
+                    padding-left: 30px;
+                    padding-right: 30px;"
+                    type="button"
+                    class="resetInput"
+                  >
+                    اختيار الصورة
+                  </button>
+                </div>
+              </div>
+
               <div class="form_field">
                 <label>
                   <img
@@ -848,51 +1089,48 @@
                   </button>
                 </div>
               </div>
+
+              <!-- pin image action  -->
               <div class="form_field">
-                <label>
-                  <img
-                    src="../../../../assets/img/dot.svg"
-                    style="margin-left: 10px"
-                  />
-                  الموقع الالكترونى
-                </label>
-                <mat-form-field appearance="outline" dir="rtl">
-                  <input
-                    matInput
-                    placeholder="الموقع الإلكتروني"
-                    formControlName="website"
-                    id="website"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('website')"
-                  >
-                    <img src="../../../../assets/img/close.svg" />
-                  </button>
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (companyForm.get('website').status === 'INVALID' &&
-                      companyForm.get('website').touched) ||
-                    (submitted &&
-                      companyForm.get('website').status === 'INVALID')
-                  "
+                <img
+                  *ngIf="companyForm.controls.pinImage.value"
+                  src="{{ companyForm.controls.pinImage.value }}"
+                  width="100px"
+                  height="100px"
+                  alt="user-image"
+                />
+                <img
+                  *ngIf="company.pinImage && updateMode"
+                  src="{{ company.pinImage }}"
+                  width="100px"
+                  height="100px"
+                  alt="user-image"
+                />
+                <button
+                  type="button"
+                  class="resetInput"
+                  *ngIf="companyForm.controls.pinImage.value"
+                  (click)="xResetInputs('pinImageInput')"
+                  style="position: relative;
+                  left: -30px;
+                  top: -80px;"
                 >
-                  <i class="fas fa-times"></i>
-                  برجاء إدخال الموقع الالكترونى
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="companyForm.get('website').status === 'VALID'"
+                  <img src="../../../../assets/img/close.svg" />
+                </button>
+                <button
+                  type="button"
+                  class="resetInput"
+                  *ngIf="company.pinImage"
+                  (click)="deleteIMGPin()"
+                  style="position: relative;
+                left: -30px;
+                top: -80px;"
                 >
-                  <i class="fas fa-check"></i>
-                  إدخال صحيح
-                </div>
+                  <img src="../../../../assets/img/close.svg" />
+                </button>
               </div>
+
+              <!-- logo image action -->
               <div class="form_field">
                 <img
                   *ngIf="companyForm.controls.image.value"
@@ -931,158 +1169,7 @@
                   <img src="../../../../assets/img/close.svg" />
                 </button>
               </div>
-              <div class="form_field location">
-                <label>
-                  <img
-                    src="../../../../assets/img/dot.svg"
-                    style="margin-left: 10px"
-                  />
-                  الحالة
-                </label>
-                <mat-form-field appearance="outline" dir="rtl">
-                  <input
-                    matInput
-                    id="userStatus"
-                    placeholder="حالة التفعيل"
-                    matInput
-                    [matAutocomplete]="userStatus"
-                    formControlName="userStatus"
-                    [value]="updateMode && company.active == 1 ? 'نشط' : ''"
-                    [value]="updateMode && company.active == 0 ? 'غير نشط' : ''"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('userStatus')"
-                  >
-                    <img src="../../../../assets/img/close.svg" />
-                  </button>
-                  <mat-autocomplete
-                    #userStatus="matAutocomplete"
-                    [displayWith]="displayOptionsFunction"
-                  >
-                    <mat-option
-                      *ngFor="let option of statusFilteredOptions | async"
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-                <div
-                  class="validationState errorState"
-                  *ngIf="
-                    companyForm.get('userStatus').touched && !filteredStatusId
-                  "
-                >
-                  <i class="fas fa-times"></i>
-                  برجاء إدخال الحالة
-                </div>
-                <div
-                  class="validationState successState"
-                  *ngIf="filteredStatusId"
-                >
-                  <i class="fas fa-check"></i>
-                  إدخال صحيح
-                </div>
-              </div>
-              <div class="form_field">
-                <label>
-                  <img
-                    src="../../../../assets/img/dot.svg"
-                    style="margin-left: 10px"
-                  />
-                  تاريخ الانتهاء</label
-                >
-                <mat-form-field appearance="outline" dir="rtl">
-                  <input
-                    formControlName="orderDateObj"
-                    [min]="todayDate"
-                    (dateInput)="orderDateChanged($event)"
-                    matInput
-                    [matDatepicker]="startDate"
-                    placeholder="تاريخ الانتهاء"
-                    autocomplete="off"
-                    id="orderDateObj"
-                  />
-                  <mat-datepicker-toggle class="dateButton" [for]="startDate">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker touchUi #startDate> </mat-datepicker>
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('orderDateObj')"
-                  >
-                    <img src="../../../../assets/img/close.svg" />
-                  </button>
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (companyForm.get('orderDateObj').status === 'INVALID' &&
-                      companyForm.get('orderDateObj').touched) ||
-                    (submitted &&
-                      companyForm.get('orderDateObj').status === 'INVALID')
-                  "
-                >
-                  <i class="fas fa-times"></i>
-                  برجاء إدخال تاريخ الانتهاء
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="companyForm.get('orderDateObj').status === 'VALID'"
-                >
-                  <i class="fas fa-check"></i>
-                  إدخال صحيح
-                </div>
-              </div>
-              <div class="form_field">
-                <label>
-                  <img
-                    src="../../../../assets/img/dot.svg"
-                    style="margin-left: 10px"
-                  />
-                  رقم السجل التجارى</label
-                >
-                <mat-form-field appearance="outline" dir="rtl">
-                  <input
-                    matInput
-                    placeholder="رقم السجل التجارى"
-                    formControlName="commerceNo"
-                    id="commerceNo"
-                  />
-                  <button
-                    type="button"
-                    class="resetInput"
-                    (click)="xResetInputs('commerceNo')"
-                  >
-                    <img src="../../../../assets/img/close.svg" />
-                  </button>
-                </mat-form-field>
-                <div
-                  [@fade]
-                  class="validationState  errorState"
-                  *ngIf="
-                    (companyForm.get('commerceNo').status === 'INVALID' &&
-                      companyForm.get('commerceNo').touched) ||
-                    (submitted &&
-                      companyForm.get('commerceNo').status === 'INVALID')
-                  "
-                >
-                  <i class="fas fa-times"></i>
-                  برجاء إدخال رقم السجل التجارى بشكل صحيح
-                </div>
-                <div
-                  [@fade]
-                  class="validationState successState"
-                  *ngIf="companyForm.get('commerceNo').status === 'VALID'"
-                >
-                  <i class="fas fa-check"></i>
-                  إدخال صحيح
-                </div>
-              </div>
+
               <div class="">
                 <div class="">
                   <mat-checkbox (change)="acceptance($event)" [checked]="accept"

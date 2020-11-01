@@ -14,6 +14,8 @@ import { HeaderOwnerComponent } from './header-owner/header-owner.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { MultiselectFilterComponent } from './multiselect-filter/multiselect-filter.component';
 import { MapComponent } from './map/map.component';
+import {DatePipe} from '@angular/common';
+
 /* -------------------- Angular Material ----------------------- */
 import {
   MatProgressBarModule,
@@ -83,6 +85,6 @@ import { ColorPickerModule } from 'primeng/colorpicker';
       libraries: ['geometry', 'places']
     })
   ],
-  providers: [LoaderService, ResponseStateService]
+  providers: [LoaderService, ResponseStateService,DatePipe]
 })
 export class SharedComponentsModule {}
