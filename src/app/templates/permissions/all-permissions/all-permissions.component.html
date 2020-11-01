@@ -122,7 +122,7 @@
                   <mat-form-field
                     dir="rtl"
                     appearance="outline"
-                    *ngIf="moduleArray.length"
+                    *ngIf="moduleArray.length && allow "
                   >
                     <mat-select
                       placeholder="اختر اسم الفرع"
@@ -137,6 +137,24 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
+                  <!-- <mat-form-field
+                  dir="rtl"
+                  appearance="outline"
+                  *ngIf="!moduleArray.length"
+                >
+                  <mat-select
+                    [placeholder]="اختر اسم الفرع"
+                    formControlName="modules"
+                    (selectionChange)="changeModule($event.value)"
+                    disabled
+                  >
+                    <mat-option
+                      [value]="roleName"
+                    >
+                     {{roleName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
                 </div>
                 <!-- <div class="form_input" id="NameFillterInputStyle">
                 <mat-form-field dir="rtl" appearance="outline">
@@ -272,7 +290,7 @@
                   style="width: 196px; padding: 0px; margin-top: 10px; line-height: 39px;
                   padding-right: 2px; margin-top: 32px;"
                   (click)="getPermissions()"
-                  *ngIf="moduleArray.length && !updateMode"
+                  *ngIf="moduleArray.length && !updateMode && allow"
                   [disabled]="showModule || privilegesArray.length < 2"
                 >
                   <div class="addIconF">
@@ -310,11 +328,16 @@
             class="countPerPage"
             style="margin-left: -8px ; margin-top: -47px;"
           >
-            <select name="" class="selectPerpage">
-              <option>
-                10
-              </option>
-            </select>
+          <select
+          name=""
+          id=""
+          (change)="setCountPerPage($event.target.value)"
+          class="selectPerpage"
+        >
+          <option *ngFor="let option of countPerPage" [value]="option">
+            {{ option   }}
+          </option>
+        </select>
           </div>
           <table
             style="margin-top: 20px;"
