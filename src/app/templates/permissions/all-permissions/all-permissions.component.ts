@@ -10,15 +10,19 @@ import { popup } from '../../../tools/shared_animations/popup';
 import { fromEvent, Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-all-users',
   templateUrl: './all-permissions.component.html',
   styleUrls: ['./all-permissions.component.scss'],
   animations: [popup]
 })
+
 export class AllPermissionsComponent implements OnInit {
   /* ----------------------------- Variables --------------------------- */
   pageLoaded: boolean = false;
+  countPerPage = [];
+  bigArr = []
   currentUser;
   responseState: any = '';
   responseData: any = '';
@@ -67,6 +71,9 @@ export class AllPermissionsComponent implements OnInit {
   updatedRow: any = '';
   updatedIndex: any = '';
   updateModuleSelect: any = {};
+  roleName:any = '';
+  notLoaded = true ;
+  allow = false ;
   /* --------------------- Filter Form ------------------------- */
   filterForm = new FormGroup({
     // userRole: new FormControl(),
@@ -82,8 +89,10 @@ export class AllPermissionsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    
     this.route.queryParams.subscribe(roleID => {
       console.log(roleID);
+      this.roleName = roleID.roleName;
       this.filteredRoleId = roleID.roleID;
       this.coreService.getMethod('role/show/' + roleID.roleID).subscribe(role => {
         this.role = role;
@@ -105,6 +114,12 @@ export class AllPermissionsComponent implements OnInit {
           }
           if (this.moduleArray.length < 1) {
             this.moduleArray = []
+            this.allow = false
+
+          }
+          if (this.moduleArray.length > 1) {
+            this.allow = true
+
           }
           console.log(this.moduleArray);
           this.tableArray = arr;
@@ -115,6 +130,7 @@ export class AllPermissionsComponent implements OnInit {
           }
           console.log(this.tableArray.privileges);
           this.dataSource = new MatTableDataSource(this.tableArray);
+          this.bigArr = this.tableArray
         });
       })
     })
@@ -129,9 +145,17 @@ export class AllPermissionsComponent implements OnInit {
         console.log(err);
       })
   }
+
   /* ------------------- Oninit --------------------- */
   ngOnInit() {
-    this.startLoading();
+
+    // setTimeout(() => {
+    //   this.notLoaded = false ;
+    //   }, 1000);
+      this.startLoading()
+    this.pageCountOptions();
+    
+  
     /* ------------------ Get Roles ---------------------- */
     // this.coreService.getMethod('role/all', {}).subscribe(roles => {
     //   this.rolesArray = roles;
@@ -188,6 +212,29 @@ export class AllPermissionsComponent implements OnInit {
     //       map(value => this.filterUsersUserRole(value))
     //     );
     // }, 1000);
+  }
+
+
+  setCountPerPage(option) {
+    console.log(option);
+    console.log(this.dataSource);
+    this.dataSource = new MatTableDataSource(this.bigArr);
+    
+    let newArr = this.dataSource['data'].slice(0 , option)
+    this.dataSource = new MatTableDataSource(newArr);
+
+
+    
+    
+    this.startLoading();
+    this.pageId = 1;
+    this.endLoading();
+  }
+
+  pageCountOptions() {
+    for (let option = 6; option >= 1; option -= 1) {
+      this.countPerPage.push(option);
+    }
   }
   /* ------------------------ Change Module -------------------------- */
   changeModule(event) {
@@ -398,11 +445,13 @@ export class AllPermissionsComponent implements OnInit {
   /* --------------------- Start Loading ------------------------ */
   startLoading() {
     this.pageLoaded = false;
+  
     this.loaderService.startLoading();
   }
   /* --------------------- End Loading ------------------------ */
   endLoading() {
     this.pageLoaded = true;
+    
     this.loaderService.endLoading();
   }
   /* -------------------- Show Error Message --------------------- */

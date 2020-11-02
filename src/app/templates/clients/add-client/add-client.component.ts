@@ -23,6 +23,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 })
 export class AddClientComponent implements OnInit {
   /* ---------------------- Variables ------------------------ */
+  hide = true;
   modeTitle: any = 'إضافة عميل';
   responseState: any = '';
   responseData: any = '';
