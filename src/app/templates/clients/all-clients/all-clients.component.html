@@ -1,4 +1,8 @@
-  <div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="printCase">
+<div
+  class="main_page form-taxs-mng cliend-edit-neww"
+  id="listPage"
+  *ngIf="printCase"
+>
   <app-alerts></app-alerts>
   <!-- ################################### Start Side Menu ################################### -->
   <app-side-menu></app-side-menu>
@@ -27,13 +31,13 @@
           <i class="fal fa-user-plus"></i> إضافة عميل جديد
         </button>
       </div>
-      <h4 style="    margin-bottom: 27px; font-size: 14px; color: #464646;">
-        <a style="color: #464646;" matBadgePosition="after" routerLink="/home"
+      <h4 style="margin-bottom: 27px; font-size: 14px; color: #464646">
+        <a style="color: #464646" matBadgePosition="after" routerLink="/home"
           >الصفحة الرئيسية
         </a>
         <
         <a
-          style="color: #464646;"
+          style="color: #464646"
           matBadgePosition="after"
           routerLink="/clients/all-clients"
         >
@@ -55,7 +59,7 @@
               <form [formGroup]="filterForm" class="filter_form">
                 <!-- Start Form field -->
                 <div
-                  style="    width: 29%;"
+                  style="width: 29%"
                   class="form_input"
                   id="smallFillterInputStyle"
                 >
@@ -202,9 +206,7 @@
                       (selectionChange)="selectCondition($event.value)"
                       placeholder="  الحالة "
                     >
-                      <mat-option value="">
-                        كل الحالات
-                      </mat-option>
+                      <mat-option value=""> كل الحالات </mat-option>
                       <mat-option
                         *ngFor="let clientcondition of clientConditionArray"
                         [value]="clientcondition"
@@ -244,7 +246,7 @@
           </div>
           <!-- Start Table -->
 
-          <div class="countPerPage" style="margin-left:30px">
+          <div class="countPerPage" style="margin-left: 30px">
             <select
               name=""
               id=""
@@ -258,179 +260,165 @@
           </div>
 
           <div class="print">
+            <button
+              mat-raised-button
+              (click)="showExcel()"
+              style="border: none; background: none"
+              matTooltipPosition="above"
+              matTooltip="ملف اكسل"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-file-excel"
+                style="
+                  font-size: 25px;
+                  text-align: center;
+                  color: #086314;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button>
 
-          <button mat-raised-button
-          (click)="showExcel()"
-            style="border: none;  background: none;"
-            matTooltipPosition="above"
-            matTooltip="ملف اكسل"
-            aria-label="Button that displays a tooltip when focused or hovered over">
+            <!-- <button
+              mat-raised-button
+              (click)="showPrint()"
+              style="border: none; background: none"
+              matTooltip=" طباعة"
+              matTooltipPosition="above"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-shredder"
+                style="
+                  font-weight: 300;
+                  font-size: 25px;
+                  text-align: center;
+                  color: #de2369;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button> -->
 
-            <i class="fas fa-file-excel" style="
-            font-size: 25px;
-            text-align: center;
-            color: #086314;
-            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-            "></i>
-
-          </button>
-
-
-          <button mat-raised-button
-          (click)="showPrint()"
-            style="border: none; background: none; "
-            matTooltip=" طباعة"
-          matTooltipPosition="above"
-            aria-label="Button that displays a tooltip when focused or hovered over">
-
-            <i class="fas fa-shredder" style="
-            font-weight: 300;
-            font-size: 25px;
-            text-align: center;
-            color: #de2369;
-            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-            "></i>
-
-          </button>
-
-          <button mat-raised-button
-          (click)="showPdf()"
-            style="border: none;  background: none;"
-            matTooltipPosition="above"
-            matTooltip=" نسخة PDF"
-            aria-label="Button that displays a tooltip when focused or hovered over">
-
-             <i class="fas fa-file-pdf" style="
-             font-size: 25px;
-             text-align: center;
-             color: #f00;
-             text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-             "></i>
-
-          </button>
-
-
+            <button
+              mat-raised-button
+              (click)="showPdf()"
+              style="border: none; background: none"
+              matTooltipPosition="above"
+              matTooltip=" نسخة PDF"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-file-pdf"
+                style="
+                  font-size: 25px;
+                  text-align: center;
+                  color: #f00;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button>
           </div>
 
+          <!-- ######################### Start add number phone Popup ######################### -->
+          <div class="popup_form_client" id="popup" *ngIf="showAddNumberPopup">
+            <div id="backDrop"></div>
+            <div class="border-popup-print">
+              <a
+                style="position: relative; right: 97%"
+                (click)="showAddNumberPopup = false"
+                ><i class="fas fa-times-circle"></i>
+              </a>
 
-            <!-- ######################### Start add number phone Popup ######################### -->
-  <div class="popup_form_client " id="popup" *ngIf="showAddNumberPopup" >
-    <div id="backDrop"></div>
-      <div class="border-popup-print">
-        <a style="position: relative;
-        right: 97%;" (click)="showAddNumberPopup = false"><i class="fas fa-times-circle"></i> </a>
+              <span class="example-list-section">
+                <div style="display: flex">
+                  <div style="width: 30%; margin-left: 39%">
+                    <mat-checkbox
+                      *ngFor="let subtask of Task.subtasks"
+                      [(ngModel)]="subtask.completed"
+                      (change)="getFilter($event.checked, subtask.name)"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                  </div>
+                  <div style="width: 30%">
+                    <mat-checkbox
+                      *ngFor="let subtask of Taskt.subtasks"
+                      [(ngModel)]="subtask.completed"
+                      (change)="getFilter($event.checked, subtask.name)"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </span>
 
-        <span class="example-list-section">
-          <div style="display: flex;">
-            <div style="width: 30%;
-            margin-left: 39%;" >
-              <mat-checkbox *ngFor="let subtask of Task.subtasks" [(ngModel)]="subtask.completed" (change)="getFilter($event.checked,subtask.name)"
-
-                            >
-                {{subtask.name}}
-              </mat-checkbox>
-            </div>
-              <div style="width: 30%;" >
-              <mat-checkbox *ngFor="let subtask of Taskt.subtasks" [(ngModel)]="subtask.completed" (change)="getFilter($event.checked,subtask.name)"
-                            >
-                {{subtask.name}}
-              </mat-checkbox>
+              <!-- <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="justPrint"
+                (click)="filterPrint()"
+              >
+                طباعة
+              </button> -->
+              <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="excel"
+                (click)="ExportTOExcel()"
+              >
+                ملف اكسل
+              </button>
+              <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="pdf"
+                (click)="filterPrint()"
+              >
+                طباعة
+              </button>
             </div>
           </div>
-        </span>
-
-
-
-        <button
-        style="
-           margin: 0 20px;
-    color: black;
-    width: 60px;
-    position: relative;
-    top: -29px;
-    right: 65%;
-    height: 40px;
-    width: 121px;
-    height: 32px;
-    background: #f6a811;
-    border: 1px solid #707070;"
-        type="button"
-    *ngIf="justPrint"
-
-        (click)="
-         filterPrint()
-        "
-      >
-      طباعة
-      </button>
-      <button
-      style="
-         margin: 0 20px;
-  color: black;
-  width: 60px;
-  position: relative;
-  top: -29px;
-  right: 65%;
-  height: 40px;
-  width: 121px;
-  height: 32px;
-  background: #f6a811;
-  border: 1px solid #707070;"
-      type="button"
-      *ngIf="excel"
-      (click)="
-      ExportTOExcel()
-      "
-    >
-    ملف اكسل
-    </button>
-    <button
-    style="
-       margin: 0 20px;
-color: black;
-width: 60px;
-position: relative;
-top: -29px;
-right: 65%;
-height: 40px;
-width: 121px;
-height: 32px;
-background: #f6a811;
-border: 1px solid #707070;"
-    type="button"
-    *ngIf="pdf"
-    (click)="
-     filterPrintPDF()
-    "
-  >
-  طباعة
-  </button>
-
-     </div>
-
-  </div>
-  <!-- ######################### End add number phone Popup ######################### -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <!-- ######################### End add number phone Popup ######################### -->
 
           <table
             width="100%"
-            style="padding:2%; padding-top: 0;"
+            style="padding: 2%; padding-top: 0"
             dir="rtl"
             mat-table
             [dataSource]="dataSource"
@@ -448,13 +436,13 @@ border: 1px solid #707070;"
             <!-- Client Name -->
 
             <ng-container matColumnDef="client_name">
-              <th style="text-align: right;" mat-header-cell *matHeaderCellDef>
+              <th style="text-align: right" mat-header-cell *matHeaderCellDef>
                 إسم العميل
               </th>
               <div class="notes-client">
                 <h5>ملاحظات</h5>
               </div>
-              <td style="text-align: right;" mat-cell *matCellDef="let element">
+              <td style="text-align: right" mat-cell *matCellDef="let element">
                 <p>
                   {{ element.user.name }}
                   <span class="details">
@@ -711,15 +699,17 @@ border: 1px solid #707070;"
                   <i class="fas fa-caret-right"></i>
                 </button>
               </li>
-              <li style="margin: 10px; text-align: center; line-height: 31px;">
+              <li style="margin: 10px; text-align: center; line-height: 31px">
                 <div class="numberPagination">
                   <!-- {{ current_page }} -->
                   <input
-                    style="background: #fff;
-               border: 1px solid rgba(112, 112, 112, 0.38);
-               width: 42px;
-               height: 31px;
-               text-align: center;"
+                    style="
+                      background: #fff;
+                      border: 1px solid rgba(112, 112, 112, 0.38);
+                      width: 42px;
+                      height: 31px;
+                      text-align: center;
+                    "
                     type="text"
                     type="number"
                     min="1"
@@ -739,7 +729,7 @@ border: 1px solid #707070;"
                   <i class="fas fa-caret-left"></i>
                 </button>
               </li>
-              <li style="margin: 15px 10px; box-shadow: none;">
+              <li style="margin: 15px 10px; box-shadow: none">
                 <div class="pageNum">
                   من
                   <span>{{ totalPage }}</span>
@@ -772,50 +762,79 @@ border: 1px solid #707070;"
   <!-- ######################### End Delete Popup ######################### -->
 </div>
 
-  <div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="!printCase">
+<div
+  class="main_page form-taxs-mng cliend-edit-neww"
+  id="listPage"
+  *ngIf="!printCase"
+>
   <div class="page_body_main">
     <!-- ################################### Start Page Block ################################### -->
     <div class="page_block">
+      <div>
+        <div style="background: #fff; padding: 40px">
+          <img [src]="user.company_logo" alt="" style="margin-bottom: 20px" />
+          <h4>تقرير العملاء</h4>
+          <div style="display: flex; align-items: center; margin-top: 50px">
+            <p>مجموع البيانات المطلوبة في التقارير</p>
+            <span style="margin-right: 20px">{{ dataSource2.length }}</span>
+            <p style="margin-right: 200px">تاريخ التقرير</p>
+            <span style="margin-right: 20px">{{ todayDate }}</span>
+          </div>
 
-<div>
-  <div style="background: #fff; padding: 40px;">
-    <img [src]="user.company_logo" alt="" style="margin-bottom:20px">
-<h4>تقرير العملاء</h4>
-<div style="display: flex; align-items: center; margin-top: 50px;">
+          <div #TABLE>
+            <table
+              width="100%"
+              style="padding: 20px 0"
+              dir="rtl"
+              mat-table
+              [dataSource]="dataSource2"
+              id="display_table"
+            >
+              <!-- ID -->
+              <ng-container
+                [matColumnDef]="col"
+                *ngFor="let col of displayColums2"
+              >
+                <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
+                <td mat-cell *matCellDef="let element">
+                  <p>
+                    {{
+                      col == "طريقة التعامل"
+                        ? element.client_type
+                        : col == "كود العميل"
+                        ? element.user.id
+                        : col == "اسم العميل"
+                        ? element.user.name
+                        : col == "رقم هاتف العميل"
+                        ? element.user.mobile
+                        : col == "نوع العميل"
+                        ? element.gender == 24
+                          ? "ذكر"
+                          : "انثى"
+                        : col == "الحالة"
+                        ? element.user.active == 1
+                          ? "نشط"
+                          : "غير نشط"
+                        : col == "عدد الطلبات"
+                        ? element.orders.count
+                        : col == "تاريخ التسجيل"
+                        ? element.created_at
+                        : col == "تاريخ اخر طلب"
+                        ? element.orders.order_date
+                          ? element.orders.order_date
+                          : "لا يوجد"
+                        : ""
+                    }}
+                  </p>
+                </td>
+              </ng-container>
 
-  <p>مجموع البيانات المطلوبة في التقارير</p> <span style="margin-right: 20px;">{{dataSource2.length}}</span>
-  <p style="margin-right: 200px">تاريخ التقرير </p> <span style="margin-right: 20px;">{{todayDate }}</span>
-</div>
-
-<div #TABLE>
-
-
-<table
-
-width="100%"
-style="padding:20px 0;"
-dir="rtl"
-mat-table
-[dataSource]="dataSource2"
-id="display_table"
->
-<!-- ID -->
-<ng-container [matColumnDef]="col" *ngFor="let col of displayColums2">
-  <th mat-header-cell *matHeaderCellDef>{{col}}</th>
-  <td mat-cell *matCellDef="let element">
-    <p>{{col == 'طريقة التعامل'? element.client_type: col == 'كود العميل'? element.user.id: col == 'اسم العميل'? element.user.name: col =='رقم هاتف العميل'? element.user.mobile:  col =='نوع العميل'? (element.gender == 24? 'ذكر': 'انثى'): col == 'الحالة'? (element.user.active == 1? 'نشط': 'غير نشط'):  col =='عدد الطلبات'? element.orders.count:  col =='تاريخ التسجيل'? element.created_at: col == 'تاريخ اخر طلب'? (element.orders.order_date?element.orders.order_date: 'لا يوجد'): ''}}</p>
-  </td>
-</ng-container>
-
-
-
-<tr mat-header-row *matHeaderRowDef="displayColums2"></tr>
-<tr mat-row *matRowDef="let row; columns: displayColums2"></tr>
-</table>
-</div>
-
-</div>
-</div>
-</div>
+              <tr mat-header-row *matHeaderRowDef="displayColums2"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayColums2"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
