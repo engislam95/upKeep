@@ -1,0 +1,127 @@
+<div
+  class="main_page form-taxs-mng cliend-edit-neww"
+  id="listPage"
+  *ngIf="printCase"
+>
+  <app-alerts></app-alerts>
+  <!-- ################################### Start Side Menu ################################### -->
+  <app-side-menu></app-side-menu>
+  <!-- ################################### End Side Menu ################################### -->
+  <!-- ################################### Start Middle Page ################################### -->
+  <div class="page_main_blocks middle_page">
+    <!-- ################################### Start Header ################################### -->
+    <div class="page_header">
+      <app-header></app-header>
+    </div>
+    <!-- ################################### End Header ################################### -->
+    <!-- ################################ start header client icons ############################ -->
+    <div class="page_body_title">
+      <h4><i class="fas fa-user"></i>إدارة العملاء</h4>
+      <!-- <div class="page_body_main_buttons">
+        <a routerLink="/clients/add-client">
+          إضافة عميل
+          <i class="fas fa-user-cog"></i>
+        </a>
+      </div> -->
+    </div>
+    <!-- ################################ end header client icons ############################## -->
+    <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
+      <div class="button-add-taxs">
+        <button routerLink="/clients/add-client">
+          <i class="fal fa-arrow-circle-left"></i> الرجوع الى صفحة العملاء
+        </button>
+      </div>
+      <h4 style="margin-bottom: 27px; font-size: 14px; color: #464646">
+        <a style="color: #464646" matBadgePosition="after" routerLink="/home"
+          >الصفحة الرئيسية
+        </a>
+        <
+        <a
+          style="color: #464646"
+          matBadgePosition="after"
+          routerLink="/clients/all-clients"
+        >
+          العملاء
+        </a>
+        < إضافة مجموعة عملاء
+      </h4>
+
+      <div class="page_body_main">
+        <div class="page_block">
+          <div>
+            <button class="file-excel">
+              <i class="fal fa-file-excel"></i>
+            </button>
+            <p
+              style="
+                top: 87px;
+                display: inline-block;
+                /* width: 103%; */
+                position: relative;
+                left: -91%;
+              "
+            >
+              تحميل نموذج للملف الصحيح
+            </p>
+          </div>
+          <div style="text-align: center; margin-top: 40px">
+            <h6 style="font-size: 20px; color: #259f56">تم التحميل بنجاح</h6>
+            <h6 style="font-size: 20px; color: #ff0000">
+              حدوث خطأ الرجاء التأكد من الملف
+            </h6>
+            <h6 style="font-size: 20px">
+              يتم التحميل الأن ..... برجى الانتظار
+            </h6>
+            <h6 style="font-size: 20px">10%</h6>
+            <section
+              style="
+                padding: 82px;
+                width: 50%;
+                margin: 20px auto;
+                border: 1px dotted #707070;
+                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+              "
+            >
+              <button class="download">اضغط لاختيار ملف التحميل</button>
+              <p style="margin-top: 10px">امتداد الملف المسموح هو Excel فقط</p>
+              <div style="margin: 20px 0">
+                <mat-checkbox> أوافق على تحميل البيانات الجديدة </mat-checkbox>
+              </div>
+              <button class="data">تحميل البيانات</button>
+            </section>
+          </div>
+          <div style="width: 59%; margin: 10px auto">
+            <ul>
+              <li style="margin-top: 10px; border-bottom: 1px dotted #707077">
+                <span>مجموع المدخلات في الملف </span>
+                <span
+                  style="margin-right: 20px; position: relative; left: -44px"
+                  >300</span
+                >
+              </li>
+              <li style="margin-top: 10px; border-bottom: 1px dotted #707077">
+                <span>مجموع العمليات الناجحة</span
+                ><span
+                  style="margin-right: 20px; position: relative; left: -67px"
+                  >200</span
+                >
+              </li>
+              <li style="margin-top: 10px; border-bottom: 1px dotted #707077">
+                <span>مجموع العمليات الخاطئة</span
+                ><span
+                  style="
+                    color: #ff0000;
+                    margin-right: 20px;
+                    position: relative;
+                    left: -67px;
+                  "
+                  >100</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

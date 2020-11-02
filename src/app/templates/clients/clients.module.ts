@@ -16,13 +16,15 @@ import {
 import { AddClientComponent } from './add-client/add-client.component';
 import { AllClientsComponent } from './all-clients/all-clients.component';
 import { AddNewMapComponent } from './add-new-map/add-new-map.component';
+import { ClientsGroupComponent } from './clients-group/clients-group.component';
 
 @NgModule({
   declarations: [
     ClientDetailsComponent,
     AddClientComponent,
     AllClientsComponent,
-    AddNewMapComponent
+    AddNewMapComponent,
+    ClientsGroupComponent
   ],
   imports: [
     CommonModule,
