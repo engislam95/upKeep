@@ -1,28 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import * as XLSX from "xlsx";
 
-import { CoreService } from './../../../tools/shared-services/core.service';
-import { LoaderService } from '../../../tools/shared-services/loader.service';
-import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { popup } from '../../../tools/shared_animations/popup';
-import { PaginationService } from './../../../tools/shared-services/pagination.service';
-import { fromEvent, Observable } from 'rxjs';
+import { CoreService } from "./../../../tools/shared-services/core.service";
+import { LoaderService } from "../../../tools/shared-services/loader.service";
+import { ResponseStateService } from "../../../tools/shared-services/response-state.service";
+import { popup } from "../../../tools/shared_animations/popup";
+import { PaginationService } from "./../../../tools/shared-services/pagination.service";
+import { fromEvent, Observable } from "rxjs";
 import {
   debounceTime,
   map,
   distinctUntilChanged,
-  startWith
-} from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
+  startWith,
+} from "rxjs/operators";
+import { FormGroup, FormControl } from "@angular/forms";
 
 @Component({
-  selector: 'app-all-technicians',
-  templateUrl: './all-technicians.component.html',
-  styleUrls: ['./all-technicians.component.scss'],
-  animations: [popup]
+  selector: "app-all-technicians",
+  templateUrl: "./all-technicians.component.html",
+  styleUrls: ["./all-technicians.component.scss"],
+  animations: [popup],
 })
 export class AllTechniciansComponent implements OnInit {
   //  Start Fillter Variable Data
-  filteredTechniciansData = '';
+  filteredTechniciansData = "";
   //  End Fillter Variable Data
   //  ######################### Start General Data #########################
   pageLoaded = false;
@@ -31,11 +32,31 @@ export class AllTechniciansComponent implements OnInit {
   //
   current_page;
   totalPage;
-
+  showAddNumberPopup = false;
+  statisticsRow = false;
+  todayDate = new Date().toLocaleDateString("en-US");
+  printCase = true;
+  excel = false;
+  pdf = false;
+  justPrint = false;
   deletedTechnicalName: string;
   deletedTechnicalId: number;
   showDeletePopup = false;
   //
+  @ViewChild("TABLE") TABLE: ElementRef;
+  Task = {
+    subtasks: [
+      { name: "رقم الموبايل", completed: false },
+      // { name: "الخدمات", completed: false },
+      // { name: "مدن الخدمة", completed: false },
+      { name: "البريد الإلكتروني", completed: false },
+      { name: "الحالة", completed: false },
+      { name: "رقم الفنى", completed: false },
+    ],
+  };
+  Taskt = {
+    subtasks: [{ name: "الجنسية", completed: false }],
+  };
   updatedTechnicalName: string;
   updatedTechnicalId: number;
   showUpdatePopup = false;
@@ -44,15 +65,15 @@ export class AllTechniciansComponent implements OnInit {
   showOrdercontrolst = false;
   hideme = [];
   displayedColumns = [
-    'ID',
-    'technical_name',
-    'phone',
-    'main_service',
-    'city_service',
-    'email',
-    'national',
-    'status',
-    'technicians_details'
+    "ID",
+    "technical_name",
+    "phone",
+    "main_service",
+    "city_service",
+    "email",
+    "national",
+    "status",
+    "technicians_details",
     // 'edit_technical',
     // 'delete_technical'
   ];
@@ -68,16 +89,21 @@ export class AllTechniciansComponent implements OnInit {
     filterName: new FormControl(),
     service: new FormControl(),
     serviceCity: new FormControl(),
-    contractType: new FormControl()
+    contractType: new FormControl(),
   });
 
-  statusArray = [{ name: 'مفعل', id: 1 }, { name: 'غير مفعل', id: 0 }];
+  statusArray = [
+    { name: "مفعل", id: 1 },
+    { name: "غير مفعل", id: 0 },
+  ];
   statusFilteredOptions: Observable<any>;
-  filteredStatusId: any = '';
+  filteredStatusId: any = "";
 
   ServiceArray = [];
   filteredServiceArray = [];
-
+  filterArray: any = [];
+  displayColums2 = [];
+  dataSource2 = [];
   CityArray = [];
   filteredCityArray = [];
   mainContractTpe = [];
@@ -86,8 +112,8 @@ export class AllTechniciansComponent implements OnInit {
   technician_all: boolean = false;
   technician_update: boolean = false;
   technician_delete: boolean = false;
-  user: any = '';
-  total: any = '';
+  user: any = "";
+  total: any = "";
   technicians: any = [];
   filteredContractId;
   //  ###################### End Select Status ######################
@@ -98,22 +124,22 @@ export class AllTechniciansComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem("currentUser"));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
-      this.technicians.map(ele => {
+      this.technicians.map((ele) => {
         switch (ele) {
-          case 'add':
+          case "add":
             this.technician_add = true;
             break;
-          case 'show':
+          case "show":
             this.technician_all = true;
             break;
-          case 'update':
+          case "update":
             this.technician_update = true;
             break;
-          case 'delete':
+          case "delete":
             this.technician_delete = true;
             break;
         }
@@ -140,9 +166,8 @@ export class AllTechniciansComponent implements OnInit {
     this.getAllServicesCities();
 
     this.coreService
-      .getMethod('lookup/contract-types', {})
+      .getMethod("lookup/contract-types", {})
       .subscribe((contracts: any) => {
-
         console.log(contracts);
         this.mainContractTpe = contracts.data;
         this.mainServicesLoaded = true;
@@ -150,14 +175,12 @@ export class AllTechniciansComponent implements OnInit {
         this.endLoading();
       });
 
-
-
     // End Get All Technicians
 
     //  ############################ Start Filters ############################
     // Filter Name
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
+    const filterName = document.getElementById("filterName");
+    const filterNameListner = fromEvent(filterName, "keyup");
     filterNameListner
       .pipe(
         map((event: any) => event.target.value),
@@ -175,12 +198,11 @@ export class AllTechniciansComponent implements OnInit {
     // Start Select Search For Status Types
 
     this.statusFilteredOptions = this.filterForm
-      .get('techniciansStatusObj')
+      .get("techniciansStatusObj")
       .valueChanges.pipe(
-        startWith(''),
-        map(value => this.filterTechniciansStatus(value))
+        startWith(""),
+        map((value) => this.filterTechniciansStatus(value))
       );
-
 
     // End Select Search For Status Types
 
@@ -218,30 +240,27 @@ export class AllTechniciansComponent implements OnInit {
   filterTechniciansStatus(value: any) {
     console.log(value);
 
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       this.filteredStatusId = value.id;
       this.pageId = 1;
       this.getAllTechnicians(this.pageId);
     }
-    if (value === '') {
+    if (value === "") {
       console.log(this.statusArray);
 
-      this.filteredStatusId = '';
+      this.filteredStatusId = "";
       this.pageId = 1;
       this.getAllTechnicians(this.pageId);
     }
 
-    return this.statusArray.filter(option => option.name.includes(value));
+    return this.statusArray.filter((option) => option.name.includes(value));
   }
 
   filterTechniciansService(services, value) {
-
     // services.openedChange.subscribe(opened => {
     //   return opened
 
     services.close();
-
-
 
     console.log(value);
     if (value.length > 0) {
@@ -286,7 +305,7 @@ export class AllTechniciansComponent implements OnInit {
 
   getAllServices() {
     this.coreService
-      .getMethod('services/active', {})
+      .getMethod("services/active", {})
       .subscribe((getServices: any) => {
         console.log(getServices);
         this.ServiceArray = getServices.data;
@@ -296,7 +315,7 @@ export class AllTechniciansComponent implements OnInit {
   //  get technical service cities
 
   getAllServicesCities() {
-    this.coreService.getMethod('cities').subscribe((getCities: any) => {
+    this.coreService.getMethod("cities").subscribe((getCities: any) => {
       console.log(getCities);
       this.CityArray = getCities.data;
     });
@@ -312,24 +331,21 @@ export class AllTechniciansComponent implements OnInit {
   //  ######################### End display Options For Select #########################
   //  ############################# Start X Reset Inputs #############################
   xResetInputs(key) {
-    if (key === 'filterName') {
+    if (key === "filterName") {
       this.filterForm.patchValue({
-        filteredTechniciansData: '',
-        filterName: ''
+        filteredTechniciansData: "",
+        filterName: "",
       });
-      this.filteredTechniciansData = '';
-    } else if (key === 'techniciansStatusObj') {
-      this.filteredStatusId = '',
+      this.filteredTechniciansData = "";
+    } else if (key === "techniciansStatusObj") {
+      (this.filteredStatusId = ""),
         this.filterForm.patchValue({
-          techniciansStatusObj: ''
+          techniciansStatusObj: "",
         });
-
-    }
-    else if (key == 'contractType') {
-
-      this.filteredContractId = ''
+    } else if (key == "contractType") {
+      this.filteredContractId = "";
       this.filterForm.patchValue({
-        contractType: ''
+        contractType: "",
       });
     }
     this.pageId = 1;
@@ -343,12 +359,12 @@ export class AllTechniciansComponent implements OnInit {
     console.log(this.filteredCityArray);
 
     this.coreService
-      .getMethod('technicians?page=' + pageId, {
+      .getMethod("technicians?page=" + pageId, {
         name: this.filteredTechniciansData,
         active: this.filteredStatusId,
-        contract_type: this.filteredContractId ? this.filteredContractId : '',
-        'service[]': this.filteredServiceArray,
-        'city[]': this.filteredCityArray
+        contract_type: this.filteredContractId ? this.filteredContractId : "",
+        "service[]": this.filteredServiceArray,
+        "city[]": this.filteredCityArray,
       })
       .subscribe((getTechniciansResponse: any) => {
         // Start Assign Data
@@ -425,13 +441,13 @@ export class AllTechniciansComponent implements OnInit {
     this.closePopup();
     this.startLoading();
     this.coreService
-      .deleteMethod('technicians/' + this.deletedTechnicalId)
+      .deleteMethod("technicians/" + this.deletedTechnicalId)
       .subscribe(
         () => {
           this.showSuccess();
           this.getAllTechnicians(this.pageId);
         },
-        error => {
+        (error) => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
@@ -452,7 +468,7 @@ export class AllTechniciansComponent implements OnInit {
   }
   //  ######################### End Update Technical #########################
   //  ######################### Start Check For Data Existance #########################
-  dataExistance() { }
+  dataExistance() {}
   //  ######################### End Check For Data Existance #########################
   //  ######################### Start Loading Functions #########################
   startLoading() {
@@ -467,7 +483,7 @@ export class AllTechniciansComponent implements OnInit {
   //  ######################### Start Response Messeges #########################
   showErrors(errors) {
     this.endLoading();
-    this.responseState = 'error';
+    this.responseState = "error";
     this.responseData = errors;
     this.responseStateService.responseState(
       this.responseState,
@@ -476,8 +492,8 @@ export class AllTechniciansComponent implements OnInit {
   }
   showSuccess() {
     this.endLoading();
-    this.responseState = 'success';
-    this.responseData = 'تم حذف الفني بنجاح';
+    this.responseState = "success";
+    this.responseData = "تم حذف الفني بنجاح";
     this.responseStateService.responseState(
       this.responseState,
       this.responseData
@@ -490,5 +506,93 @@ export class AllTechniciansComponent implements OnInit {
   prevPage(pageNum) {
     this.getAllTechnicians(+pageNum - 1);
   }
+
+  getFilter(val, name) {
+    console.log(val);
+    if (val && this.filterArray.indexOf(name) === -1) {
+      this.filterArray.push(name);
+    } else {
+      this.filterArray.splice(this.filterArray.indexOf(name), 1);
+    }
+    this.displayColums2 = this.filterArray;
+  }
+
+  filterPrint() {
+    this.excel = false;
+    this.pdf = false;
+
+    this.startLoading();
+    this.coreService
+      .getMethod("technicians", {
+        name: this.filteredTechniciansData,
+        active: this.filteredStatusId,
+        contract_type: this.filteredContractId ? this.filteredContractId : "",
+        "service[]": this.filteredServiceArray,
+        "city[]": this.filteredCityArray,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.data.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+
+        setTimeout(() => {
+          window.print();
+        }, 2000);
+      });
+  }
+
+  ExportTOExcel() {
+    this.justPrint = false;
+    this.pdf = false;
+    this.startLoading();
+    this.coreService
+      .getMethod("technicians", {
+        name: this.filteredTechniciansData,
+        active: this.filteredStatusId,
+        contract_type: this.filteredContractId ? this.filteredContractId : "",
+        "service[]": this.filteredServiceArray,
+        "city[]": this.filteredCityArray,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.data.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+      });
+    setTimeout(() => {
+      console.log(this.TABLE);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+        this.TABLE.nativeElement
+      );
+
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "Technicians.xlsx");
+    }, 4000);
+  }
+
+  showExcel() {
+    this.showAddNumberPopup = true;
+    this.excel = true;
+    this.pdf = false;
+    this.justPrint = false;
+  }
+  showPrint() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = false;
+    this.justPrint = true;
+  }
+
+  showPdf() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = true;
+    this.justPrint = false;
+  }
+
   //  ######################### End Response Messeges #########################
 }

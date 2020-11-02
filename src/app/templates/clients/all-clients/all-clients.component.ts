@@ -1,27 +1,25 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { CoreService } from './../../../tools/shared-services/core.service';
-import { LoaderService } from '../../../tools/shared-services/loader.service';
-import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { popup } from '../../../tools/shared_animations/popup';
-import { PaginationService } from './../../../tools/shared-services/pagination.service';
-import { fromEvent } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
-import * as XLSX from 'xlsx';
-
+import { CoreService } from "./../../../tools/shared-services/core.service";
+import { LoaderService } from "../../../tools/shared-services/loader.service";
+import { ResponseStateService } from "../../../tools/shared-services/response-state.service";
+import { popup } from "../../../tools/shared_animations/popup";
+import { PaginationService } from "./../../../tools/shared-services/pagination.service";
+import { fromEvent } from "rxjs";
+import { map, debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { FormGroup, FormControl } from "@angular/forms";
+import * as XLSX from "xlsx";
 
 @Component({
-  selector: 'app-all-clients',
-  templateUrl: './all-clients.component.html',
-  styleUrls: ['./all-clients.component.scss'],
-  animations: [popup]
+  selector: "app-all-clients",
+  templateUrl: "./all-clients.component.html",
+  styleUrls: ["./all-clients.component.scss"],
+  animations: [popup],
 })
 export class AllClientsComponent implements OnInit {
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
-  @ViewChild('TABLE') TABLE: ElementRef;
 
   todayDate = new Date().toLocaleDateString("en-US");
   showOrdercontrolst = false;
@@ -31,11 +29,11 @@ export class AllClientsComponent implements OnInit {
   responseData;
   countPerPage = [];
   totalSize;
-  printCase = true; 
+  printCase = true;
 
-  excel = false ;
-  pdf = false ; 
-  justPrint = false ;
+  excel = false;
+  pdf = false;
+  justPrint = false;
   //
   deletedClientName: string;
   deletedClientId: number;
@@ -45,46 +43,42 @@ export class AllClientsComponent implements OnInit {
   updatedTechnicalId: number;
   showUpdatePopup = false;
   //  Filter Data
-  filteredClientData = '';
+  filteredClientData = "";
   clientStatusArray = [];
 
-  filteredFromDate = '';
-  filteredToDate = '';
+  filteredFromDate = "";
+  filteredToDate = "";
   clientWayArray = [];
   clientConditionArray = [];
 
-  selectedTypeId = '';
+  selectedTypeId = "";
   selectedWayId = null;
   selectedCity = null;
-  clientCondition: any = '';
-  clientStatusId = '';
+  clientCondition: any = "";
+  clientStatusId = "";
   citiesArray = [];
-  cityId = '';
+  cityId = "";
   per_page: any = 10;
-  totalPage: any = '';
-  current_page: any = '';
+  totalPage: any = "";
+  current_page: any = "";
   showAddNumberPopup = false;
   Task = {
-    
     subtasks: [
-      {name: 'كود العميل', completed: false},
-      {name: 'اسم العميل', completed: false},
-      {name: 'رقم هاتف العميل', completed: false},
-      {name: 'نوع العميل', completed: false},
-      {name: 'الحالة', completed: false},
-    
-    ]
+      { name: "كود العميل", completed: false },
+      { name: "اسم العميل", completed: false },
+      { name: "رقم هاتف العميل", completed: false },
+      { name: "نوع العميل", completed: false },
+      { name: "الحالة", completed: false },
+    ],
   };
 
   Taskt = {
-   
     subtasks: [
-      {name: 'طريقة التعامل', completed: false},
-      {name: 'عدد الطلبات', completed: false},
-      {name: 'تاريخ التسجيل', completed: false},
-      {name: 'تاريخ اخر طلب', completed: false},
-    
-    ]
+      { name: "طريقة التعامل", completed: false },
+      { name: "عدد الطلبات", completed: false },
+      { name: "تاريخ التسجيل", completed: false },
+      { name: "تاريخ اخر طلب", completed: false },
+    ],
   };
 
   //  Filter Data
@@ -93,12 +87,12 @@ export class AllClientsComponent implements OnInit {
   // ────────────────────────────────────────── END GENERAL DATA ─────
   //
 
-  filterArray:any = [];
+  filterArray: any = [];
 
   filterForm = new FormGroup({
     filterName: new FormControl(),
     startDateFilter: new FormControl(),
-    endDateFilter: new FormControl()
+    endDateFilter: new FormControl(),
   });
   //
   // ─── START TABLE DATA ─────────────────────────────────────────────────────────────────
@@ -106,30 +100,31 @@ export class AllClientsComponent implements OnInit {
 
   displayedColumns = [
     //
-    'ID',
-    'client_name',
-    'phone',
+    "ID",
+    "client_name",
+    "phone",
     // 'edit_order',
-    'kind_client',
-    'handling_way',
-    'order_number',
-    'date_registration',
-    'date_last_request',
-    'status',
-    'clients_details'
+    "kind_client",
+    "handling_way",
+    "order_number",
+    "date_registration",
+    "date_last_request",
+    "status",
+    "clients_details",
     // 'delete_order'
   ];
   displayColums2 = [];
-  dataSource = [];
   dataSource2 = [];
+  dataSource = [];
   pagesNumbers = [];
   pageId = 1; // number
   firstPage; // any
   lastPage;
-  user:any = '';
+  user: any = "";
   //
   // ─────────────────────────────────────────────────────────────── END TABLE DATA ─────
   //
+  @ViewChild("TABLE") TABLE: ElementRef;
 
   constructor(
     //
@@ -138,7 +133,7 @@ export class AllClientsComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = localStorage.getItem('currentUser');
+    this.user = JSON.parse(localStorage.getItem("currentUser"));
   }
 
   //
@@ -163,8 +158,8 @@ export class AllClientsComponent implements OnInit {
     //
 
     // Start Filter Name
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
+    const filterName = document.getElementById("filterName");
+    const filterNameListner = fromEvent(filterName, "keyup");
     filterNameListner
       .pipe(
         map((event: any) => event.target.value),
@@ -179,8 +174,8 @@ export class AllClientsComponent implements OnInit {
     // End Filter Name
 
     // Start Filter clint type
-    const client_type = document.getElementById('client_type');
-    const filterClientListner = fromEvent(client_type, 'keyup');
+    const client_type = document.getElementById("client_type");
+    const filterClientListner = fromEvent(client_type, "keyup");
     filterClientListner
       .pipe(
         map((event: any) => event.target.value),
@@ -203,7 +198,7 @@ export class AllClientsComponent implements OnInit {
 
   getClientTypes() {
     this.coreService
-      .getMethod('lookup/client-status')
+      .getMethod("lookup/client-status")
       .subscribe((getClientsResponse: any) => {
         console.log(getClientsResponse);
         this.clientStatusArray = getClientsResponse.data;
@@ -225,11 +220,11 @@ export class AllClientsComponent implements OnInit {
 
     let orderDateArray;
     let orderDate;
-    orderDateArray = event.targetElement.value.split('/');
+    orderDateArray = event.targetElement.value.split("/");
     orderDate =
-      orderDateArray[2] + '/' + orderDateArray[0] + '/' + orderDateArray[1];
+      orderDateArray[2] + "/" + orderDateArray[0] + "/" + orderDateArray[1];
     this.pageId = 1;
-    type === 'from'
+    type === "from"
       ? (this.filteredFromDate = orderDate)
       : (this.filteredToDate = orderDate);
     this.getAllClients(this.pageId);
@@ -237,7 +232,7 @@ export class AllClientsComponent implements OnInit {
 
   getClientWays() {
     this.coreService
-      .getMethod('lookup/client-types')
+      .getMethod("lookup/client-types")
       .subscribe((getClientsResponse: any) => {
         console.log(getClientsResponse);
         this.clientWayArray = getClientsResponse.data;
@@ -250,7 +245,7 @@ export class AllClientsComponent implements OnInit {
   }
 
   getCities() {
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    this.coreService.getMethod("cities", {}).subscribe((cities: any) => {
       this.endLoading();
       console.log(cities);
       this.citiesArray = cities.data;
@@ -259,7 +254,7 @@ export class AllClientsComponent implements OnInit {
   }
 
   getConditions() {
-    this.clientConditionArray = ['نشط', 'غير نشط'];
+    this.clientConditionArray = ["نشط", "غير نشط"];
     this.getAllClients(this.pageId);
   }
 
@@ -285,22 +280,22 @@ export class AllClientsComponent implements OnInit {
   //
 
   xResetInputs(key) {
-    if (key === 'filterName') {
+    if (key === "filterName") {
       this.filterForm.patchValue({
-        filteredClientData: '',
-        filterName: ''
+        filteredClientData: "",
+        filterName: "",
       });
-      this.filteredClientData = '';
+      this.filteredClientData = "";
     }
 
-    if (key == 'startDateFilter') {
-      this.filterForm.patchValue({ startDateFilter: '' });
-      this.filteredFromDate = '';
+    if (key == "startDateFilter") {
+      this.filterForm.patchValue({ startDateFilter: "" });
+      this.filteredFromDate = "";
     }
 
-    if (key == 'endDateFilter') {
-      this.filterForm.patchValue({ endDateFilter: '' });
-      this.filteredToDate = '';
+    if (key == "endDateFilter") {
+      this.filterForm.patchValue({ endDateFilter: "" });
+      this.filteredToDate = "";
     }
 
     this.getAllClients(this.pageId);
@@ -321,7 +316,7 @@ export class AllClientsComponent implements OnInit {
     // option.length > 0 ? (perPage = +option[0]) : (perPage = 10);
     this.loaderService.startLoading();
     this.coreService
-      .getMethod('clients?page=' + pageId, {
+      .getMethod("clients?page=" + pageId, {
         name: this.filteredClientData,
         client_type: this.selectedTypeId, // طريقة التعاقد
         status: this.clientStatusId, // نوع العميل
@@ -329,7 +324,7 @@ export class AllClientsComponent implements OnInit {
         registration_to: this.filteredToDate,
         active: this.clientCondition,
         city_id: this.cityId,
-        per_page: this.per_page
+        per_page: this.per_page,
       })
       .subscribe((getClientsResponse: any) => {
         // Start Assign Data
@@ -378,7 +373,7 @@ export class AllClientsComponent implements OnInit {
 
   openDeletePopup(id, name) {
     name === undefined
-      ? (this.deletedClientName = '')
+      ? (this.deletedClientName = "")
       : (this.deletedClientName = name);
 
     this.deletedClientId = id;
@@ -387,12 +382,12 @@ export class AllClientsComponent implements OnInit {
   deleteClient() {
     this.closePopup();
     this.startLoading();
-    this.coreService.deleteMethod('clients/' + this.deletedClientId).subscribe(
+    this.coreService.deleteMethod("clients/" + this.deletedClientId).subscribe(
       () => {
         this.showSuccess();
         this.getAllClients(this.pageId);
       },
-      error => {
+      (error) => {
         if (error.error.errors) {
           this.showErrors(error.error.errors);
         } else {
@@ -425,16 +420,14 @@ export class AllClientsComponent implements OnInit {
   //
   // ──────────────────────────────────────────── END PAGINATION ─────
   //
-  getFilter(val,name) {
+  getFilter(val, name) {
     console.log(val);
-    if(val &&  this.filterArray.indexOf(name) === -1) {
+    if (val && this.filterArray.indexOf(name) === -1) {
       this.filterArray.push(name);
-    }
-    else {
+    } else {
       this.filterArray.splice(this.filterArray.indexOf(name), 1);
     }
     this.displayColums2 = this.filterArray;
-  
   }
   //
   // ─── START GO PAGE ───────────────────────────────────────────────
@@ -452,12 +445,12 @@ export class AllClientsComponent implements OnInit {
   }
 
   filterPrint() {
-    this.excel = false ;
-    this.pdf = false ;
+    this.excel = false;
+    this.pdf = false;
 
     this.startLoading();
     this.coreService
-      .getMethod('clients', {
+      .getMethod("clients", {
         name: this.filteredClientData,
         client_type: this.selectedTypeId, // طريقة التعاقد
         status: this.clientStatusId, // نوع العميل
@@ -469,78 +462,68 @@ export class AllClientsComponent implements OnInit {
       .subscribe((getClientsResponse: any) => {
         this.endLoading();
         console.log(getClientsResponse);
-       this.dataSource2 = getClientsResponse.data.data;
-        this.showAddNumberPopup = false ;
-        this.printCase = false
+        this.dataSource2 = getClientsResponse.data.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
 
         setTimeout(() => {
-         window.print()
-      }, 2000);
-     
-  })
-}
-
-
-ExportTOExcel() {
-  this.justPrint = false ;
-  this.pdf = false ;
-  this.startLoading();
-  this.coreService
-    .getMethod('clients', {
-      name: this.filteredClientData,
-      client_type: this.selectedTypeId, // طريقة التعاقد
-      status: this.clientStatusId, // نوع العميل
-      registration_from: this.filteredFromDate,
-      registration_to: this.filteredToDate,
-      active: this.clientCondition,
-      city_id: this.cityId,
-    })
-    .subscribe((getClientsResponse: any) => {
-      this.endLoading();
-      console.log(getClientsResponse);
-     this.dataSource2 = getClientsResponse.data.data;
-      this.showAddNumberPopup = false ;
-      this.printCase = false
-
-   
-})
-setTimeout(() => {
-  
-  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-    this.TABLE.nativeElement
-    );
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Clients.xlsx');
-  }, 2000);
+          window.print();
+        }, 2000);
+      });
   }
 
-showExcel()
-{
+  ExportTOExcel() {
+    this.justPrint = false;
+    this.pdf = false;
+    this.startLoading();
+    this.coreService
+      .getMethod("clients", {
+        name: this.filteredClientData,
+        client_type: this.selectedTypeId, // طريقة التعاقد
+        status: this.clientStatusId, // نوع العميل
+        registration_from: this.filteredFromDate,
+        registration_to: this.filteredToDate,
+        active: this.clientCondition,
+        city_id: this.cityId,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.data.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+      });
+    setTimeout(() => {
+      console.log(this.TABLE);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+        this.TABLE.nativeElement
+      );
 
- this.showAddNumberPopup = true 
- this.excel = true 
- this.pdf = false
-  this.justPrint = false 
-}
-showPrint()
-{
-  this.showAddNumberPopup = true 
-  this.excel = false 
-  this.pdf = false
-   this.justPrint = true 
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "Clients.xlsx");
+    }, 4000);
+  }
 
-}
+  showExcel() {
+    this.showAddNumberPopup = true;
+    this.excel = true;
+    this.pdf = false;
+    this.justPrint = false;
+  }
+  showPrint() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = false;
+    this.justPrint = true;
+  }
 
-showPdf()
-{
-  this.showAddNumberPopup = true 
-  this.excel = false 
-  this.pdf = true
-   this.justPrint = false 
-
-}
-
+  showPdf() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = true;
+    this.justPrint = false;
+  }
 
   //
   // ─────────────────────────────────────────────── END GO PAGE ─────
@@ -601,7 +584,7 @@ showPdf()
 
   showErrors(errors) {
     this.endLoading();
-    this.responseState = 'error';
+    this.responseState = "error";
     this.responseData = errors;
     this.responseStateService.responseState(
       this.responseState,
@@ -610,8 +593,8 @@ showPdf()
   }
   showSuccess() {
     this.endLoading();
-    this.responseState = 'success';
-    this.responseData = 'تم حذف العميل بنجاح';
+    this.responseState = "success";
+    this.responseData = "تم حذف العميل بنجاح";
     this.responseStateService.responseState(
       this.responseState,
       this.responseData

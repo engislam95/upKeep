@@ -1,71 +1,99 @@
-import { HeadersService } from './../../../tools/shared-services/headers.service';
-import { Component, OnInit } from '@angular/core';
+import { HeadersService } from "./../../../tools/shared-services/headers.service";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
-import { CoreService } from './../../../tools/shared-services/core.service';
-import { LoaderService } from '../../../tools/shared-services/loader.service';
-import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { PaginationService } from './../../../tools/shared-services/pagination.service';
-import { fromEvent, Observable } from 'rxjs';
+import { CoreService } from "./../../../tools/shared-services/core.service";
+import { LoaderService } from "../../../tools/shared-services/loader.service";
+import { ResponseStateService } from "../../../tools/shared-services/response-state.service";
+import { PaginationService } from "./../../../tools/shared-services/pagination.service";
+import { fromEvent, Observable } from "rxjs";
 import {
   map,
   debounceTime,
   distinctUntilChanged,
-  startWith
-} from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
-import { SelectionModel } from '@angular/cdk/collections';
+  startWith,
+} from "rxjs/operators";
+import { FormGroup, FormControl } from "@angular/forms";
+import { SelectionModel } from "@angular/cdk/collections";
+import * as XLSX from "xlsx";
 
 @Component({
-  selector: 'app-all-invoices',
-  templateUrl: './all-invoices.component.html',
-  styleUrls: ['./all-invoices.component.scss']
+  selector: "app-all-invoices",
+  templateUrl: "./all-invoices.component.html",
+  styleUrls: ["./all-invoices.component.scss"],
 })
 export class AllInvoicesComponent implements OnInit {
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
-
+  showAddNumberPopup = false;
   statisticsRow = false;
-
+  todayDate = new Date().toLocaleDateString("en-US");
+  printCase = true;
+  excel = false;
+  pdf = false;
+  justPrint = false;
   pageLoaded = false;
   responseState;
   responseData;
   baseAPI;
+  Task = {
+    subtasks: [
+      { name: "نوع الفاتورة", completed: false },
+      { name: "اسم العميل", completed: false },
+      { name: "اسم الفنى	", completed: false },
+      { name: "الخدمة", completed: false },
+      { name: "الحالة", completed: false },
+    ],
+  };
+  Taskt = {
+    subtasks: [
+      { name: "رقم الفاتورة", completed: false },
+      { name: "رقم الطلب", completed: false },
+      { name: "التاريخ", completed: false },
+      { name: "اجمالى الفاتورة", completed: false },
+    ],
+  };
+  filterArray: any = [];
+  displayColums2 = [];
+  dataSource2 = [];
   //
   // ────────────────────────────────────────── END GENERAL DATA ─────
   //
+  @ViewChild("TABLE") TABLE: ElementRef;
 
   //  Start Fillter invoices Variable Data
 
-  filteredInvoicesData = '';
-  filteredInvoicesDate = '';
-  filteredInvoicesNumber = '';
-  fillteredInvicesType = '';
-  filteredFromDate = '';
-  filteredToDate = '';
-  filterOrderIdNumberData = '';
+  filteredInvoicesData = "";
+  filteredInvoicesDate = "";
+  filteredInvoicesNumber = "";
+  fillteredInvicesType = "";
+  filteredFromDate = "";
+  filteredToDate = "";
+  filterOrderIdNumberData = "";
   getInvoicesCounts: any = 0;
-  inoviceStatus: any = '';
+  inoviceStatus: any = "";
   todayFilltered = 0;
 
   //  End Fillter invoices Variable Data
   // ###################################### Table Data ######################################
   displayedColumns = [
     //
-    'ID',
-    'invoice_number',
-    'client_name',
-    'number_order',
-    'service_date',
-    'order_status',
-    'service_order',
-    'technicians',
-    'status',
-    'total_invoice',
+    "ID",
+    "invoice_number",
+    "client_name",
+    "number_order",
+    "service_date",
+    "order_status",
+    "service_order",
+    "technicians",
+    "status",
+    "total_invoice",
     // 'invoice_status',
     // 'invoice_detailss',
-    'invoice_details'
+    "invoice_details",
   ];
+  showOrdercontrolst = false;
+
   dataSource = [];
   selection = new SelectionModel<any>(true, []);
 
@@ -74,7 +102,7 @@ export class AllInvoicesComponent implements OnInit {
   firstPage; // any
   lastPage;
   hideme = [];
-  filterStatusComponentId = 'filterStatus';
+  filterStatusComponentId = "filterStatus";
   filterStatus = []; // filtered ids
   show: any = false;
   per_page = 10;
@@ -88,7 +116,7 @@ export class AllInvoicesComponent implements OnInit {
     filterOrderIdNumber: new FormControl(),
     startDateFilter: new FormControl(),
     endDateFilter: new FormControl(),
-    status: new FormControl()
+    status: new FormControl(),
     // filterListControlName: new FormControl()
   });
   invoicesFilterByService = [];
@@ -99,7 +127,7 @@ export class AllInvoicesComponent implements OnInit {
   getInvoicesCurrency;
   countPerPage = [];
   //  ###################### End Select Status ######################
-  data: any = '';
+  data: any = "";
   taxesArray = [];
   // TODO
   //
@@ -117,17 +145,17 @@ export class AllInvoicesComponent implements OnInit {
   receipt_update: boolean = false;
   receipt_delete: boolean = false;
   receipts: any = [];
-  user: any = '';
+  user: any = "";
   filterTechnicians = []; // filtered ids
   ids = [];
 
   servicesWithTechniciansList = [];
-  techniciansFilterPlaceholder = 'إسم الفني او الخدمة';
-  nestedType = 'nested';
-  filterTechniciansComponentId = 'filterTechnicians';
+  techniciansFilterPlaceholder = "إسم الفني او الخدمة";
+  nestedType = "nested";
+  filterTechniciansComponentId = "filterTechnicians";
 
-  current_page: any = '';
-  totalPage: any = '';
+  current_page: any = "";
+  totalPage: any = "";
 
   // ###################################### Table Data ######################################
   constructor(
@@ -138,26 +166,123 @@ export class AllInvoicesComponent implements OnInit {
     private headersService: HeadersService,
     private paginationService: PaginationService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem("currentUser"));
     this.receipts = this.user.modules.receipts;
     if (this.receipts) {
-      this.receipts.map(ele => {
+      this.receipts.map((ele) => {
         switch (ele) {
-          case 'create':
+          case "create":
             this.receipt_add = true;
             break;
-          case 'show':
+          case "show":
             this.receipt_all = true;
             break;
-          case 'update':
+          case "update":
             this.receipt_update = true;
             break;
-          case 'delete':
+          case "delete":
             this.receipt_delete = true;
             break;
         }
       });
     }
+  }
+
+  getFilter(val, name) {
+    console.log(val);
+    if (val && this.filterArray.indexOf(name) === -1) {
+      this.filterArray.push(name);
+    } else {
+      this.filterArray.splice(this.filterArray.indexOf(name), 1);
+    }
+    this.displayColums2 = this.filterArray;
+  }
+
+  filterPrint() {
+    this.excel = false;
+    this.pdf = false;
+
+    this.startLoading();
+    this.coreService
+      .getMethod("receipts", {
+        client: this.filteredInvoicesData,
+        order_id: this.filterOrderIdNumberData,
+        date: this.filteredInvoicesDate,
+        receipt_number: this.filteredInvoicesNumber,
+        receipt_type_id: this.fillteredInvicesType,
+        from: this.filteredFromDate,
+        to: this.filteredToDate,
+        today: this.todayFilltered,
+        "technician_ids[]": this.filterTechnicians,
+        status: this.inoviceStatus,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.data.receipts.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+
+        setTimeout(() => {
+          window.print();
+        }, 2000);
+      });
+  }
+
+  ExportTOExcel() {
+    this.justPrint = false;
+    this.pdf = false;
+    this.startLoading();
+    this.coreService
+      .getMethod("receipts", {
+        client: this.filteredInvoicesData,
+        order_id: this.filterOrderIdNumberData,
+        date: this.filteredInvoicesDate,
+        receipt_number: this.filteredInvoicesNumber,
+        receipt_type_id: this.fillteredInvicesType,
+        from: this.filteredFromDate,
+        to: this.filteredToDate,
+        today: this.todayFilltered,
+        "technician_ids[]": this.filterTechnicians,
+        status: this.inoviceStatus,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.data.receipts.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+      });
+    setTimeout(() => {
+      console.log(this.TABLE);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+        this.TABLE.nativeElement
+      );
+
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "Receipts.xlsx");
+    }, 4000);
+  }
+
+  showExcel() {
+    this.showAddNumberPopup = true;
+    this.excel = true;
+    this.pdf = false;
+    this.justPrint = false;
+  }
+  showPrint() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = false;
+    this.justPrint = true;
+  }
+
+  showPdf() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = true;
+    this.justPrint = false;
   }
 
   //
@@ -170,8 +295,8 @@ export class AllInvoicesComponent implements OnInit {
       this.show = false;
     }
     const ids = [];
-    this.selection.selected.forEach(item => {
-      const index: number = this.data.findIndex(d => d === item);
+    this.selection.selected.forEach((item) => {
+      const index: number = this.data.findIndex((d) => d === item);
       ids.push(item.id);
       this.ids = ids;
     });
@@ -181,29 +306,29 @@ export class AllInvoicesComponent implements OnInit {
   applyAction(key) {
     this.startLoading();
     this.coreService
-      .updateMethod('receipts/makeAction', {
+      .updateMethod("receipts/makeAction", {
         action: key,
-        ids: this.ids
+        ids: this.ids,
       })
       .subscribe(
-        data => {
+        (data) => {
           console.log(data);
-          if (key == 'undocancel') {
-            this.showSuccess('تم ارجاع الفاتورة');
+          if (key == "undocancel") {
+            this.showSuccess("تم ارجاع الفاتورة");
           }
-          if (key == 'cancel') {
-            this.showSuccess('تم الغاء الفاتورة');
+          if (key == "cancel") {
+            this.showSuccess("تم الغاء الفاتورة");
           }
-          if (key == 'undoconfirm') {
-            this.showSuccess('تم الغاء اعتماد الفاتورة');
+          if (key == "undoconfirm") {
+            this.showSuccess("تم الغاء اعتماد الفاتورة");
           }
-          if (key == 'confirm') {
-            this.showSuccess('تم اعتماد الفاتورة');
+          if (key == "confirm") {
+            this.showSuccess("تم اعتماد الفاتورة");
           }
           this.endLoading();
           this.getAllInvoices(this.pageId);
         },
-        error => {
+        (error) => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
@@ -223,44 +348,44 @@ export class AllInvoicesComponent implements OnInit {
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : this.dataSource.forEach(row => this.selection.select(row));
+      : this.dataSource.forEach((row) => this.selection.select(row));
   }
   /** The label for the checkbox on the passed row */
   checkboxLabel(row): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelected() ? "select" : "deselect"} all`;
     }
-    return `${
-      this.selection.isSelected(row) ? 'deselect' : 'select'
-    } row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${
+      row.position + 1
+    }`;
   }
 
   rowAction(row, key) {
     this.startLoading();
     this.coreService
-      .updateMethod('receipts/makeAction', {
+      .updateMethod("receipts/makeAction", {
         action: key,
-        ids: [row.id]
+        ids: [row.id],
       })
       .subscribe(
-        data => {
+        (data) => {
           console.log(data);
-          if (key == 'cancel') {
-            this.showSuccess('تم الغاء الفاتورة');
+          if (key == "cancel") {
+            this.showSuccess("تم الغاء الفاتورة");
           }
-          if (key == 'undocancel') {
-            this.showSuccess('تم ارجاع الفاتورة');
+          if (key == "undocancel") {
+            this.showSuccess("تم ارجاع الفاتورة");
           }
-          if (key == 'undoconfirm') {
-            this.showSuccess('تم الغاء اعتماد الفاتورة');
+          if (key == "undoconfirm") {
+            this.showSuccess("تم الغاء اعتماد الفاتورة");
           }
-          if (key == 'confirm') {
-            this.showSuccess('تم اعتماد الفاتورة');
+          if (key == "confirm") {
+            this.showSuccess("تم اعتماد الفاتورة");
           }
           this.getAllInvoices(this.pageId);
           this.endLoading();
         },
-        error => {
+        (error) => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
@@ -283,14 +408,14 @@ export class AllInvoicesComponent implements OnInit {
     this.getAllInvoices(this.pageId);
     // End Get All Clients
 
-    this.baseAPI = this.headersService.baseAPI + 'rc/';
+    this.baseAPI = this.headersService.baseAPI + "rc/";
 
     //
     // ─── START FILTER CLIENT NAME ────────────────────────────────────
     //
 
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
+    const filterName = document.getElementById("filterName");
+    const filterNameListner = fromEvent(filterName, "keyup");
     filterNameListner
       .pipe(
         map((event: any) => event.target.value),
@@ -310,8 +435,8 @@ export class AllInvoicesComponent implements OnInit {
     // ─── START FILTER INVOICES BY ORDER NUMBER────────────────────────────────────
     //
 
-    const filterOrderIdNumber = document.getElementById('filterOrderIdNumber');
-    const filterilterOrdeListner = fromEvent(filterOrderIdNumber, 'keyup');
+    const filterOrderIdNumber = document.getElementById("filterOrderIdNumber");
+    const filterilterOrdeListner = fromEvent(filterOrderIdNumber, "keyup");
     filterilterOrdeListner
       .pipe(
         map((event: any) => event.target.value),
@@ -331,8 +456,8 @@ export class AllInvoicesComponent implements OnInit {
     // ─── FILTER INVOICES FILLTER NUMBER ──────────────────────────────
     //
 
-    const InvoicesNumber = document.getElementById('InvoicesNumber');
-    const InvoicesNumberListner = fromEvent(InvoicesNumber, 'keyup');
+    const InvoicesNumber = document.getElementById("InvoicesNumber");
+    const InvoicesNumberListner = fromEvent(InvoicesNumber, "keyup");
     InvoicesNumberListner.pipe(
       map((event: any) => event.target.value),
       debounceTime(200),
@@ -383,20 +508,20 @@ export class AllInvoicesComponent implements OnInit {
   getServicesWithTechnicians() {
     let servicesWithTechnicians = [];
     this.coreService
-      .getMethod('services/active', { with_technicians: 1 })
+      .getMethod("services/active", { with_technicians: 1 })
       .subscribe((servicesWithTechniciansResponse: any) => {
         servicesWithTechnicians = servicesWithTechniciansResponse.data;
-        servicesWithTechnicians = servicesWithTechnicians.map(service => {
+        servicesWithTechnicians = servicesWithTechnicians.map((service) => {
           return (service = {
             ...service,
             checked: false,
-            technicians: service.technicians.map(technical => {
+            technicians: service.technicians.map((technical) => {
               return (technical = {
                 ...technical,
                 parentId: service.id,
-                checked: false
+                checked: false,
               });
-            })
+            }),
           });
         });
         this.servicesWithTechniciansList = servicesWithTechnicians;
@@ -409,17 +534,17 @@ export class AllInvoicesComponent implements OnInit {
   //
 
   filterInvoicesType(value: any) {
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       this.fillteredInvicesType = value.id;
       this.pageId = 1;
       this.getAllInvoices(this.pageId);
     }
-    if (value === '') {
-      this.fillteredInvicesType = '';
+    if (value === "") {
+      this.fillteredInvicesType = "";
       this.pageId = 1;
       this.getAllInvoices(this.pageId);
     }
-    return this.invoicesFilterByService.filter(option =>
+    return this.invoicesFilterByService.filter((option) =>
       option.name.includes(value)
     );
   }
@@ -472,35 +597,35 @@ export class AllInvoicesComponent implements OnInit {
   //
 
   xResetInputs(key) {
-    if (key === 'filterName') {
+    if (key === "filterName") {
       this.filterForm.patchValue({
-        filteredInvoicesData: '',
-        filterName: ''
+        filteredInvoicesData: "",
+        filterName: "",
       });
-      this.filteredInvoicesData = '';
-    } else if (key === 'InvoicesNumber') {
+      this.filteredInvoicesData = "";
+    } else if (key === "InvoicesNumber") {
       this.filterForm.patchValue({
-        filteredInvoicesNumber: '',
-        InvoicesNumber: ''
+        filteredInvoicesNumber: "",
+        InvoicesNumber: "",
       });
-      this.filteredInvoicesNumber = '';
-    } else if (key === 'statusObj') {
+      this.filteredInvoicesNumber = "";
+    } else if (key === "statusObj") {
       this.filterForm.patchValue({
-        fillteredInvicesType: '',
-        statusObj: ''
+        fillteredInvicesType: "",
+        statusObj: "",
       });
-    } else if (key === 'dateInvoices') {
+    } else if (key === "dateInvoices") {
       this.filterForm.patchValue({
-        filteredInvoicesDate: '',
-        dateInvoices: ''
+        filteredInvoicesDate: "",
+        dateInvoices: "",
       });
-      this.filteredInvoicesDate = '';
-    } else if (key === 'startDateFilter') {
-      this.filterForm.patchValue({ filteredFromDate: '', startDateFilter: '' });
-      this.filteredFromDate = '';
-    } else if (key === 'endDateFilter') {
-      this.filterForm.patchValue({ filteredToDate: '', endDateFilter: '' });
-      this.filteredToDate = '';
+      this.filteredInvoicesDate = "";
+    } else if (key === "startDateFilter") {
+      this.filterForm.patchValue({ filteredFromDate: "", startDateFilter: "" });
+      this.filteredFromDate = "";
+    } else if (key === "endDateFilter") {
+      this.filterForm.patchValue({ filteredToDate: "", endDateFilter: "" });
+      this.filteredToDate = "";
     }
 
     this.getAllInvoices(this.pageId);
@@ -519,10 +644,10 @@ export class AllInvoicesComponent implements OnInit {
     if (this.todayFilltered === 1) {
       this.filterForm.controls.startDateFilter.disable();
       this.filterForm.controls.endDateFilter.disable();
-      (document.getElementById('filterStartDate') as HTMLInputElement).value =
-        '';
-      this.filteredFromDate = '';
-      this.filteredToDate = '';
+      (document.getElementById("filterStartDate") as HTMLInputElement).value =
+        "";
+      this.filteredFromDate = "";
+      this.filteredToDate = "";
     } else {
       this.filterForm.controls.startDateFilter.enable();
       this.filterForm.controls.endDateFilter.enable();
@@ -548,7 +673,7 @@ export class AllInvoicesComponent implements OnInit {
   getAllInvoices(pageId, ...option) {
     this.loaderService.startLoading();
     this.coreService
-      .getMethod('receipts?page=' + pageId, {
+      .getMethod("receipts?page=" + pageId, {
         client: this.filteredInvoicesData,
         order_id: this.filterOrderIdNumberData,
         date: this.filteredInvoicesDate,
@@ -558,8 +683,8 @@ export class AllInvoicesComponent implements OnInit {
         from: this.filteredFromDate,
         to: this.filteredToDate,
         today: this.todayFilltered,
-        'technician_ids[]': this.filterTechnicians,
-        status: this.inoviceStatus
+        "technician_ids[]": this.filterTechnicians,
+        status: this.inoviceStatus,
       })
       .subscribe((getInvoicesResponse: any) => {
         // Start Assign Data
@@ -628,15 +753,15 @@ export class AllInvoicesComponent implements OnInit {
   invoicesDateChanged(event, type) {
     let invoicesDateArray;
     let invicesDate;
-    invoicesDateArray = event.targetElement.value.split('/');
+    invoicesDateArray = event.targetElement.value.split("/");
     invicesDate =
       invoicesDateArray[2] +
-      '/' +
+      "/" +
       invoicesDateArray[0] +
-      '/' +
+      "/" +
       invoicesDateArray[1];
     this.pageId = 1;
-    type === 'from'
+    type === "from"
       ? (this.filteredFromDate = invicesDate)
       : (this.filteredToDate = invicesDate);
     this.getAllInvoices(this.pageId);
@@ -723,7 +848,7 @@ export class AllInvoicesComponent implements OnInit {
 
   showErrors(errors) {
     this.endLoading();
-    this.responseState = 'error';
+    this.responseState = "error";
     this.responseData = errors;
     this.responseStateService.responseState(
       this.responseState,
@@ -732,7 +857,7 @@ export class AllInvoicesComponent implements OnInit {
   }
   showSuccess(text) {
     this.endLoading();
-    this.responseState = 'success';
+    this.responseState = "success";
     this.responseData = text;
     this.responseStateService.responseState(
       this.responseState,

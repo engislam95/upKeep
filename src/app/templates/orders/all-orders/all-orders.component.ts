@@ -1,25 +1,26 @@
-import { MessagingService } from './../../../tools/shared-services/messaging.service';
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CoreService } from './../../../tools/shared-services/core.service';
-import { LoaderService } from '../../../tools/shared-services/loader.service';
-import { PaginationService } from './../../../tools/shared-services/pagination.service';
-import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { popup } from '../../../tools/shared_animations/popup';
-import { fromEvent, Observable } from 'rxjs';
+import { MessagingService } from "./../../../tools/shared-services/messaging.service";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { CoreService } from "./../../../tools/shared-services/core.service";
+import { LoaderService } from "../../../tools/shared-services/loader.service";
+import { PaginationService } from "./../../../tools/shared-services/pagination.service";
+import { ResponseStateService } from "../../../tools/shared-services/response-state.service";
+import { popup } from "../../../tools/shared_animations/popup";
+import { fromEvent, Observable } from "rxjs";
 import {
   map,
   debounceTime,
   distinctUntilChanged,
-  startWith
-} from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
+  startWith,
+} from "rxjs/operators";
+import { FormGroup, FormControl } from "@angular/forms";
+import * as XLSX from "xlsx";
 
 @Component({
-  selector: 'app-all-orders',
-  templateUrl: './all-orders.component.html',
-  styleUrls: ['./all-orders.component.scss'],
-  animations: [popup]
+  selector: "app-all-orders",
+  templateUrl: "./all-orders.component.html",
+  styleUrls: ["./all-orders.component.scss"],
+  animations: [popup],
 })
 export class AllOrdersComponent implements OnInit {
   //
@@ -48,7 +49,7 @@ export class AllOrdersComponent implements OnInit {
   order_update: boolean = false;
   order_delete: boolean = false;
   orders: any = [];
-  user: any = '';
+  user: any = "";
 
   //
   // ────────────────────────────────────────── END GENERAL DATA ─────
@@ -59,15 +60,15 @@ export class AllOrdersComponent implements OnInit {
   //
 
   displayedColumns = [
-    'ID',
-    'client_name',
-    'technical_name',
-    'main_service',
-    'service_date',
-    'order_time',
-    'order_status',
-    'order_resource',
-    'order_details'
+    "ID",
+    "client_name",
+    "technical_name",
+    "main_service",
+    "service_date",
+    "order_time",
+    "order_status",
+    "order_resource",
+    "order_details",
   ];
   ordersArray = [];
   getOrderNumber;
@@ -84,12 +85,12 @@ export class AllOrdersComponent implements OnInit {
   // ─── START FILTER DATA ────────────────────────────────────────────────────────────────
   //
 
-  filteredClientData = '';
-  filteredFromDate = '';
-  filteredToDate = '';
-  filteredTechnicians = '';
-  filtersOrderNumberData = '';
-  filterOrdernumber = '';
+  filteredClientData = "";
+  filteredFromDate = "";
+  filteredToDate = "";
+  filteredTechnicians = "";
+  filtersOrderNumberData = "";
+  filterOrdernumber = "";
 
   //
   // ────────────────────────────────────────────────────────────── END FILTER DATA ─────
@@ -103,43 +104,69 @@ export class AllOrdersComponent implements OnInit {
     startDateFilter: new FormControl(),
     endDateFilter: new FormControl(),
     filterName: new FormControl(),
-    ordersNumberObj: new FormControl()
+    ordersNumberObj: new FormControl(),
   });
 
   statusArray = [];
   // todayFilltered = 0;
   todayFilltered;
 
-  clearDate = '';
+  clearDate = "";
   techniciansArray = [];
-  technicianId = '';
+  technicianId = "";
   countPerPage = [];
   i;
   statisticsRow = false;
   getOrdersResponseTotal;
+  showAddNumberPopup = false;
+  @ViewChild("TABLE") TABLE: ElementRef;
 
   //
   // ───────────────────────────────────────── END SELECT STATUS ─────
   //
+  todayDate = new Date().toLocaleDateString("en-US");
 
   //
   // ─── START MULTIPLE SELECT FILTER ─────────────────
   //
-
+  printCase = true;
+  excel = false;
+  pdf = false;
+  justPrint = false;
   servicesWithTechniciansList = [];
-  techniciansFilterPlaceholder = 'إسم الفني او الخدمة';
-  orderStatusFilterPlaceholder = 'حالة الطلب';
-  nestedType = 'nested';
-  filterTechniciansComponentId = 'filterTechnicians';
+  techniciansFilterPlaceholder = "إسم الفني او الخدمة";
+  orderStatusFilterPlaceholder = "حالة الطلب";
+  nestedType = "nested";
+  filterTechniciansComponentId = "filterTechnicians";
   filterTechnicians = []; // filtered ids
-  filterStatusComponentId = 'filterStatus';
+  filterStatusComponentId = "filterStatus";
   filterStatus = []; // filtered ids
+  displayColums2 = [];
+  dataSource2 = [];
+  Task = {
+    subtasks: [
+      { name: "كود الطلب", completed: false },
+      { name: "اسم العميل", completed: false },
+      { name: "اسم الفنى", completed: false },
+      { name: "الخدمة", completed: false },
+      { name: "الحالة", completed: false },
+    ],
+  };
 
+  Taskt = {
+    subtasks: [
+      { name: "ملاحظات", completed: false },
+      { name: "وقت التنفيذ", completed: false },
+      { name: "التاريخ", completed: false },
+      // { name: "تاريخ اخر طلب", completed: false },
+    ],
+  };
   //
   // ── END MULTIPLE SELECT FILTER ─────
   //
-  current_page: any = '';
-  totalPage: any = '';
+  current_page: any = "";
+  totalPage: any = "";
+  filterArray: any = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -150,29 +177,37 @@ export class AllOrdersComponent implements OnInit {
     private paginationService: PaginationService,
     private messagingService: MessagingService
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem("currentUser"));
     console.log(this.user);
     this.orders = this.user.modules.orders;
     if (this.orders) {
-      this.orders.map(ele => {
+      this.orders.map((ele) => {
         switch (ele) {
-          case 'create':
+          case "create":
             this.order_add = true;
             break;
-          case 'show':
+          case "show":
             this.order_all = true;
             break;
-          case 'update':
+          case "update":
             this.order_update = true;
             break;
-          case 'delete':
+          case "delete":
             this.order_delete = true;
             break;
         }
       });
     }
   }
-
+  getFilter(val, name) {
+    console.log(val);
+    if (val && this.filterArray.indexOf(name) === -1) {
+      this.filterArray.push(name);
+    } else {
+      this.filterArray.splice(this.filterArray.indexOf(name), 1);
+    }
+    this.displayColums2 = this.filterArray;
+  }
   //
   // ─── START ONINIT ────────────────────────────────────────────────
   //
@@ -185,10 +220,89 @@ export class AllOrdersComponent implements OnInit {
     this.pageCountOptions();
     this.listenOrdersUpdates();
   }
+
+  filterPrint() {
+    this.excel = false;
+    this.pdf = false;
+
+    this.startLoading();
+    this.coreService
+      .getMethod("orders", {
+        client: this.filteredClientData,
+        from: this.filteredFromDate,
+        to: this.filteredToDate,
+        today: this.todayFilltered,
+        "technician_ids[]": this.filterTechnicians,
+        "statuses[]": this.filterStatus,
+        order_id: this.filtersOrderNumberData,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.orders.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+
+        setTimeout(() => {
+          window.print();
+        }, 2000);
+      });
+  }
+
+  ExportTOExcel() {
+    this.justPrint = false;
+    this.pdf = false;
+    this.startLoading();
+    this.coreService
+      .getMethod("orders", {
+        client: this.filteredClientData,
+        from: this.filteredFromDate,
+        to: this.filteredToDate,
+        today: this.todayFilltered,
+        "technician_ids[]": this.filterTechnicians,
+        "statuses[]": this.filterStatus,
+        order_id: this.filtersOrderNumberData,
+      })
+      .subscribe((getClientsResponse: any) => {
+        this.endLoading();
+        console.log(getClientsResponse);
+        this.dataSource2 = getClientsResponse.orders.data;
+        this.showAddNumberPopup = false;
+        this.printCase = false;
+      });
+    setTimeout(() => {
+      console.log(this.TABLE);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+        this.TABLE.nativeElement
+      );
+
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "Orders.xlsx");
+    }, 4000);
+  }
   //
   // ─────────────────────────────────────────────────────────────── END ONINIT ─────
   //
+  showExcel() {
+    this.showAddNumberPopup = true;
+    this.excel = true;
+    this.pdf = false;
+    this.justPrint = false;
+  }
+  showPrint() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = false;
+    this.justPrint = true;
+  }
 
+  showPdf() {
+    this.showAddNumberPopup = true;
+    this.excel = false;
+    this.pdf = true;
+    this.justPrint = false;
+  }
   //
   // ─── START LISTEN FOR ORDERS UPDATES ────────────────────────────────────────────
   //
@@ -197,11 +311,11 @@ export class AllOrdersComponent implements OnInit {
     this.messagingService.orderUpdatedNotification.subscribe(
       (orderUpdate: any) => {
         console.log(orderUpdate);
-        if (orderUpdate.order_status === 'admin_approved') {
+        if (orderUpdate.order_status === "admin_approved") {
           this.startLoading();
           this.getAllOrders();
         } else {
-          this.ordersArray.forEach(order => {
+          this.ordersArray.forEach((order) => {
             if (order.id === +orderUpdate.id) {
               this.startLoading();
               this.getAllOrders();
@@ -233,17 +347,17 @@ export class AllOrdersComponent implements OnInit {
   //
 
   todayOrdersPage() {
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.todayOrders) {
         this.todayOrdersToggelChecked = true;
         this.todayFilltered = 1;
 
         this.filterForm.controls.startDateFilter.disable();
         this.filterForm.controls.endDateFilter.disable();
-        (document.getElementById('filterStartDate') as HTMLInputElement).value =
-          '';
-        this.filteredFromDate = '';
-        this.filteredToDate = '';
+        (document.getElementById("filterStartDate") as HTMLInputElement).value =
+          "";
+        this.filteredFromDate = "";
+        this.filteredToDate = "";
       } else if (!queryParams.todayOrders) {
         this.todayFilltered = 0;
       }
@@ -260,8 +374,8 @@ export class AllOrdersComponent implements OnInit {
   //
 
   filterClientName() {
-    const filterName = document.getElementById('filterName');
-    const filterNameListner = fromEvent(filterName, 'keyup');
+    const filterName = document.getElementById("filterName");
+    const filterNameListner = fromEvent(filterName, "keyup");
     filterNameListner
       .pipe(
         map((event: any) => event.target.value),
@@ -283,8 +397,8 @@ export class AllOrdersComponent implements OnInit {
   //
 
   filterOrderNumber() {
-    const filterOrdernumber = document.getElementById('ordersNumberObj');
-    const filterOrdernumberListner = fromEvent(filterOrdernumber, 'keyup');
+    const filterOrdernumber = document.getElementById("ordersNumberObj");
+    const filterOrdernumberListner = fromEvent(filterOrdernumber, "keyup");
     filterOrdernumberListner
       .pipe(
         map((event: any) => event.target.value),
@@ -327,20 +441,20 @@ export class AllOrdersComponent implements OnInit {
   getServicesWithTechnicians() {
     let servicesWithTechnicians = [];
     this.coreService
-      .getMethod('services/active', { with_technicians: 1 })
+      .getMethod("services/active", { with_technicians: 1 })
       .subscribe((servicesWithTechniciansResponse: any) => {
         servicesWithTechnicians = servicesWithTechniciansResponse.data;
-        servicesWithTechnicians = servicesWithTechnicians.map(service => {
+        servicesWithTechnicians = servicesWithTechnicians.map((service) => {
           return (service = {
             ...service,
             checked: false,
-            technicians: service.technicians.map(technical => {
+            technicians: service.technicians.map((technical) => {
               return (technical = {
                 ...technical,
                 parentId: service.id,
-                checked: false
+                checked: false,
               });
-            })
+            }),
           });
         });
         this.servicesWithTechniciansList = servicesWithTechnicians;
@@ -385,24 +499,24 @@ export class AllOrdersComponent implements OnInit {
   //
 
   xResetInputs(key) {
-    if (key === 'filterName') {
+    if (key === "filterName") {
       this.filterForm.patchValue({
-        filteredClientData: '',
-        filterName: ''
+        filteredClientData: "",
+        filterName: "",
       });
-      this.filteredClientData = '';
-    } else if (key === 'startDateFilter') {
-      this.filterForm.patchValue({ filteredFromDate: '', startDateFilter: '' });
-      this.filteredFromDate = '';
-    } else if (key === 'endDateFilter') {
-      this.filterForm.patchValue({ filteredToDate: '', endDateFilter: '' });
-      this.filteredToDate = '';
-    } else if (key === 'ordersNumberObj') {
+      this.filteredClientData = "";
+    } else if (key === "startDateFilter") {
+      this.filterForm.patchValue({ filteredFromDate: "", startDateFilter: "" });
+      this.filteredFromDate = "";
+    } else if (key === "endDateFilter") {
+      this.filterForm.patchValue({ filteredToDate: "", endDateFilter: "" });
+      this.filteredToDate = "";
+    } else if (key === "ordersNumberObj") {
       this.filterForm.patchValue({
-        filterOrdernumber: '',
-        ordersNumberObj: ''
+        filterOrdernumber: "",
+        ordersNumberObj: "",
       });
-      this.filtersOrderNumberData = '';
+      this.filtersOrderNumberData = "";
     }
     this.pageId = 1;
     this.getAllOrders();
@@ -443,10 +557,10 @@ export class AllOrdersComponent implements OnInit {
     if (this.todayFilltered === 1) {
       this.filterForm.controls.startDateFilter.disable();
       this.filterForm.controls.endDateFilter.disable();
-      (document.getElementById('filterStartDate') as HTMLInputElement).value =
-        '';
-      this.filteredFromDate = '';
-      this.filteredToDate = '';
+      (document.getElementById("filterStartDate") as HTMLInputElement).value =
+        "";
+      this.filteredFromDate = "";
+      this.filteredToDate = "";
     } else {
       this.filterForm.controls.startDateFilter.enable();
       this.filterForm.controls.endDateFilter.enable();
@@ -468,15 +582,15 @@ export class AllOrdersComponent implements OnInit {
     option.length > 0 ? (perPage = +option[0]) : (perPage = 10);
     this.loaderService.startLoading();
     this.coreService
-      .getMethod('orders?page=' + this.pageId, {
+      .getMethod("orders?page=" + this.pageId, {
         client: this.filteredClientData,
         from: this.filteredFromDate,
         to: this.filteredToDate,
         today: this.todayFilltered,
-        'technician_ids[]': this.filterTechnicians,
-        'statuses[]': this.filterStatus,
+        "technician_ids[]": this.filterTechnicians,
+        "statuses[]": this.filterStatus,
         order_id: this.filtersOrderNumberData,
-        per_page: perPage
+        per_page: perPage,
       })
       .subscribe((getOrdersResponse: any) => {
         // Start Assign Data
@@ -529,11 +643,11 @@ export class AllOrdersComponent implements OnInit {
 
     let orderDateArray;
     let orderDate;
-    orderDateArray = event.targetElement.value.split('/');
+    orderDateArray = event.targetElement.value.split("/");
     orderDate =
-      orderDateArray[2] + '/' + orderDateArray[0] + '/' + orderDateArray[1];
+      orderDateArray[2] + "/" + orderDateArray[0] + "/" + orderDateArray[1];
     this.pageId = 1;
-    type === 'from'
+    type === "from"
       ? (this.filteredFromDate = orderDate)
       : (this.filteredToDate = orderDate);
     this.getAllOrders();
@@ -548,7 +662,7 @@ export class AllOrdersComponent implements OnInit {
 
   getOrderStatusTypes() {
     this.coreService
-      .getMethod('lookup/order-status-types', {})
+      .getMethod("lookup/order-status-types", {})
       .subscribe((statusTypes: any) => {
         this.statusArray = statusTypes.data;
         // Start END Loading
@@ -580,10 +694,10 @@ export class AllOrdersComponent implements OnInit {
   //
 
   getInvoiceDetails() {
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
       this.invoideId = queryParams.incoiveID;
       this.coreService
-        .getMethod('receipts/' + this.invoideId, {})
+        .getMethod("receipts/" + this.invoideId, {})
         .subscribe((getInvoiceDetails: any) => {
           this.endLoading();
         });
@@ -659,12 +773,12 @@ export class AllOrdersComponent implements OnInit {
   deleteTechnical() {
     this.closePopup();
     this.startLoading();
-    this.coreService.deleteMethod('orders/' + this.deletedOrderId).subscribe(
+    this.coreService.deleteMethod("orders/" + this.deletedOrderId).subscribe(
       () => {
         this.showSuccess();
         this.getAllOrders();
       },
-      error => {
+      (error) => {
         if (error.error.errors) {
           this.showErrors(error.error.errors);
         } else {
@@ -707,7 +821,7 @@ export class AllOrdersComponent implements OnInit {
 
   showErrors(errors) {
     this.endLoading();
-    this.responseState = 'error';
+    this.responseState = "error";
     this.responseData = errors;
     this.responseStateService.responseState(
       this.responseState,
@@ -716,8 +830,8 @@ export class AllOrdersComponent implements OnInit {
   }
   showSuccess() {
     this.endLoading();
-    this.responseState = 'success';
-    this.responseData = 'تم حذف الطلب بنجاح';
+    this.responseState = "success";
+    this.responseData = "تم حذف الطلب بنجاح";
     this.responseStateService.responseState(
       this.responseState,
       this.responseData
