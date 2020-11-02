@@ -1,4 +1,4 @@
-<div class="main_page form-taxs-mng invoice-style-color ">
+<div class="main_page form-taxs-mng invoice-style-color" *ngIf="printCase">
   <app-alerts></app-alerts>
   <!-- ######################### Start Side Menu ######################### -->
   <app-side-menu></app-side-menu>
@@ -384,6 +384,161 @@
               </div>
             </div> -->
           </div>
+          <div class="print">
+            <button
+              mat-raised-button
+              (click)="showExcel()"
+              style="border: none; background: none"
+              matTooltipPosition="above"
+              matTooltip="ملف اكسل"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-file-excel"
+                style="
+                  font-size: 25px;
+                  text-align: center;
+                  color: #086314;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button>
+
+            <!-- <button
+              mat-raised-button
+              (click)="showPrint()"
+              style="border: none; background: none"
+              matTooltip=" طباعة"
+              matTooltipPosition="above"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-shredder"
+                style="
+                  font-weight: 300;
+                  font-size: 25px;
+                  text-align: center;
+                  color: #de2369;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button> -->
+
+            <button
+              mat-raised-button
+              (click)="showPdf()"
+              style="border: none; background: none"
+              matTooltipPosition="above"
+              matTooltip=" نسخة PDF"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+            >
+              <i
+                class="fas fa-file-pdf"
+                style="
+                  font-size: 25px;
+                  text-align: center;
+                  color: #f00;
+                  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              ></i>
+            </button>
+          </div>
+
+          <!-- ######################### Start add number phone Popup ######################### -->
+          <div class="popup_form_client" id="popup" *ngIf="showAddNumberPopup">
+            <div id="backDrop"></div>
+            <div class="border-popup-print">
+              <a
+                style="position: relative; right: 97%"
+                (click)="showAddNumberPopup = false"
+                ><i class="fas fa-times-circle"></i>
+              </a>
+
+              <span class="example-list-section">
+                <div style="display: flex">
+                  <div style="width: 30%; margin-left: 39%">
+                    <mat-checkbox
+                      *ngFor="let subtask of Task.subtasks"
+                      [(ngModel)]="subtask.completed"
+                      (change)="getFilter($event.checked, subtask.name)"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                  </div>
+                  <div style="width: 30%">
+                    <mat-checkbox
+                      *ngFor="let subtask of Taskt.subtasks"
+                      [(ngModel)]="subtask.completed"
+                      (change)="getFilter($event.checked, subtask.name)"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </span>
+
+              <!-- <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="justPrint"
+                (click)="filterPrint()"
+              >
+                طباعة
+              </button> -->
+              <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="excel"
+                (click)="ExportTOExcel()"
+              >
+                ملف اكسل
+              </button>
+              <button
+                style="
+                  margin: 0 20px;
+                  color: black;
+                  width: 60px;
+                  position: relative;
+                  top: -29px;
+                  right: 65%;
+                  height: 40px;
+                  width: 121px;
+                  height: 32px;
+                  background: #f6a811;
+                  border: 1px solid #707070;
+                "
+                type="button"
+                *ngIf="pdf"
+                (click)="filterPrint()"
+              >
+                طباعة
+              </button>
+            </div>
+          </div>
           <!-- start countPerPage-->
           <!-- Start Table -->
           <table
@@ -420,9 +575,7 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="invoice_number">
-              <th mat-header-cell *matHeaderCellDef>
-                رقم الفاتورة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>رقم الفاتورة</th>
               <td mat-cell *matCellDef="let element">
                 <span> {{ element.receipt_number }} </span>
               </td>
@@ -430,81 +583,67 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="client_name">
-              <th mat-header-cell *matHeaderCellDef>
-                إسم العميل
-              </th>
+              <th mat-header-cell *matHeaderCellDef>إسم العميل</th>
               <td mat-cell *matCellDef="let element">
                 {{
                   element.client !== null
                     ? element.client.user
                       ? element.client.user.name
                       : element.client.name
-                    : ''
+                    : ""
                 }}
               </td>
             </ng-container>
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="number_order">
-              <th mat-header-cell *matHeaderCellDef>
-                رقم الطلب
-              </th>
+              <th mat-header-cell *matHeaderCellDef>رقم الطلب</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.order ? element.order.id : '-' }}
+                {{ element.order ? element.order.id : "-" }}
               </td>
             </ng-container>
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="service_date">
-              <th mat-header-cell *matHeaderCellDef>
-                التاريخ
-              </th>
+              <th mat-header-cell *matHeaderCellDef>التاريخ</th>
               <td mat-cell *matCellDef="let element">
-                <span> {{ element.created_at | date: 'MM/dd/yyyy' }} </span>
+                <span> {{ element.created_at | date: "MM/dd/yyyy" }} </span>
               </td>
             </ng-container>
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="order_status">
-              <th mat-header-cell *matHeaderCellDef>
-                نوع الفاتورة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>نوع الفاتورة</th>
               <td mat-cell *matCellDef="let element">
                 {{
-                  element.receipt_type.name == 'client'
-                    ? 'عميل'
-                    : element.receipt_type.name == 'source'
-                    ? 'مصدر'
-                    : 'طلب'
+                  element.receipt_type.name == "client"
+                    ? "عميل"
+                    : element.receipt_type.name == "source"
+                    ? "مصدر"
+                    : "طلب"
                 }}
               </td>
             </ng-container>
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="service_order">
-              <th mat-header-cell *matHeaderCellDef>
-                الخدمة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>الخدمة</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.order?.service ? element.order.service.name : '' }}
+                {{ element.order?.service ? element.order.service.name : "" }}
               </td>
             </ng-container>
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="technicians">
-              <th mat-header-cell *matHeaderCellDef>
-                اسم الفنى
-              </th>
+              <th mat-header-cell *matHeaderCellDef>اسم الفنى</th>
               <td mat-cell *matCellDef="let element">
                 {{
-                  element.order?.technician ? element.order.technician.name : ''
+                  element.order?.technician ? element.order.technician.name : ""
                 }}
               </td>
             </ng-container>
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>
-                الحالة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>الحالة</th>
               <td mat-cell *matCellDef="let element">
                 <span
                   class="stautsInvoice"
@@ -544,9 +683,7 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="total_invoice">
-              <th mat-header-cell *matHeaderCellDef>
-                اجمالى الفاتورة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>اجمالى الفاتورة</th>
               <td style="direction: ltr" mat-cell *matCellDef="let element">
                 <span> {{ element.total }} {{ element.currency.symbol }} </span>
               </td>
@@ -554,9 +691,7 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="invoice_status">
-              <th mat-header-cell *matHeaderCellDef>
-                تحميل الفاتورة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>تحميل الفاتورة</th>
               <td mat-cell *matCellDef="let element">
                 <button
                   class="basic_button"
@@ -572,9 +707,7 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="invoice_detailss">
-              <th mat-header-cell *matHeaderCellDef>
-                تفاصيل / إرسال الفاتورة
-              </th>
+              <th mat-header-cell *matHeaderCellDef>تفاصيل / إرسال الفاتورة</th>
               <td mat-cell *matCellDef="let element">
                 <button
                   class="basic_button"
@@ -593,9 +726,7 @@
             <!-- Donator id -->
             <!-- Donator id -->
             <ng-container matColumnDef="invoice_details">
-              <th mat-header-cell *matHeaderCellDef>
-                التفاصيل
-              </th>
+              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
               <td
                 mat-cell
                 *matCellDef="let element"
@@ -811,15 +942,17 @@
                   <i class="fas fa-caret-right"></i>
                 </button>
               </li>
-              <li style="margin: 10px; text-align: center; line-height: 31px;">
+              <li style="margin: 10px; text-align: center; line-height: 31px">
                 <div class="numberPagination">
                   <!-- {{ current_page }} -->
                   <input
-                    style="background: #fff;
-                  border: 1px solid rgba(112, 112, 112, 0.38);
-                  width: 42px;
-                  height: 31px;
-                  text-align: center;"
+                    style="
+                      background: #fff;
+                      border: 1px solid rgba(112, 112, 112, 0.38);
+                      width: 42px;
+                      height: 31px;
+                      text-align: center;
+                    "
                     type="text"
                     type="number"
                     #pageNumber
@@ -839,7 +972,7 @@
                   <i class="fas fa-caret-left"></i>
                 </button>
               </li>
-              <li style="margin: 15px 10px; box-shadow: none;">
+              <li style="margin: 15px 10px; box-shadow: none">
                 <div class="pageNum">
                   من
                   <span>{{ totalPage }}</span>
@@ -855,4 +988,96 @@
     </div>
   </div>
   <!-- ################################### End Middle Page ################################### -->
+</div>
+<div
+  class="main_page form-taxs-mng cliend-edit-neww"
+  id="listPage"
+  *ngIf="!printCase"
+>
+  <div class="page_body_main">
+    <!-- ################################### Start Page Block ################################### -->
+    <div class="page_block">
+      <div>
+        <div style="background: #fff; padding: 40px">
+          <img [src]="user.company_logo" alt="" style="margin-bottom: 20px" />
+          <h4>تقرير العملاء</h4>
+          <div style="display: flex; align-items: center; margin-top: 50px">
+            <p>مجموع البيانات المطلوبة في التقارير</p>
+            <span style="margin-right: 20px">{{ dataSource2.length }}</span>
+            <p style="margin-right: 200px">تاريخ التقرير</p>
+            <span style="margin-right: 20px">{{ todayDate }}</span>
+          </div>
+
+          <div #TABLE>
+            <table
+              width="100%"
+              style="padding: 20px 0"
+              dir="rtl"
+              mat-table
+              [dataSource]="dataSource2"
+              id="display_table"
+            >
+              <!-- ID -->
+              <ng-container
+                [matColumnDef]="col"
+                *ngFor="let col of displayColums2"
+              >
+                <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
+                <td mat-cell *matCellDef="let element">
+                  <p>
+                    {{
+                      col == "نوع الفاتورة"
+                        ? element.receipt_client_type == "client"
+                          ? "عميل"
+                          : element.receipt_client_type == "source"
+                          ? "مصدر"
+                          : "طلب"
+                        : col == "اسم الفنى"
+                        ? element.order?.technician
+                          ? element.order.technician.name
+                          : ""
+                        : col == "اسم العميل"
+                        ? element.client.user
+                          ? element.client.user?.name
+                          : ""
+                        : col == "الخدمة"
+                        ? element.order?.service
+                          ? element.order.service.name
+                          : ""
+                        : col == "رقم الفاتورة"
+                        ? element.receipt_number
+                        : col == "الحالة"
+                        ? element.cancel_status == 1
+                          ? "تم الالغاء"
+                          : element.confirm_status == 1 &&
+                            element.cancel_status == 0
+                          ? "تم الاصدار"
+                          : element.confirm_status == 0 &&
+                            element.cancel_status == 0
+                          ? "لم تعتمد"
+                          : ""
+                        : col == "رقم الطلب"
+                        ? element.order
+                          ? element.order.id
+                          : ""
+                        : col == "تاريخ التسجيل"
+                        ? element.created_at
+                        : col == "اجمالى الفاتورة"
+                        ? element.total
+                          ? element.total + " SAR"
+                          : ""
+                        : ""
+                    }}
+                  </p>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayColums2"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayColums2"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
