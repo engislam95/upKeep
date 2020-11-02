@@ -265,7 +265,7 @@
             matTooltipPosition="above"
             matTooltip="ملف اكسل"
             aria-label="Button that displays a tooltip when focused or hovered over">
-            
+
             <i class="fas fa-file-excel" style="
             font-size: 25px;
             text-align: center;
@@ -275,7 +275,7 @@
 
           </button>
 
-            
+
           <button mat-raised-button
           (click)="showPrint()"
             style="border: none; background: none; "
@@ -325,7 +325,7 @@
             <div style="width: 30%;
             margin-left: 39%;" >
               <mat-checkbox *ngFor="let subtask of Task.subtasks" [(ngModel)]="subtask.completed" (change)="getFilter($event.checked,subtask.name)"
-                           
+
                             >
                 {{subtask.name}}
               </mat-checkbox>
@@ -779,18 +779,19 @@ border: 1px solid #707070;"
 
 <div>
   <div style="background: #fff; padding: 40px;">
-    <img [src]="user.company_logo" alt="">
+    <img [src]="user.company_logo" alt="" style="margin-bottom:20px">
 <h4>تقرير العملاء</h4>
 <div style="display: flex; align-items: center; margin-top: 50px;">
-  
+
   <p>مجموع البيانات المطلوبة في التقارير</p> <span style="margin-right: 20px;">{{dataSource2.length}}</span>
   <p style="margin-right: 200px">تاريخ التقرير </p> <span style="margin-right: 20px;">{{todayDate }}</span>
 </div>
 
+<div #TABLE>
 
 
 <table
-#TABLE #table
+
 width="100%"
 style="padding:20px 0;"
 dir="rtl"
@@ -811,6 +812,8 @@ id="display_table"
 <tr mat-header-row *matHeaderRowDef="displayColums2"></tr>
 <tr mat-row *matRowDef="let row; columns: displayColums2"></tr>
 </table>
+</div>
+
 </div>
 </div>
 </div>

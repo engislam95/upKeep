@@ -21,7 +21,6 @@ export class AllClientsComponent implements OnInit {
   //
   // ─── START GENERAL DATA ──────────────────────────────────────────
   //
-  @ViewChild('TABLE') TABLE: ElementRef;
 
   todayDate = new Date().toLocaleDateString("en-US");
   showOrdercontrolst = false;
@@ -31,10 +30,10 @@ export class AllClientsComponent implements OnInit {
   responseData;
   countPerPage = [];
   totalSize;
-  printCase = true; 
+  printCase = true;
 
   excel = false ;
-  pdf = false ; 
+  pdf = false ;
   justPrint = false ;
   //
   deletedClientName: string;
@@ -65,25 +64,25 @@ export class AllClientsComponent implements OnInit {
   current_page: any = '';
   showAddNumberPopup = false;
   Task = {
-    
+
     subtasks: [
       {name: 'كود العميل', completed: false},
       {name: 'اسم العميل', completed: false},
       {name: 'رقم هاتف العميل', completed: false},
       {name: 'نوع العميل', completed: false},
       {name: 'الحالة', completed: false},
-    
+
     ]
   };
 
   Taskt = {
-   
+
     subtasks: [
       {name: 'طريقة التعامل', completed: false},
       {name: 'عدد الطلبات', completed: false},
       {name: 'تاريخ التسجيل', completed: false},
       {name: 'تاريخ اخر طلب', completed: false},
-    
+
     ]
   };
 
@@ -119,9 +118,9 @@ export class AllClientsComponent implements OnInit {
     'clients_details'
     // 'delete_order'
   ];
-  displayColums2 = [];
+  displayColums2 = ['كود العميل'];
   dataSource = [];
-  dataSource2 = [];
+  dataSource2 = []
   pagesNumbers = [];
   pageId = 1; // number
   firstPage; // any
@@ -130,6 +129,7 @@ export class AllClientsComponent implements OnInit {
   //
   // ─────────────────────────────────────────────────────────────── END TABLE DATA ─────
   //
+  @ViewChild('TABLE') TABLE: ElementRef;
 
   constructor(
     //
@@ -138,12 +138,13 @@ export class AllClientsComponent implements OnInit {
     private coreService: CoreService,
     private paginationService: PaginationService
   ) {
-    this.user = localStorage.getItem('currentUser');
+    this.user = JSON.parse(localStorage.getItem('currentUser')) 
   }
 
   //
   // ─── START ONINIT ────────────────────────────────────────────────
   //
+
 
   ngOnInit() {
     // Start START Loading
@@ -434,7 +435,7 @@ export class AllClientsComponent implements OnInit {
       this.filterArray.splice(this.filterArray.indexOf(name), 1);
     }
     this.displayColums2 = this.filterArray;
-  
+
   }
   //
   // ─── START GO PAGE ───────────────────────────────────────────────
@@ -476,7 +477,7 @@ export class AllClientsComponent implements OnInit {
         setTimeout(() => {
          window.print()
       }, 2000);
-     
+
   })
 }
 
@@ -502,42 +503,45 @@ ExportTOExcel() {
       this.showAddNumberPopup = false ;
       this.printCase = false
 
-   
+
 })
 setTimeout(() => {
-  
+
+  console.log(this.TABLE);
   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
     this.TABLE.nativeElement
     );
+
+
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'Clients.xlsx');
-  }, 2000);
+  }, 4000);
   }
 
 showExcel()
 {
 
- this.showAddNumberPopup = true 
- this.excel = true 
+ this.showAddNumberPopup = true
+ this.excel = true
  this.pdf = false
-  this.justPrint = false 
+  this.justPrint = false
 }
 showPrint()
 {
-  this.showAddNumberPopup = true 
-  this.excel = false 
+  this.showAddNumberPopup = true
+  this.excel = false
   this.pdf = false
-   this.justPrint = true 
+   this.justPrint = true
 
 }
 
 showPdf()
 {
-  this.showAddNumberPopup = true 
-  this.excel = false 
+  this.showAddNumberPopup = true
+  this.excel = false
   this.pdf = true
-   this.justPrint = false 
+   this.justPrint = false
 
 }
 
