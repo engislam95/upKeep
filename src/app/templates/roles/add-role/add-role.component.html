@@ -1,4 +1,4 @@
-<div class="main_page" id="formPage">
+<div class="main_page form-taxs-mng" id="formPage">
   <app-alerts></app-alerts>
   <app-side-menu-mgt></app-side-menu-mgt>
   <div class="page_main_blocks middle_page">
@@ -6,8 +6,10 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
+      <span>      <i style="    font-weight: normal; font-size: 25px; color: #242a2d;" class="fal fa-cog"></i></span>
       <h3 class="fontRole">
-        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة الصلاحيات
+       إدارة
+        الصلاحيات
       </h3>
       <div class="clientDetails-name">
         <ul>
@@ -51,9 +53,10 @@
           <div
             class="button-add-taxs"
             style="position: relative;
-          left: 8px;
+          left: -13px;
           float: left;
-          top: 33px;"
+          top: 57px;
+          z-index: 999;"
           >
             <button [routerLink]="['/roles/all-roles']">
               <i class="fal fa-backward" style="font-size:  17px;"></i> الرجوع الى قائمة الصلاحيات
@@ -62,12 +65,14 @@
           <div id="add_form">
             <form (ngSubmit)="onSubmit()" [formGroup]="rolesForm">
               <div class="form_field">
-                <label class="fontRole" style="margin-bottom: 6%;"
-                  ><i class="fas fa-plus-square" style="margin:1% ; font-size:26px"></i> إضافة صلاحية جديدة
-                </label>
-                <label class="fontRole" style="font-size: 16px; margin-bottom: 3px; ">اسم الصلاحية</label>
+                <div style="display: flex;">
+                <span><i class="fas fa-plus-square" style="margin:1% ; font-size:26px"></i></span>
+                <label class="fontRole" style="margin-bottom: 6%;     margin-right: 12px; padding-top: 3px;"
+                  > إضافة صلاحية جديدة
+                </label></div>
+                <label class="fontRole" style="font-size: 16px; margin-bottom: 7px; ">اسم الصلاحية</label>
 
-                <mat-form-field appearance="outline" dir="rtl">
+                <mat-form-field style="    width: 65%;" appearance="outline" dir="rtl">
                   <input
                     formControlName="name"
                     matInput
@@ -102,10 +107,10 @@
                   <i class="fas fa-check"></i> إدخال صحيح
                 </div>
               </div>
-              <div class="form_field"></div>
+           
               <div class="form_field">
-                <label class="fontRole" style="font-size: 16px;  margin-bottom: 3px;">الملاحظات</label>
-                <mat-form-field appearance="outline" dir="rtl" >
+                <label class="fontRole" style="font-size: 16px;  margin-bottom: 7px;">الملاحظات</label>
+                <mat-form-field style="    width: 65%;" appearance="outline" dir="rtl" >
                   <textarea
                     style="height: 165px"
                     matInput
@@ -116,14 +121,14 @@
               </div>
               <div
                 class="button-add-taxs"
-                style="display: block; margin-top: 20px; left: 0; position: relative;"
+                style="display: block; margin-top: 5px; left: 0; position: relative;"
               >
                 <button
                   *ngIf="!updateMode"
                   type="submit"
                   class=""
                   [disabled]="rolesForm.invalid || submitted"
-                  style="width: 176px;"
+               
                 >
                   <i class="fas fa-plus-square" style="font-size: 17px;"></i>
                   اضافة الصلاحية

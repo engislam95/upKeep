@@ -4264,6 +4264,8 @@ $gray: #95989a;
 }
 
 //************* End Form Page ***********
+
+
 //*********** Start List Page************
 #listPage {
   .activeStatus {
@@ -6650,7 +6652,7 @@ button:disabled {
 
 
     background: #fff !important;
-    border: 1px solid #707070 !important;
+    // border: 1px solid #707070 !important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 
 
@@ -6825,7 +6827,7 @@ button:disabled {
 
 
     background: #fff !important;
-    border: 1px solid #707070 !important;
+    // border: 1px solid #707070 !important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 
 
@@ -6848,7 +6850,7 @@ button:disabled {
 
 
     background: #fff !important;
-    border: 1px solid #707070 !important;
+    // border: 1px solid #707070 !important;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 
 
@@ -6891,5 +6893,13 @@ button:disabled {
 
   .mat-select-value {
     text-align: right !important;
+  }
+}
+
+
+.rolles{
+  .table {
+    border-right: 1px dotted #58585896;
+    border-left: 1px dotted #58585896;
   }
 }

@@ -4,7 +4,7 @@
   font-size: 19px;
   text-align: right;
   color: #464646;
-  text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  // text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
 }
 
@@ -29,9 +29,47 @@
 
 }
 
+.main_block {
+
+  padding-top: 4px;
+}
+
+
+
+.main_page .page_body_title h3 {
+  color: #2a314e;
+  font-family: 'Arabic gess Light';
+  font-size: 20px;
+  /* margin-right: 31px; */
+  /* font-family: "GE SS Two"; */
+  /* font-weight: 300; */
+  font-size: 19px;
+  /* text-align: right; */
+  color: #464646;
+  /* text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); */
+  font-weight: 100 !important;
+  margin-right: 11px;
+  text-shadow: none;
+}
+
+.main_page .page_body_title {
+  padding: 30px 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.main_page .page_body_main .page_block{
+  padding: 15px 47px;
+  height: 77vh;
+}
+
 // start new style client details data
 .clientDetails-name {
   padding: 0px 50px;
+  position: absolute;
+  padding-left: 35px;
+  left: 0;
+  // left: -13px;
 
   h3 {
     font-family: 'Arabic gess light';
@@ -119,35 +157,35 @@
 
 .button-add-taxs {
   position: absolute;
-  margin-top: -40px;
-  left: 59px;
+  margin-top: -50px;
+  left: 87px;
 
   button {
-    padding-left: 19px;
+    padding-left: 30px;
     height: auto;
     background: #f6a811;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     border: none;
-
+    font-family: 'Arabic gess light';
     font-size: 14px;
-    margin-left: 9px;
+    margin-left: 5px;
 
     i {
 
       background: #242a2d;
       color: #fff;
       font-size: 25px;
-      padding: 10px;
-      padding-right: 15px;
-      padding-left: 15px;
-      margin-left: 14px;
+      padding: 2px;
+      padding-right: 8px;
+      padding-left: 13px;
+      margin-left: 20px;
       margin-right: 3px;
-
-      font-family: "Font Awesome 5 Pro";
       font-weight: 300;
       font-size: 18px;
       text-align: center;
       color: #fff;
+      padding-bottom: 11px;
+      padding-top: 10px;
       text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
 
@@ -259,7 +297,7 @@
   width: max-content;
   height: max-content;
   border: 1px;
-  background-color: #E9E9E9;
+
   border: 1px solid #B7B7B7;
   -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
@@ -354,4 +392,66 @@
   border: 1px solid rgba(112, 112, 112, 0.38);
   width: 42px;
   height: 31px
+}
+
+
+
+#showOrdercontrols {
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  border: 1px solid #d8d8d8;
+  background-color: #394247;
+  -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  margin-top: -68px;
+  margin-right: -107px;
+  border-radius: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  i {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // start toolTip in details menu controls
+
+  p {
+    font-size: 12px;
+    color: #fff;
+    border-left: none !important;
+  }
+
+
+  button {
+    margin: 0 10px;
+
+    &:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:first-child {
+      .tooltiptext {
+        right: -15px;
+      }
+    }
+
+    &:last-child {
+      .tooltiptext {
+        left: 40px;
+      }
+    }
+  }
+
+  // end toolTip in details menu controls
 }

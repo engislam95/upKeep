@@ -1,4 +1,4 @@
-<div class="main_page" id="listPage">
+<div class="main_page form-taxs-mng cliend-edit-neww rolles " id="listPage">
   <app-alerts></app-alerts>
   <app-side-menu-mgt></app-side-menu-mgt>
   <div class="page_main_blocks middle_page">
@@ -6,8 +6,9 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
+<span>      <i style="    font-weight: normal; font-size: 25px; color: #242a2d;" class="fal fa-cog"></i></span>
       <h3 class="fontRole">
-        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة
+       إدارة
         الصلاحيات
       </h3>
       <div class="clientDetails-name">
@@ -54,14 +55,14 @@
           <div class="main_block " style="padding-right:0px">
             <h3 style="margin-bottom: 2%;" class="fontRole">
               <i
-                style="font-weight: 500; margin-left: 1%; font-size:26px"
+                style="font-weight: 500; margin-left: 1%; font-size: 21px;"
                 class="fal fa-users-cog"
               ></i
               >قائمة الصلاحيات
             </h3>
             <div class="button-add-taxs">
               <button [routerLink]="['/roles/add-role']">
-                <i class="fal fa-user-cog" style="font-size: 21px"></i> إضافة
+                <i class="fal fa-user-cog" style="font-size: 18px"></i> إضافة
                 صلاحية جديدة
               </button>
             </div>
@@ -69,7 +70,7 @@
             <form
               [formGroup]="filterForm"
               class="filter_form"
-              style="margin-top: 20px ;margin-bottom: -20px;"
+              style="margin-top: 42px ;margin-bottom: -20px;"
             >
               <div class="form_input" id="NameFillterInputStyle">
                 <mat-form-field appearance="outline" dir="rtl">
@@ -118,12 +119,15 @@
                 *matCellDef="let element"
                 style="font-family: 'Roboto';  font-weight: normal;"
               >
-                {{ element.id }}
+             <p>   {{ element.id }}</p>
               </td>
             </ng-container>
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>إسم الصلاحية</th>
-              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              <td mat-cell *matCellDef="let element">
+                <p>{{ element.name }}</p>
+
+              </td>
             </ng-container>
             <ng-container matColumnDef="count">
               <th mat-header-cell *matHeaderCellDef>عدد المستخدمين</th>
@@ -132,7 +136,7 @@
                 *matCellDef="let element"
                 style="font-family: 'Roboto';  font-weight: normal;"
               >
-                {{ element.UserCount }}
+          <p>      {{ element.UserCount }}</p>
               </td>
             </ng-container>
             <ng-container matColumnDef="date">
@@ -142,17 +146,17 @@
                 *matCellDef="let element"
                 style="font-family: 'Roboto'; font-weight: normal;"
               >
-                {{ element.created_at.split(" ")[0] }}
+              <p>  {{ element.created_at.split(" ")[0] }}</p>
               </td>
             </ng-container>
-            <ng-container matColumnDef="note">
-              <th mat-header-cell *matHeaderCellDef>الملاحظات</th>
+            <ng-container  matColumnDef="note">
+              <th style="width: 39%;" mat-header-cell *matHeaderCellDef>الملاحظات</th>
               <td
                 mat-cell
                 *matCellDef="let element"
                 [innerHTML]="element.description"
                 style="font-family: 'GE SS Two';"
-              ></td>
+              > <p></p></td>
             </ng-container>
 
             <!-- <ng-container matColumnDef="edit">
@@ -211,18 +215,12 @@
                   id="showOrdercontrols"
                   *ngIf="hideme[element.id]"
                   [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
-                  style="background-color: #E9E9E9;"
+            
                 >
                   <button
                     class="basic_button"
                     type="button"
-                    style="
-                  background: transparent;
-                  border: none;
-                  font-size: 21px;
-                  cursor: pointer;
-                  color: black;
-                "
+                  
                     [routerLink]="['/permissions/all-permissions']"
                     [queryParams]="{
                       roleID: element.id,
@@ -238,7 +236,8 @@
                         style="width: 30px;"
                         alt=""
                       /> -->
-                    <span class="tooltiptext">ادارة صلاحية</span>
+                    <!-- <span class="tooltiptext">ادارة صلاحية</span> -->
+                    <p>ادارة صلاحية</p>
                   </button>
                   <!-- <button class="basic_button" type="button">
                     <a
@@ -262,40 +261,27 @@
                       updatedRoleID: element.id
                     }"
                     class="basic_button"
-                    style="
-                    background: transparent;
-                    border: none;
-                    font-size: 21px;
-                    cursor: pointer;
-                    color: #4A4A4A;
                 
-                "
                     type="button"
                   >
-                    <!-- <img src="../../../../assets/img/icons/edit.png" alt="" /> -->
+             
                     <i
                       style="padding-left: 15px; font-weight: 400;"
                       class="fal fa-file-edit"
                     ></i>
-                    <span class="tooltiptext">تعديل</span>
+                    <p >تعديل</p>
                   </button>
                   <button
                     (click)="openDeletePopup(element.id, element.name)"
                     class="basic_button"
-                    style="
-                      background: transparent;
-                      border: none;
-                      font-size: 21px;
-                      cursor: pointer;
-                      color: #4A4A4A;
                   
-                  "
                     type="button"
                   >
                     <!-- <img src="../../../../assets/img/icons/delete.png" alt="" /> -->
                     <i class="fal fa-trash-alt" style="font-weight: 400;"></i>
 
-                    <span class="tooltiptext">حذف</span>
+                    <!-- <span class="tooltiptext">حذف</span> -->
+                    <p >حذف</p> 
                   </button>
                 </div>
                 <div

@@ -20,6 +20,33 @@
   text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 }
 
+
+.main_block {
+
+  padding-top: 4px;
+}
+
+.main_page .page_body_title h3 {
+  color: #2a314e;
+  font-family: 'Arabic gess Light';
+  font-size: 20px;
+  /* margin-right: 31px; */
+  /* font-family: "GE SS Two"; */
+  /* font-weight: 300; */
+  font-size: 19px;
+  /* text-align: right; */
+  color: #464646;
+  /* text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); */
+  font-weight: 100 !important;
+  margin-right: 11px;
+  text-shadow: none;
+}
+.main_page .page_body_title {
+  padding: 30px 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+
 @media (max-width: 1399px) and (min-width: 700px) {
   .filter_form {
     #NameFillterInputStyle {
@@ -114,7 +141,7 @@
   background: #f6a811;
   color: #242a2d;
   padding: 10px;
-  border-radius: 6px;
+  // border-radius: 6px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, .16);
   margin-left: 10px;
   margin-bottom: 20px;
@@ -136,6 +163,9 @@
 
 .clientDetails-name {
   padding: 0px 50px;
+  position: absolute;
+  padding-left: 35px;
+  left: 0;
 
   h3 {
     font-family: 'Arabic gess light';
@@ -231,7 +261,7 @@
     background: #f6a811;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     border: none;
-    padding: 0 3px 3px 17px !important;
+    // padding: 0 3px 3px 17px !important;
     font-size: 14px;
     margin-left: 9px;
 
@@ -377,7 +407,7 @@
   font-weight: 300;
   font-size: 19px;
   text-align: right;
-  color: #464646;
+  // color: #464646;
   text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 
 }
@@ -460,3 +490,48 @@
 
   // end toolTip in details menu controls
 }
+
+
+.button-add-taxs {
+  position: absolute;
+  margin-top: -50px;
+  left: 87px;
+
+  button {
+    padding-left: 30px;
+    height: auto;
+    background: #f6a811;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    border: none;
+    font-family: 'Arabic gess light';
+    font-size: 14px;
+    margin-left: 5px;
+
+    i {
+
+      background: #242a2d;
+      color: #fff;
+      font-size: 25px;
+      padding: 2px;
+      padding-right: 8px;
+      padding-left: 13px;
+      margin-left: 20px;
+      margin-right: 3px;
+      font-weight: 300;
+      font-size: 18px;
+      text-align: center;
+      color: #fff;
+      padding-bottom: 11px;
+      padding-top: 10px;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+
+
+    }
+  }
+}
+
+
+
+
+

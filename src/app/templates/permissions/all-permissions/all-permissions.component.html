@@ -1,4 +1,4 @@
-<div class="main_page" id="permission">
+<div class="main_page form-taxs-mng" id="permission">
   <app-alerts></app-alerts>
   <app-side-menu-mgt></app-side-menu-mgt>
   <div class="page_main_blocks middle_page">
@@ -6,8 +6,9 @@
       <app-header></app-header>
     </div>
     <div class="page_body_title">
+      <span>      <i style="    font-weight: normal; font-size: 25px; color: #242a2d;" class="fal fa-cog"></i></span>
       <h3 class="fontRole">
-        <i style="font-weight: 500; font-size:26px" class="fal fa-cog"></i>إدارة
+       إدارة
         الصلاحيات
       </h3>
       <div class="clientDetails-name">
@@ -46,7 +47,7 @@
       <div class="page_body_main">
         <div class="page_block">
           <div class="main_block " style="padding-right: 0px;">
-            <div class="button-add-taxs" style="position:relative; left:-28px;">
+            <div class="button-add-taxs" style="position:relative; left:-28px; margin-top: 2px;">
               <button [routerLink]="['/roles/all-roles']">
                 <i class="fal fa-backward "></i>
                 <span class="fontRole" style="font-size: 16px;"
@@ -287,8 +288,12 @@
               <div class="button-add-taxs" style="margin-bottom: 0px;">
                 <button
                   class="show"
-                  style="width: 196px; padding: 0px; margin-top: 10px; line-height: 39px;
-                  padding-right: 2px; margin-top: 32px;"
+                  style="     width: 142px;
+                  padding: 0px;
+                  margin-top: 77px;
+                  margin-right: 41%;
+                  line-height: 39px;"
+    
                   (click)="getPermissions()"
                   *ngIf="moduleArray.length && !updateMode && allow"
                   [disabled]="showModule || privilegesArray.length < 2"
@@ -309,13 +314,17 @@
               >
                 <button
                   class="show"
-                  style="width: 196px; padding: 2px; margin-top: 10px; line-height: 39px;
-                  padding-right: 2px;"
+                  style="
+                 width: 142px;
+                  padding: 0px;
+                  margin-top: 77px;
+                  margin-right: 41%;
+                  line-height: 39px;"
                   (click)="updatePerm()"
                   *ngIf="updateMode"
                   [disabled]="privilegesArray.length < 2"
                 >
-                  <i class="fas fa-save" style="float: right;"></i>
+                  <i class="fas fa-save" style="float: right;     margin-left: -10px;"></i>
                   حفظ
                 </button>
               </div>
