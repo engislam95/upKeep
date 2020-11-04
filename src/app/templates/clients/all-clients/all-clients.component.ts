@@ -462,7 +462,7 @@ export class AllClientsComponent implements OnInit {
       .subscribe((getClientsResponse: any) => {
         this.endLoading();
         console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.data;
+        this.dataSource2 = getClientsResponse.data;
         this.showAddNumberPopup = false;
         this.printCase = false;
 
@@ -489,7 +489,7 @@ export class AllClientsComponent implements OnInit {
       .subscribe((getClientsResponse: any) => {
         this.endLoading();
         console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.data;
+        this.dataSource2 = getClientsResponse.data;
         this.showAddNumberPopup = false;
         this.printCase = false;
       });

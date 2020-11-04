@@ -219,7 +219,7 @@ export class AllInvoicesComponent implements OnInit {
       .subscribe((getClientsResponse: any) => {
         this.endLoading();
         console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.receipts.data;
+        this.dataSource2 = getClientsResponse.data.receipts;
         this.showAddNumberPopup = false;
         this.printCase = false;
 
@@ -249,7 +249,7 @@ export class AllInvoicesComponent implements OnInit {
       .subscribe((getClientsResponse: any) => {
         this.endLoading();
         console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.receipts.data;
+        this.dataSource2 = getClientsResponse.data.receipts;
         this.showAddNumberPopup = false;
         this.printCase = false;
       });

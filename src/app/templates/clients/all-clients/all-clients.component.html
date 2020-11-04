@@ -1,8 +1,4 @@
-<div
-  class="main_page form-taxs-mng cliend-edit-neww"
-  id="listPage"
-  *ngIf="printCase"
->
+<div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="printCase">
   <app-alerts></app-alerts>
   <!-- ################################### Start Side Menu ################################### -->
   <app-side-menu></app-side-menu>
@@ -35,254 +31,165 @@
         </button>
       </div>
       <h4 style="margin-bottom: 27px; font-size: 14px; color: #464646">
-        <a style="color: #464646" matBadgePosition="after" routerLink="/home"
-          >الصفحة الرئيسية
+        <a style="color: #464646" matBadgePosition="after" routerLink="/home">الصفحة الرئيسية
         </a>
-        <
-        <a
-          style="color: #464646"
-          matBadgePosition="after"
-          routerLink="/clients/all-clients"
-        >
+        < <a style="color: #464646" matBadgePosition="after" routerLink="/clients/all-clients">
           العملاء
-        </a>
-        < قائمة العملاء
-      </h4>
+          </a>
+          < قائمة العملاء </h4>
 
-      <div class="page_body_main">
-        <!-- ################################### Start Page Block ################################### -->
-        <div class="page_block">
-          <!-- Start filters -->
+            <div class="page_body_main">
+              <!-- ################################### Start Page Block ################################### -->
+              <div class="page_block">
+                <!-- Start filters -->
 
-          <div class="block_client_header">
-            <h2>قائمة العملاء</h2>
+                <div class="block_client_header">
+                  <h2>قائمة العملاء</h2>
 
-            <h3><i class="fal fa-search"></i> تصنيفات</h3>
-            <div class="main_block filterMainBlock">
-              <form [formGroup]="filterForm" class="filter_form">
-                <!-- Start Form field -->
-                <div
-                  style="width: 29%"
-                  class="form_input"
-                  id="smallFillterInputStyle"
-                >
-                  <!-- Client Name -->
-                  <label>البحث باسم العميل او رقم الموبايل</label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <input
-                      class="filterInput"
-                      matInput
-                      autocomplete="off"
-                      id="filterName"
-                      formControlName="filterName"
-                      placeholder="البحث باسم العميل او رقم الموبايل"
-                    />
-                    <!-- Reset Input Button -->
-                    <button
-                      type="button"
-                      class="resetInput"
-                      (click)="xResetInputs('filterName')"
-                    >
-                      <i class="fas fa-times-circle"></i>
-                    </button>
-                    <!-- Reset Input Button -->
-                  </mat-form-field>
-                  <!-- Client Name -->
+                  <h3><i class="fal fa-search"></i> تصنيفات</h3>
+                  <div class="main_block filterMainBlock">
+                    <form [formGroup]="filterForm" class="filter_form">
+                      <!-- Start Form field -->
+                      <div style="width: 29%" class="form_input" id="smallFillterInputStyle">
+                        <!-- Client Name -->
+                        <label>البحث باسم العميل او رقم الموبايل</label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input class="filterInput" matInput autocomplete="off" id="filterName"
+                            formControlName="filterName" placeholder="البحث باسم العميل او رقم الموبايل" />
+                          <!-- Reset Input Button -->
+                          <button type="button" class="resetInput" (click)="xResetInputs('filterName')">
+                            <i class="fas fa-times-circle"></i>
+                          </button>
+                          <!-- Reset Input Button -->
+                        </mat-form-field>
+                        <!-- Client Name -->
+                      </div>
+                      <!-- End Form field -->
+
+                      <!-- Start Form field -->
+
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> نوع العميل </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <mat-select (selectionChange)="selectStatus($event.value)" placeholder="نوع العميل ">
+                            <mat-option [value]="''"> كل العملاء</mat-option>
+
+                            <mat-option *ngFor="let clientStatus of clientStatusArray" [value]="clientStatus.id">
+                              {{ clientStatus.name }}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                      <!-- End Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> طريقة التعاقد </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <mat-select (selectionChange)="selectWay($event.value)" placeholder=" طريقة التعاقد ">
+                            <mat-option [value]="''"> كل الطرق</mat-option>
+                            <mat-option *ngFor="let clientWay of clientWayArray" [value]="clientWay.id">
+                              {{ clientWay.name }}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <!-- End Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> تاريخ التسجيل من </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input class="filterInput" (dateInput)="orderDateChanged($event, 'from')" matInput
+                            [matDatepicker]="fromFilterDate" formControlName="startDateFilter" id="filterStartDate"
+                            readonly placeholder="  تاريخ التسجيل من " />
+
+                          <!-- Reset Input Button -->
+                          <button type="button" class="resetInput" (click)="xResetInputs('startDateFilter')">
+                            <i class="fas fa-times-circle"></i>
+                          </button>
+                          <!-- Reset Input Button -->
+                          <mat-datepicker-toggle class="dateButton" [for]="fromFilterDate">
+                          </mat-datepicker-toggle>
+                          <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <!-- end Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> تاريخ التسجيل الي </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <input class="filterInput" matInput (dateInput)="orderDateChanged($event, 'to')" matInput
+                            [matDatepicker]="toFilterDate" formControlName="endDateFilter" id="styleDisable" readonly
+                            placeholder="  تاريخ التسجيل الي " />
+                          <!-- Reset Input Button -->
+                          <button type="button" class="resetInput" (click)="xResetInputs('endDateFilter')">
+                            <i class="fas fa-times-circle"></i>
+                          </button>
+                          <!-- Reset Input Button -->
+                          <mat-datepicker-toggle class="dateButton" [for]="toFilterDate">
+                          </mat-datepicker-toggle>
+                          <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <!-- end Form field -->
+                      <!-- Start Form field -->
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> الحالة </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <mat-select (selectionChange)="selectCondition($event.value)" placeholder="  الحالة ">
+                            <mat-option value=""> كل الحالات </mat-option>
+                            <mat-option *ngFor="let clientcondition of clientConditionArray" [value]="clientcondition">
+                              {{ clientcondition }}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <!-- End Form field -->
+
+                      <!-- Start Form field -->
+                      <div class="form_input" id="smallFillterInputStyle">
+                        <label> المدينة </label>
+                        <mat-form-field appearance="outline" dir="rtl">
+                          <mat-select (selectionChange)="selectCity($event.value)" placeholder="  المدينة ">
+                            <mat-option [value]="''"> كل المدن</mat-option>
+
+                            <mat-option *ngFor="let selectedCity of citiesArray" [value]="selectedCity.id">
+                              {{ selectedCity.name }}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <!-- End Form field -->
+                    </form>
+                  </div>
+
+                  <h5>
+                    عدد النتائج <span>{{ totalSize }}</span>
+                  </h5>
+                  <!-- End filters -->
                 </div>
-                <!-- End Form field -->
+                <!-- Start Table -->
 
-                <!-- Start Form field -->
-
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> نوع العميل </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select
-                      (selectionChange)="selectStatus($event.value)"
-                      placeholder="نوع العميل "
-                    >
-                      <mat-option [value]="''"> كل العملاء</mat-option>
-
-                      <mat-option
-                        *ngFor="let clientStatus of clientStatusArray"
-                        [value]="clientStatus.id"
-                        >{{ clientStatus.name }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-
-                <!-- End Form field -->
-
-                <!-- Start Form field -->
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> طريقة التعاقد </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select
-                      (selectionChange)="selectWay($event.value)"
-                      placeholder=" طريقة التعاقد "
-                    >
-                      <mat-option [value]="''"> كل الطرق</mat-option>
-                      <mat-option
-                        *ngFor="let clientWay of clientWayArray"
-                        [value]="clientWay.id"
-                        >{{ clientWay.name }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <!-- End Form field -->
-
-                <!-- Start Form field -->
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> تاريخ التسجيل من </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <input
-                      class="filterInput"
-                      (dateInput)="orderDateChanged($event, 'from')"
-                      matInput
-                      [matDatepicker]="fromFilterDate"
-                      formControlName="startDateFilter"
-                      id="filterStartDate"
-                      readonly
-                      placeholder="  تاريخ التسجيل من "
-                    />
-
-                    <!-- Reset Input Button -->
-                    <button
-                      type="button"
-                      class="resetInput"
-                      (click)="xResetInputs('startDateFilter')"
-                    >
-                      <i class="fas fa-times-circle"></i>
-                    </button>
-                    <!-- Reset Input Button -->
-                    <mat-datepicker-toggle
-                      class="dateButton"
-                      [for]="fromFilterDate"
-                    >
-                    </mat-datepicker-toggle>
-                    <mat-datepicker touchUi #fromFilterDate> </mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <!-- end Form field -->
-
-                <!-- Start Form field -->
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> تاريخ التسجيل الي </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <input
-                      class="filterInput"
-                      matInput
-                      (dateInput)="orderDateChanged($event, 'to')"
-                      matInput
-                      [matDatepicker]="toFilterDate"
-                      formControlName="endDateFilter"
-                      id="styleDisable"
-                      readonly
-                      placeholder="  تاريخ التسجيل الي "
-                    />
-                    <!-- Reset Input Button -->
-                    <button
-                      type="button"
-                      class="resetInput"
-                      (click)="xResetInputs('endDateFilter')"
-                    >
-                      <i class="fas fa-times-circle"></i>
-                    </button>
-                    <!-- Reset Input Button -->
-                    <mat-datepicker-toggle
-                      class="dateButton"
-                      [for]="toFilterDate"
-                    >
-                    </mat-datepicker-toggle>
-                    <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
-                  </mat-form-field>
+                <div class="countPerPage" style="margin-left: 30px">
+                  <select name="" id="" (change)="setCountPerPage($event.target.value)" class="selectPerpage">
+                    <option *ngFor="let option of countPerPage" [value]="option">
+                      {{ option }}
+                    </option>
+                  </select>
                 </div>
 
-                <!-- end Form field -->
-
-                <!-- Start Form field -->
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> الحالة </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select
-                      (selectionChange)="selectCondition($event.value)"
-                      placeholder="  الحالة "
-                    >
-                      <mat-option value=""> كل الحالات </mat-option>
-                      <mat-option
-                        *ngFor="let clientcondition of clientConditionArray"
-                        [value]="clientcondition"
-                        >{{ clientcondition }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <!-- End Form field -->
-
-                <!-- Start Form field -->
-                <div class="form_input" id="smallFillterInputStyle">
-                  <label> المدينة </label>
-                  <mat-form-field appearance="outline" dir="rtl">
-                    <mat-select
-                      (selectionChange)="selectCity($event.value)"
-                      placeholder="  المدينة "
-                    >
-                      <mat-option [value]="''"> كل المدن</mat-option>
-
-                      <mat-option
-                        *ngFor="let selectedCity of citiesArray"
-                        [value]="selectedCity.id"
-                        >{{ selectedCity.name }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <!-- End Form field -->
-              </form>
-            </div>
-
-            <h5>
-              عدد النتائج <span>{{ totalSize }}</span>
-            </h5>
-            <!-- End filters -->
-          </div>
-          <!-- Start Table -->
-
-          <div class="countPerPage" style="margin-left: 30px">
-            <select
-              name=""
-              id=""
-              (change)="setCountPerPage($event.target.value)"
-              class="selectPerpage"
-            >
-              <option *ngFor="let option of countPerPage" [value]="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-
-          <div class="print">
-            <button
-              mat-raised-button
-              (click)="showExcel()"
-              style="border: none; background: none"
-              matTooltipPosition="above"
-              matTooltip="ملف اكسل"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-            >
-              <i
-                class="fas fa-file-excel"
-                style="
+                <div class="print">
+                  <button mat-raised-button (click)="showExcel()" style="border: none; background: none"
+                    matTooltipPosition="above" matTooltip="ملف اكسل"
+                    aria-label="Button that displays a tooltip when focused or hovered over">
+                    <i class="fas fa-file-excel" style="
                   font-size: 25px;
                   text-align: center;
                   color: #086314;
                   text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-                "
-              ></i>
-            </button>
+                "></i>
+                  </button>
 
-            <!-- <button
+                  <!-- <button
               mat-raised-button
               (click)="showPrint()"
               style="border: none; background: none"
@@ -302,60 +209,44 @@
               ></i>
             </button> -->
 
-            <button
-              mat-raised-button
-              (click)="showPdf()"
-              style="border: none; background: none"
-              matTooltipPosition="above"
-              matTooltip=" نسخة PDF"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-            >
-              <i
-                class="fas fa-file-pdf"
-                style="
+                  <button mat-raised-button (click)="showPdf()" style="border: none; background: none"
+                    matTooltipPosition="above" matTooltip=" نسخة PDF"
+                    aria-label="Button that displays a tooltip when focused or hovered over">
+                    <i class="fas fa-file-pdf" style="
                   font-size: 25px;
                   text-align: center;
                   color: #f00;
                   text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-                "
-              ></i>
-            </button>
-          </div>
-
-          <!-- ######################### Start add number phone Popup ######################### -->
-          <div class="popup_form_client" id="popup" *ngIf="showAddNumberPopup">
-            <div id="backDrop"></div>
-            <div class="border-popup-print">
-              <a
-                style="position: relative; right: 97%"
-                (click)="showAddNumberPopup = false"
-                ><i class="fas fa-times-circle"></i>
-              </a>
-
-              <span class="example-list-section">
-                <div style="display: flex">
-                  <div style="width: 30%; margin-left: 39%">
-                    <mat-checkbox
-                      *ngFor="let subtask of Task.subtasks"
-                      [(ngModel)]="subtask.completed"
-                      (change)="getFilter($event.checked, subtask.name)"
-                    >
-                      {{ subtask.name }}
-                    </mat-checkbox>
-                  </div>
-                  <div style="width: 30%">
-                    <mat-checkbox
-                      *ngFor="let subtask of Taskt.subtasks"
-                      [(ngModel)]="subtask.completed"
-                      (change)="getFilter($event.checked, subtask.name)"
-                    >
-                      {{ subtask.name }}
-                    </mat-checkbox>
-                  </div>
+                "></i>
+                  </button>
                 </div>
-              </span>
 
-              <!-- <button
+                <!-- ######################### Start add number phone Popup ######################### -->
+                <div class="popup_form_client" id="popup" *ngIf="showAddNumberPopup">
+                  <div id="backDrop"></div>
+                  <div class="border-popup-print">
+                    <a style="position: relative; right: 97%" (click)="showAddNumberPopup = false"><i
+                        class="fas fa-times-circle"></i>
+                    </a>
+
+                    <span class="example-list-section">
+                      <div style="display: flex">
+                        <div style="width: 30%; margin-left: 39%">
+                          <mat-checkbox *ngFor="let subtask of Task.subtasks" [(ngModel)]="subtask.completed"
+                            (change)="getFilter($event.checked, subtask.name)">
+                            {{ subtask.name }}
+                          </mat-checkbox>
+                        </div>
+                        <div style="width: 30%">
+                          <mat-checkbox *ngFor="let subtask of Taskt.subtasks" [(ngModel)]="subtask.completed"
+                            (change)="getFilter($event.checked, subtask.name)">
+                            {{ subtask.name }}
+                          </mat-checkbox>
+                        </div>
+                      </div>
+                    </span>
+
+                    <!-- <button
                 style="
                   margin: 0 20px;
                   color: black;
@@ -375,8 +266,7 @@
               >
                 طباعة
               </button> -->
-              <button
-                style="
+                    <button style="
                   margin: 0 20px;
                   color: black;
                   width: 60px;
@@ -388,15 +278,10 @@
                   height: 32px;
                   background: #f6a811;
                   border: 1px solid #707070;
-                "
-                type="button"
-                *ngIf="excel"
-                (click)="ExportTOExcel()"
-              >
-                ملف اكسل
-              </button>
-              <button
-                style="
+                " type="button" *ngIf="excel" (click)="ExportTOExcel()">
+                      ملف اكسل
+                    </button>
+                    <button style="
                   margin: 0 20px;
                   color: black;
                   width: 60px;
@@ -408,142 +293,125 @@
                   height: 32px;
                   background: #f6a811;
                   border: 1px solid #707070;
-                "
-                type="button"
-                *ngIf="pdf"
-                (click)="filterPrint()"
-              >
-                طباعة
-              </button>
-            </div>
-          </div>
-          <!-- ######################### End add number phone Popup ######################### -->
+                " type="button" *ngIf="pdf" (click)="filterPrint()">
+                      طباعة
+                    </button>
+                  </div>
+                </div>
+                <!-- ######################### End add number phone Popup ######################### -->
 
-          <table
-            width="100%"
-            style="padding: 2%; padding-top: 0"
-            dir="rtl"
-            mat-table
-            [dataSource]="dataSource"
-            class="mat-elevation-z8"
-            id="display_table"
-          >
-            <!-- ID -->
-            <ng-container matColumnDef="ID">
-              <th mat-header-cell *matHeaderCellDef>#</th>
-              <td mat-cell *matCellDef="let element">
-                <p>{{ element.id }}</p>
-              </td>
-            </ng-container>
-            <!-- ID -->
-            <!-- Client Name -->
+                <table width="100%" style="padding: 2%; padding-top: 0" dir="rtl" mat-table [dataSource]="dataSource"
+                  class="mat-elevation-z8" id="display_table">
+                  <!-- ID -->
+                  <ng-container matColumnDef="ID">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>{{ element.id }}</p>
+                    </td>
+                  </ng-container>
+                  <!-- ID -->
+                  <!-- Client Name -->
 
-            <ng-container matColumnDef="client_name">
-              <th style="text-align: right" mat-header-cell *matHeaderCellDef>
-                إسم العميل
-              </th>
-              <div class="notes-client">
-                <h5>ملاحظات</h5>
-              </div>
-              <td style="text-align: right" mat-cell *matCellDef="let element">
-                <p>
-                  {{ element.user.name }}
-                  <span class="details">
-                    <i class="fal fa-info-circle"></i>
+                  <ng-container matColumnDef="client_name">
+                    <th style="text-align: right" mat-header-cell *matHeaderCellDef>
+                      إسم العميل
+                    </th>
                     <div class="notes-client">
-                      <h5>
-                        {{ element.notes ? element.notes : "لا يوجد ملاحظات" }}
-                      </h5>
+                      <h5>ملاحظات</h5>
                     </div>
-                  </span>
-                </p>
-              </td>
-            </ng-container>
-            <!-- Client Name -->
-            <!-- Mobile -->
-            <ng-container matColumnDef="phone">
-              <th mat-header-cell *matHeaderCellDef>رقم الموبايل</th>
-              <td mat-cell *matCellDef="let element">
-                <p>{{ element.user.mobile }}+</p>
-              </td>
-            </ng-container>
-            <!-- Mobile -->
+                    <td style="text-align: right" mat-cell *matCellDef="let element">
+                      <p>
+                        {{ element.user.name }}
+                        <span class="details">
+                          <i class="fal fa-info-circle"></i>
+                          <div class="notes-client">
+                            <h5>
+                              {{ element.notes ? element.notes : "لا يوجد ملاحظات" }}
+                            </h5>
+                          </div>
+                        </span>
+                      </p>
+                    </td>
+                  </ng-container>
+                  <!-- Client Name -->
+                  <!-- Mobile -->
+                  <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef>رقم الموبايل</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>{{ element.user.mobile }}+</p>
+                    </td>
+                  </ng-container>
+                  <!-- Mobile -->
 
-            <!-- kind_client -->
-            <ng-container matColumnDef="kind_client">
-              <th mat-header-cell *matHeaderCellDef>نوع العميل</th>
-              <td mat-cell *matCellDef="let element">
-                <p class="kind_client_v kind_client_0">
-                  {{ element.status }} <span class="fal fa-smile"></span>
-                </p>
-                <!-- <p class="kind_client_v kind_client_1"> VIP <span class="fas fa-crown"></span> </p>
+                  <!-- kind_client -->
+                  <ng-container matColumnDef="kind_client">
+                    <th mat-header-cell *matHeaderCellDef>نوع العميل</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p class="kind_client_v kind_client_0">
+                        {{ element.status }} <span class="fal fa-smile"></span>
+                      </p>
+                      <!-- <p class="kind_client_v kind_client_1"> VIP <span class="fas fa-crown"></span> </p>
                   <p class="kind_client_v kind_client_2"> سيئ  <span class="fal fa-frown"></span> </p> -->
-              </td>
-            </ng-container>
-            <!-- kind_client -->
+                    </td>
+                  </ng-container>
+                  <!-- kind_client -->
 
-            <!-- handling_way -->
-            <ng-container matColumnDef="handling_way">
-              <th mat-header-cell *matHeaderCellDef>طريقة التعاقد</th>
-              <td mat-cell *matCellDef="let element">
-                <p>{{ element.client_type }}</p>
-              </td>
-            </ng-container>
-            <!-- handling_way -->
+                  <!-- handling_way -->
+                  <ng-container matColumnDef="handling_way">
+                    <th mat-header-cell *matHeaderCellDef>طريقة التعاقد</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>{{ element.client_type }}</p>
+                    </td>
+                  </ng-container>
+                  <!-- handling_way -->
 
-            <!-- order_number -->
-            <ng-container matColumnDef="order_number">
-              <th mat-header-cell *matHeaderCellDef>عدد الطلبات</th>
-              <td mat-cell *matCellDef="let element">
-                <p>{{ element.orders.count }}</p>
-              </td>
-            </ng-container>
-            <!-- order_number -->
+                  <!-- order_number -->
+                  <ng-container matColumnDef="order_number">
+                    <th mat-header-cell *matHeaderCellDef>عدد الطلبات</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>{{ element.orders.count }}</p>
+                    </td>
+                  </ng-container>
+                  <!-- order_number -->
 
-            <!-- date_registration -->
-            <ng-container matColumnDef="date_registration">
-              <th mat-header-cell *matHeaderCellDef>تاريخ التسجيل</th>
-              <td mat-cell *matCellDef="let element">
-                <p>{{ element.created_at }}</p>
-              </td>
-            </ng-container>
-            <!-- date_registration -->
+                  <!-- date_registration -->
+                  <ng-container matColumnDef="date_registration">
+                    <th mat-header-cell *matHeaderCellDef>تاريخ التسجيل</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>{{ element.created_at }}</p>
+                    </td>
+                  </ng-container>
+                  <!-- date_registration -->
 
-            <!-- date_last_request -->
-            <ng-container matColumnDef="date_last_request">
-              <th mat-header-cell *matHeaderCellDef>تاريخ اخر طلب</th>
-              <td mat-cell *matCellDef="let element">
-                <p>
-                  {{
+                  <!-- date_last_request -->
+                  <ng-container matColumnDef="date_last_request">
+                    <th mat-header-cell *matHeaderCellDef>تاريخ اخر طلب</th>
+                    <td mat-cell *matCellDef="let element">
+                      <p>
+                        {{
                     element.orders.order_date
                       ? element.orders.order_date
                       : "لا يوجد"
                   }}
-                </p>
-              </td>
-            </ng-container>
-            <!-- date_last_request -->
+                      </p>
+                    </td>
+                  </ng-container>
+                  <!-- date_last_request -->
 
-            <!-- stats -->
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>الحالة</th>
-              <td mat-cell *matCellDef="let element">
-                <!--if not active 'status-0' style on comment 2038 line-->
-                <span
-                  class="status_span status_1"
-                  *ngIf="element.user.active == 1"
-                  >نشط
-                </span>
-                <span
-                  class="status_span status_0"
-                  *ngIf="element.user.active == 0"
-                  >غير نشط
-                </span>
-              </td>
-            </ng-container>
-            <!-- stats -->
-            <!-- Donator id -->
-            <!-- <ng-container matColumnDef="edit_order">
+                  <!-- stats -->
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>الحالة</th>
+                    <td mat-cell *matCellDef="let element">
+                      <!--if not active 'status-0' style on comment 2038 line-->
+                      <span class="status_span status_1" *ngIf="element.user.active == 1">نشط
+                      </span>
+                      <span class="status_span status_0" *ngIf="element.user.active == 0">غير نشط
+                      </span>
+                    </td>
+                  </ng-container>
+                  <!-- stats -->
+                  <!-- Donator id -->
+                  <!-- <ng-container matColumnDef="edit_order">
               <th mat-header-cell *matHeaderCellDef>تعديل العميل</th>
               <td mat-cell *matCellDef="let element">
                 <button
@@ -559,10 +427,10 @@
                 </button>
               </td>
             </ng-container> -->
-            <!-- Donator id -->
+                  <!-- Donator id -->
 
-            <!-- Technicians Details -->
-            <!-- <ng-container matColumnDef="clients_details">
+                  <!-- Technicians Details -->
+                  <!-- <ng-container matColumnDef="clients_details">
               <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
               <td mat-cell *matCellDef="let element">
                 <button
@@ -577,69 +445,49 @@
                 </button>
               </td>
             </ng-container> -->
-            <!--  Technicians Details  -->
+                  <!--  Technicians Details  -->
 
-            <ng-container matColumnDef="clients_details">
-              <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
-              <td
-                mat-cell
-                *matCellDef="let element"
-                (mouseenter)="hideme[element.id] = !hideme[element.id]"
-                (mouseleave)="hideme[element.id] = !hideme[element.id]"
-              >
-                <div
-                  id="showOrdercontrols"
-                  [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
-                  *ngIf="hideme[element.id]"
-                >
-                  <button
-                    (click)="openDeletePopup(element.id, element.name)"
-                    class="basic_button"
-                    type="button"
-                  >
-                    <i class="fal fa-trash-alt"></i>
-                    <p class="">الغاء</p>
-                  </button>
+                  <ng-container matColumnDef="clients_details">
+                    <th mat-header-cell *matHeaderCellDef>التفاصيل</th>
+                    <td mat-cell *matCellDef="let element" (mouseenter)="hideme[element.id] = !hideme[element.id]"
+                      (mouseleave)="hideme[element.id] = !hideme[element.id]">
+                      <div id="showOrdercontrols" [ngClass]="{ showtestOrderControl: showOrdercontrolst }"
+                        *ngIf="hideme[element.id]">
+                        <button (click)="openDeletePopup(element.id, element.name)" class="basic_button" type="button">
+                          <i class="fal fa-trash-alt"></i>
+                          <p class="">الغاء</p>
+                        </button>
 
-                  <button
-                    [routerLink]="['/clients/update-client']"
-                    [queryParams]="{
+                        <button [routerLink]="['/clients/update-client']" [queryParams]="{
                       updateMode: true,
                       updatedClientId: element.id
-                    }"
-                    class="basic_button"
-                    type="button"
-                  >
-                    <i class="fal fa-user-edit"></i>
-                    <p class="">تعديل</p>
-                  </button>
+                    }" class="basic_button" type="button">
+                          <i class="fal fa-user-edit"></i>
+                          <p class="">تعديل</p>
+                        </button>
 
-                  <button
-                    class="basic_button"
-                    type="button"
-                    [routerLink]="['/clients/client-details']"
-                    [queryParams]="{
+                        <button class="basic_button" type="button" [routerLink]="['/clients/client-details']"
+                          [queryParams]="{
                       clientId: element.id
-                    }"
-                  >
-                    <!-- <a
+                    }">
+                          <!-- <a
                       target="blank"
 
                     > -->
-                    <i class="fal fa-users-cog"></i>
-                    <!-- </a> -->
-                    <p class="">تفاصيل</p>
-                  </button>
-                </div>
+                          <i class="fal fa-users-cog"></i>
+                          <!-- </a> -->
+                          <p class="">تفاصيل</p>
+                        </button>
+                      </div>
 
-                <div class="basic_button" type="button">
-                  <i class="fal fa-bars"></i>
-                </div>
-              </td>
-            </ng-container>
+                      <div class="basic_button" type="button">
+                        <i class="fal fa-bars"></i>
+                      </div>
+                    </td>
+                  </ng-container>
 
-            <!-- Donator id -->
-            <!-- <ng-container matColumnDef="delete_order">
+                  <!-- Donator id -->
+                  <!-- <ng-container matColumnDef="delete_order">
               <th mat-header-cell *matHeaderCellDef>حذف الحساب</th>
               <td mat-cell *matCellDef="let element">
                 <button
@@ -651,15 +499,15 @@
                 </button>
               </td>
             </ng-container> -->
-            <!-- Donator id -->
+                  <!-- Donator id -->
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-          </table>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
 
-          <!-- End Table -->
-          <!-- Start Pagination -->
-          <!-- <div class="pagination">
+                <!-- End Table -->
+                <!-- Start Pagination -->
+                <!-- <div class="pagination">
             <ul>
               <li class="pagination_button ">
                 <a (click)="goPage(1)">الصفحة الأولي</a>
@@ -690,60 +538,44 @@
               </li>
             </ul>
           </div> -->
-          <!-- End Pagination -->
-          <div class="pagination">
-            <ul>
-              <li>
-                <button
-                  class="arrow"
-                  [disabled]="current_page == totalPage"
-                  (click)="nextPage(current_page)"
-                >
-                  <i class="fas fa-caret-right"></i>
-                </button>
-              </li>
-              <li style="margin: 10px; text-align: center; line-height: 31px">
-                <div class="numberPagination">
-                  <!-- {{ current_page }} -->
-                  <input
-                    style="
+                <!-- End Pagination -->
+                <div class="pagination">
+                  <ul>
+                    <li>
+                      <button class="arrow" [disabled]="current_page == totalPage" (click)="nextPage(current_page)">
+                        <i class="fas fa-caret-right"></i>
+                      </button>
+                    </li>
+                    <li style="margin: 10px; text-align: center; line-height: 31px">
+                      <div class="numberPagination">
+                        <!-- {{ current_page }} -->
+                        <input style="
                       background: #fff;
                       border: 1px solid rgba(112, 112, 112, 0.38);
                       width: 42px;
                       height: 31px;
                       text-align: center;
-                    "
-                    type="text"
-                    type="number"
-                    min="1"
-                    [max]="totalPage"
-                    #pageNumber
-                    [value]="current_page"
-                    (keyup.enter)="changePagination(pageNumber)"
-                  />
+                    " type="text" type="number" min="1" [max]="totalPage" #pageNumber [value]="current_page"
+                          (keyup.enter)="changePagination(pageNumber)" />
+                      </div>
+                    </li>
+                    <li>
+                      <button class="arrow" [disabled]="current_page <= 1" (click)="prevPage(current_page)">
+                        <i class="fas fa-caret-left"></i>
+                      </button>
+                    </li>
+                    <li style="margin: 15px 10px; box-shadow: none">
+                      <div class="pageNum">
+                        من
+                        <span>{{ totalPage }}</span>
+                        صفحة
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </li>
-              <li>
-                <button
-                  class="arrow"
-                  [disabled]="current_page <= 1"
-                  (click)="prevPage(current_page)"
-                >
-                  <i class="fas fa-caret-left"></i>
-                </button>
-              </li>
-              <li style="margin: 15px 10px; box-shadow: none">
-                <div class="pageNum">
-                  من
-                  <span>{{ totalPage }}</span>
-                  صفحة
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- ################################### End Page Block ################################### -->
-      </div>
+              </div>
+              <!-- ################################### End Page Block ################################### -->
+            </div>
     </div>
   </div>
   <!-- ################################### End Middle Page ################################### -->
@@ -765,11 +597,7 @@
   <!-- ######################### End Delete Popup ######################### -->
 </div>
 
-<div
-  class="main_page form-taxs-mng cliend-edit-neww"
-  id="listPage"
-  *ngIf="!printCase"
->
+<div class="main_page form-taxs-mng cliend-edit-neww" id="listPage" *ngIf="!printCase">
   <div class="page_body_main">
     <!-- ################################### Start Page Block ################################### -->
     <div class="page_block">
@@ -785,19 +613,10 @@
           </div>
 
           <div #TABLE>
-            <table
-              width="100%"
-              style="padding: 20px 0"
-              dir="rtl"
-              mat-table
-              [dataSource]="dataSource2"
-              id="display_table"
-            >
+            <table width="100%" style="padding: 20px 0" dir="rtl" mat-table [dataSource]="dataSource2"
+              id="display_table">
               <!-- ID -->
-              <ng-container
-                [matColumnDef]="col"
-                *ngFor="let col of displayColums2"
-              >
+              <ng-container [matColumnDef]="col" *ngFor="let col of displayColums2">
                 <th mat-header-cell *matHeaderCellDef>{{ col }}</th>
                 <td mat-cell *matCellDef="let element">
                   <p>
