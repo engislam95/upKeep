@@ -530,17 +530,27 @@ export class AllTechniciansComponent implements OnInit {
         "service[]": this.filteredServiceArray,
         "city[]": this.filteredCityArray,
       })
-      .subscribe((getClientsResponse: any) => {
-        this.endLoading();
-        console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data;
-        this.showAddNumberPopup = false;
-        this.printCase = false;
+      .subscribe(
+        (getClientsResponse: any) => {
+          this.endLoading();
+          console.log(getClientsResponse);
+          this.dataSource2 = getClientsResponse.data;
+          this.showAddNumberPopup = false;
+          this.printCase = false;
 
-        setTimeout(() => {
-          window.print();
-        }, 2000);
-      });
+          setTimeout(() => {
+            window.print();
+          }, 2000);
+        },
+        (error) => {
+          this.showAddNumberPopup = false;
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
   }
 
   ExportTOExcel() {
@@ -555,13 +565,23 @@ export class AllTechniciansComponent implements OnInit {
         "service[]": this.filteredServiceArray,
         "city[]": this.filteredCityArray,
       })
-      .subscribe((getClientsResponse: any) => {
-        this.endLoading();
-        console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data;
-        this.showAddNumberPopup = false;
-        this.printCase = false;
-      });
+      .subscribe(
+        (getClientsResponse: any) => {
+          this.endLoading();
+          console.log(getClientsResponse);
+          this.dataSource2 = getClientsResponse.data;
+          this.showAddNumberPopup = false;
+          this.printCase = false;
+        },
+        (error) => {
+          if (error.error.errors) {
+            this.showAddNumberPopup = false;
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
     setTimeout(() => {
       console.log(this.TABLE);
       const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
