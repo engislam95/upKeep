@@ -614,7 +614,7 @@ export class AddClientComponent implements OnInit {
               if (status == google.maps.GeocoderStatus.OK) {
                 if (results[0]) {
                   address = results[0].formatted_address;
-                  var value = address.split(',');
+                  var value = address.split('،');
 
                   let count = value.length;
 
@@ -732,7 +732,7 @@ export class AddClientComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
-                var value = address.split(',');
+                var value = address.split('،');
 
                 let count = value.length;
 
@@ -865,7 +865,7 @@ export class AddClientComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
                 address = results[0].formatted_address;
-                var value = address.split(',');
+                var value = address.split('،');
 
                 console.log(value);
 

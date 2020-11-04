@@ -46,7 +46,8 @@ import {
     MatGridListModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
-      libraries: ['geometry', 'places']
+      libraries: ['geometry', 'places'],
+      language: 'ar'
     })
   ]
 })

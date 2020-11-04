@@ -99,6 +99,10 @@ export class OrderDetailsComponent implements OnInit {
   user: any = '';
   showWaitingPopup: any = false;
   showSalesgPopup: any = false;
+  locationCity: any;
+  locationArea: any;
+  locationAddress: any;
+
   // Active State For Control Panel
   //  ######################### End General Data #########################
   constructor(
@@ -174,7 +178,70 @@ export class OrderDetailsComponent implements OnInit {
     this.coreService
       .getMethod('orders/' + this.orderId + '/details', {})
       .subscribe((order: any) => {
-        console.log('here in getOrderDetails()');
+        console.log('here in getOrderDetails()' , order);
+        console.log('here in location details ' , order.data.location);
+
+        let location_details =  order.data.location
+        let address ; 
+        let locationCity ; 
+
+        var geocoder;
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(
+          location_details.lat,
+          location_details.long
+        );
+
+
+
+        geocoder.geocode({ latLng: latlng }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+
+            console.log(results);
+            
+            if (results[0]) {
+              address = results[0].formatted_address;
+              var value = address.split('،');
+
+              let count = value.length;
+
+              let city;
+
+              if (count > 2) {
+                city = value[count - 3];
+              } else {
+                city = value[count - 1];
+              }
+
+              // alert("city name is: " + city);
+              locationCity = city;
+            }
+          } else {
+            alert('Geocoder failed due to: ' + status);
+          }
+        });
+
+        setTimeout(() => {
+       
+          this.locationAddress = address
+          this.locationCity = location_details.city ? location_details.city : order.data.client.locations[0].city 
+          this.locationArea = locationCity
+
+
+
+          console.log(this.locationCity );
+          console.log(this.locationArea );
+          console.log(this.locationAddress );
+
+        }, 1000);
+
+
+      
+
+        
+
+
+
 
         this.orderDetails = order.data;
         this.orderStatusId = order.data.status.id;

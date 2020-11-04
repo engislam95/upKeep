@@ -539,7 +539,7 @@
                 <!-- ################################### End Page Block ################################### -->
               </div>
 
-              <div class="page_block  detailsAdminOrder">
+              <div class="page_block  detailsAdminOrder" style="height: 325px;">
                 <div class="adminsOrder">
                   <!-- <img
                     src="{{pageLoaded ? orderDetails.creator.image : ''}}"
@@ -638,7 +638,7 @@
             <div class="left_block">
               <div
                 class="page_block controlPanel mapDetails"
-                style="display: table"
+                style="display: table ; margin-bottom: unset;"
               >
                 <div class="controlpanelTime">
                   <div class="technicianOrder">
@@ -714,7 +714,7 @@
                     </li>
                   </ul>
                 </div> -->
-                <div style="clear: both; width: 96%">
+                <div style="clear: both; width: 96% ;     margin-bottom: 4%; ">
                   <app-map
                     [orderDetailsMode]="true"
                     [orderDetailsOrgins]="{
@@ -723,6 +723,34 @@
                     }"
                   ></app-map>
                 </div>
+
+                <div class="locationDetails">
+                  <div style="display: flex; margin-bottom: 2%;" >
+
+                    <div style="width: 40%; margin-left: 1%;">
+                      <i class="fas fa-map-marker-alt" style="margin-left: 5%; font-size: 17px; "></i>
+                      <span class="fontS" style="margin-left: 2%;"> المدينة </span>
+                      <span class="fontS" style="font-weight: 300;"> {{ locationCity }}</span>
+
+                    </div>
+                    <div style="width: 40%; margin-left: 1%;">
+                      <i class="fas fa-thumbtack" style="margin-left: 5%; font-size: 17px;"></i>
+                      <span class="fontS" style="margin-left: 2%;"> الحى </span>
+                      <span class="fontSt"> {{ locationArea }}</span>
+                    </div>
+                   
+                  </div>
+
+                  <div class="address">
+                    <i class="fas fa-location-arrow" style="margin-left: 1.5%; font-size: 17px;"></i>
+                    <span class="fontS" style="margin-left: 1%;"> العنوان </span>
+                      <span class="fontSt"> {{ locationAddress }}</span>
+                  </div>
+                </div>
+
+
+
+
               </div>
             </div>
           </div>

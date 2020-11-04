@@ -82,7 +82,9 @@ import { ColorPickerModule } from 'primeng/colorpicker';
       // apiKey: 'AIzaSyCW4r_HcOqZfIGdz-ZxvFUE1R1AwpTZKBs',
       // apiKey: 'AIzaSyChTEPD15j3gS_5Z7ABhWkghruAxH0mmh0',
       apiKey: 'AIzaSyB43NW6QmXMMqA8vv0iFmCKmklFcG4pofs',
-      libraries: ['geometry', 'places']
+      libraries: ['geometry', 'places'] ,
+      language: 'ar'
+      
     })
   ],
   providers: [LoaderService, ResponseStateService,DatePipe]
