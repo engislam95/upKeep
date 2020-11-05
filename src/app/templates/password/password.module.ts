@@ -6,18 +6,24 @@ import { SharedComponentsModule } from '../../components/shared-components.modul
 /* ---------------------- Angular Material ------------------------ */
 import { MatIconModule } from '@angular/material';
 /* --------------------- Routing Module ------------------------ */
-import { AccessRoutingModule } from './access-routing.module';
+
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { PasswordRoutingModule } from './password-routing.module';
+import {
+  MatInputModule,
+} from '@angular/material';
+
 /* --------------------- Component ---------------------------- */
-import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [ChangePasswordComponent],
   imports: [
     CommonModule,
-    AccessRoutingModule,
+    PasswordRoutingModule,
     MatIconModule,
     ToolsModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    MatInputModule
   ]
 })
-export class AccessModule { }
+export class PasswordModule {}

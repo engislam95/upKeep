@@ -256,7 +256,7 @@ $gray: #95989a;
 
     h3 {
       color: #2a314e;
-      font-family: 'Arabic gess Bold';
+      font-family: 'Arabic gess Light';
       font-size: 20px;
       padding-right: 54px;
 
@@ -3339,6 +3339,31 @@ body {
   background: #f2f3f8;
 }
 
+.change_password{
+  .mat-form-field-infix {
+    /* display: block; */
+    position: relative;
+    /* flex: auto; */
+    min-width: 0;
+    /* width: 180px; */
+    font-size: 23px;
+    padding: 12px;
+    padding-right: 11px;
+}
+
+.main_block {
+
+  padding-top: 13px;
+}
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: .25em 0;  margin-bottom: -5px;
+}
+.page_block {
+
+  height: 69vh;
+}
+}
+
 $main_color: #f6a811;
 $main_dark: #242a2d;
 $active_dark: #15191c;
@@ -3481,12 +3506,18 @@ $gray: #95989a;
 
     h3 {
       color: #2a314e;
-      font-family: 'Arabic gess Bold';
-      font-size: 20px;
+      font-family: 'Arabic gess Light';
       padding-right: 54px;
+      font-weight: 300;
+      font-size: 17px;
+      color: #404040;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16)
 
       i {
-        margin-left: 10px;
+        margin-left: 10px;      
+        font-size: 16px;
+        color: #404040;
+
       }
     }
   }

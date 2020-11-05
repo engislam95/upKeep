@@ -81,10 +81,25 @@
         ul {
           li {
             font-size: 12px;
-            border-bottom: 1px solid #696969;
+     
             padding-bottom: 7px;
             margin-bottom: 7px;
             position: relative;
+            a{
+      
+              font-weight: 300;
+              font-size: 15px;
+              text-align: left;  
+              color: #404040;
+              font-family: 'Arabic Light';
+
+              i{
+            font-size: 15px;
+            text-align: left;
+            color: #404040;
+            margin-left: 8px;
+              }   
+            }
 
             button {
               background: #f8a900;
@@ -427,7 +442,7 @@
   position: fixed;
   background: #fff;
   z-index: 99999;
-  ßwidth: 30%;
+  width: 30%;
   height: 160px;
   bottom: 50px;
   left: 50px;

@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: './templates/clients/clients.module#ClientsModule'
       },
       {
+        path: 'password',
+        loadChildren: './templates/password/password.module#PasswordModule'
+      },
+      {
         path: 'invoices',
         loadChildren: './templates/invoices/invoices.module#InvoicesModule'
       },
@@ -121,6 +125,7 @@ const routes: Routes = [
         path: 'companies',
         loadChildren: './templates/companies/companies.module#CompaniesModule'
       },
+
       {
         path: 'classifications',
         loadChildren:
