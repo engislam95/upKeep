@@ -27,9 +27,9 @@
     <!-- ################################ end header client icons ############################## -->
     <div class="page_body" [ngClass]="{ pageNotLoaded: !pageLoaded }">
       <div class="button-add-taxs">
-        <button routerLink="/clients/clients-group">
+        <!-- <button routerLink="/clients/clients-group">
           <i class="fal fa-users"></i> إضافة مجموعة عملاء
-        </button>
+        </button> -->
         <button routerLink="/clients/add-client">
           <i class="fal fa-user-plus"></i> إضافة عميل جديد
         </button>
@@ -105,7 +105,8 @@
                       <mat-option
                         *ngFor="let clientStatus of clientStatusArray"
                         [value]="clientStatus.id"
-                        >{{ clientStatus.name }}</mat-option
+                      >
+                        {{ clientStatus.name }}</mat-option
                       >
                     </mat-select>
                   </mat-form-field>
@@ -125,7 +126,8 @@
                       <mat-option
                         *ngFor="let clientWay of clientWayArray"
                         [value]="clientWay.id"
-                        >{{ clientWay.name }}</mat-option
+                      >
+                        {{ clientWay.name }}</mat-option
                       >
                     </mat-select>
                   </mat-form-field>
@@ -198,9 +200,7 @@
                     <mat-datepicker touchUi #toFilterDate> </mat-datepicker>
                   </mat-form-field>
                 </div>
-
                 <!-- end Form field -->
-
                 <!-- Start Form field -->
                 <div class="form_input" id="smallFillterInputStyle">
                   <label> الحالة </label>
@@ -213,7 +213,8 @@
                       <mat-option
                         *ngFor="let clientcondition of clientConditionArray"
                         [value]="clientcondition"
-                        >{{ clientcondition }}</mat-option
+                      >
+                        {{ clientcondition }}</mat-option
                       >
                     </mat-select>
                   </mat-form-field>
@@ -233,7 +234,8 @@
                       <mat-option
                         *ngFor="let selectedCity of citiesArray"
                         [value]="selectedCity.id"
-                        >{{ selectedCity.name }}</mat-option
+                      >
+                        {{ selectedCity.name }}</mat-option
                       >
                     </mat-select>
                   </mat-form-field>

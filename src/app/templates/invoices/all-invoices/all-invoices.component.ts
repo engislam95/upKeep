@@ -216,17 +216,27 @@ export class AllInvoicesComponent implements OnInit {
         "technician_ids[]": this.filterTechnicians,
         status: this.inoviceStatus,
       })
-      .subscribe((getClientsResponse: any) => {
-        this.endLoading();
-        console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.receipts.data;
-        this.showAddNumberPopup = false;
-        this.printCase = false;
+      .subscribe(
+        (getClientsResponse: any) => {
+          this.endLoading();
+          console.log(getClientsResponse);
+          this.dataSource2 = getClientsResponse.data.receipts;
+          this.showAddNumberPopup = false;
+          this.printCase = false;
 
-        setTimeout(() => {
-          window.print();
-        }, 2000);
-      });
+          setTimeout(() => {
+            window.print();
+          }, 2000);
+        },
+        (error) => {
+          this.showAddNumberPopup = false;
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
   }
 
   ExportTOExcel() {
@@ -246,13 +256,23 @@ export class AllInvoicesComponent implements OnInit {
         "technician_ids[]": this.filterTechnicians,
         status: this.inoviceStatus,
       })
-      .subscribe((getClientsResponse: any) => {
-        this.endLoading();
-        console.log(getClientsResponse);
-        this.dataSource2 = getClientsResponse.data.receipts.data;
-        this.showAddNumberPopup = false;
-        this.printCase = false;
-      });
+      .subscribe(
+        (getClientsResponse: any) => {
+          this.endLoading();
+          console.log(getClientsResponse);
+          this.dataSource2 = getClientsResponse.data.receipts;
+          this.showAddNumberPopup = false;
+          this.printCase = false;
+        },
+        (error) => {
+          this.showAddNumberPopup = false;
+          if (error.error.errors) {
+            this.showErrors(error.error.errors);
+          } else {
+            this.showErrors(error.error.message);
+          }
+        }
+      );
     setTimeout(() => {
       console.log(this.TABLE);
       const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(

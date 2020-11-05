@@ -1,40 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { fade } from '../../../tools/shared_animations/fade';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { fade } from "../../../tools/shared_animations/fade";
 
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { emptyValidator } from '../../../tools/shared_validators/Empty.validator';
-import { LoaderService } from '../../../tools/shared-services/loader.service';
-import { ResponseStateService } from '../../../tools/shared-services/response-state.service';
-import { CoreService } from '../../../tools/shared-services/core.service';
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import { emptyValidator } from "../../../tools/shared_validators/Empty.validator";
+import { LoaderService } from "../../../tools/shared-services/loader.service";
+import { ResponseStateService } from "../../../tools/shared-services/response-state.service";
+import { CoreService } from "../../../tools/shared-services/core.service";
 
 @Component({
-  selector: 'app-add-technical',
-  templateUrl: './add-technical.component.html',
-  styleUrls: ['./add-technical.component.scss'],
-  animations: fade
+  selector: "app-add-technical",
+  templateUrl: "./add-technical.component.html",
+  styleUrls: ["./add-technical.component.scss"],
+  animations: fade,
 })
 export class AddTechnicalComponent implements OnInit {
   imageUpdated = false;
   imageUpdated2 = false;
-  errorMaxDim = false ;
+  errorMaxDim = false;
 
-  modeTitle = 'إضافة فنى جديد';
+  modeTitle = "إضافة فنى جديد";
   //  ################################### Start General Data ###################################
   responseState;
   responseData;
   uploadedImage;
-  imagePlaceHolder = 'إرفق صورة';
-  imagePlaceHolderPin = 'إرفق دبوس';
+  imagePlaceHolder = "إرفق صورة";
+  imagePlaceHolderPin = "إرفق دبوس";
   pageLoaded = false;
   mainServicesLoaded = false;
   maincityLoaded = false;
 
   countriesLoaded = false;
   showCountryPhoneKey = false;
-  countryPhoneKey = '';
+  countryPhoneKey = "";
   mobileNumber;
   canUpdatePassword = false;
   // mobile & email reservation
@@ -46,50 +46,50 @@ export class AddTechnicalComponent implements OnInit {
   //  ############################ End General Data ############################
   //  ############################ Start Form Data ############################
   techniciansForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    mobile: new FormControl(''),
+    name: new FormControl("", Validators.required),
+    mobile: new FormControl(""),
     mobileKey: new FormControl(
-      '', //
+      "", //
       [
         Validators.required,
-        Validators.pattern('[0-9]* || [٠-٩]*'),
+        Validators.pattern("[0-9]* || [٠-٩]*"),
         Validators.minLength(9),
-        Validators.maxLength(9)
+        Validators.maxLength(9),
       ]
     ),
-    email: new FormControl('', [
+    email: new FormControl("", [
       Validators.email,
-      Validators.pattern('^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}')
+      Validators.pattern("^[a-zA-Z][a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}"),
     ]),
     password: new FormControl(
-      { value: '', disabled: !this.canUpdatePassword },
+      { value: "", disabled: !this.canUpdatePassword },
       [Validators.required, Validators.minLength(8)]
     ),
     confirmPassword: new FormControl(
-      { value: '', disabled: !this.canUpdatePassword },
+      { value: "", disabled: !this.canUpdatePassword },
       [Validators.required, Validators.minLength(8)]
     ),
     service_tech: new FormControl([], Validators.required),
     city_tech: new FormControl([], Validators.required),
 
-    serviceObj: new FormControl(''),
-    cityObj: new FormControl(''),
+    serviceObj: new FormControl(""),
+    cityObj: new FormControl(""),
 
-    countriesObj: new FormControl('', Validators.required),
-    nationalityObj : new FormControl('', Validators.required ) ,
-    nationality_id : new FormControl('' ) ,
+    countriesObj: new FormControl("", Validators.required),
+    nationalityObj: new FormControl("", Validators.required),
+    nationality_id: new FormControl(""),
 
     change_password: new FormControl(false),
     active: new FormControl(true),
 
-    image: new FormControl(''),
-    imageInputObj: new FormControl(''),
+    image: new FormControl(""),
+    imageInputObj: new FormControl(""),
     delete_image: new FormControl(false),
 
-    imagePin: new FormControl(''),
-    imageInputObjPin: new FormControl(''),
-    delete_pin: new FormControl(false) ,
-    contract_type : new FormControl('' , Validators.required)
+    imagePin: new FormControl(""),
+    imageInputObjPin: new FormControl(""),
+    delete_pin: new FormControl(false),
+    contract_type: new FormControl("", Validators.required),
   });
   notConfirmed = false;
   submitted = false;
@@ -103,7 +103,7 @@ export class AddTechnicalComponent implements OnInit {
   //  ###################### End Select Main Services ######################
   //  ###################### Start Select Country ######################
   countriesArray = [];
-  nationalitiesArray = [] ;
+  nationalitiesArray = [];
   countriesFilteredOptions: Observable<any>;
   nationalitiesFilteredOptions: Observable<any>;
 
@@ -119,8 +119,8 @@ export class AddTechnicalComponent implements OnInit {
   technician_delete: boolean = false;
   fetchedServicee = [];
   fetchedCityy = [];
-  fetchedContractss = [] ;
-  user: any = '';
+  fetchedContractss = [];
+  user: any = "";
   technicians: any = [];
   // mainContractTpe = [
   //   {
@@ -132,7 +132,7 @@ export class AddTechnicalComponent implements OnInit {
   //     name: 'بالقطعة'
   //   }
   // ]
-  mainContractTpe = [] ;
+  mainContractTpe = [];
   nationality: any;
   //  ############################ End Update Data ############################
   constructor(
@@ -143,22 +143,22 @@ export class AddTechnicalComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = JSON.parse(localStorage.getItem("currentUser"));
     console.log(this.user);
     this.technicians = this.user.modules.technicians;
     if (this.technicians) {
-      this.technicians.map(ele => {
+      this.technicians.map((ele) => {
         switch (ele) {
-          case 'add':
+          case "add":
             this.technician_add = true;
             break;
-          case 'all':
+          case "all":
             this.technician_all = true;
             break;
-          case 'update':
+          case "update":
             this.technician_update = true;
             break;
-          case 'delete':
+          case "delete":
             this.technician_delete = true;
             break;
         }
@@ -167,13 +167,13 @@ export class AddTechnicalComponent implements OnInit {
   }
   //  ################################### Start OnInit ###################################
   ngOnInit() {
-    window.scroll({ top: 0, behavior: 'auto' });
+    window.scroll({ top: 0, behavior: "auto" });
     // Start START Loading
     this.startLoading();
     // End START Loading
     // Start Get All Services
     this.coreService
-      .getMethod('services/active', {})
+      .getMethod("services/active", {})
       .subscribe((services: any) => {
         this.mainServiceArray = services.data;
         this.mainServicesLoaded = true;
@@ -181,10 +181,9 @@ export class AddTechnicalComponent implements OnInit {
         this.endLoading();
       });
 
-      this.coreService
-      .getMethod('lookup/contract-types', {})
+    this.coreService
+      .getMethod("lookup/contract-types", {})
       .subscribe((contracts: any) => {
-        
         console.log(contracts);
         this.mainContractTpe = contracts.data;
         this.mainServicesLoaded = true;
@@ -192,7 +191,9 @@ export class AddTechnicalComponent implements OnInit {
         this.endLoading();
       });
 
-      this.coreService.getMethod('nationalities', {}).subscribe((nationalities: any) => {
+    this.coreService
+      .getMethod("nationalities", {})
+      .subscribe((nationalities: any) => {
         this.nationalitiesArray = nationalities.data;
         console.log(nationalities.data);
         this.countriesLoaded = true;
@@ -202,19 +203,18 @@ export class AddTechnicalComponent implements OnInit {
         if (!this.updateMode) {
           // Start Select Search For Main Services
           this.nationalitiesFilteredOptions = this.techniciansForm
-            .get('nationalityObj')
+            .get("nationalityObj")
             .valueChanges.pipe(
-              startWith(''),
-              map(value => this.filterNationalities(value))
+              startWith(""),
+              map((value) => this.filterNationalities(value))
             );
           // End Select Search For Main Services
         }
       });
 
-
     // End Get All Services
     //  Start Get Countries
-    this.coreService.getMethod('countries', {}).subscribe((countries: any) => {
+    this.coreService.getMethod("countries", {}).subscribe((countries: any) => {
       this.countriesArray = countries.data;
       console.log(countries.data);
       this.countriesLoaded = true;
@@ -224,10 +224,10 @@ export class AddTechnicalComponent implements OnInit {
       if (!this.updateMode) {
         // Start Select Search For Main Services
         this.countriesFilteredOptions = this.techniciansForm
-          .get('countriesObj')
+          .get("countriesObj")
           .valueChanges.pipe(
-            startWith(''),
-            map(value => this.filterCountries(value))
+            startWith(""),
+            map((value) => this.filterCountries(value))
           );
         // End Select Search For Main Services
       }
@@ -236,7 +236,7 @@ export class AddTechnicalComponent implements OnInit {
 
     // Start Get All cities
 
-    this.coreService.getMethod('cities', {}).subscribe((cities: any) => {
+    this.coreService.getMethod("cities", {}).subscribe((cities: any) => {
       this.mainCityArray = cities.data;
       this.maincityLoaded = true;
       // Start End Loading
@@ -254,15 +254,15 @@ export class AddTechnicalComponent implements OnInit {
     this.checkMatched();
 
     // Start Update Mode
-    this.activatedRoute.queryParams.subscribe(queryParams => {
+    this.activatedRoute.queryParams.subscribe((queryParams) => {
       if (queryParams.updateMode) {
-        this.updateMode = queryParams.updateMode === 'true';
+        this.updateMode = queryParams.updateMode === "true";
         this.updatedTechnicalId = +queryParams.updatedTechnicalId;
         // Get Order Details
         if (this.updateMode) {
           this.getUpdatedTechnicalDetails();
         }
-        this.modeTitle = 'تعديل الفنى';
+        this.modeTitle = "تعديل الفنى";
         // Get Order Details
       } else {
         // end loading in add technicians
@@ -281,40 +281,38 @@ export class AddTechnicalComponent implements OnInit {
   fetchedService() {
     console.log(this.techniciansForm.controls.service_tech.value);
     this.fetchedServicee = this.techniciansForm.controls.contract_type.value.map(
-      ele => ele.id
+      (ele) => ele.id
     );
   }
 
-  fetchedContracts()
-  {
+  fetchedContracts() {
     this.fetchedContractss = this.techniciansForm.controls.service_tech.value.map(
-      ele => ele.id
+      (ele) => ele.id
     );
   }
-
 
   fetchedCity() {
     console.log(this.techniciansForm.controls.city_tech.value);
     this.fetchedCityy = this.techniciansForm.controls.city_tech.value.map(
-      ele => ele.id
+      (ele) => ele.id
     );
   }
   //  ################################### Start OnInit ###################################
   //  ################### Start Check Mobile & Email Reservation ###################
   checkReservation(value, type: string) {
     // convert number from arabic
-    if (type === 'mobile') {
+    if (type === "mobile") {
       value = this.countryPhoneKey + this.mobileNumber;
     }
     // convert number from arabic
     this.coreService
       .getMethod(`technicians/check-unique/${type}`, {
         [type]: value,
-        id: this.updateMode ? this.updatedTechnicalData['id'] : ''
+        id: this.updateMode ? this.updatedTechnicalData["id"] : "",
       })
       .subscribe(
         () => {
-          if (type === 'mobile') {
+          if (type === "mobile") {
             this.mobileReserved = false;
             this.mobileCheckLoaded = true;
           } else {
@@ -323,7 +321,7 @@ export class AddTechnicalComponent implements OnInit {
           }
         },
         () => {
-          if (type === 'mobile') {
+          if (type === "mobile") {
             this.mobileReserved = true;
             this.mobileCheckLoaded = true;
           } else {
@@ -336,69 +334,71 @@ export class AddTechnicalComponent implements OnInit {
   //  ################### Start Check Mobile & Email Reservation ###################
   //  ############################# Start X Reset Inputs #############################
   xResetInputs(key) {
-    if (key === 'name') {
-      (document.getElementById('name') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ name: '' });
+    if (key === "name") {
+      (document.getElementById("name") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ name: "" });
     }
-    if (key === 'countriesObj') {
-      (document.getElementById('countriesObj') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ country: '' });
-      this.techniciansForm.patchValue({ country_id: '' });
+    if (key === "countriesObj") {
+      (document.getElementById("countriesObj") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ country: "" });
+      this.techniciansForm.patchValue({ country_id: "" });
     }
-    if (key === 'nationalityObj') {
-      (document.getElementById('nationalityObj') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ nationalityObj: '', nationality_id:'' });
+    if (key === "nationalityObj") {
+      (document.getElementById("nationalityObj") as HTMLInputElement).value =
+        "";
+      this.techniciansForm.patchValue({
+        nationalityObj: "",
+        nationality_id: "",
+      });
     }
-    if (key === 'mobileKey') {
-      (document.getElementById('mobileKey') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ mobile: '' });
+    if (key === "mobileKey") {
+      (document.getElementById("mobileKey") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ mobile: "" });
     }
-    if (key === 'serviceObj') {
-      (document.getElementById('serviceObj') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ service: '' });
+    if (key === "serviceObj") {
+      (document.getElementById("serviceObj") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ service: "" });
       this.techniciansForm.patchValue({ service_tech: [] });
     }
 
- 
-
-    if (key === 'cityObj') {
-      (document.getElementById('cityObj') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ city: '' });
+    if (key === "cityObj") {
+      (document.getElementById("cityObj") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ city: "" });
       this.techniciansForm.patchValue({ city_tech: [] });
     }
-    if (key === 'password') {
-      (document.getElementById('password') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ password: '' });
+    if (key === "password") {
+      (document.getElementById("password") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ password: "" });
     }
-    if (key === 'confirmPassword') {
-      (document.getElementById('confirmPassword') as HTMLInputElement).value =
-        '';
-      this.techniciansForm.patchValue({ confirmPassword: '' });
+    if (key === "confirmPassword") {
+      (document.getElementById("confirmPassword") as HTMLInputElement).value =
+        "";
+      this.techniciansForm.patchValue({ confirmPassword: "" });
     }
-    if (key === 'email') {
-      (document.getElementById('email') as HTMLInputElement).value = '';
-      this.techniciansForm.patchValue({ email: '' });
+    if (key === "email") {
+      (document.getElementById("email") as HTMLInputElement).value = "";
+      this.techniciansForm.patchValue({ email: "" });
     }
-    if (key === 'imageInputObjPin') {
-      (document.getElementById('imageInputObjPin') as HTMLInputElement).value =
-        '';
-      this.imagePlaceHolderPin = ' إرفق صورة';
-      this.techniciansForm.patchValue({ imagePin: '' });
+    if (key === "imageInputObjPin") {
+      (document.getElementById("imageInputObjPin") as HTMLInputElement).value =
+        "";
+      this.imagePlaceHolderPin = " إرفق صورة";
+      this.techniciansForm.patchValue({ imagePin: "" });
     }
-    if (key === 'imageInputObj') {
-      (document.getElementById('imageInputObj') as HTMLInputElement).value = '';
-      this.imagePlaceHolder = ' إرفق صورة';
-      this.techniciansForm.patchValue({ image: '' });
+    if (key === "imageInputObj") {
+      (document.getElementById("imageInputObj") as HTMLInputElement).value = "";
+      this.imagePlaceHolder = " إرفق صورة";
+      this.techniciansForm.patchValue({ image: "" });
     } else {
-      (document.getElementById(key) as HTMLInputElement).value = '';
-      this.techniciansForm.controls[key].patchValue('');
+      (document.getElementById(key) as HTMLInputElement).value = "";
+      this.techniciansForm.controls[key].patchValue("");
     }
   }
   //  ############################# End X Reset Inputs #############################
   //  ############################# Start Get Technical Details #############################
   getUpdatedTechnicalDetails() {
     this.coreService
-      .getMethod('technicians/' + this.updatedTechnicalId, {})
+      .getMethod("technicians/" + this.updatedTechnicalId, {})
       .subscribe((updatedTechnical: any) => {
         this.updatedTechnicalDataLoaded = true;
         this.updatedTechnicalData = updatedTechnical.data;
@@ -414,55 +414,55 @@ export class AddTechnicalComponent implements OnInit {
   assignUpdatedData() {
     const data = this.updatedTechnicalData;
     console.log(data);
-    this.countryPhoneKey = data['city'].country.phone_code;
-    this.mobileNumber = data['mobile'];
+    this.countryPhoneKey = data["city"].country.phone_code;
+    this.mobileNumber = data["mobile"];
     // Start Select Search For Main Services
     this.countriesFilteredOptions = this.techniciansForm
-      .get('countriesObj')
+      .get("countriesObj")
       .valueChanges.pipe(
-        startWith(data['city'].country),
-        map(value => this.filterCountries(value))
+        startWith(data["city"].country),
+        map((value) => this.filterCountries(value))
       );
 
-      this.nationalitiesFilteredOptions = this.techniciansForm
-      .get('nationalityObj')
+    this.nationalitiesFilteredOptions = this.techniciansForm
+      .get("nationalityObj")
       .valueChanges.pipe(
-        startWith(data['nationality']),
-        map(value => this.filterNationalities(value))
+        startWith(data["nationality"]),
+        map((value) => this.filterNationalities(value))
       );
 
-      this.nationality = data['nationality'] ; 
+    this.nationality = data["nationality"];
     // End Select Search For Main Services
-    this.mobileChanged(data['mobile']);
+    this.mobileChanged(data["mobile"]);
     this.techniciansForm.patchValue({
-      name: data['name'],
-      email: data['email'],
-      mobile: +(this.countryPhoneKey + data['mobile']),
-      mobileKey: data['mobile'],
-      countriesObj: data['city'].country,
-      nationalityObj: data['nationality'] ?data['nationality'] : {},
-      nationality_id: data['nationality'] ?data['nationality']['id']:'',
+      name: data["name"],
+      email: data["email"],
+      mobile: +(this.countryPhoneKey + data["mobile"]),
+      mobileKey: data["mobile"],
+      countriesObj: data["city"].country,
+      nationalityObj: data["nationality"] ? data["nationality"] : {},
+      nationality_id: data["nationality"] ? data["nationality"]["id"] : "",
 
-      service_tech: data['services'].map(el => el.id),
-      city_tech: data['cities'].map(el => el.id),
-      contract_type : data['contract'] ? data['contract'].id : null ,
+      service_tech: data["services"].map((el) => el.id),
+      city_tech: data["cities"].map((el) => el.id),
+      contract_type: data["contract"] ? data["contract"].id : null,
 
-      serviceObj: data['service'],
-      cityObj: data['city'],
-      active: data['active'] === 1 ? true : false
+      serviceObj: data["service"],
+      cityObj: data["city"],
+      active: data["active"] === 1 ? true : false,
     });
 
     console.log(this.techniciansForm);
 
-    this.imagePlaceHolder = data['image'];
-    this.imagePlaceHolderPin = data['imagePin'];
+    this.imagePlaceHolder = data["image"];
+    this.imagePlaceHolderPin = data["imagePin"];
     this.showCountryPhoneKey = true;
   }
   //  ############################# End Assign Updated Data #############################
   //  ######################### Start OnUpdate Form #########################
   onUpdate() {
     this.techniciansForm.patchValue({
-      mobile: +(this.countryPhoneKey + this.mobileNumber)
+      mobile: +(this.countryPhoneKey + this.mobileNumber),
     });
     this.submitted = true;
     this.checkMatched();
@@ -470,23 +470,21 @@ export class AddTechnicalComponent implements OnInit {
 
     this.techniciansForm.value.nationality_id = this.techniciansForm.value.nationalityObj.id;
 
-   
-  console.log(this.techniciansForm.value);
-  
-   
+    console.log(this.techniciansForm.value);
+
     this.coreService
       .updateMethod(
-        'technicians/' + this.updatedTechnicalId,
+        "technicians/" + this.updatedTechnicalId,
         this.techniciansForm.value
       )
       .subscribe(
         () => {
-          this.showSuccess('تم تعديل الفني بنجاح');
+          this.showSuccess("تم تعديل الفني بنجاح");
           setTimeout(() => {
-            this.router.navigate(['/technicians/all-technicians']);
+            this.router.navigate(["/technicians/all-technicians"]);
           }, 2500);
         },
-        error => {
+        (error) => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
@@ -498,18 +496,18 @@ export class AddTechnicalComponent implements OnInit {
 
   deleteIMG() {
     this.imageUpdated2 = true;
-    this.updatedTechnicalData['image'] = '';
-    this.techniciansForm.controls.image.setValue('');
-    this.imagePlaceHolder = ' إرفق صورة';
-    this.techniciansForm.patchValue({ image: '' });
+    this.updatedTechnicalData["image"] = "";
+    this.techniciansForm.controls.image.setValue("");
+    this.imagePlaceHolder = " إرفق صورة";
+    this.techniciansForm.patchValue({ image: "" });
     this.techniciansForm.controls.delete_image.setValue(true);
   }
   deleteIMGPin() {
     this.imageUpdated = true;
-    this.updatedTechnicalData['imagePin'] = '';
-    this.techniciansForm.controls.imagePin.setValue('');
-    this.imagePlaceHolderPin = ' إرفق صورة';
-    this.techniciansForm.patchValue({ imagePin: '' });
+    this.updatedTechnicalData["imagePin"] = "";
+    this.techniciansForm.controls.imagePin.setValue("");
+    this.imagePlaceHolderPin = " إرفق صورة";
+    this.techniciansForm.patchValue({ imagePin: "" });
     this.techniciansForm.controls.delete_pin.setValue(true);
   }
 
@@ -520,16 +518,16 @@ export class AddTechnicalComponent implements OnInit {
     this.canUpdatePassword = e.checked;
     if (this.canUpdatePassword) {
       this.techniciansForm.patchValue({
-        change_password: this.canUpdatePassword
+        change_password: this.canUpdatePassword,
       });
       this.techniciansForm.controls.password.enable();
       this.techniciansForm.controls.confirmPassword.enable();
       this.checkMatched();
     } else {
       this.techniciansForm.patchValue({
-        password: '',
-        confirmPassword: '',
-        change_password: this.canUpdatePassword
+        password: "",
+        confirmPassword: "",
+        change_password: this.canUpdatePassword,
       });
       this.techniciansForm.controls.password.disable();
       this.techniciansForm.controls.confirmPassword.disable();
@@ -544,10 +542,10 @@ export class AddTechnicalComponent implements OnInit {
   mobileChanged(str) {
     this.mobileNumber = Number(
       str
-        .replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => {
+        .replace(/[٠١٢٣٤٥٦٧٨٩]/g, (d) => {
           return d.charCodeAt(0) - 1632; // Convert Arabic numbers
         })
-        .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, d => {
+        .replace(/[۰۱۲۳۴۵۶۷۸۹]/g, (d) => {
           return d.charCodeAt(0) - 1776; // Convert Persian numbers
         })
     );
@@ -555,24 +553,30 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### Start Mobile Changed #########################
   //  ######################### Start OnSubmit Form #########################
   onSubmit() {
-    console.log(this.techniciansForm.value.nationality_id = this.techniciansForm.value.nationalityObj['id']);
-    this.techniciansForm.controls.nationality_id.setValue(this.techniciansForm.value.nationalityObj['id'])
+    console.log(
+      (this.techniciansForm.value.nationality_id = this.techniciansForm.value.nationalityObj[
+        "id"
+      ])
+    );
+    this.techniciansForm.controls.nationality_id.setValue(
+      this.techniciansForm.value.nationalityObj["id"]
+    );
     this.techniciansForm.patchValue({
-      mobile: +(this.countryPhoneKey + this.mobileNumber)
+      mobile: +(this.countryPhoneKey + this.mobileNumber),
     });
     this.submitted = true;
     this.startLoading();
-    console.log(this.techniciansForm.value)
+    console.log(this.techniciansForm.value);
     this.coreService
-      .postMethod('technicians', this.techniciansForm.value)
+      .postMethod("technicians", this.techniciansForm.value)
       .subscribe(
         () => {
-          this.showSuccess('تم ادخال فنى جديد بنجاح ');
+          this.showSuccess("تم ادخال فنى جديد بنجاح ");
           setTimeout(() => {
-            this.router.navigate(['/technicians/all-technicians']);
+            this.router.navigate(["/technicians/all-technicians"]);
           }, 2500);
         },
-        error => {
+        (error) => {
           if (error.error.errors) {
             this.showErrors(error.error.errors);
           } else {
@@ -586,9 +590,9 @@ export class AddTechnicalComponent implements OnInit {
   filterMainService(value: any) {
     console.log(value);
 
-    if (value !== '') {
+    if (value !== "") {
       this.techniciansForm.patchValue({
-        service_tech: value
+        service_tech: value,
       });
     }
     if (this.mainServiceArray !== null) {
@@ -598,9 +602,9 @@ export class AddTechnicalComponent implements OnInit {
 
   filterMainCity(value: any) {
     console.log(value);
-    if (value !== '') {
+    if (value !== "") {
       this.techniciansForm.patchValue({
-        city_tech: value
+        city_tech: value,
       });
     }
     if (this.mainCityArray !== null) {
@@ -636,26 +640,29 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### End Filter Services #########################
   //  ######################### Start Filter Countries #########################
   filterCountries(value: any) {
-    if (typeof value === 'object') {
+    if (typeof value === "object") {
       this.showCountryPhoneKey = true;
       this.countryPhoneKey = value.phone_code;
     } else {
       this.showCountryPhoneKey = false;
     }
     if (this.countriesArray !== null) {
-      return this.countriesArray.filter(option => option.name.includes(value));
+      return this.countriesArray.filter((option) =>
+        option.name.includes(value)
+      );
     }
   }
 
-  filterNationalities(value : any)
-  {
+  filterNationalities(value: any) {
     console.log(value);
-    
+
     // if (typeof value === 'object') {
     //   this.techniciansForm.patchValue({ nationalityObj: value })
     // }
     if (this.nationalitiesArray !== null) {
-      return this.nationalitiesArray.filter(option => option.name.includes(value));
+      return this.nationalitiesArray.filter((option) =>
+        option.name.includes(value)
+      );
     }
   }
   displayCountries(state) {
@@ -667,7 +674,7 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### Start Change Active State #########################
   changeActive(e) {
     this.techniciansForm.patchValue({
-      active: e.checked
+      active: e.checked,
     });
   }
   //  ######################### End Change Active State #########################
@@ -691,45 +698,34 @@ export class AddTechnicalComponent implements OnInit {
   //  ######################### End Loading Functions #########################
   //  ######################### Start Handle Image Base64 #########################
   onUploadImage(e) {
-
     // let max_height = 162;
     // let max_width = 124;
 
     // console.log(e);
-    
 
-    //   var i = new Image(); 
+    //   var i = new Image();
 
     //    i.src = e[0].base64
 
     //    i.onload = () => {
-       
-    
-      // if (i.height > max_height && i.width > max_width) {
-      //    this.errorMaxDim = true ;
-      // }
 
-            
-        this.errorMaxDim = false ;
-        this.imagePlaceHolder = e[0].name;
-        this.techniciansForm.patchValue({
-          image: e[0].base64
-        });
-        this.imageUpdated2 = false;
-        this.techniciansForm.controls.delete_image.setValue(false);
+    // if (i.height > max_height && i.width > max_width) {
+    //    this.errorMaxDim = true ;
+    // }
 
-      
-    
-    
-
-
-    
+    this.errorMaxDim = false;
+    this.imagePlaceHolder = e[0].name;
+    this.techniciansForm.patchValue({
+      image: e[0].base64,
+    });
+    this.imageUpdated2 = false;
+    this.techniciansForm.controls.delete_image.setValue(false);
   }
 
   onUploadImagePin(e) {
     this.imagePlaceHolderPin = e[0].name;
     this.techniciansForm.patchValue({
-      imagePin: e[0].base64
+      imagePin: e[0].base64,
     });
     this.imageUpdated = false;
     this.techniciansForm.controls.delete_pin.setValue(false);
@@ -740,7 +736,7 @@ export class AddTechnicalComponent implements OnInit {
   showErrors(errors) {
     this.endLoading();
     this.submitted = false;
-    this.responseState = 'error';
+    this.responseState = "error";
     this.responseData = errors;
     this.responseStateService.responseState(
       this.responseState,
@@ -750,7 +746,7 @@ export class AddTechnicalComponent implements OnInit {
   showSuccess(successText) {
     this.endLoading();
     this.submitted = false;
-    this.responseState = 'success';
+    this.responseState = "success";
     this.responseData = successText;
     this.responseStateService.responseState(
       this.responseState,

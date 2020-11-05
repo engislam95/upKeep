@@ -1,8 +1,4 @@
-<div
-  class="main_page form-taxs-mng cliend-edit-neww"
-  id="listPage"
-  *ngIf="printCase"
->
+<div class="main_page form-taxs-mng cliend-edit-neww" id="listPage">
   <app-alerts></app-alerts>
   <!-- ################################### Start Side Menu ################################### -->
   <app-side-menu></app-side-menu>
@@ -73,22 +69,48 @@
               يتم التحميل الأن ..... برجى الانتظار
             </h6>
             <h6 style="font-size: 20px">10%</h6>
-            <section
-              style="
-                padding: 82px;
-                width: 50%;
-                margin: 20px auto;
-                border: 1px dotted #707070;
-                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-              "
-            >
-              <button class="download">اضغط لاختيار ملف التحميل</button>
-              <p style="margin-top: 10px">امتداد الملف المسموح هو Excel فقط</p>
-              <div style="margin: 20px 0">
-                <mat-checkbox> أوافق على تحميل البيانات الجديدة </mat-checkbox>
-              </div>
-              <button class="data">تحميل البيانات</button>
-            </section>
+            <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+              <section
+                style="
+                  padding: 82px;
+                  width: 50%;
+                  margin: 20px auto;
+                  border: 1px dotted #707070;
+                  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                "
+              >
+                <input
+                  style="
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                    width: 345px;
+                    height: 56px;
+                  "
+                  name="profile"
+                  type="file"
+                  (change)="onFileSelect($event)"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  class="uploadImageInput"
+                />
+                <button class="download" type="button">
+                  اضغط لاختيار ملف التحميل
+                </button>
+                <p style="margin-top: 10px">
+                  امتداد الملف المسموح هو Excel فقط
+                </p>
+                <p style="margin-top: 10px" *ngIf="name">{{ name }}</p>
+                <div style="margin: 20px 0">
+                  <mat-checkbox
+                    [checked]="checked"
+                    (change)="checked = $event.checked"
+                  >
+                    أوافق على تحميل البيانات الجديدة
+                  </mat-checkbox>
+                </div>
+                <button type="submit" class="data">تحميل البيانات</button>
+              </section>
+            </form>
           </div>
           <div style="width: 59%; margin: 10px auto">
             <ul>
