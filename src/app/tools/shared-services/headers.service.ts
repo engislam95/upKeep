@@ -5,7 +5,7 @@ import { HttpHeaders } from "@angular/common/http";
 export class HeadersService {
   // companySlug = 'upkeep';
   companySlug: any = "";
-  baseAPI = "/upkeep/";
+  // baseAPI = "/upkeep/";
   // baseAPI = 'https://clientmobile.reviews.upkeep.com.sa/upkeep/'
   // baseAPI  = 'https://tech-connection.reviews.upkeep.com.sa/upkeep/' ;
   // baseAPI = 'https://pusher.reviews.upkeep.com.sa/upkeep/';

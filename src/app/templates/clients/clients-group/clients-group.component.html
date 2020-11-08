@@ -69,7 +69,11 @@
               يتم التحميل الأن ..... برجى الانتظار
             </h6>
             <h6 style="font-size: 20px">10%</h6>
-            <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+            <form
+              [formGroup]="uploadForm"
+              (ngSubmit)="onSubmit()"
+              name="profileForm"
+            >
               <section
                 style="
                   padding: 82px;
@@ -90,8 +94,9 @@
                   name="profile"
                   type="file"
                   (change)="onFileSelect($event)"
-                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                   class="uploadImageInput"
+                  id="profile"
                 />
                 <button class="download" type="button">
                   اضغط لاختيار ملف التحميل

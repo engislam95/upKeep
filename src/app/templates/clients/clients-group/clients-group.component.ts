@@ -37,24 +37,37 @@ export class ClientsGroupComponent implements OnInit {
       const file = event.target.files[0];
       this.uploadForm.get("profile").setValue(file);
       console.log(this.uploadForm.get("profile").value);
+      this.name = file.name;
     }
   }
   onSubmit() {
-    const formData = new FormData();
-    formData.append("excel_file", this.uploadForm.get("profile").value);
+    let pro = document.forms.namedItem("profileForm");
+    console.log(pro);
+
+    const formData = new FormData(pro);
+    console.log(formData);
+
+    formData.append(
+      "excel_file",
+      this.uploadForm.get("profile").value,
+      this.uploadForm.get("profile").value.name
+    );
     console.log(formData);
     console.log(this.uploadForm.get("profile").value);
+
+    formData.append("excel_file", formData);
     this.coreService
       .post(
         this.header.baseAPI +
           "api/company/" +
           this.header.companySlug +
           "/clients/uploadBulk",
-        formData,
+        { excel_file: formData },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "multipart/form-data",
+            // Accept: "multipart/form-data",
+            "Content-type": "application/vnd.ms-excel",
+            Accept: "application/json",
             Authorization: "Bearer " + this.header.token,
             "X-Requested-With": "XMLHttpRequest",
           },
