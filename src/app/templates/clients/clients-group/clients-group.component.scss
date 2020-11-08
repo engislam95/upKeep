@@ -1,0 +1,295 @@
+.filter_form {
+  #nameEmailFillterInputStyle mat-form-field {
+    width: calc(320px);
+  }
+}
+
+.resetInput {
+  color: #464646;
+  left: -4px;
+  margin-top: 2px;
+  background-color: white;
+}
+
+.form-taxs-mng .filter_form #smallFillterInputStyle {
+  width: calc(80% / 7);
+}
+
+.print {
+  float: left;
+  margin-top: -5px;
+  margin-left: -5%;
+  width: 10%;
+
+  button {
+    margin: 5%;
+    cursor: pointer;
+  }
+}
+
+.border-popup-print {
+  width: 460px;
+  height: 257px;
+  background: #fff;
+  border: 1px solid #707070;
+  z-index: 999;
+  position: relative;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 5px;
+  padding: 17px;
+}
+
+.page_block {
+  h2 {
+    font-family: "GE SS Two";
+    font-weight: 500;
+    font-size: 19px;
+    text-align: right;
+    color: #464646;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-family: "GE SS Two";
+    font-weight: 500;
+    font-size: 19px;
+    text-align: right;
+    color: #464646;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+    i {
+      font-size: 19px;
+      margin-left: 6px;
+      color: #000;
+    }
+  }
+
+  h5 {
+    font-family: "GE SS Two";
+    font-weight: 300;
+    font-size: 14px;
+    color: #000;
+    text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    position: absolute;
+
+    span {
+      font-family: Roboto;
+      font-weight: 500;
+      font-size: 15px;
+      color: #000;
+      margin-right: 10px;
+      text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    }
+  }
+}
+
+.filter_form mat-form-field {
+  margin-bottom: 0;
+}
+
+.page_body {
+  .button-add-taxs {
+    position: absolute;
+    margin-top: -7px;
+    left: 23px;
+
+    button {
+      padding-left: 19px;
+      height: auto;
+      background: #f6a811;
+      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      border: none;
+
+      font-size: 14px;
+      margin-left: 28px;
+
+      i {
+        background: #242a2d;
+        color: #fff;
+        font-size: 25px;
+        padding: 10px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-left: 14px;
+        margin-right: 3px;
+
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 300;
+        font-size: 18px;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      }
+    }
+  }
+}
+
+.details {
+  .notes-client {
+    visibility: hidden;
+    width: 247px;
+    height: 87px;
+    background: #fff;
+    border: 1px solid #707070;
+    position: absolute;
+    z-index: 12112121212121212;
+    /* left: 4px; */
+    // top: 49%;
+    margin-right: 153px;
+    padding: 10px;
+
+    h5 {
+      font-family: "GE SS Two";
+      font-weight: 300;
+      font-size: 15px;
+      text-align: right;
+      color: #464646;
+    }
+  }
+
+  &:hover {
+    .notes-client {
+      visibility: visible;
+    }
+  }
+}
+
+.notes-client:hover {
+  visibility: visible;
+}
+
+#showOrdercontrols {
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  border: 1px solid #d8d8d8;
+  background-color: #394247;
+  -webkit-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 23px -9px rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  margin-top: -12px;
+  margin-right: -35px;
+  border-radius: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  i {
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // start toolTip in details menu controls
+
+  p {
+    font-size: 12px;
+    color: #fff;
+    border-left: none !important;
+  }
+
+  button {
+    margin: 0 10px;
+
+    &:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:first-child {
+      .tooltiptext {
+        right: -15px;
+      }
+    }
+
+    &:last-child {
+      .tooltiptext {
+        left: 40px;
+      }
+    }
+  }
+
+  // end toolTip in details menu controls
+}
+
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.notes-client {
+  .tooltiptext {
+    visibility: hidden;
+  }
+
+  &:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.selectPerpage {
+  margin: 20px 1px;
+}
+
+.arrow {
+  background: #f5f5f5;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 31px;
+  height: 31px;
+
+  i {
+    font-size: 21px;
+    color: gray;
+    vertical-align: middle;
+  }
+}
+
+.numberPagination {
+  background: #fff;
+  // padding: 7px 17px;
+  border: 1px solid rgba(112, 112, 112, 0.38);
+  width: 42px;
+  height: 31px;
+}
+.file-excel {
+  width: 73px;
+  height: 71px;
+  border-radius: 15px;
+  background: #f5f5f5;
+  border: 1px solid #2a5b0e;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  float: left;
+  i {
+    font-size: 35px;
+    color: #2a5b0e;
+  }
+}
+section {
+  .download {
+    width: 345px;
+    height: 56px;
+    background: #242a2d;
+    border: 1px solid #a8a8a8;
+    color: #fff;
+  }
+  .data {
+    width: 152px;
+    height: 56px;
+    background: #fa0;
+    border: 1px solid #a8a8a8;
+  }
+}
